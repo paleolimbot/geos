@@ -2,12 +2,13 @@
 #' Create and validate well-known text
 #'
 #' @param x A character vector containing well-known text
+#' @param ... Unused
 #'
 #' @return A vctr of class geo_wkt
 #' @export
 #'
 #' @examples
-#' geo_wkt("POINT 30 10")
+#' geo_wkt("POINT (30 10)")
 #'
 geo_wkt <- function(x = character()) {
   x <- vec_cast(x, character())

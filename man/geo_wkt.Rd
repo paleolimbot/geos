@@ -20,6 +20,8 @@ validate_geo_wkt(x)
 }
 \arguments{
 \item{x}{A character vector containing well-known text}
+
+\item{...}{Unused}
 }
 \value{
 A vctr of class geo_wkt
@@ -28,6 +30,6 @@ A vctr of class geo_wkt
 Create and validate well-known text
 }
 \examples{
-geo_wkt("POINT 30 10")
+geo_wkt("POINT (30 10)")
 
 }
