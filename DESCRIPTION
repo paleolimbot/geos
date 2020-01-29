@@ -20,3 +20,5 @@ Imports:
     rlang,
     tibble,
     vctrs
+URL: https://github.com/paleolimbot/geom
+BugReports: https://github.com/paleolimbot/geom/issues
