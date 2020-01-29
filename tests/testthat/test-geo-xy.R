@@ -16,6 +16,11 @@ test_that("geo_xy casting works", {
   expect_identical(vec_cast(xy, list()), vec_data(xy))
   expect_identical(vec_cast(vec_data(xy), geo_xy()), xy)
 
+  expect_equal(
+    as_geo_xy(grid::pointsGrob(0:5, 1:6), "native"),
+    xy
+  )
+
   expect_identical(
     vec_cast(tibble(x = 0:5, y = 1:6), geo_xy()),
     xy

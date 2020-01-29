@@ -17,6 +17,7 @@ geo_xy <- function(x = double(), y = double()) {
 #'
 #' @param x A (possibly) [geo_xy()]
 #' @param y,to,x_arg,y_arg See [vctrs::vec_cast()] and [vctrs::vec_ptype2()]
+#' @param unit_to See [grid::convertUnit()]
 #' @param ... Unused
 #'
 #' @export
@@ -106,6 +107,14 @@ as_geo_xy.list <- function(x, ...) {
   } else {
     abort("Can't cast an unnamed list to <geo_xy>")
   }
+}
+
+#' @export
+#' @rdname new_geo_xy
+as_geo_xy.points <- function(x, unit_to, ...) {
+  coord_x <- grid::convertWidth(x$x, unit_to, valueOnly = TRUE)
+  coord_y <- grid::convertHeight(x$y, unit_to, valueOnly = TRUE)
+  geo_xy(coord_x, coord_y)
 }
 
 #' @method vec_ptype2 geo_xy
