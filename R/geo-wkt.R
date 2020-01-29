@@ -2,9 +2,8 @@
 #' Create and validate well-known text
 #'
 #' @param x A character vector containing well-known text
-#' @param ... Unused
 #'
-#' @return A vctr of class geo_wkt
+#' @return A [new_geo_wkt()]
 #' @export
 #'
 #' @examples
@@ -15,27 +14,37 @@ geo_wkt <- function(x = character()) {
   new_geo_wkt(x)
 }
 
-#' @rdname geo_wkt
+
+#' S3 details for geo_wkt
+#'
+#' @inheritParams geo_wkt
+#' @param ... Unused
+#'
 #' @export
+#'
+#' @examples
+#' wkt <- geo_wkt("POINT (30 10)")
+#' is_geo_wkt(wkt)
+#'
 new_geo_wkt <- function(x = character()) {
   vec_assert(x, character())
   new_vctr(x, class = c("geo_wkt", "geo"))
 }
 
-#' @rdname geo_wkt
+#' @rdname new_geo_wkt
 #' @export
 is_geo_wkt <- function(x) {
   inherits(x, "geo_wkt")
 }
 
-#' @rdname geo_wkt
+#' @rdname new_geo_wkt
 #' @export
 validate_geo_wkt <- function(x) {
   abort("Not implemented")
 }
 
-#' @rdname geo_wkt
+#' @rdname new_geo_wkt
 #' @export
-vec_ptype_abbr.vctrs_percent <- function(x, ...) {
+vec_ptype_abbr.geo_wkt <- function(x, ...) {
   "wkt"
 }

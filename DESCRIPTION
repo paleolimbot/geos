@@ -12,9 +12,11 @@ Description: Provides data structures to convert various
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
+Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.0.1
 Suggests: 
     testthat (>= 2.1.0)
 Imports: 
     rlang,
+    tibble,
     vctrs

@@ -6,5 +6,9 @@
 ## usethis namespace: start
 #' @import vctrs
 #' @importFrom rlang abort
+#' @importFrom tibble tibble
 ## usethis namespace: end
 NULL
+
+#' @export
+tibble::tibble

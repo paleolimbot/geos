@@ -2,29 +2,15 @@
 % Please edit documentation in R/geo-wkt.R
 \name{geo_wkt}
 \alias{geo_wkt}
-\alias{new_geo_wkt}
-\alias{is_geo_wkt}
-\alias{validate_geo_wkt}
-\alias{vec_ptype_abbr.vctrs_percent}
 \title{Create and validate well-known text}
 \usage{
 geo_wkt(x = character())
-
-new_geo_wkt(x = character())
-
-is_geo_wkt(x)
-
-validate_geo_wkt(x)
-
-\method{vec_ptype_abbr}{vctrs_percent}(x, ...)
 }
 \arguments{
 \item{x}{A character vector containing well-known text}
-
-\item{...}{Unused}
 }
 \value{
-A vctr of class geo_wkt
+A \code{\link[=new_geo_wkt]{new_geo_wkt()}}
 }
 \description{
 Create and validate well-known text
