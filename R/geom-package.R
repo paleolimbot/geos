@@ -6,7 +6,7 @@
 ## usethis namespace: start
 #' @import vctrs
 #' @importFrom rlang abort
-#' @importFrom tibble tibble
+#' @importFrom tibble tibble as_tibble
 ## usethis namespace: end
 NULL
 
