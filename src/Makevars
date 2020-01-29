@@ -1,0 +1,3 @@
+PKG_CPPFLAGS= -I/usr/local/Cellar/geos/3.7.2/include -DHAVE_CONFIG_H -DR_USE_C99_IN_CXX
+PKG_LIBS= -L/usr/local/Cellar/geos/3.7.2/lib -lgeos -L/usr/local/Cellar/geos/3.7.2/lib -lgeos_c
+CXX_STD=CXX11

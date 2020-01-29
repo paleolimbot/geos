@@ -1,0 +1,18 @@
+COMPILED_BY ?= gcc-4.6.3
+RWINLIB = lib${subst gcc,,${COMPILED_BY}}${R_ARCH}
+
+PKG_CPPFLAGS =\
+	-I../windows/gdal2-2.2.0/include/geos
+
+all: clean winlibs
+
+CXX_STD=CXX11
+
+winlibs:
+	mkdir -p ../inst
+	"${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe" --vanilla "../tools/winlibs.R"
+
+clean:
+	rm -f $(SHLIB) $(OBJECTS)
+
+.PHONY: all winlibs clean

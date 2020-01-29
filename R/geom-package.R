@@ -7,6 +7,8 @@
 #' @import vctrs
 #' @importFrom rlang abort
 #' @importFrom tibble tibble as_tibble
+#' @useDynLib geom, .registration = TRUE
+#' @importFrom Rcpp sourceCpp
 ## usethis namespace: end
 NULL
 

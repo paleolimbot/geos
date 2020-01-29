@@ -19,6 +19,9 @@ Suggests:
 Imports: 
     rlang,
     tibble,
-    vctrs
+    vctrs,
+    Rcpp
 URL: https://github.com/paleolimbot/geom
 BugReports: https://github.com/paleolimbot/geom/issues
+LinkingTo: 
+    Rcpp
