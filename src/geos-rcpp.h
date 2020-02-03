@@ -38,7 +38,4 @@
 GEOSContextHandle_t geos_init(void);
 void geos_finish(GEOSContextHandle_t ctxt);
 
-using GeomPtr = std::unique_ptr<GEOSGeometry, std::function<void(GEOSGeometry*)>>;
-static GeomPtr geos_ptr(GEOSGeometry* g, GEOSContextHandle_t hGEOSctxt);
-
 #endif

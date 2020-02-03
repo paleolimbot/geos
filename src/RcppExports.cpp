@@ -5,6 +5,17 @@
 
 using namespace Rcpp;
 
+// geos_test_roundtrip_wkt
+CharacterVector geos_test_roundtrip_wkt(CharacterVector wkt);
+RcppExport SEXP _geom_geos_test_roundtrip_wkt(SEXP wktSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< CharacterVector >::type wkt(wktSEXP);
+    rcpp_result_gen = Rcpp::wrap(geos_test_roundtrip_wkt(wkt));
+    return rcpp_result_gen;
+END_RCPP
+}
 // geos_version_impl
 std::string geos_version_impl();
 RcppExport SEXP _geom_geos_version_impl() {
@@ -17,6 +28,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_geom_geos_test_roundtrip_wkt", (DL_FUNC) &_geom_geos_test_roundtrip_wkt, 1},
     {"_geom_geos_version_impl", (DL_FUNC) &_geom_geos_version_impl, 0},
     {NULL, NULL, 0}
 };
