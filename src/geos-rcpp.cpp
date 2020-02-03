@@ -50,19 +50,24 @@ static void __emptyNoticeHandler(const char *fmt, void *userdata) { }
 
 GEOSContextHandle_t geos_init(void) {
 #ifdef HAVE350
-  GEOSContextHandle_t ctxt = GEOS_init_r();
-  GEOSContext_setNoticeHandler_r(ctxt, __warningHandler);
-  GEOSContext_setErrorHandler_r(ctxt, __errorHandler);
-  return ctxt;
+  GEOSContextHandle_t context = GEOS_init_r();
+  GEOSContext_setNoticeHandler_r(context, __warningHandler);
+  GEOSContext_setErrorHandler_r(context, __errorHandler);
+  return context;
 #else
   return initGEOS_r((GEOSMessageHandler) __warningHandler, (GEOSMessageHandler) __errorHandler);
 #endif
 }
 
-void geos_finish(GEOSContextHandle_t ctxt) {
+void geos_finish(GEOSContextHandle_t context) {
 #ifdef HAVE350
-  GEOS_finish_r(ctxt);
+  GEOS_finish_r(context);
 #else
-  finishGEOS_r(ctxt);
+  finishGEOS_r(context);
 #endif
+}
+
+GeomPtr geos_ptr(GEOSGeometry* g, GEOSContextHandle_t context) {
+  auto deleter = std::bind(GEOSGeom_destroy_r, context, std::placeholders::_1);
+  return GeomPtr(g, deleter);
 }

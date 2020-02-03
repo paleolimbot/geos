@@ -5,7 +5,19 @@ geos_test_roundtrip_wkt <- function(wkt) {
     .Call(`_geom_geos_test_roundtrip_wkt`, wkt)
 }
 
+geos_wkt_is_parseable <- function(wkt) {
+    .Call(`_geom_geos_wkt_is_parseable`, wkt)
+}
+
+geos_wkb_is_parseable <- function(wkb) {
+    .Call(`_geom_geos_wkb_is_parseable`, wkb)
+}
+
 geos_version_impl <- function() {
     .Call(`_geom_geos_version_impl`)
+}
+
+geos_test_throw_error <- function() {
+    invisible(.Call(`_geom_geos_test_throw_error`))
 }
 

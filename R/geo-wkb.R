@@ -20,7 +20,8 @@
 #'
 geo_wkb <- function(x = list()) {
   x <- vec_cast(x,  list_of(.ptype = raw()))
-  new_geo_wkb(x)
+  wkb <- validate_geo_wkb(new_geo_wkb(x))
+  wkb
 }
 
 
@@ -56,7 +57,9 @@ is_geo_wkb <- function(x) {
 #' @rdname new_geo_wkb
 #' @export
 validate_geo_wkb <- function(x) {
-  abort("Not implemented")
+  is_parseable <- geos_wkb_is_parseable(x)
+  stop_for_non_parseable(is_parseable)
+  invisible(x)
 }
 
 #' @rdname new_geo_wkb

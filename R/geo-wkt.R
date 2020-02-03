@@ -11,7 +11,8 @@
 #'
 geo_wkt <- function(x = character()) {
   x <- vec_cast(x, character())
-  new_geo_wkt(x)
+  wkt <- validate_geo_wkt(new_geo_wkt(x))
+  wkt
 }
 
 
@@ -40,7 +41,9 @@ is_geo_wkt <- function(x) {
 #' @rdname new_geo_wkt
 #' @export
 validate_geo_wkt <- function(x) {
-  abort("Not implemented")
+  is_parseable <- geos_wkt_is_parseable(x)
+  stop_for_non_parseable(is_parseable)
+  invisible(x)
 }
 
 #' @rdname new_geo_wkt

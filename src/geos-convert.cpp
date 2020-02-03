@@ -6,14 +6,6 @@ using namespace Rcpp;
 // most of this is inspired by
 // https://github.com/r-spatial/sf/blob/master/src/geos.cpp
 
-// need to find a way to get this in geos-rcpp.h
-using GeomPtr = std::unique_ptr<GEOSGeometry, std::function<void(GEOSGeometry*)>>;
-
-static GeomPtr geos_ptr(GEOSGeometry* g, GEOSContextHandle_t hGEOSctxt) {
-  auto deleter = std::bind(GEOSGeom_destroy_r, hGEOSctxt, std::placeholders::_1);
-  return GeomPtr(g, deleter);
-}
-
 std::vector<GeomPtr> geos_from_wkt(GEOSContextHandle_t context, CharacterVector wkt) {
   std::vector<GeomPtr> output(wkt.size());
 
