@@ -63,7 +63,9 @@ format.geo_xy <- function(x, ...) {
 #' @export
 #' @rdname new_geo_xy
 as.data.frame.geo_xy <- function(x, ...) {
-  new_data_frame(x)
+  df <- new_data_frame(x)
+  names(df) = c("x", "y")
+  df
 }
 
 #' @export
