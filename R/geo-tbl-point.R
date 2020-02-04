@@ -5,7 +5,8 @@
 #' @param feature An integer ID that whose unique values can
 #'   be used to identify and/or separate features
 #' @param piece An ID used to separate rings within polygons. The
-#'   first piece in the row order is interpreted as the outer ring.
+#'   smallest `piece` value within a `feature`/`part` combination
+#'   is assumed to be the outer ring.
 #' @param part An ID used to separate parts within a feature of a multi* geometry
 #'
 #' @return A vctr

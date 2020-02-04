@@ -15,6 +15,7 @@ geo_tbl_linestring <- function(xy, feature = 1L) {
 geo_tbl_multilinestring <- function(xy, feature = 1L, part = 1L) {
   xy <- vec_cast(xy, geo_xy())
   feature <- vec_cast(feature, integer())
+  part <- vec_cast(part, integer())
   tbl <- list(
     xy = xy,
     feature = rep_len_or_fail(feature, xy),

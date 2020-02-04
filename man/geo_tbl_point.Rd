@@ -18,7 +18,7 @@ geo_tbl_point(xy, feature = seq_len(vec_size(xy)))
 
 geo_tbl_multipoint(xy, feature = seq_len(vec_size(xy)))
 
-geo_tbl_polygon(xy, feature, piece = 1L)
+geo_tbl_polygon(xy, feature = 1L, piece = 1L)
 
 geo_tbl_multipolygon(xy, feature = 1L, piece = 1L, part = 1L)
 }
@@ -31,7 +31,8 @@ be used to identify and/or separate features}
 \item{part}{An ID used to separate parts within a feature of a multi* geometry}
 
 \item{piece}{An ID used to separate rings within polygons. The
-first piece in the row order is interpreted as the outer ring.}
+smallest \code{piece} value within a \code{feature}/\code{part} combination
+is assumed to be the outer ring.}
 }
 \value{
 A vctr
