@@ -4,7 +4,10 @@
 geo_tbl_linestring <- function(xy, feature = 1L) {
   xy <- vec_cast(xy, geo_xy())
   feature <- vec_cast(feature, integer())
-  tbl <- list(xy = xy, feature = rep_len_or_fail(feature, xy))
+  tbl <- list(
+    xy = xy,
+    feature = rep_len_or_fail(feature, xy)
+  )
 
   validate_geo_tbl_linestring(tbl)
   new_geo_tbl_linestring(tbl)
@@ -37,16 +40,18 @@ geo_tbl_multilinestring <- function(xy, feature = 1L, part = 1L) {
 new_geo_tbl_linestring <- function(x = list(xy = geo_xy(), feature = integer(0))) {
   vec_assert(x$xy, geo_xy())
   vec_assert(x$feature, integer())
-  new_rcrd(x, class = "geo_tbl_linestring")
+  new_rcrd(x, class = c("geo_tbl_linestring", "geo_tbl"))
 }
 
 #' @rdname new_geo_tbl_linestring
 #' @export
-new_geo_tbl_multilinestring <- function(x = list(xy = geo_xy(), feature = integer(0))) {
+new_geo_tbl_multilinestring <- function(x = list(xy = geo_xy(),
+                                                 feature = integer(0),
+                                                 part = integer(0))) {
   vec_assert(x$xy, geo_xy())
   vec_assert(x$feature, integer())
   vec_assert(x$part, integer())
-  new_rcrd(x, class = "geo_tbl_multilinestring")
+  new_rcrd(x, class = c("geo_tbl_multilinestring", "geo_tbl"))
 }
 
 #' @rdname new_geo_tbl_linestring
@@ -114,4 +119,28 @@ vec_ptype_abbr.geo_tbl_linestring <- function(x, ...) {
 #' @export
 vec_ptype_abbr.geo_tbl_multilinestring <- function(x, ...) {
   "tblmls"
+}
+
+#' @rdname new_geo_tbl_linestring
+#' @export
+as_geo_tbl_linestring <- function(x, ...) {
+  UseMethod("as_geo_tbl_linestring")
+}
+
+#' @rdname new_geo_tbl_linestring
+#' @export
+as_geo_tbl_linestring.default <- function(x, ...) {
+  vec_cast(x, new_geo_tbl_linestring())
+}
+
+#' @rdname new_geo_tbl_linestring
+#' @export
+as_geo_tbl_multilinestring <- function(x, ...) {
+  UseMethod("as_geo_tbl_multilinestring")
+}
+
+#' @rdname new_geo_tbl_linestring
+#' @export
+as_geo_tbl_multilinestring.default <- function(x, ...) {
+  vec_cast(x, new_geo_tbl_multilinestring())
 }

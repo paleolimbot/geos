@@ -37,6 +37,10 @@ vec_ptype2.geo_tbl.geo_tbl <- function(x, y, ..., x_arg = "x", y_arg = "y") {
     new_geo_tbl_multipoint()
   } else if(inherits(x, "geo_tbl_multipoint") && inherits(y, "geo_tbl_point")) {
     new_geo_tbl_multipoint()
+  } else if (inherits(x, "geo_tbl_linestring") && inherits(y, "geo_tbl_multilinestring")) {
+    new_geo_tbl_multilinestring()
+  } else if(inherits(x, "geo_tbl_multilinestring") && inherits(y, "geo_tbl_linestring")) {
+    new_geo_tbl_multilinestring()
   } else {
     NextMethod()
   }
@@ -99,7 +103,20 @@ vec_cast.geo_tbl.default <- function(x, to, ...) {
 #' @method vec_cast.geo_tbl geo_tbl
 #' @export
 vec_cast.geo_tbl.geo_tbl <- function(x, to, ...) {
-  x
+  # always pick 'multi' for common types
+  # slightly easier to do it here rather than using a million double dispatch
+  # methods
+  if (inherits(x, "geo_tbl_point") && inherits(to, "geo_tbl_multipoint")) {
+    new_geo_tbl_multipoint(vec_data(x))
+  } else if (inherits(x, "geo_tbl_linestring") && inherits(to, "geo_tbl_multilinestring")) {
+    data <- vec_data(x)
+    data$part <- rep_len(1L, vec_size(x))
+    new_geo_tbl_multilinestring(data)
+  } else if(identical(class(x), class(to))) {
+    x
+  } else {
+    NextMethod()
+  }
 }
 
 #' @method vec_cast.geo_tbl data.frame

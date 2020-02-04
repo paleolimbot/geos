@@ -13,11 +13,17 @@
 \alias{print.geo_tbl_multilinestring}
 \alias{vec_ptype_abbr.geo_tbl_linestring}
 \alias{vec_ptype_abbr.geo_tbl_multilinestring}
+\alias{as_geo_tbl_linestring}
+\alias{as_geo_tbl_linestring.default}
+\alias{as_geo_tbl_multilinestring}
+\alias{as_geo_tbl_multilinestring.default}
 \title{S3 Details for (multi)linestring geometries}
 \usage{
 new_geo_tbl_linestring(x = list(xy = geo_xy(), feature = integer(0)))
 
-new_geo_tbl_multilinestring(x = list(xy = geo_xy(), feature = integer(0)))
+new_geo_tbl_multilinestring(
+  x = list(xy = geo_xy(), feature = integer(0), part = integer(0))
+)
 
 validate_geo_tbl_linestring(x)
 
@@ -38,6 +44,14 @@ is_geo_tbl_multilinestring(x)
 \method{vec_ptype_abbr}{geo_tbl_linestring}(x, ...)
 
 \method{vec_ptype_abbr}{geo_tbl_multilinestring}(x, ...)
+
+as_geo_tbl_linestring(x, ...)
+
+\method{as_geo_tbl_linestring}{default}(x, ...)
+
+as_geo_tbl_multilinestring(x, ...)
+
+\method{as_geo_tbl_multilinestring}{default}(x, ...)
 }
 \arguments{
 \item{x}{A (possibly) \code{\link[=geo_tbl_linestring]{geo_tbl_linestring()}} or \code{\link[=geo_tbl_multilinestring]{geo_tbl_multilinestring()}}}
