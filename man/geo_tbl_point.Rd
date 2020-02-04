@@ -10,13 +10,13 @@
 \alias{geo_tbl_multipolygon}
 \title{Coordinate-long representations of geometries}
 \usage{
-geo_tbl_linestring(xy, feature)
+geo_tbl_linestring(xy, feature = 1L)
 
-geo_tbl_multilinestring(xy, feature, part = 1L)
+geo_tbl_multilinestring(xy, feature = 1L, part = 1L)
 
 geo_tbl_point(xy, feature = seq_len(vec_size(xy)))
 
-geo_tbl_multipoint(xy, feature)
+geo_tbl_multipoint(xy, feature = seq_len(vec_size(xy)))
 
 geo_tbl_polygon(xy, feature, piece = 1L)
 

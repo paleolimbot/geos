@@ -22,3 +22,23 @@ stop_for_non_parseable <- function(is_parseable) {
     }
   }
 }
+
+rep_len_or_fail <- function(x, template) {
+  x_quo <- rlang::enquo(x)
+  template_quo <- rlang::enquo(template)
+
+  if (vec_size(x) == 1) {
+    vec_repeat(x, times = vec_size(template))
+  } else if (vec_size(x) != vec_size(template)) {
+    x_label <- rlang::as_label(x_quo)
+    abort(
+      sprintf(
+        "`%s` must be length 1 or the same length as `%s` (%s)",
+        rlang::as_label(x_quo), rlang::as_label(template_quo), vec_size(template)
+      ),
+      class = "rep_len_error"
+    )
+  } else {
+    x
+  }
+}

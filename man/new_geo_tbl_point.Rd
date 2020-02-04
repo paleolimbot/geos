@@ -13,7 +13,7 @@
 \alias{print.geo_tbl_multipoint}
 \alias{vec_ptype_abbr.geo_tbl_point}
 \alias{vec_ptype_abbr.geo_tbl_multipoint}
-\title{S3 Details for (Multi)Point geometries}
+\title{S3 Details for (multi)point geometries}
 \usage{
 new_geo_tbl_point(x = list(xy = geo_xy(), feature = integer(0)))
 
@@ -45,5 +45,5 @@ is_geo_tbl_multipoint(x)
 \item{...}{Unused}
 }
 \description{
-S3 Details for (Multi)Point geometries
+S3 Details for (multi)point geometries
 }

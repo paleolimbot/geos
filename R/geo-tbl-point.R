@@ -16,9 +16,11 @@
 #' geo_tbl_multipoint(geo_xy(1:4, 1:4), feature = c(1, 1, 2, 2))
 #'
 geo_tbl_point <- function(xy, feature = seq_len(vec_size(xy))) {
+  feature <- vec_cast(feature, integer())
+  xy <- vec_cast(xy, geo_xy())
   tbl <- list(
-    xy = vec_cast(xy, geo_xy()),
-    feature = rep_len(vec_cast(feature, integer()), vec_size(xy))
+    xy = xy,
+    feature = rep_len_or_fail(feature, xy)
   )
 
   validate_geo_tbl_point(tbl)
@@ -27,16 +29,19 @@ geo_tbl_point <- function(xy, feature = seq_len(vec_size(xy))) {
 
 #' @rdname geo_tbl_point
 #' @export
-geo_tbl_multipoint <- function(xy, feature) {
+geo_tbl_multipoint <- function(xy, feature = seq_len(vec_size(xy))) {
+  feature <- vec_cast(feature, integer())
+  xy <- vec_cast(xy, geo_xy())
   tbl <- list(
-    xy = vec_cast(xy, geo_xy()),
-    feature = rep_len(vec_cast(feature, integer()), vec_size(xy))
+    xy = xy,
+    feature = rep_len_or_fail(feature, xy)
   )
 
+  validate_geo_tbl_multipoint(tbl)
   new_geo_tbl_multipoint(tbl)
 }
 
-#' S3 Details for (Multi)Point geometries
+#' S3 Details for (multi)point geometries
 #'
 #' @param x A (possibly) [geo_tbl_point()] or [geo_tbl_multipoint()]
 #' @param ... Unused
@@ -110,7 +115,7 @@ print.geo_tbl_point <- function(x, ...) {
 #' @export
 #' @rdname new_geo_tbl_point
 format.geo_tbl_multipoint <- function(x, ...) {
-  format.geo_tbl_point(x, ...)
+  sprintf("<feat `%s.1` %s>", field(x, "feature"), format(field(x, "xy"), ...))
 }
 
 #' @export
@@ -130,4 +135,3 @@ vec_ptype_abbr.geo_tbl_point <- function(x, ...) {
 vec_ptype_abbr.geo_tbl_multipoint <- function(x, ...) {
   "tblmpnt"
 }
-
