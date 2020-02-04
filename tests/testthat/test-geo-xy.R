@@ -7,6 +7,29 @@ test_that("geo_xy class works", {
   expect_true(vec_is(xy))
 })
 
+test_that("geo_xy c() works", {
+  xy <- geo_xy(0:5, 1:6)
+  tbl <- tibble(xy)
+  df <- as.data.frame(tbl)
+  tbl_xy <- as_tibble(xy)
+  df_xy <- as.data.frame(tbl_xy)
+
+  expect_is(c(xy, xy), "geo_xy")
+  expect_length(c(xy, xy), 12)
+  expect_is(vec_c(xy, xy), "geo_xy")
+  expect_length(vec_c(xy, xy), 12)
+  expect_equal(nrow(vec_rbind(tbl, tbl)), 12)
+  expect_is(vec_rbind(tibble(xy), tibble(xy))$xy, "geo_xy")
+
+  # check vec_c() with tibble and data frame types
+  expect_identical(c(xy, tbl_xy), vec_rbind(tbl_xy, tbl_xy))
+  expect_identical(vec_c(xy, tbl_xy), vec_rbind(tbl_xy, tbl_xy))
+  # because there's no vec_ptype2.tbl_df generic anywhere, this returns a df
+  expect_identical(vec_c(tbl_xy, xy), vec_rbind(df_xy, df_xy))
+  expect_identical(vec_c(xy, df_xy), vec_rbind(df_xy, df_xy))
+  expect_identical(vec_c(df_xy, xy), vec_rbind(df_xy, df_xy))
+})
+
 test_that("geo_xy casting works", {
   xy <- geo_xy(0:5, 1:6)
 
@@ -16,11 +39,6 @@ test_that("geo_xy casting works", {
   expect_identical(vec_cast(xy, geo_xy()), xy)
   expect_identical(vec_cast(xy, list()), vec_data(xy))
   expect_identical(vec_cast(vec_data(xy), geo_xy()), xy)
-
-  expect_equal(
-    as_geo_xy(grid::pointsGrob(0:5, 1:6), "native"),
-    xy
-  )
 
   expect_identical(
     vec_cast(tibble(x = 0:5, y = 1:6), geo_xy()),

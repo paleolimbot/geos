@@ -52,7 +52,7 @@ geo_tbl_multipoint <- function(xy, feature = seq_len(vec_size(xy))) {
 new_geo_tbl_point <- function(x = list(xy = geo_xy(), feature = integer(0))) {
   vec_assert(x$xy, geo_xy())
   vec_assert(x$feature, integer())
-  new_rcrd(x, class = "geo_tbl_point")
+  new_rcrd(x, class = c("geo_tbl_point", "geo_tbl"))
 }
 
 #' @rdname new_geo_tbl_point
@@ -60,7 +60,7 @@ new_geo_tbl_point <- function(x = list(xy = geo_xy(), feature = integer(0))) {
 new_geo_tbl_multipoint <- function(x = list(xy = geo_xy(), feature = integer(0))) {
   vec_assert(x$xy, geo_xy())
   vec_assert(x$feature, integer())
-  new_rcrd(x, class = "geo_tbl_multipoint")
+  new_rcrd(x, class = c("geo_tbl_multipoint", "geo_tbl"))
 }
 
 #' @rdname new_geo_tbl_point
@@ -135,4 +135,10 @@ vec_ptype_abbr.geo_tbl_point <- function(x, ...) {
 #' @export
 vec_ptype_abbr.geo_tbl_multipoint <- function(x, ...) {
   "tblmpnt"
+}
+
+#' @rdname new_geo_tbl_point
+#' @export
+as_geo_tbl_point <- function(x, ...) {
+  vec_cast(x, new_geo_tbl_point())
 }

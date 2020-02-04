@@ -12,10 +12,10 @@
 \alias{as_geo_xy.default}
 \alias{as_geo_xy.matrix}
 \alias{as_geo_xy.list}
-\alias{as_geo_xy.points}
 \alias{vec_ptype2.geo_xy}
 \alias{vec_ptype2.geo_xy.default}
 \alias{vec_ptype2.geo_xy.data.frame}
+\alias{vec_ptype2.geo_xy.tbl_df}
 \alias{vec_ptype2.data.frame.geo_xy}
 \alias{vec_cast.geo_xy}
 \alias{vec_cast.geo_xy.default}
@@ -48,13 +48,13 @@ as_geo_xy(x, ...)
 
 \method{as_geo_xy}{list}(x, ...)
 
-\method{as_geo_xy}{points}(x, unit_to, ...)
-
 \method{vec_ptype2}{geo_xy}(x, y, ...)
 
 \method{vec_ptype2.geo_xy}{default}(x, y, ..., x_arg = "x", y_arg = "y")
 
 \method{vec_ptype2.geo_xy}{data.frame}(x, y, ..., x_arg = "x", y_arg = "y")
+
+\method{vec_ptype2.geo_xy}{tbl_df}(x, y, ..., x_arg = "x", y_arg = "y")
 
 \method{vec_ptype2.data.frame}{geo_xy}(x, y, ..., x_arg = "x", y_arg = "y")
 
@@ -76,8 +76,6 @@ as_geo_xy(x, ...)
 \item{x}{A (possibly) \code{\link[=geo_xy]{geo_xy()}}}
 
 \item{...}{Unused}
-
-\item{unit_to}{See \code{\link[grid:convertUnit]{grid::convertUnit()}}}
 
 \item{y, to, x_arg, y_arg}{See \code{\link[vctrs:vec_cast]{vctrs::vec_cast()}} and \code{\link[vctrs:vec_ptype2]{vctrs::vec_ptype2()}}}
 }

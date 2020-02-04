@@ -17,7 +17,6 @@ geo_xy <- function(x = double(), y = double()) {
 #'
 #' @param x A (possibly) [geo_xy()]
 #' @param y,to,x_arg,y_arg See [vctrs::vec_cast()] and [vctrs::vec_ptype2()]
-#' @param unit_to See [grid::convertUnit()]
 #' @param ... Unused
 #'
 #' @export
@@ -60,7 +59,7 @@ format.geo_xy <- function(x, ...) {
 #' @rdname new_geo_xy
 as.data.frame.geo_xy <- function(x, ...) {
   df <- new_data_frame(x)
-  names(df) = c("x", "y")
+  names(df) <- c("x", "y")
   df
 }
 
@@ -107,14 +106,6 @@ as_geo_xy.list <- function(x, ...) {
   }
 }
 
-#' @export
-#' @rdname new_geo_xy
-as_geo_xy.points <- function(x, unit_to, ...) {
-  coord_x <- grid::convertWidth(x$x, unit_to, valueOnly = TRUE)
-  coord_y <- grid::convertHeight(x$y, unit_to, valueOnly = TRUE)
-  geo_xy(coord_x, coord_y)
-}
-
 #' @method vec_ptype2 geo_xy
 #' @export
 #' @export vec_ptype2.geo_xy
@@ -134,6 +125,13 @@ vec_ptype2.geo_xy.default <- function(x, y, ..., x_arg = "x", y_arg = "y") {
 #' @export
 #' @rdname new_geo_xy
 vec_ptype2.geo_xy.data.frame <- function(x, y, ..., x_arg = "x", y_arg = "y") {
+  data.frame(x = double(), y = double())
+}
+
+#' @method vec_ptype2.geo_xy tbl_df
+#' @export
+#' @rdname new_geo_xy
+vec_ptype2.geo_xy.tbl_df <- function(x, y, ..., x_arg = "x", y_arg = "y") {
   tibble(x = double(), y = double())
 }
 
@@ -141,7 +139,7 @@ vec_ptype2.geo_xy.data.frame <- function(x, y, ..., x_arg = "x", y_arg = "y") {
 #' @export
 #' @rdname new_geo_xy
 vec_ptype2.data.frame.geo_xy <- function(x, y, ..., x_arg = "x", y_arg = "y") {
-  tibble(x = double(), y = double())
+  data.frame(x = double(), y = double())
 }
 
 #' @method vec_cast geo_xy
@@ -177,7 +175,7 @@ vec_cast.geo_xy.data.frame <- function(x, to, ...) {
 #' @export
 #' @rdname new_geo_xy
 vec_cast.data.frame.geo_xy <- function(x, to, ...) {
-  as_tibble(x)
+  as.data.frame.geo_xy(x, ...)
 }
 
 #' @method vec_cast.geo_xy list
