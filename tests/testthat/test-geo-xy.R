@@ -13,6 +13,7 @@ test_that("geo_xy casting works", {
   expect_equal(as.data.frame(xy), data.frame(x = 0:5, y = 1:6))
   expect_equal(tibble::as_tibble(xy), tibble(x = 0:5, y = 1:6))
 
+  expect_identical(vec_cast(xy, geo_xy()), xy)
   expect_identical(vec_cast(xy, list()), vec_data(xy))
   expect_identical(vec_cast(vec_data(xy), geo_xy()), xy)
 

@@ -19,6 +19,7 @@
 \alias{vec_ptype2.data.frame.geo_xy}
 \alias{vec_cast.geo_xy}
 \alias{vec_cast.geo_xy.default}
+\alias{vec_cast.geo_xy.geo_xy}
 \alias{vec_cast.geo_xy.data.frame}
 \alias{vec_cast.data.frame.geo_xy}
 \alias{vec_cast.geo_xy.list}
@@ -61,6 +62,8 @@ as_geo_xy(x, ...)
 
 \method{vec_cast.geo_xy}{default}(x, to, ...)
 
+\method{vec_cast.geo_xy}{geo_xy}(x, to, ...)
+
 \method{vec_cast.geo_xy}{data.frame}(x, to, ...)
 
 \method{vec_cast.data.frame}{geo_xy}(x, to, ...)
@@ -80,9 +83,4 @@ as_geo_xy(x, ...)
 }
 \description{
 S3 details for geo_xy
-}
-\examples{
-xy <- geo_xy(0:5, 1:6)
-is_geo_xy(xy)
-
 }

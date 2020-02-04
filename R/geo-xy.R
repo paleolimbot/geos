@@ -22,10 +22,6 @@ geo_xy <- function(x = double(), y = double()) {
 #'
 #' @export
 #'
-#' @examples
-#' xy <- geo_xy(0:5, 1:6)
-#' is_geo_xy(xy)
-#'
 new_geo_xy <- function(x = list(x = double(), y = double())) {
   vec_assert(x$x, double())
   vec_assert(x$y, double())
@@ -161,6 +157,13 @@ vec_cast.geo_xy <- function(x, to, ...) {
 #' @rdname new_geo_xy
 vec_cast.geo_xy.default <- function(x, to, ...) {
   vec_default_cast(x, to)
+}
+
+#' @method vec_cast.geo_xy geo_xy
+#' @export
+#' @rdname new_geo_xy
+vec_cast.geo_xy.geo_xy <- function(x, to, ...) {
+  x
 }
 
 #' @method vec_cast.geo_xy data.frame
