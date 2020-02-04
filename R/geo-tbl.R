@@ -41,6 +41,10 @@ vec_ptype2.geo_tbl.geo_tbl <- function(x, y, ..., x_arg = "x", y_arg = "y") {
     new_geo_tbl_multilinestring()
   } else if(inherits(x, "geo_tbl_multilinestring") && inherits(y, "geo_tbl_linestring")) {
     new_geo_tbl_multilinestring()
+  } else if (inherits(x, "geo_tbl_polygon") && inherits(y, "geo_tbl_multipolygon")) {
+    new_geo_tbl_multipolygon()
+  } else if(inherits(x, "geo_tbl_multipolygon") && inherits(y, "geo_tbl_polygon")) {
+    new_geo_tbl_multipolygon()
   } else {
     NextMethod()
   }
@@ -112,6 +116,10 @@ vec_cast.geo_tbl.geo_tbl <- function(x, to, ...) {
     data <- vec_data(x)
     data$part <- rep_len(1L, vec_size(x))
     new_geo_tbl_multilinestring(data)
+  } else if (inherits(x, "geo_tbl_polygon") && inherits(to, "geo_tbl_multipolygon")) {
+    data <- vec_data(x)
+    data$part <- rep_len(1L, vec_size(x))
+    new_geo_tbl_multipolygon(data)
   } else if(identical(class(x), class(to))) {
     x
   } else {

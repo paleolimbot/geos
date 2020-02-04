@@ -13,11 +13,19 @@
 \alias{print.geo_tbl_multipolygon}
 \alias{vec_ptype_abbr.geo_tbl_polygon}
 \alias{vec_ptype_abbr.geo_tbl_multipolygon}
+\alias{as_geo_tbl_polygon}
+\alias{as_geo_tbl_polygon.default}
+\alias{as_geo_tbl_multipolygon}
+\alias{as_geo_tbl_multipolygon.default}
 \title{S3 Details for (multi)polygon geometries}
 \usage{
-new_geo_tbl_polygon(x = list(xy = geo_xy(), feature = integer(0)))
+new_geo_tbl_polygon(
+  x = list(xy = geo_xy(), feature = integer(0), piece = integer(0))
+)
 
-new_geo_tbl_multipolygon(x = list(xy = geo_xy(), feature = integer(0)))
+new_geo_tbl_multipolygon(
+  x = list(xy = geo_xy(), feature = integer(0), piece = integer(0), part = integer(0))
+)
 
 validate_geo_tbl_polygon(x)
 
@@ -38,6 +46,14 @@ is_geo_tbl_multipolygon(x)
 \method{vec_ptype_abbr}{geo_tbl_polygon}(x, ...)
 
 \method{vec_ptype_abbr}{geo_tbl_multipolygon}(x, ...)
+
+as_geo_tbl_polygon(x, ...)
+
+\method{as_geo_tbl_polygon}{default}(x, ...)
+
+as_geo_tbl_multipolygon(x, ...)
+
+\method{as_geo_tbl_multipolygon}{default}(x, ...)
 }
 \arguments{
 \item{x}{A (possibly) \code{\link[=geo_tbl_polygon]{geo_tbl_polygon()}} or \code{\link[=geo_tbl_multipolygon]{geo_tbl_multipolygon()}}}
