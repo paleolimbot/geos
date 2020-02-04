@@ -72,3 +72,49 @@ test_that("geo_tbl_point() casting works", {
   expect_identical(as_geo_tbl_point(df_point), point)
   expect_identical(as_geo_tbl_point(unclass(df_point)), point)
 })
+
+
+test_that("geo_tbl_multipoint() c() and vec_c() works", {
+  multipoint <- geo_tbl_multipoint(geo_xy(0:1, 1:2))
+
+  multipoint_in_tbl <- tibble(multipoint)
+  multipoint_in_df <- as.data.frame(multipoint_in_tbl)
+  tbl_multipoint <- as_tibble(multipoint)
+  df_multipoint <- as.data.frame(tbl_multipoint)
+
+  expect_is(c(multipoint, multipoint), "geo_tbl_multipoint")
+  expect_length(c(multipoint, multipoint), 4)
+  expect_is(vec_c(multipoint, multipoint), "geo_tbl_multipoint")
+  expect_length(vec_c(multipoint, multipoint), 4)
+  expect_equal(nrow(vec_rbind(multipoint_in_tbl, multipoint_in_tbl)), 4)
+  expect_is(vec_rbind(multipoint_in_tbl, multipoint_in_tbl)$multipoint, "geo_tbl_multipoint")
+
+  # check vec_c() with tibble and data frame types
+  expect_identical(c(multipoint, tbl_multipoint), vec_rbind(tbl_multipoint, tbl_multipoint))
+  expect_identical(vec_c(multipoint, tbl_multipoint), vec_rbind(tbl_multipoint, tbl_multipoint))
+  expect_identical(vec_c(tbl_multipoint, multipoint), vec_rbind(df_multipoint, df_multipoint)) # has to be a df output
+  expect_identical(vec_c(multipoint, df_multipoint), vec_rbind(df_multipoint, df_multipoint))
+  expect_identical(vec_c(df_multipoint, multipoint), vec_rbind(df_multipoint, df_multipoint))
+})
+
+test_that("geo_tbl_multipoint() casting works", {
+  multipoint <- geo_tbl_multipoint(geo_xy(0, 1))
+  tbl_multipoint <- as_tibble(multipoint)
+  df_multipoint <- as.data.frame(multipoint)
+
+  expect_is(tbl_multipoint, "tbl_df")
+  expect_false(inherits(df_multipoint, "tbl_df"))
+
+  expect_identical(vec_cast(tbl_multipoint, new_geo_tbl_multipoint()), multipoint)
+  expect_identical(vec_cast(multipoint, tibble()), as.data.frame(tbl_multipoint))
+  expect_identical(vec_cast(multipoint, list()), vec_data(multipoint))
+  expect_identical(vec_cast(vec_data(tbl_multipoint), new_geo_tbl_multipoint()), multipoint)
+  expect_error(
+    vec_cast(unname(vec_data(tbl_multipoint)), new_geo_tbl_multipoint()),
+    "Can't convert an unnamed list"
+  )
+
+  expect_identical(as_geo_tbl_multipoint(tbl_multipoint), multipoint)
+  expect_identical(as_geo_tbl_multipoint(df_multipoint), multipoint)
+  expect_identical(as_geo_tbl_multipoint(unclass(df_multipoint)), multipoint)
+})
