@@ -6,24 +6,10 @@
 \alias{validate_geo_xy}
 \alias{vec_ptype_abbr.geo_xy}
 \alias{format.geo_xy}
-\alias{as.data.frame.geo_xy}
-\alias{as_tibble.geo_xy}
 \alias{as_geo_xy}
 \alias{as_geo_xy.default}
 \alias{as_geo_xy.matrix}
-\alias{as_geo_xy.list}
-\alias{vec_ptype2.geo_xy}
-\alias{vec_ptype2.geo_xy.default}
-\alias{vec_ptype2.geo_xy.data.frame}
-\alias{vec_ptype2.geo_xy.tbl_df}
-\alias{vec_ptype2.data.frame.geo_xy}
-\alias{vec_cast.geo_xy}
-\alias{vec_cast.geo_xy.default}
-\alias{vec_cast.geo_xy.geo_xy}
-\alias{vec_cast.geo_xy.data.frame}
-\alias{vec_cast.data.frame.geo_xy}
-\alias{vec_cast.geo_xy.list}
-\alias{vec_cast.list.geo_xy}
+\alias{as.matrix.geo_xy}
 \title{S3 details for geo_xy}
 \usage{
 new_geo_xy(x = list(x = double(), y = double()))
@@ -36,48 +22,18 @@ validate_geo_xy(x)
 
 \method{format}{geo_xy}(x, ...)
 
-\method{as.data.frame}{geo_xy}(x, ...)
-
-\method{as_tibble}{geo_xy}(x, ...)
-
 as_geo_xy(x, ...)
 
 \method{as_geo_xy}{default}(x, ...)
 
 \method{as_geo_xy}{matrix}(x, ...)
 
-\method{as_geo_xy}{list}(x, ...)
-
-\method{vec_ptype2}{geo_xy}(x, y, ...)
-
-\method{vec_ptype2.geo_xy}{default}(x, y, ..., x_arg = "x", y_arg = "y")
-
-\method{vec_ptype2.geo_xy}{data.frame}(x, y, ..., x_arg = "x", y_arg = "y")
-
-\method{vec_ptype2.geo_xy}{tbl_df}(x, y, ..., x_arg = "x", y_arg = "y")
-
-\method{vec_ptype2.data.frame}{geo_xy}(x, y, ..., x_arg = "x", y_arg = "y")
-
-\method{vec_cast}{geo_xy}(x, to, ...)
-
-\method{vec_cast.geo_xy}{default}(x, to, ...)
-
-\method{vec_cast.geo_xy}{geo_xy}(x, to, ...)
-
-\method{vec_cast.geo_xy}{data.frame}(x, to, ...)
-
-\method{vec_cast.data.frame}{geo_xy}(x, to, ...)
-
-\method{vec_cast.geo_xy}{list}(x, to, ...)
-
-\method{vec_cast.list}{geo_xy}(x, to, ...)
+\method{as.matrix}{geo_xy}(x, ...)
 }
 \arguments{
 \item{x}{A (possibly) \code{\link[=geo_xy]{geo_xy()}}}
 
 \item{...}{Unused}
-
-\item{y, to, x_arg, y_arg}{See \code{\link[vctrs:vec_cast]{vctrs::vec_cast()}} and \code{\link[vctrs:vec_ptype2]{vctrs::vec_ptype2()}}}
 }
 \description{
 S3 details for geo_xy

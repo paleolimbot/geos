@@ -103,10 +103,12 @@ vec_cast.data.frame.geo_tbl <- function(x, to, ...) {
 #' @export
 vec_cast.geo_tbl.list <- function(x, to, ...) {
   to_class <- class(to)[1]
+  if (!rlang::is_dictionaryish(x)) {
+    abort(sprintf("Can't convert an unnamed list to <%s>", to_class))
+  }
   constructor <- rlang::as_function(to_class, env = getNamespace("geom"))
-  data <- vec_data(x)
-  arg_names <- intersect(names(data), names(formals(constructor)))
-  rlang::exec(constructor, !!!data[arg_names])
+  arg_names <- intersect(names(x), names(formals(constructor)))
+  rlang::exec(constructor, !!!x[arg_names])
 }
 
 #' @method vec_cast.list geo_tbl

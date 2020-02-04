@@ -140,5 +140,11 @@ vec_ptype_abbr.geo_tbl_multipoint <- function(x, ...) {
 #' @rdname new_geo_tbl_point
 #' @export
 as_geo_tbl_point <- function(x, ...) {
+  UseMethod("as_geo_tbl_point")
+}
+
+#' @rdname new_geo_tbl_point
+#' @export
+as_geo_tbl_point.default <- function(x, ...) {
   vec_cast(x, new_geo_tbl_point())
 }

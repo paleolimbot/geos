@@ -14,6 +14,7 @@
 \alias{vec_ptype_abbr.geo_tbl_point}
 \alias{vec_ptype_abbr.geo_tbl_multipoint}
 \alias{as_geo_tbl_point}
+\alias{as_geo_tbl_point.default}
 \title{S3 Details for (multi)point geometries}
 \usage{
 new_geo_tbl_point(x = list(xy = geo_xy(), feature = integer(0)))
@@ -41,6 +42,8 @@ is_geo_tbl_multipoint(x)
 \method{vec_ptype_abbr}{geo_tbl_multipoint}(x, ...)
 
 as_geo_tbl_point(x, ...)
+
+\method{as_geo_tbl_point}{default}(x, ...)
 }
 \arguments{
 \item{x}{A (possibly) \code{\link[=geo_tbl_point]{geo_tbl_point()}} or \code{\link[=geo_tbl_multipoint]{geo_tbl_multipoint()}}}

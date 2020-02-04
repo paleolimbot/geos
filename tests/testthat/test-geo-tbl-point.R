@@ -63,6 +63,10 @@ test_that("geo_tbl_point() casting works", {
   expect_identical(vec_cast(point, tibble()), as.data.frame(tbl_point))
   expect_identical(vec_cast(point, list()), vec_data(point))
   expect_identical(vec_cast(vec_data(tbl_point), new_geo_tbl_point()), point)
+  expect_error(
+    vec_cast(unname(vec_data(tbl_point)), new_geo_tbl_point()),
+    "Can't convert an unnamed list"
+  )
 
   expect_identical(as_geo_tbl_point(tbl_point), point)
   expect_identical(as_geo_tbl_point(df_point), point)

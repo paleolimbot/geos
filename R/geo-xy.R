@@ -16,7 +16,6 @@ geo_xy <- function(x = double(), y = double()) {
 #' S3 details for geo_xy
 #'
 #' @param x A (possibly) [geo_xy()]
-#' @param y,to,x_arg,y_arg See [vctrs::vec_cast()] and [vctrs::vec_ptype2()]
 #' @param ... Unused
 #'
 #' @export
@@ -24,7 +23,7 @@ geo_xy <- function(x = double(), y = double()) {
 new_geo_xy <- function(x = list(x = double(), y = double())) {
   vec_assert(x$x, double())
   vec_assert(x$y, double())
-  new_rcrd(x, class = c("geo_xy", "geo"))
+  new_rcrd(x, class = c("geo_xy", "geo_tbl"))
 }
 
 #' @export
@@ -57,20 +56,6 @@ format.geo_xy <- function(x, ...) {
 
 #' @export
 #' @rdname new_geo_xy
-as.data.frame.geo_xy <- function(x, ...) {
-  df <- new_data_frame(x)
-  names(df) <- c("x", "y")
-  df
-}
-
-#' @export
-#' @rdname new_geo_xy
-as_tibble.geo_xy <- function(x, ...) {
-  as_tibble(vec_data(x))
-}
-
-#' @export
-#' @rdname new_geo_xy
 as_geo_xy <- function(x, ...) {
   UseMethod("as_geo_xy")
 }
@@ -98,96 +83,6 @@ as_geo_xy.matrix <- function(x, ...) {
 
 #' @export
 #' @rdname new_geo_xy
-as_geo_xy.list <- function(x, ...) {
-  if (rlang::is_dictionaryish(x)) {
-    geo_xy(x$x, x$y)
-  } else {
-    abort("Can't cast an unnamed list to <geo_xy>")
-  }
-}
-
-#' @method vec_ptype2 geo_xy
-#' @export
-#' @export vec_ptype2.geo_xy
-#' @rdname new_geo_xy
-vec_ptype2.geo_xy <- function(x, y, ...) {
-  UseMethod("vec_ptype2.geo_xy", y)
-}
-
-#' @method vec_ptype2.geo_xy default
-#' @export
-#' @rdname new_geo_xy
-vec_ptype2.geo_xy.default <- function(x, y, ..., x_arg = "x", y_arg = "y") {
-  vec_default_ptype2(x, y, x_arg = x_arg, y_arg = y_arg)
-}
-
-#' @method vec_ptype2.geo_xy data.frame
-#' @export
-#' @rdname new_geo_xy
-vec_ptype2.geo_xy.data.frame <- function(x, y, ..., x_arg = "x", y_arg = "y") {
-  data.frame(x = double(), y = double())
-}
-
-#' @method vec_ptype2.geo_xy tbl_df
-#' @export
-#' @rdname new_geo_xy
-vec_ptype2.geo_xy.tbl_df <- function(x, y, ..., x_arg = "x", y_arg = "y") {
-  tibble(x = double(), y = double())
-}
-
-#' @method vec_ptype2.data.frame geo_xy
-#' @export
-#' @rdname new_geo_xy
-vec_ptype2.data.frame.geo_xy <- function(x, y, ..., x_arg = "x", y_arg = "y") {
-  data.frame(x = double(), y = double())
-}
-
-#' @method vec_cast geo_xy
-#' @export
-#' @export vec_cast.geo_xy
-#' @rdname new_geo_xy
-vec_cast.geo_xy <- function(x, to, ...) {
-  UseMethod("vec_cast.geo_xy")
-}
-
-#' @method vec_cast.geo_xy default
-#' @export
-#' @rdname new_geo_xy
-vec_cast.geo_xy.default <- function(x, to, ...) {
-  vec_default_cast(x, to)
-}
-
-#' @method vec_cast.geo_xy geo_xy
-#' @export
-#' @rdname new_geo_xy
-vec_cast.geo_xy.geo_xy <- function(x, to, ...) {
-  x
-}
-
-#' @method vec_cast.geo_xy data.frame
-#' @export
-#' @rdname new_geo_xy
-vec_cast.geo_xy.data.frame <- function(x, to, ...) {
-  geo_xy(x$x, x$y)
-}
-
-#' @method vec_cast.data.frame geo_xy
-#' @export
-#' @rdname new_geo_xy
-vec_cast.data.frame.geo_xy <- function(x, to, ...) {
-  as.data.frame.geo_xy(x, ...)
-}
-
-#' @method vec_cast.geo_xy list
-#' @export
-#' @rdname new_geo_xy
-vec_cast.geo_xy.list <- function(x, to, ...) {
-  as_geo_xy.list(x)
-}
-
-#' @method vec_cast.list geo_xy
-#' @export
-#' @rdname new_geo_xy
-vec_cast.list.geo_xy <- function(x, to, ...) {
-  vec_data(x)
+as.matrix.geo_xy <- function(x, ...) {
+  as.matrix(as.data.frame(x))
 }
