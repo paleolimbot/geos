@@ -27,6 +27,21 @@ vec_ptype2.geo_tbl.default <- function(x, y, ..., x_arg = "x", y_arg = "y") {
   vec_default_ptype2(x, y, x_arg = x_arg, y_arg = y_arg)
 }
 
+#' @method vec_ptype2.geo_tbl geo_tbl
+#' @export
+vec_ptype2.geo_tbl.geo_tbl <- function(x, y, ..., x_arg = "x", y_arg = "y") {
+  # always pick 'multi' for common types
+  # slightly easier to do it here rather than using a million double dispatch
+  # methods
+  if (inherits(x, "geo_tbl_point") && inherits(y, "geo_tbl_multipoint")) {
+    new_geo_tbl_multipoint()
+  } else if(inherits(x, "geo_tbl_multipoint") && inherits(y, "geo_tbl_point")) {
+    new_geo_tbl_multipoint()
+  } else {
+    NextMethod()
+  }
+}
+
 #' @method vec_ptype2.geo_tbl data.frame
 #' @export
 vec_ptype2.geo_tbl.data.frame <- function(x, y, ..., x_arg = "x", y_arg = "y") {

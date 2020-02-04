@@ -92,7 +92,7 @@ test_that("geo_tbl_multipoint() c() and vec_c() works", {
   # check vec_c() with tibble and data frame types
   expect_identical(c(multipoint, tbl_multipoint), vec_rbind(tbl_multipoint, tbl_multipoint))
   expect_identical(vec_c(multipoint, tbl_multipoint), vec_rbind(tbl_multipoint, tbl_multipoint))
-  expect_identical(vec_c(tbl_multipoint, multipoint), vec_rbind(df_multipoint, df_multipoint)) # has to be a df output
+  expect_identical(vec_c(tbl_multipoint, multipoint), vec_rbind(df_multipoint, df_multipoint))
   expect_identical(vec_c(multipoint, df_multipoint), vec_rbind(df_multipoint, df_multipoint))
   expect_identical(vec_c(df_multipoint, multipoint), vec_rbind(df_multipoint, df_multipoint))
 })
@@ -117,4 +117,14 @@ test_that("geo_tbl_multipoint() casting works", {
   expect_identical(as_geo_tbl_multipoint(tbl_multipoint), multipoint)
   expect_identical(as_geo_tbl_multipoint(df_multipoint), multipoint)
   expect_identical(as_geo_tbl_multipoint(unclass(df_multipoint)), multipoint)
+})
+
+test_that("point is can be coerced to multipoint", {
+  multipoint <- geo_tbl_multipoint(geo_xy(0, 1))
+  point <- geo_tbl_point(geo_xy(2, 3))
+
+  expect_is(c(multipoint, point), "geo_tbl_multipoint")
+  expect_is(c(point, multipoint), "geo_tbl_multipoint")
+  expect_is(vec_c(multipoint, point), "geo_tbl_multipoint")
+  expect_is(vec_c(point, multipoint), "geo_tbl_multipoint")
 })
