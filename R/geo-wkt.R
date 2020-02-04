@@ -20,6 +20,7 @@ geo_wkt <- function(x = character()) {
 #'
 #' @inheritParams geo_wkt
 #' @param ... Unused
+#' @param to A prototype to cast to. See [vctrs::vec_cast()]
 #'
 #' @export
 #'
@@ -50,4 +51,65 @@ validate_geo_wkt <- function(x) {
 #' @export
 vec_ptype_abbr.geo_wkt <- function(x, ...) {
   "wkt"
+}
+
+#' @rdname new_geo_wkt
+#' @export
+as_geo_wkt <- function(x, ...) {
+  UseMethod("as_geo_wkt")
+}
+
+#' @rdname new_geo_wkt
+#' @export
+as_geo_wkt.default <- function(x, ...) {
+  vec_cast(x, geo_wkt())
+}
+
+#' @rdname new_geo_wkt
+#' @export
+as_geo_wkt.character <- function(x, ...) {
+  geo_wkt(x)
+}
+
+#' @method vec_cast geo_wkt
+#' @export
+#' @export vec_cast.geo_wkt
+#' @rdname new_geo_wkt
+vec_cast.geo_wkt <- function(x, to, ...) {
+  UseMethod("vec_cast.geo_wkt")
+}
+
+#' @method vec_cast.geo_wkt default
+#' @export
+#' @rdname new_geo_wkt
+vec_cast.geo_wkt.default <- function(x, to, ...) {
+  vec_default_cast(x, to)
+}
+
+#' @method vec_cast.geo_wkt geo_wkt
+#' @export
+#' @rdname new_geo_wkt
+vec_cast.geo_wkt.geo_wkt <- function(x, to, ...) {
+  x
+}
+
+#' @method vec_cast.geo_wkt character
+#' @export
+#' @rdname new_geo_wkt
+vec_cast.geo_wkt.character <- function(x, to, ...) {
+  as_geo_wkt.character(x)
+}
+
+#' @method vec_cast.character geo_wkt
+#' @export
+#' @rdname new_geo_wkt
+vec_cast.character.geo_wkt <- function(x, to, ...) {
+  vec_data(x)
+}
+
+#' @method vec_cast.geo_wkt geo_wkb
+#' @export
+#' @rdname new_geo_wkt
+vec_cast.geo_wkt.geo_wkb <- function(x, to, ...) {
+  new_geo_wkt(geos_wkb_to_wkt(x))
 }

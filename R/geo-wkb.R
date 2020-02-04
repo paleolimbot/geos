@@ -29,6 +29,7 @@ geo_wkb <- function(x = list()) {
 #'
 #' @inheritParams geo_wkb
 #' @param ... Unused
+#' @param to A prototype to cast to. See [vctrs::vec_cast()]
 #'
 #' @export
 #'
@@ -86,4 +87,52 @@ print.geo_wkb <- function(x, ...) {
   )
 
   invisible(x)
+}
+
+#' @export
+#' @rdname new_geo_wkb
+as_geo_wkb <- function(x, ...) {
+  UseMethod("as_geo_wkb")
+}
+
+#' @export
+#' @rdname new_geo_wkb
+as_geo_wkb.default <- function(x, ...) {
+  vec_cast(x, geo_wkb())
+}
+
+#' @method vec_cast geo_wkb
+#' @export
+#' @export vec_cast.geo_wkb
+#' @rdname new_geo_wkb
+vec_cast.geo_wkb <- function(x, to, ...) {
+  UseMethod("vec_cast.geo_wkb")
+}
+
+#' @method vec_cast.geo_wkb default
+#' @export
+#' @rdname new_geo_wkb
+vec_cast.geo_wkb.default <- function(x, to, ...) {
+  vec_default_cast(x, to)
+}
+
+#' @method vec_cast.geo_wkb geo_wkb
+#' @export
+#' @rdname new_geo_wkb
+vec_cast.geo_wkb.geo_wkb <- function(x, to, ...) {
+  x
+}
+
+#' @method vec_cast.geo_wkb list
+#' @export
+#' @rdname new_geo_wkb
+vec_cast.geo_wkb.list <- function(x, to, ...) {
+  geo_wkb(x)
+}
+
+#' @method vec_cast.geo_wkb geo_wkt
+#' @export
+#' @rdname new_geo_wkb
+vec_cast.geo_wkb.geo_wkt <- function(x, to, ...) {
+  new_geo_wkb(vec_cast(geos_wkt_to_wkb(x), list_of(raw())))
 }

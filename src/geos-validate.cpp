@@ -7,10 +7,11 @@ using namespace Rcpp;
 LogicalVector geos_wkt_is_parseable(CharacterVector wkt) {
   LogicalVector output(wkt.size());
   GEOSContextHandle_t context = geos_init();
+  GEOSWKTReader *wkt_reader = GEOSWKTReader_create_r(context);
 
   for (int i=0; i < wkt.size(); i++) {
     try {
-      GEOSGeomFromWKT_r(context, wkt[i]);
+      GEOSWKTReader_read_r(context, wkt_reader, wkt[i]);
       output[i] = true;
     } catch(std::exception e) {
       // don't know how to get the error message here...
@@ -20,6 +21,7 @@ LogicalVector geos_wkt_is_parseable(CharacterVector wkt) {
     }
   }
 
+  GEOSWKTReader_destroy_r(context, wkt_reader);
   geos_finish(context);
   return output;
 }

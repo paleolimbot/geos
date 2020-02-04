@@ -7,6 +7,13 @@
 \alias{vec_ptype_abbr.geo_wkb}
 \alias{format.geo_wkb}
 \alias{print.geo_wkb}
+\alias{as_geo_wkb}
+\alias{as_geo_wkb.default}
+\alias{vec_cast.geo_wkb}
+\alias{vec_cast.geo_wkb.default}
+\alias{vec_cast.geo_wkb.geo_wkb}
+\alias{vec_cast.geo_wkb.list}
+\alias{vec_cast.geo_wkb.geo_wkt}
 \title{S3 details for geo_wkb}
 \usage{
 new_geo_wkb(x = vctrs::list_of(.ptype = raw()))
@@ -20,12 +27,28 @@ validate_geo_wkb(x)
 \method{format}{geo_wkb}(x, ...)
 
 \method{print}{geo_wkb}(x, ...)
+
+as_geo_wkb(x, ...)
+
+\method{as_geo_wkb}{default}(x, ...)
+
+\method{vec_cast}{geo_wkb}(x, to, ...)
+
+\method{vec_cast.geo_wkb}{default}(x, to, ...)
+
+\method{vec_cast.geo_wkb}{geo_wkb}(x, to, ...)
+
+\method{vec_cast.geo_wkb}{list}(x, to, ...)
+
+\method{vec_cast.geo_wkb}{geo_wkt}(x, to, ...)
 }
 \arguments{
 \item{x}{A \code{\link[=list]{list()}} of \code{\link[=raw]{raw()}} objects, each of which
 represent well-known binary}
 
 \item{...}{Unused}
+
+\item{to}{A prototype to cast to. See \code{\link[vctrs:vec_cast]{vctrs::vec_cast()}}}
 }
 \description{
 S3 details for geo_wkb
