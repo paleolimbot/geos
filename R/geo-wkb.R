@@ -1,6 +1,11 @@
 
 #' Create and validate well-known binary
 #'
+#' Like other geo types, [geo_wkb()] doesn't convert its input
+#' but does validate it using [validate_geo_wkb()].
+#' To skip validation, use [new_geo_wkb()] with
+#' the result of `vec_cast(list(...), .ptype = raw())`.
+#'
 #' @param x A [list()] of [raw()] objects, each of which
 #'   represent well-known binary
 #'

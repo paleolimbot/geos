@@ -1,6 +1,10 @@
 
 #' Create and validate well-known text
 #'
+#' Like other geo types, [geo_wkt()] doesn't convert its input
+#' but does validate it using [validate_geo_wkt()].
+#' To skip validation, use [new_geo_wkt()].
+#'
 #' @param x A character vector containing well-known text
 #'
 #' @return A [new_geo_wkt()]
