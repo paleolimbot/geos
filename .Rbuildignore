@@ -4,3 +4,4 @@
 ^windows$
 ^inst$
 ^\.github$
+^README\.Rmd$
