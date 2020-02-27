@@ -1,3 +1,5 @@
 ^geom\.Rproj$
 ^\.Rproj\.user$
 ^src/Makevars$
+^windows$
+^inst$
