@@ -8,15 +8,16 @@ using namespace Rcpp;
 
 std::vector<GeomPtr> geos_from_wkt(GEOSContextHandle_t context, CharacterVector wkt) {
   std::vector<GeomPtr> output(wkt.size());
-  GEOSWKTReader *wkt_reader = GEOSWKTReader_create_r(context);
+  WKTGeometryProvider* provider = new WKTGeometryProvider(wkt);
+  provider->init(context);
 
   for (int i=0; i < wkt.size(); i++) {
     GEOSGeometry* geometry;
-    geometry = GEOSWKTReader_read_r(context, wkt_reader, wkt[i]);
+    geometry = provider->getNext();
     output[i] = geos_ptr(geometry, context);
   }
 
-  GEOSWKTReader_destroy_r(context, wkt_reader);
+  provider->finish();
   return output;
 }
 
