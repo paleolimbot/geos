@@ -21,6 +21,7 @@ Imports:
     tibble,
     vctrs,
     Rcpp
+SystemRequirements: GEOS (>= 3.4.0)
 URL: https://github.com/paleolimbot/geom
 BugReports: https://github.com/paleolimbot/geom/issues
 LinkingTo: 
