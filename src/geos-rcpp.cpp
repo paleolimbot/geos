@@ -71,3 +71,50 @@ GeomPtr geos_ptr(GEOSGeometry* g, GEOSContextHandle_t context) {
   auto deleter = std::bind(GEOSGeom_destroy_r, context, std::placeholders::_1);
   return GeomPtr(g, deleter);
 }
+
+
+// ---------- geometry provider implementations -------------
+
+
+// --- base
+
+void GeometryProvider::init(GEOSContextHandle_t context) {
+  this->context = context;
+}
+
+
+void GeometryProvider::finish() {
+
+}
+
+// --- WKT
+
+WKTGeometryProvider::WKTGeometryProvider(CharacterVector data) {
+  this->data = data;
+  this->counter = 0;
+}
+
+void WKTGeometryProvider::init(GEOSContextHandle_t context) {
+  this->context = context;
+  this->wkt_reader = GEOSWKTReader_create_r(context);
+}
+
+GEOSGeometry* WKTGeometryProvider::getNext() {
+  GEOSGeometry* geometry = GEOSWKTReader_read_r(
+    this->context,
+    this->wkt_reader,
+    this->data[this->counter]
+  );
+  this->counter = this->counter + 1;
+  return geometry;
+}
+
+void WKTGeometryProvider::finish() {
+  GEOSWKTReader_destroy_r(this->context, this->wkt_reader);
+}
+
+size_t WKTGeometryProvider::size() {
+  return (this->data).size();
+}
+
+

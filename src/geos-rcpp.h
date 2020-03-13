@@ -43,24 +43,23 @@ void geos_finish(GEOSContextHandle_t context);
 typedef std::unique_ptr<GEOSGeometry, std::function<void(GEOSGeometry*)>> GeomPtr;
 GeomPtr geos_ptr(GEOSGeometry* g, GEOSContextHandle_t context);
 
+// ---------- geometry provider definitions -------------
+
+// --- base
+
 class GeometryProvider {
 public:
   GEOSContextHandle_t context;
 
-  void init(GEOSContextHandle_t context) {
-    this->context = context;
-  }
-
+  void init(GEOSContextHandle_t context);
   virtual GEOSGeometry* getNext() = 0;
-
-  void finish() {
-
-  }
-
+  void finish();
   virtual size_t size() = 0;
 };
 
 using namespace Rcpp;
+
+// --- WKT
 
 class WKTGeometryProvider: public GeometryProvider {
 public:
@@ -68,34 +67,11 @@ public:
   GEOSWKTReader *wkt_reader;
   size_t counter;
 
-  WKTGeometryProvider(CharacterVector data) {
-    this->data = data;
-    this->counter = 0;
-  }
-
-  void init(GEOSContextHandle_t context) {
-    this->context = context;
-    this->wkt_reader = GEOSWKTReader_create_r(context);
-  }
-
-  GEOSGeometry* getNext() {
-    GEOSGeometry* geometry = GEOSWKTReader_read_r(
-      this->context,
-      this->wkt_reader,
-      this->data[this->counter]
-    );
-    this->counter = this->counter + 1;
-    return geometry;
-  }
-
-  void finish() {
-    GEOSWKTReader_destroy_r(this->context, this->wkt_reader);
-  }
-
-  size_t size() {
-    return (this->data).size();
-  }
-
+  WKTGeometryProvider(CharacterVector data);
+  void init(GEOSContextHandle_t context);
+  virtual GEOSGeometry* getNext();
+  void finish();
+  virtual size_t size();
 };
 
 #endif
