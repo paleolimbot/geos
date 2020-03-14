@@ -212,6 +212,18 @@ size_t WKBGeometryExporter::size() {
   return (this->data).size();
 }
 
+// ---------- geometry provider resolvers -------------
+
+GeometryProvider* resolve_provider(SEXP data) {
+  if (Rf_inherits(data, "geo_wkt")) {
+    return new WKTGeometryProvider((CharacterVector) data);
+  } else if(Rf_inherits(data, "geo_wkb")) {
+    return new WKBGeometryProvider((List) data);
+  }
+
+  stop("Can't resolve GeometryProvider");
+}
+
 // ------------- unary operators ----------------
 
 UnaryGeometryOperator::UnaryGeometryOperator(GeometryProvider* provider,

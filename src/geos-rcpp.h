@@ -125,6 +125,9 @@ public:
   size_t size();
 };
 
+// ---------- geometry provider resolvers -------------
+
+GeometryProvider* resolve_provider(SEXP data);
 
 // ------------- unary operators ----------------
 

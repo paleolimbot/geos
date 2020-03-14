@@ -115,5 +115,5 @@ vec_cast.character.geo_wkt <- function(x, to, ...) {
 #' @export
 #' @rdname new_geo_wkt
 vec_cast.geo_wkt.geo_wkb <- function(x, to, ...) {
-  new_geo_wkt(geos_wkb_to_wkt(x))
+  new_geo_wkt(geomcpp_convert_wkt(x))
 }
