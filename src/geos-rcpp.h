@@ -57,9 +57,9 @@ class GeometryExporter {
 public:
   GEOSContextHandle_t context;
 
-  virtual void init(GEOSContextHandle_t context);
+  virtual void init(GEOSContextHandle_t context, size_t size);
   virtual void putNext(GEOSGeometry* geometry) = 0;
-  virtual void finish();
+  virtual SEXP finish();
 };
 
 using namespace Rcpp;
@@ -85,10 +85,10 @@ public:
   GEOSWKTWriter *wkt_writer;
   size_t counter;
 
-  WKTGeometryExporter(CharacterVector data);
-  void init(GEOSContextHandle_t context);
+  WKTGeometryExporter();
+  void init(GEOSContextHandle_t context, size_t size);
   void putNext(GEOSGeometry* geometry);
-  void finish();
+  SEXP finish();
 };
 
 // --- WKB
@@ -112,10 +112,10 @@ public:
   GEOSWKBWriter *wkb_writer;
   size_t counter;
 
-  WKBGeometryExporter(List data);
-  void init(GEOSContextHandle_t context);
+  WKBGeometryExporter();
+  void init(GEOSContextHandle_t context, size_t size);
   void putNext(GEOSGeometry* geometry);
-  void finish();
+  SEXP finish();
 };
 
 // ---------- geometry provider resolvers -------------
@@ -133,9 +133,9 @@ public:
   UnaryGeometryOperator(GeometryProvider* provider, GeometryExporter* exporter);
 
   virtual void init();
-  virtual void operate();
+  virtual SEXP operate();
   virtual GEOSGeometry* operateNext(GEOSGeometry* geometry) = 0;
-  virtual void finish();
+  virtual SEXP finish();
 
   virtual size_t size();
 };

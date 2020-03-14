@@ -81,12 +81,12 @@ void GeometryProvider::finish() {
 
 // --- base exporter
 
-void GeometryExporter::init(GEOSContextHandle_t context) {
+void GeometryExporter::init(GEOSContextHandle_t context, size_t size) {
   this->context = context;
 }
 
-void GeometryExporter::finish() {
-
+SEXP GeometryExporter::finish() {
+  return R_NilValue;
 }
 
 // --- WKT provider
@@ -121,14 +121,15 @@ size_t WKTGeometryProvider::size() {
 
 // --- WKT exporter
 
-WKTGeometryExporter::WKTGeometryExporter(CharacterVector data) {
-  this->data = data;
+WKTGeometryExporter::WKTGeometryExporter() {
   this->counter = 0;
 }
 
-void WKTGeometryExporter::init(GEOSContextHandle_t context) {
+void WKTGeometryExporter::init(GEOSContextHandle_t context, size_t size) {
   this->context = context;
   this->wkt_writer = GEOSWKTWriter_create_r(context);
+  CharacterVector data(size);
+  this->data = data;
 }
 
 void WKTGeometryExporter::putNext(GEOSGeometry* geometry) {
@@ -138,8 +139,9 @@ void WKTGeometryExporter::putNext(GEOSGeometry* geometry) {
   this->counter = this->counter + 1;
 }
 
-void WKTGeometryExporter::finish() {
+SEXP WKTGeometryExporter::finish() {
   GEOSWKTWriter_destroy_r(this->context, this->wkt_writer);
+  return this->data;
 }
 
 // --- WKB provider
@@ -171,14 +173,15 @@ size_t WKBGeometryProvider::size() {
 
 // --- WKB exporter
 
-WKBGeometryExporter::WKBGeometryExporter(List data) {
-  this->data = data;
+WKBGeometryExporter::WKBGeometryExporter() {
   this->counter = 0;
 }
 
-void WKBGeometryExporter::init(GEOSContextHandle_t context) {
+void WKBGeometryExporter::init(GEOSContextHandle_t context, size_t size) {
   this->context = context;
   this->wkb_writer = GEOSWKBWriter_create_r(context);
+  List data(size);
+  this->data = data;
 }
 
 void WKBGeometryExporter::putNext(GEOSGeometry* geometry) {
@@ -192,8 +195,9 @@ void WKBGeometryExporter::putNext(GEOSGeometry* geometry) {
   this->counter = this->counter + 1;
 }
 
-void WKBGeometryExporter::finish() {
+SEXP WKBGeometryExporter::finish() {
   GEOSWKBWriter_destroy_r(this->context, this->wkb_writer);
+  return data;
 }
 
 // ---------- geometry provider resolvers -------------
@@ -219,10 +223,10 @@ UnaryGeometryOperator::UnaryGeometryOperator(GeometryProvider* provider,
 void UnaryGeometryOperator::init() {
   this->context = geos_init();
   this->provider->init(this->context);
-  this->exporter->init(this->context);
+  this->exporter->init(this->context, this->provider->size());
 }
 
-void UnaryGeometryOperator::operate() {
+SEXP UnaryGeometryOperator::operate() {
   this->init();
 
   // TODO: there is probably a memory leak here, but
@@ -242,13 +246,14 @@ void UnaryGeometryOperator::operate() {
     throw e;
   }
 
-  this->finish();
+  return this->finish();
 }
 
-void UnaryGeometryOperator::finish() {
+SEXP UnaryGeometryOperator::finish() {
   this->provider->finish();
-  this->exporter->finish();
+  SEXP value = this->exporter->finish();
   geos_finish(this->context);
+  return value;
 }
 
 size_t UnaryGeometryOperator::size() {
