@@ -64,7 +64,6 @@ public:
   virtual void init(GEOSContextHandle_t context);
   virtual void putNext(GEOSGeometry* geometry) = 0;
   virtual void finish();
-  virtual size_t size() = 0;
 };
 
 using namespace Rcpp;
@@ -94,7 +93,6 @@ public:
   void init(GEOSContextHandle_t context);
   void putNext(GEOSGeometry* geometry);
   void finish();
-  size_t size();
 };
 
 // --- WKB
@@ -122,7 +120,6 @@ public:
   void init(GEOSContextHandle_t context);
   void putNext(GEOSGeometry* geometry);
   void finish();
-  size_t size();
 };
 
 // ---------- geometry provider resolvers -------------

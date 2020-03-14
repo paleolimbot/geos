@@ -150,10 +150,6 @@ void WKTGeometryExporter::finish() {
   GEOSWKTWriter_destroy_r(this->context, this->wkt_writer);
 }
 
-size_t WKTGeometryExporter::size() {
-  return (this->data).size();
-}
-
 // --- WKB provider
 
 WKBGeometryProvider::WKBGeometryProvider(List data) {
@@ -208,10 +204,6 @@ void WKBGeometryExporter::finish() {
   GEOSWKBWriter_destroy_r(this->context, this->wkb_writer);
 }
 
-size_t WKBGeometryExporter::size() {
-  return (this->data).size();
-}
-
 // ---------- geometry provider resolvers -------------
 
 GeometryProvider* resolve_provider(SEXP data) {
@@ -256,10 +248,6 @@ void UnaryGeometryOperator::operate() {
   }
 
   this->finish();
-}
-
-GEOSGeometry* UnaryGeometryOperator::operateNext(GEOSGeometry* geometry) {
-  return geometry;
 }
 
 void UnaryGeometryOperator::finish() {
