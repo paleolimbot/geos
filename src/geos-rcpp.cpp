@@ -247,6 +247,7 @@ SEXP UnaryGeometryOperator::operate() {
 
   try {
     for (int i=0; i < this->size(); i++) {
+      checkUserInterrupt();
       geometry = this->provider->getNext();
       result = this->operateNext(geometry);
       this->exporter->putNext(result);
