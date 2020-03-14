@@ -114,4 +114,16 @@ public:
   size_t size();
 };
 
+class WKBGeometryExporter: public GeometryExporter<List> {
+public:
+  GEOSWKBWriter *wkb_writer;
+  size_t counter;
+
+  WKBGeometryExporter(List data);
+  void init(GEOSContextHandle_t context);
+  void putNext(GEOSGeometry* geometry);
+  void finish();
+  size_t size();
+};
+
 #endif

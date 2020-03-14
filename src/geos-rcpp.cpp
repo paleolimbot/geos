@@ -161,7 +161,7 @@ size_t WKTGeometryExporter::size() {
   return (this->data).size();
 }
 
-// --- WKB
+// --- WKB provider
 
 WKBGeometryProvider::WKBGeometryProvider(List data) {
   this->data = data;
@@ -185,6 +185,37 @@ void WKBGeometryProvider::finish() {
 }
 
 size_t WKBGeometryProvider::size() {
+  return (this->data).size();
+}
+
+// --- WKB exporter
+
+WKBGeometryExporter::WKBGeometryExporter(List data) {
+  this->data = data;
+  this->counter = 0;
+}
+
+void WKBGeometryExporter::init(GEOSContextHandle_t context) {
+  this->context = context;
+  this->wkb_writer = GEOSWKBWriter_create_r(context);
+}
+
+void WKBGeometryExporter::putNext(GEOSGeometry* geometry) {
+  size_t size;
+  unsigned char *buf = GEOSWKBWriter_write_r(this->context, this->wkb_writer, geometry, &size);
+  RawVector raw(size);
+  memcpy(&(raw[0]), buf, size);
+  GEOSFree_r(this->context, buf);
+
+  this->data[this->counter] = raw;
+  this->counter = this->counter + 1;
+}
+
+void WKBGeometryExporter::finish() {
+  GEOSWKBWriter_destroy_r(this->context, this->wkb_writer);
+}
+
+size_t WKBGeometryExporter::size() {
   return (this->data).size();
 }
 

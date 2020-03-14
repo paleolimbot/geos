@@ -51,19 +51,14 @@ std::vector<GeomPtr> geos_from_wkb(GEOSContextHandle_t context, List wkb) {
 
 List geos_to_wkb(GEOSContextHandle_t context, std::vector<GeomPtr> & vec_pointer) {
   List output(vec_pointer.size());
-  GEOSWKBWriter *wkb_writer = GEOSWKBWriter_create_r(context);
+  WKBGeometryExporter* exporter = new WKBGeometryExporter(output);
+  exporter->init(context);
 
   for (int i=0; i < vec_pointer.size(); i++) {
-    std::string wkt_single;
-    size_t size;
-    unsigned char *buf = GEOSWKBWriter_write_r(context, wkb_writer, vec_pointer[i].get(), &size);
-    RawVector raw(size);
-    memcpy(&(raw[0]), buf, size);
-    GEOSFree_r(context, buf);
-    output[i] = raw;
+    exporter->putNext(vec_pointer[i].get());
   }
 
-  GEOSWKBWriter_destroy_r(context, wkb_writer);
+  exporter->finish();
   return output;
 }
 
