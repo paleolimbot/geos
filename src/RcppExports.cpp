@@ -5,25 +5,15 @@
 
 using namespace Rcpp;
 
-// geomcpp_convert_wkt
-CharacterVector geomcpp_convert_wkt(SEXP data);
-RcppExport SEXP _geom_geomcpp_convert_wkt(SEXP dataSEXP) {
+// geomcpp_convert
+SEXP geomcpp_convert(SEXP data, SEXP ptype);
+RcppExport SEXP _geom_geomcpp_convert(SEXP dataSEXP, SEXP ptypeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type data(dataSEXP);
-    rcpp_result_gen = Rcpp::wrap(geomcpp_convert_wkt(data));
-    return rcpp_result_gen;
-END_RCPP
-}
-// geomcpp_convert_wkb
-List geomcpp_convert_wkb(SEXP data);
-RcppExport SEXP _geom_geomcpp_convert_wkb(SEXP dataSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type data(dataSEXP);
-    rcpp_result_gen = Rcpp::wrap(geomcpp_convert_wkb(data));
+    Rcpp::traits::input_parameter< SEXP >::type ptype(ptypeSEXP);
+    rcpp_result_gen = Rcpp::wrap(geomcpp_convert(data, ptype));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -59,8 +49,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_geom_geomcpp_convert_wkt", (DL_FUNC) &_geom_geomcpp_convert_wkt, 1},
-    {"_geom_geomcpp_convert_wkb", (DL_FUNC) &_geom_geomcpp_convert_wkb, 1},
+    {"_geom_geomcpp_convert", (DL_FUNC) &_geom_geomcpp_convert, 2},
     {"_geom_geomcpp_validate_provider", (DL_FUNC) &_geom_geomcpp_validate_provider, 1},
     {"_geom_geos_version_impl", (DL_FUNC) &_geom_geos_version_impl, 0},
     {"_geom_geos_test_throw_error", (DL_FUNC) &_geom_geos_test_throw_error, 0},

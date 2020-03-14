@@ -118,9 +118,10 @@ public:
   SEXP finish();
 };
 
-// ---------- geometry provider resolvers -------------
+// ---------- geometry provider/exporter resolvers -------------
 
 GeometryProvider* resolve_provider(SEXP data);
+GeometryExporter* resolve_exporter(SEXP ptype);
 
 // ------------- unary operators ----------------
 

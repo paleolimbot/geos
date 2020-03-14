@@ -1,7 +1,7 @@
 
 test_that("wkt conversion works", {
   wkt <- geo_wkt(c("POINT (30 10)", "POINT (20 20)"))
-  wkt_roundtrip <- geomcpp_convert_wkt(wkt)
+  wkt_roundtrip <- geomcpp_convert(wkt, new_geo_wkt())
   expect_match(wkt_roundtrip, "^POINT")
   expect_match(wkt_roundtrip[1], c("\\(30\\."))
   expect_match(wkt_roundtrip[1], c("10\\.0+\\)"))
@@ -18,10 +18,10 @@ test_that("wkb conversion works", {
   )
 
   wkb <- geo_wkb(list(wkb_raw))
-  wkb_roundtrip <- new_geo_wkb(vec_cast(geomcpp_convert_wkb(wkb), list_of(.ptype = raw())))
+  wkb_roundtrip <- new_geo_wkb(vec_cast(geomcpp_convert(wkb, new_geo_wkb()), list_of(.ptype = raw())))
   expect_identical(wkb, wkb_roundtrip)
 })
 
 test_that("error occurs with unknown object in conversions", {
-  expect_error(geomcpp_convert_wkt(NULL), "Can't resolve")
+  expect_error(geomcpp_convert(NULL, new_geo_wkt()), "Can't resolve")
 })

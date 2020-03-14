@@ -212,6 +212,16 @@ GeometryProvider* resolve_provider(SEXP data) {
   stop("Can't resolve GeometryProvider");
 }
 
+GeometryExporter* resolve_exporter(SEXP ptype) {
+  if (Rf_inherits(ptype, "geo_wkt")) {
+    return new WKTGeometryExporter();
+  } else if(Rf_inherits(ptype, "geo_wkb")) {
+    return new WKBGeometryExporter();
+  }
+
+  stop("Can't resolve GeometryProvider");
+}
+
 // ------------- unary operators ----------------
 
 UnaryGeometryOperator::UnaryGeometryOperator(GeometryProvider* provider,

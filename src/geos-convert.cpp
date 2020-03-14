@@ -4,18 +4,9 @@
 using namespace Rcpp;
 
 // [[Rcpp::export]]
-CharacterVector geomcpp_convert_wkt(SEXP data) {
+SEXP geomcpp_convert(SEXP data, SEXP ptype) {
   GeometryProvider* provider = resolve_provider(data);
-  WKTGeometryExporter* exporter = new WKTGeometryExporter();
-
-  IdentityOperator* op = new IdentityOperator(provider, exporter);
-  return op->operate();
-}
-
-// [[Rcpp::export]]
-List geomcpp_convert_wkb(SEXP data) {
-  GeometryProvider* provider = resolve_provider(data);
-  WKBGeometryExporter* exporter = new WKBGeometryExporter();
+  GeometryExporter* exporter = resolve_exporter(ptype);
 
   IdentityOperator* op = new IdentityOperator(provider, exporter);
   return op->operate();
