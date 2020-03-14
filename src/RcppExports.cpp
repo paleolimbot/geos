@@ -5,69 +5,36 @@
 
 using namespace Rcpp;
 
-// geos_test_roundtrip_wkt
-CharacterVector geos_test_roundtrip_wkt(CharacterVector wkt);
-RcppExport SEXP _geom_geos_test_roundtrip_wkt(SEXP wktSEXP) {
+// geomcpp_convert_wkt
+CharacterVector geomcpp_convert_wkt(SEXP data);
+RcppExport SEXP _geom_geomcpp_convert_wkt(SEXP dataSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< CharacterVector >::type wkt(wktSEXP);
-    rcpp_result_gen = Rcpp::wrap(geos_test_roundtrip_wkt(wkt));
+    Rcpp::traits::input_parameter< SEXP >::type data(dataSEXP);
+    rcpp_result_gen = Rcpp::wrap(geomcpp_convert_wkt(data));
     return rcpp_result_gen;
 END_RCPP
 }
-// geos_test_roundtrip_wkb
-List geos_test_roundtrip_wkb(List wkb);
-RcppExport SEXP _geom_geos_test_roundtrip_wkb(SEXP wkbSEXP) {
+// geomcpp_convert_wkb
+List geomcpp_convert_wkb(SEXP data);
+RcppExport SEXP _geom_geomcpp_convert_wkb(SEXP dataSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type wkb(wkbSEXP);
-    rcpp_result_gen = Rcpp::wrap(geos_test_roundtrip_wkb(wkb));
+    Rcpp::traits::input_parameter< SEXP >::type data(dataSEXP);
+    rcpp_result_gen = Rcpp::wrap(geomcpp_convert_wkb(data));
     return rcpp_result_gen;
 END_RCPP
 }
-// geos_wkt_to_wkb
-List geos_wkt_to_wkb(CharacterVector wkt);
-RcppExport SEXP _geom_geos_wkt_to_wkb(SEXP wktSEXP) {
+// geomcpp_validate_provider
+LogicalVector geomcpp_validate_provider(SEXP data);
+RcppExport SEXP _geom_geomcpp_validate_provider(SEXP dataSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< CharacterVector >::type wkt(wktSEXP);
-    rcpp_result_gen = Rcpp::wrap(geos_wkt_to_wkb(wkt));
-    return rcpp_result_gen;
-END_RCPP
-}
-// geos_wkb_to_wkt
-CharacterVector geos_wkb_to_wkt(List wkb);
-RcppExport SEXP _geom_geos_wkb_to_wkt(SEXP wkbSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type wkb(wkbSEXP);
-    rcpp_result_gen = Rcpp::wrap(geos_wkb_to_wkt(wkb));
-    return rcpp_result_gen;
-END_RCPP
-}
-// geos_wkt_is_parseable
-LogicalVector geos_wkt_is_parseable(CharacterVector wkt);
-RcppExport SEXP _geom_geos_wkt_is_parseable(SEXP wktSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< CharacterVector >::type wkt(wktSEXP);
-    rcpp_result_gen = Rcpp::wrap(geos_wkt_is_parseable(wkt));
-    return rcpp_result_gen;
-END_RCPP
-}
-// geos_wkb_is_parseable
-LogicalVector geos_wkb_is_parseable(List wkb);
-RcppExport SEXP _geom_geos_wkb_is_parseable(SEXP wkbSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type wkb(wkbSEXP);
-    rcpp_result_gen = Rcpp::wrap(geos_wkb_is_parseable(wkb));
+    Rcpp::traits::input_parameter< SEXP >::type data(dataSEXP);
+    rcpp_result_gen = Rcpp::wrap(geomcpp_validate_provider(data));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -92,12 +59,9 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_geom_geos_test_roundtrip_wkt", (DL_FUNC) &_geom_geos_test_roundtrip_wkt, 1},
-    {"_geom_geos_test_roundtrip_wkb", (DL_FUNC) &_geom_geos_test_roundtrip_wkb, 1},
-    {"_geom_geos_wkt_to_wkb", (DL_FUNC) &_geom_geos_wkt_to_wkb, 1},
-    {"_geom_geos_wkb_to_wkt", (DL_FUNC) &_geom_geos_wkb_to_wkt, 1},
-    {"_geom_geos_wkt_is_parseable", (DL_FUNC) &_geom_geos_wkt_is_parseable, 1},
-    {"_geom_geos_wkb_is_parseable", (DL_FUNC) &_geom_geos_wkb_is_parseable, 1},
+    {"_geom_geomcpp_convert_wkt", (DL_FUNC) &_geom_geomcpp_convert_wkt, 1},
+    {"_geom_geomcpp_convert_wkb", (DL_FUNC) &_geom_geomcpp_convert_wkb, 1},
+    {"_geom_geomcpp_validate_provider", (DL_FUNC) &_geom_geomcpp_validate_provider, 1},
     {"_geom_geos_version_impl", (DL_FUNC) &_geom_geos_version_impl, 0},
     {"_geom_geos_test_throw_error", (DL_FUNC) &_geom_geos_test_throw_error, 0},
     {NULL, NULL, 0}
