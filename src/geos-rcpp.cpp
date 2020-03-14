@@ -7,7 +7,7 @@
 
 using namespace Rcpp;
 
-static void __errorHandler(const char *fmt, ...) { // #nocov start
+static void __errorHandler(const char *fmt, ...) {
 
   char buf[BUFSIZ], *p;
   va_list ap;
@@ -20,7 +20,7 @@ static void __errorHandler(const char *fmt, ...) { // #nocov start
   Rcpp::Function error(".stop_geos", Rcpp::Environment::namespace_env("geom"));
   error(buf);
 
-  return; // #nocov end
+  return;
 }
 
 static void __warningHandler(const char *fmt, ...) {
@@ -39,14 +39,12 @@ static void __warningHandler(const char *fmt, ...) {
   return;
 }
 
-// #nocov start
 static void __countErrorHandler(const char *fmt, void *userdata) {
   int *i = (int *) userdata;
   *i = *i + 1;
 }
 
 static void __emptyNoticeHandler(const char *fmt, void *userdata) { }
-// #nocov end
 
 GEOSContextHandle_t geos_init(void) {
 #ifdef HAVE350
@@ -66,12 +64,6 @@ void geos_finish(GEOSContextHandle_t context) {
   finishGEOS_r(context);
 #endif
 }
-
-GeomPtr geos_ptr(GEOSGeometry* g, GEOSContextHandle_t context) {
-  auto deleter = std::bind(GEOSGeom_destroy_r, context, std::placeholders::_1);
-  return GeomPtr(g, deleter);
-}
-
 
 // ---------- geometry provider implementations -------------
 
@@ -233,6 +225,9 @@ void UnaryGeometryOperator::init() {
 void UnaryGeometryOperator::operate() {
   this->init();
 
+  // TODO: there is probably a memory leak here, but
+  // GEOSGeom_destroy_r(this->context, geometry) gives
+  // an error
   GEOSGeometry* geometry;
   GEOSGeometry* result;
 

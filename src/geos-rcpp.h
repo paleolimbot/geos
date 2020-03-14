@@ -39,10 +39,6 @@
 GEOSContextHandle_t geos_init(void);
 void geos_finish(GEOSContextHandle_t context);
 
-// vectors of GeomPtr s are used for most operations
-typedef std::unique_ptr<GEOSGeometry, std::function<void(GEOSGeometry*)>> GeomPtr;
-GeomPtr geos_ptr(GEOSGeometry* g, GEOSContextHandle_t context);
-
 // ---------- geometry provider/exporter definitions -------------
 
 // --- base
