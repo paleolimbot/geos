@@ -89,18 +89,11 @@ void GeometryProvider::finish() {
 
 // --- base exporter
 
-template <class OutputType>
-void GeometryExporter<OutputType>::init(GEOSContextHandle_t context) {
+void GeometryExporter::init(GEOSContextHandle_t context) {
   this->context = context;
 }
 
-template <class OutputType>
-OutputType GeometryExporter<OutputType>::getData() {
-  return this->data;
-}
-
-template <class OutputType>
-void GeometryExporter<OutputType>::finish() {
+void GeometryExporter::finish() {
 
 }
 
@@ -219,3 +212,55 @@ size_t WKBGeometryExporter::size() {
   return (this->data).size();
 }
 
+// ------------- unary operators ----------------
+
+UnaryGeometryOperator::UnaryGeometryOperator(GeometryProvider* provider,
+                                             GeometryExporter* exporter) {
+  this->provider = provider;
+  this->exporter = exporter;
+}
+
+void UnaryGeometryOperator::init() {
+  this->context = geos_init();
+  this->provider->init(this->context);
+  this->exporter->init(this->context);
+}
+
+void UnaryGeometryOperator::operate() {
+  this->init();
+
+  GEOSGeometry* geometry;
+  GEOSGeometry* result;
+
+  for (int i=0; i < this->size(); i++) {
+    geometry = this->provider->getNext();
+    result = this->operateNext(geometry);
+    this->exporter->putNext(result);
+  }
+
+  this->finish();
+}
+
+GEOSGeometry* UnaryGeometryOperator::operateNext(GEOSGeometry* geometry) {
+  return geometry;
+}
+
+void UnaryGeometryOperator::finish() {
+  this->provider->finish();
+  this->exporter->finish();
+  geos_finish(this->context);
+}
+
+size_t UnaryGeometryOperator::size() {
+  return this->provider->size();
+}
+
+// --- idenetity operator
+
+IdentityOperator::IdentityOperator(GeometryProvider* provider, GeometryExporter* exporter) :
+  UnaryGeometryOperator(provider, exporter) {
+}
+
+GEOSGeometry* IdentityOperator::operateNext(GEOSGeometry* geometry) {
+  return geometry;
+}

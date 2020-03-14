@@ -51,22 +51,19 @@ class GeometryProvider {
 public:
   GEOSContextHandle_t context;
 
-  void init(GEOSContextHandle_t context);
+  virtual void init(GEOSContextHandle_t context);
   virtual GEOSGeometry* getNext() = 0;
-  void finish();
+  virtual void finish();
   virtual size_t size() = 0;
 };
 
-template <class OutputType>
 class GeometryExporter {
 public:
   GEOSContextHandle_t context;
-  OutputType data;
 
-  void init(GEOSContextHandle_t context);
+  virtual void init(GEOSContextHandle_t context);
   virtual void putNext(GEOSGeometry* geometry) = 0;
-  void finish();
-  OutputType getData();
+  virtual void finish();
   virtual size_t size() = 0;
 };
 
@@ -87,8 +84,9 @@ public:
   size_t size();
 };
 
-class WKTGeometryExporter: public GeometryExporter<CharacterVector> {
+class WKTGeometryExporter: public GeometryExporter {
 public:
+  CharacterVector data;
   GEOSWKTWriter *wkt_writer;
   size_t counter;
 
@@ -114,8 +112,9 @@ public:
   size_t size();
 };
 
-class WKBGeometryExporter: public GeometryExporter<List> {
+class WKBGeometryExporter: public GeometryExporter {
 public:
+  List data;
   GEOSWKBWriter *wkb_writer;
   size_t counter;
 
@@ -124,6 +123,31 @@ public:
   void putNext(GEOSGeometry* geometry);
   void finish();
   size_t size();
+};
+
+
+// ------------- unary operators ----------------
+
+class UnaryGeometryOperator {
+public:
+  GeometryProvider* provider;
+  GeometryExporter* exporter;
+  GEOSContextHandle_t context;
+
+  UnaryGeometryOperator(GeometryProvider* provider, GeometryExporter* exporter);
+
+  virtual void init();
+  virtual void operate();
+  virtual GEOSGeometry* operateNext(GEOSGeometry* geometry) = 0;
+  virtual void finish();
+
+  virtual size_t size();
+};
+
+class IdentityOperator: public UnaryGeometryOperator {
+public:
+  IdentityOperator(GeometryProvider* provider, GeometryExporter* exporter);
+  GEOSGeometry* operateNext(GEOSGeometry* geometry);
 };
 
 #endif

@@ -65,10 +65,17 @@ List geos_to_wkb(GEOSContextHandle_t context, std::vector<GeomPtr> & vec_pointer
 
 // [[Rcpp::export]]
 CharacterVector geos_test_roundtrip_wkt(CharacterVector wkt) {
-  GEOSContextHandle_t context = geos_init();
-  std::vector<GeomPtr> vec_pointer = geos_from_wkt(context, wkt);
-  CharacterVector output = geos_to_wkt(context, vec_pointer);
-  geos_finish(context);
+  // input
+  WKTGeometryProvider* provider = new WKTGeometryProvider(wkt);
+
+  // output
+  CharacterVector output(provider->size());
+  WKTGeometryExporter* exporter = new WKTGeometryExporter(output);
+
+  // operator
+  IdentityOperator* op = new IdentityOperator(provider, exporter);
+  op->operate();
+
   return output;
 }
 
