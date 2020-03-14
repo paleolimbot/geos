@@ -244,10 +244,15 @@ void UnaryGeometryOperator::operate() {
   GEOSGeometry* geometry;
   GEOSGeometry* result;
 
-  for (int i=0; i < this->size(); i++) {
-    geometry = this->provider->getNext();
-    result = this->operateNext(geometry);
-    this->exporter->putNext(result);
+  try {
+    for (int i=0; i < this->size(); i++) {
+      geometry = this->provider->getNext();
+      result = this->operateNext(geometry);
+      this->exporter->putNext(result);
+    }
+  } catch(std::exception e) {
+    this->finish();
+    throw e;
   }
 
   this->finish();
