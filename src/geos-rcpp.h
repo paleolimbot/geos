@@ -43,7 +43,7 @@ void geos_finish(GEOSContextHandle_t context);
 typedef std::unique_ptr<GEOSGeometry, std::function<void(GEOSGeometry*)>> GeomPtr;
 GeomPtr geos_ptr(GEOSGeometry* g, GEOSContextHandle_t context);
 
-// ---------- geometry provider definitions -------------
+// ---------- geometry provider/exporter definitions -------------
 
 // --- base
 
@@ -54,6 +54,19 @@ public:
   void init(GEOSContextHandle_t context);
   virtual GEOSGeometry* getNext() = 0;
   void finish();
+  virtual size_t size() = 0;
+};
+
+template <class OutputType>
+class GeometryExporter {
+public:
+  GEOSContextHandle_t context;
+  OutputType data;
+
+  void init(GEOSContextHandle_t context);
+  virtual void putNext(GEOSGeometry* geometry) = 0;
+  void finish();
+  OutputType getData();
   virtual size_t size() = 0;
 };
 
@@ -69,9 +82,36 @@ public:
 
   WKTGeometryProvider(CharacterVector data);
   void init(GEOSContextHandle_t context);
-  virtual GEOSGeometry* getNext();
+  GEOSGeometry* getNext();
   void finish();
-  virtual size_t size();
+  size_t size();
+};
+
+class WKTGeometryExporter: public GeometryExporter<CharacterVector> {
+public:
+  GEOSWKTWriter *wkt_writer;
+  size_t counter;
+
+  WKTGeometryExporter(CharacterVector data);
+  void init(GEOSContextHandle_t context);
+  void putNext(GEOSGeometry* geometry);
+  void finish();
+  size_t size();
+};
+
+// --- WKB
+
+class WKBGeometryProvider: public GeometryProvider {
+public:
+  List data;
+  GEOSWKBReader *wkb_reader;
+  size_t counter;
+
+  WKBGeometryProvider(List data);
+  void init(GEOSContextHandle_t context);
+  GEOSGeometry* getNext();
+  void finish();
+  size_t size();
 };
 
 #endif

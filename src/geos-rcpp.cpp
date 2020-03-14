@@ -76,7 +76,7 @@ GeomPtr geos_ptr(GEOSGeometry* g, GEOSContextHandle_t context) {
 // ---------- geometry provider implementations -------------
 
 
-// --- base
+// --- base provider
 
 void GeometryProvider::init(GEOSContextHandle_t context) {
   this->context = context;
@@ -87,7 +87,24 @@ void GeometryProvider::finish() {
 
 }
 
-// --- WKT
+// --- base exporter
+
+template <class OutputType>
+void GeometryExporter<OutputType>::init(GEOSContextHandle_t context) {
+  this->context = context;
+}
+
+template <class OutputType>
+OutputType GeometryExporter<OutputType>::getData() {
+  return this->data;
+}
+
+template <class OutputType>
+void GeometryExporter<OutputType>::finish() {
+
+}
+
+// --- WKT provider
 
 WKTGeometryProvider::WKTGeometryProvider(CharacterVector data) {
   this->data = data;
@@ -117,4 +134,57 @@ size_t WKTGeometryProvider::size() {
   return (this->data).size();
 }
 
+// --- WKT exporter
+
+WKTGeometryExporter::WKTGeometryExporter(CharacterVector data) {
+  this->data = data;
+  this->counter = 0;
+}
+
+void WKTGeometryExporter::init(GEOSContextHandle_t context) {
+  this->context = context;
+  this->wkt_writer = GEOSWKTWriter_create_r(context);
+}
+
+void WKTGeometryExporter::putNext(GEOSGeometry* geometry) {
+  std::string wkt_single;
+  wkt_single = GEOSWKTWriter_write_r(this->context, wkt_writer, geometry);
+  this->data[this->counter] = wkt_single;
+  this->counter = this->counter + 1;
+}
+
+void WKTGeometryExporter::finish() {
+  GEOSWKTWriter_destroy_r(this->context, this->wkt_writer);
+}
+
+size_t WKTGeometryExporter::size() {
+  return (this->data).size();
+}
+
+// --- WKB
+
+WKBGeometryProvider::WKBGeometryProvider(List data) {
+  this->data = data;
+  this->counter = 0;
+}
+
+void WKBGeometryProvider::init(GEOSContextHandle_t context) {
+  this->context = context;
+  this->wkb_reader = GEOSWKBReader_create_r(context);
+}
+
+GEOSGeometry* WKBGeometryProvider::getNext() {
+  RawVector r = this->data[this->counter];
+  GEOSGeometry* geometry = GEOSWKBReader_read_r(context, this->wkb_reader, &(r[0]), r.size());
+  this->counter = this->counter + 1;
+  return geometry;
+}
+
+void WKBGeometryProvider::finish() {
+  GEOSWKBReader_destroy_r(this->context, this->wkb_reader);
+}
+
+size_t WKBGeometryProvider::size() {
+  return (this->data).size();
+}
 

@@ -23,30 +23,29 @@ std::vector<GeomPtr> geos_from_wkt(GEOSContextHandle_t context, CharacterVector 
 
 CharacterVector geos_to_wkt(GEOSContextHandle_t context, std::vector<GeomPtr> & vec_pointer) {
   CharacterVector output(vec_pointer.size());
-  GEOSWKTWriter *wkt_writer = GEOSWKTWriter_create_r(context);
+  WKTGeometryExporter* exporter = new WKTGeometryExporter(output);
+  exporter->init(context);
 
   for (int i=0; i < vec_pointer.size(); i++) {
-    std::string wkt_single;
-    wkt_single = GEOSWKTWriter_write_r(context, wkt_writer, vec_pointer[i].get());
-    output[i] = wkt_single;
+    exporter->putNext(vec_pointer[i].get());
   }
 
-  GEOSWKTWriter_destroy_r(context, wkt_writer);
+  exporter->finish();
   return output;
 }
 
 std::vector<GeomPtr> geos_from_wkb(GEOSContextHandle_t context, List wkb) {
   std::vector<GeomPtr> output(wkb.size());
-  GEOSWKBReader *wkb_reader = GEOSWKBReader_create_r(context);
+  WKBGeometryProvider* provider = new WKBGeometryProvider(wkb);
+  provider->init(context);
 
   for (int i=0; i < wkb.size(); i++) {
     GEOSGeometry* geometry;
-    RawVector r = wkb[i];
-    geometry = GEOSWKBReader_read_r(context, wkb_reader, &(r[0]), r.size());
+    geometry = provider->getNext();
     output[i] = geos_ptr(geometry, context);
   }
 
-  GEOSWKBReader_destroy_r(context, wkb_reader);
+  provider->finish();
   return output;
 }
 
