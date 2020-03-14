@@ -27,25 +27,14 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// geos_wkt_is_parseable
-LogicalVector geos_wkt_is_parseable(CharacterVector wkt);
-RcppExport SEXP _geom_geos_wkt_is_parseable(SEXP wktSEXP) {
+// geomcpp_validate_provider
+LogicalVector geomcpp_validate_provider(SEXP data);
+RcppExport SEXP _geom_geomcpp_validate_provider(SEXP dataSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< CharacterVector >::type wkt(wktSEXP);
-    rcpp_result_gen = Rcpp::wrap(geos_wkt_is_parseable(wkt));
-    return rcpp_result_gen;
-END_RCPP
-}
-// geos_wkb_is_parseable
-LogicalVector geos_wkb_is_parseable(List wkb);
-RcppExport SEXP _geom_geos_wkb_is_parseable(SEXP wkbSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type wkb(wkbSEXP);
-    rcpp_result_gen = Rcpp::wrap(geos_wkb_is_parseable(wkb));
+    Rcpp::traits::input_parameter< SEXP >::type data(dataSEXP);
+    rcpp_result_gen = Rcpp::wrap(geomcpp_validate_provider(data));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -72,8 +61,7 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_geom_geomcpp_convert_wkt", (DL_FUNC) &_geom_geomcpp_convert_wkt, 1},
     {"_geom_geomcpp_convert_wkb", (DL_FUNC) &_geom_geomcpp_convert_wkb, 1},
-    {"_geom_geos_wkt_is_parseable", (DL_FUNC) &_geom_geos_wkt_is_parseable, 1},
-    {"_geom_geos_wkb_is_parseable", (DL_FUNC) &_geom_geos_wkb_is_parseable, 1},
+    {"_geom_geomcpp_validate_provider", (DL_FUNC) &_geom_geomcpp_validate_provider, 1},
     {"_geom_geos_version_impl", (DL_FUNC) &_geom_geos_version_impl, 0},
     {"_geom_geos_test_throw_error", (DL_FUNC) &_geom_geos_test_throw_error, 0},
     {NULL, NULL, 0}

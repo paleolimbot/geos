@@ -63,7 +63,7 @@ is_geo_wkb <- function(x) {
 #' @rdname new_geo_wkb
 #' @export
 validate_geo_wkb <- function(x) {
-  is_parseable <- geos_wkb_is_parseable(x)
+  is_parseable <- geomcpp_validate_provider(x)
   stop_for_non_parseable(is_parseable)
   invisible(x)
 }

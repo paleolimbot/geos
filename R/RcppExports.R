@@ -9,12 +9,8 @@ geomcpp_convert_wkb <- function(data) {
     .Call(`_geom_geomcpp_convert_wkb`, data)
 }
 
-geos_wkt_is_parseable <- function(wkt) {
-    .Call(`_geom_geos_wkt_is_parseable`, wkt)
-}
-
-geos_wkb_is_parseable <- function(wkb) {
-    .Call(`_geom_geos_wkb_is_parseable`, wkb)
+geomcpp_validate_provider <- function(data) {
+    .Call(`_geom_geomcpp_validate_provider`, data)
 }
 
 geos_version_impl <- function() {

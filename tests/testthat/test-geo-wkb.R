@@ -34,7 +34,7 @@ test_that("geo_wkb parse validation works", {
   )
 
   wkb <- new_geo_wkb(vec_cast(list(wkb_raw, wkb_bad), list_of(.ptype = raw())))
-  expect_identical(geos_wkb_is_parseable(wkb), c(TRUE, FALSE))
+  expect_identical(geomcpp_validate_provider(wkb), c(TRUE, FALSE))
 
   expect_identical(validate_geo_wkb(wkb[1]), wkb[1])
   expect_error(validate_geo_wkb(wkb), "1 geometry", class = "parse_error")
