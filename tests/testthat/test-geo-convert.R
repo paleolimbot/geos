@@ -25,7 +25,7 @@ test_that("wkb conversion works", {
 test_that("geo_tbl_point conversion works", {
   raw <- geomcpp_convert(
     geo_wkt("POINT (10 40)"),
-    new_geo_tbl_point()
+    geo_tbl()
   )
   tbl <- geo_restore(raw)
   expect_identical(tbl, geo_tbl_point(geo_xy(10, 40)))
@@ -34,7 +34,7 @@ test_that("geo_tbl_point conversion works", {
 test_that("geo_tbl_linestring conversion works", {
   raw <- geomcpp_convert(
     geo_wkt("LINESTRING (30 10, 10 30, 40 40)"),
-    new_geo_tbl_linestring()
+    geo_tbl()
   )
   tbl <- geo_restore(raw)
 
@@ -47,7 +47,7 @@ test_that("geo_tbl_linestring conversion works", {
 test_that("geo_tbl_multipoint conversion works", {
   raw <- geomcpp_convert(
     geo_wkt("MULTIPOINT ((10 40), (40 30))"),
-    new_geo_tbl_multipoint()
+    geo_tbl()
   )
   tbl <- geo_restore(raw)
 
@@ -60,7 +60,7 @@ test_that("geo_tbl_multipoint conversion works", {
 test_that("geo_tbl_multilinestring conversion works", {
   raw <- geomcpp_convert(
     geo_wkt("MULTILINESTRING ((10 10, 20 20, 10 40), (40 40, 30 30, 40 20, 30 10))"),
-    new_geo_tbl_linestring()
+    geo_tbl()
   )
   tbl <- geo_restore(raw)
 
@@ -80,7 +80,7 @@ test_that("geo_tbl_multilinestring conversion works", {
 test_that("geo_tbl_polygon conversion works", {
   raw <- geomcpp_convert(
     geo_wkt("POLYGON ((30 10, 10 30, 40 40, 30 10))"),
-    new_geo_tbl_polygon()
+    geo_tbl()
   )
   tbl <- geo_restore(raw)
 
@@ -88,6 +88,26 @@ test_that("geo_tbl_polygon conversion works", {
     tbl,
     geo_tbl_polygon(
       geo_xy(c(30, 10, 40, 30), c(10, 30, 40, 10))
+    )
+  )
+})
+
+test_that("geo_tbl_multi_polygon conversion works", {
+  raw <- geomcpp_convert(
+    geo_wkt("MULTIPOLYGON (((40 40, 20 45, 45 30, 40 40)), ((20 35, 10 30, 10 10, 30 5, 45 20, 20 35), (30 20, 20 15, 20 25, 30 20)))"),
+    geo_tbl()
+  )
+  tbl <- geo_restore(raw)
+
+  expect_identical(
+    tbl,
+    geo_tbl_multipolygon(
+      geo_xy(
+        c(40, 20, 45, 40, 20, 10, 10, 30, 45, 20, 30, 20, 20, 30),
+        c(40, 45, 30, 40, 35, 30, 10, 5,  20, 35, 20, 15, 25, 20)
+      ),
+      part = c(1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2),
+      piece = c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2)
     )
   )
 })

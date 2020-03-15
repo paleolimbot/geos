@@ -52,12 +52,12 @@ new_geo_tbl_polygon <- function(x = list(xy = geo_xy(), feature = integer(0), pi
 #' @export
 new_geo_tbl_multipolygon <- function(x = list(xy = geo_xy(),
                                               feature = integer(0),
-                                              piece = integer(0),
-                                              part = integer(0))) {
+                                              part = integer(0),
+                                              piece = integer(0))) {
   vec_assert(x$xy, geo_xy())
   vec_assert(x$feature, integer())
-  vec_assert(x$piece, integer())
   vec_assert(x$part, integer())
+  vec_assert(x$piece, integer())
   new_rcrd(x, class = c("geo_tbl_multipolygon", "geo_tbl"))
 }
 

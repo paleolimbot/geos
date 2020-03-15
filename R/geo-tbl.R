@@ -13,6 +13,12 @@ is_geo_tbl <- function(x) {
   inherits(x, "geo_tbl")
 }
 
+#' @rdname is_geo_tbl
+#' @export
+geo_tbl <- function() {
+  structure(list(), class = "geo_tbl")
+}
+
 #' @method vec_ptype2 geo_tbl
 #' @export
 #' @export vec_ptype2.geo_tbl

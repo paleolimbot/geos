@@ -24,7 +24,7 @@ new_geo_tbl_polygon(
 )
 
 new_geo_tbl_multipolygon(
-  x = list(xy = geo_xy(), feature = integer(0), piece = integer(0), part = integer(0))
+  x = list(xy = geo_xy(), feature = integer(0), part = integer(0), piece = integer(0))
 )
 
 validate_geo_tbl_polygon(x)
