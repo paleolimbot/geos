@@ -3,6 +3,7 @@
 // can focus on geom operations
 
 #include "geos-rcpp.h"
+#include "geos-coords.h"
 #include <Rcpp.h>
 
 using namespace Rcpp;
@@ -200,6 +201,29 @@ SEXP WKBGeometryExporter::finish() {
   return data;
 }
 
+// --- nested geotbl exporter
+
+NestedGeoTblExporter::NestedGeoTblExporter() {
+
+}
+
+void NestedGeoTblExporter::init(GEOSContextHandle_t context, size_t size) {
+  List data(size);
+  data.attr("class") = "nested_geo_tbl";
+  this->data = data;
+  this->context = context;
+  this->counter = 0;
+}
+
+void NestedGeoTblExporter::putNext(GEOSGeometry* geometry) {
+  data[this->counter] = geometry_to_geo_tbl(this->context, geometry, this->counter + 1);
+  this->counter = this->counter + 1;
+}
+
+SEXP NestedGeoTblExporter::finish() {
+  return this->data;
+}
+
 // ---------- geometry provider resolvers -------------
 
 GeometryProvider* resolve_provider(SEXP data) {
@@ -217,6 +241,8 @@ GeometryExporter* resolve_exporter(SEXP ptype) {
     return new WKTGeometryExporter();
   } else if(Rf_inherits(ptype, "geo_wkb")) {
     return new WKBGeometryExporter();
+  } else if(Rf_inherits(ptype, "geo_tbl")) {
+    return new NestedGeoTblExporter();
   }
 
   stop("Can't resolve GeometryProvider");

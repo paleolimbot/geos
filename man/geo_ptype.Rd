@@ -32,5 +32,7 @@ except that some important geometry data structures are
 not strictly vctrs, in the sense that \code{\link[vctrs:vec_size]{vctrs::vec_size()}}
 may be different or not applicable (e.g., for a \code{\link[=geo_tbl_linestring]{geo_tbl_linestring()}}).
 These functions help geometry operators accept a number of different
-input and output formats.
+input and output formats. In particular, \code{\link[=geo_restore]{geo_restore()}} provides
+any conversion that may be necessary between the C++ data structure
+and the R data  structure.
 }

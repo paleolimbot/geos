@@ -118,6 +118,19 @@ public:
   SEXP finish();
 };
 
+// --- nested geotbl exporter
+
+class NestedGeoTblExporter: public GeometryExporter {
+public:
+  List data;
+  size_t counter;
+
+  NestedGeoTblExporter();
+  void init(GEOSContextHandle_t context, size_t size);
+  void putNext(GEOSGeometry* geometry);
+  SEXP finish();
+};
+
 // ---------- geometry provider/exporter resolvers -------------
 
 GeometryProvider* resolve_provider(SEXP data);
