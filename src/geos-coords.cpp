@@ -9,23 +9,19 @@ List geometry_to_geo_tbl(GEOSContextHandle_t context, GEOSGeometry* geometry, in
   List geoTbl;
 
   if (type == GEOSGeomTypes::GEOS_POINT) {
-    CharacterVector cls = CharacterVector::create("geo_tbl_point", "geo_tbl", "vctrs_rcrd", "vctrs_vctr");
-    geoTbl = simple_geometry_to_geo_tbl(context, geometry, feature);
-    geoTbl.attr("class") = cls;
+    geoTbl = simple_geometry_to_geo_tbl(context, geometry, feature, "geo_tbl_point");
 
   } else if(type == GEOSGeomTypes::GEOS_LINESTRING) {
-    CharacterVector cls = CharacterVector::create("geo_tbl_linestring", "geo_tbl", "vctrs_rcrd", "vctrs_vctr");
-    geoTbl = simple_geometry_to_geo_tbl(context, geometry, feature);
-    geoTbl.attr("class") = cls;
+    geoTbl = simple_geometry_to_geo_tbl(context, geometry, feature, "geo_tbl_linestring");
 
   } else if(type == GEOSGeomTypes::GEOS_POLYGON) {
-    stop("Not implemented polygon");
+    geoTbl = polygon_to_geo_tbl(context, geometry, feature);
 
   } else if(type == GEOSGeomTypes::GEOS_MULTIPOINT) {
     CharacterVector cls = CharacterVector::create("geo_tbl_multipoint", "geo_tbl", "vctrs_rcrd", "vctrs_vctr");
 
-    // mulitpoint doesn't need  the "part" field
-    List tblBase = simple_multi_geometry_to_geo_tbl(context, geometry, feature);
+    // multipoint doesn't need  the "part" field
+    List tblBase = simple_multi_geometry_to_geo_tbl(context, geometry, feature, "geo_tbl_multipoint");
 
     geoTbl = List::create(
       _["xy"] = tblBase["xy"],
@@ -34,9 +30,7 @@ List geometry_to_geo_tbl(GEOSContextHandle_t context, GEOSGeometry* geometry, in
     geoTbl.attr("class") = cls;
 
   } else if(type == GEOSGeomTypes::GEOS_MULTILINESTRING) {
-    CharacterVector cls = CharacterVector::create("geo_tbl_multilinestring", "geo_tbl", "vctrs_rcrd", "vctrs_vctr");
-    geoTbl = simple_multi_geometry_to_geo_tbl(context, geometry, feature);
-    geoTbl.attr("class") = cls;
+    geoTbl = simple_multi_geometry_to_geo_tbl(context, geometry, feature, "geo_tbl_multilinestring");
 
   } else if(type == GEOSGeomTypes::GEOS_MULTIPOLYGON) {
     stop("Not implemented multipolygon");
@@ -48,61 +42,56 @@ List geometry_to_geo_tbl(GEOSContextHandle_t context, GEOSGeometry* geometry, in
   return geoTbl;
 }
 
-List simple_multi_geometry_to_geo_tbl(GEOSContextHandle_t context, GEOSGeometry* geometry, int feature) {
-  int nParts = GEOSGetNumGeometries_r(context, geometry);
+List polygon_to_geo_tbl(GEOSContextHandle_t context, GEOSGeometry* geometry, int feature) {
+  int nInteriorRings = GEOSGetNumInteriorRings_r(context, geometry);
+  int nCoordinates = GEOSGetNumCoordinates_r(context, geometry);
 
-  int nCoordinates[nParts];
-  int totalCoordinates = 0;
-  List xyParts(nParts);
+  NumericVector xVec(nCoordinates);
+  NumericVector yVec(nCoordinates);
+  IntegerVector piece(nCoordinates);
+
+  unsigned int offset = 0;
+  const GEOSGeometry* exterior = GEOSGetExteriorRing_r(context, geometry);
+  offset += write_simple_geometry(context, exterior, xVec, yVec, piece, 1, offset);
+
+  for(int i=0; i<nInteriorRings; i++) {
+    const GEOSGeometry* ring = GEOSGetInteriorRingN_r(context, geometry, i);
+    offset += write_simple_geometry(context, ring, xVec, yVec, piece, 2 + i, offset);
+  }
+
+  return new_geo_tbl(xVec, yVec, piece, feature, "geo_tbl_polygon");
+}
+
+List simple_multi_geometry_to_geo_tbl(GEOSContextHandle_t context, GEOSGeometry* geometry,
+                                      int feature, const char* tblClass) {
+  int nParts = GEOSGetNumGeometries_r(context, geometry);
+  int nCoordinates = GEOSGetNumCoordinates_r(context, geometry);
+
+  NumericVector xVec(nCoordinates);
+  NumericVector yVec(nCoordinates);
+  IntegerVector partVec(nCoordinates);
+
+  unsigned int offset = 0;
 
   for(int i=0; i<nParts; i++) {
     const GEOSGeometry* part = GEOSGetGeometryN_r(context, geometry, i);
-    List xy = simple_geometry_to_xy(context, (GEOSGeometry*) part);
-    nCoordinates[i] = ((NumericVector) xy[0]).size();
-    totalCoordinates += nCoordinates[i];
-    xyParts[i] = xy;
+    offset += write_simple_geometry(context, part, xVec, yVec, partVec, i+1, offset);
   }
 
-  // this is something like vec_c() for a list of xys
-  NumericVector xAll(totalCoordinates);
-  NumericVector yAll(totalCoordinates);
-  IntegerVector partAll(totalCoordinates);
-
-  int jStart = 0;
-  int k ;
-  for(int i=0; i<xyParts.size(); i++) {
-    List xy = xyParts[i];
-    NumericVector x = (NumericVector) xy[0];
-    NumericVector y = (NumericVector) xy[1];
-
-    for(int j=0; j<x.size(); j++) {
-      k = jStart + j;
-      xAll[k] = x[j];
-      yAll[k] = y[j];
-      partAll[k] = i + 1;
-    }
-
-    jStart += x.size();
-  }
-
-  List xyAll = List::create(_["x"] = xAll, _["y"] = yAll);
-  xyAll.attr("class") = CharacterVector::create("geo_xy", "geo_tbl", "vctrs_rcrd", "vctrs_vctr");
-
-  return List::create(
-    _["xy"] = xyAll,
-    _["feature"] = rep(feature, totalCoordinates),
-    _["part"] = partAll
-  );
+  List output = new_geo_tbl(xVec, yVec, feature, tblClass);
+  output.push_back(partVec, "part");
+  output.attr("class") = CharacterVector::create(tblClass, "geo_tbl", "vctrs_rcrd", "vctrs_vctr");
+  return output;
 }
 
-List simple_geometry_to_geo_tbl(GEOSContextHandle_t context, GEOSGeometry* geometry, int feature) {
-  List xy = simple_geometry_to_xy(context, geometry);
-  int nrows = ((NumericVector) xy[0]).size();
+List simple_geometry_to_geo_tbl(GEOSContextHandle_t context, GEOSGeometry* geometry, int feature,
+                                const char* tblClass) {
+  int nCoordinates = GEOSGetNumCoordinates_r(context, geometry);
+  NumericVector xVec(nCoordinates);
+  NumericVector yVec(nCoordinates);
+  write_simple_geometry(context, geometry, xVec, yVec, 0);
 
-  return List::create(
-    _["xy"] = xy,
-    _["feature"] = rep(feature, nrows)
-  );
+  return new_geo_tbl(xVec, yVec, feature, tblClass);
 }
 
 List simple_geometry_to_xy(GEOSContextHandle_t context, GEOSGeometry* geometry) {
@@ -126,3 +115,52 @@ List simple_geometry_to_xy(GEOSContextHandle_t context, GEOSGeometry* geometry) 
   xy.attr("class") = CharacterVector::create("geo_xy", "geo_tbl", "vctrs_rcrd", "vctrs_vctr");
   return xy;
 }
+
+List new_geo_tbl(NumericVector x, NumericVector y, int feature, const char* tblClass) {
+  List xy = List::create(_["x"] = x, _["y"] = y);
+  xy.attr("class") = CharacterVector::create("geo_xy", "geo_tbl", "vctrs_rcrd", "vctrs_vctr");
+  List output = List::create(
+    _["xy"] = xy,
+    _["feature"] = rep(feature, x.size())
+  );
+
+  output.attr("class") = CharacterVector::create(tblClass, "geo_tbl", "vctrs_rcrd", "vctrs_vctr");
+  return output;
+}
+
+List new_geo_tbl(NumericVector x, NumericVector y, IntegerVector piece, int feature, const char* tblClass) {
+  List output = new_geo_tbl(x, y, feature, tblClass);
+  output.push_back(piece, "piece");
+  output.attr("class") = CharacterVector::create(tblClass, "geo_tbl", "vctrs_rcrd", "vctrs_vctr");
+  return output;
+}
+
+unsigned int write_simple_geometry(GEOSContextHandle_t context, const GEOSGeometry* geometry,
+                                   NumericVector xVec, NumericVector yVec, IntegerVector part,
+                                   int partId, int offset) {
+  unsigned int size = write_simple_geometry(context, geometry, xVec, yVec, offset);
+  for(int i=0; i<size; i++) {
+    part[offset + i] = partId;
+  }
+  return size;
+}
+
+unsigned int write_simple_geometry(GEOSContextHandle_t context, const GEOSGeometry* geometry,
+                                   NumericVector xVec, NumericVector yVec, int offset) {
+  const GEOSCoordSequence* seq = GEOSGeom_getCoordSeq_r(context, geometry);
+  unsigned int size;
+  GEOSCoordSeq_getSize_r(context, seq, &size);
+
+  double x;
+  double y;
+
+  for (int i=0; i<size; i++) {
+    GEOSCoordSeq_getX_r(context, seq, i, &x);
+    GEOSCoordSeq_getY_r(context, seq, i, &y);
+    xVec[offset + i] = x;
+    yVec[offset + i] = y;
+  }
+
+  return size;
+}
+

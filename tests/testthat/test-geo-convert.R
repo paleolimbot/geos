@@ -77,6 +77,21 @@ test_that("geo_tbl_multilinestring conversion works", {
   )
 })
 
+test_that("geo_tbl_polygon conversion works", {
+  raw <- geomcpp_convert(
+    geo_wkt("POLYGON ((30 10, 10 30, 40 40, 30 10))"),
+    new_geo_tbl_polygon()
+  )
+  tbl <- geo_restore(raw)
+
+  expect_identical(
+    tbl,
+    geo_tbl_polygon(
+      geo_xy(c(30, 10, 40, 30), c(10, 30, 40, 10))
+    )
+  )
+})
+
 test_that("error occurs with unknown object in conversions", {
   expect_error(geomcpp_convert(NULL, new_geo_wkt()), "Can't resolve")
 })
