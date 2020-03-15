@@ -28,10 +28,7 @@ test_that("geo_tbl_point conversion works", {
     new_geo_tbl_point()
   )
   tbl <- geo_restore(raw)
-
-  expect_identical(validate_geo_tbl_point(tbl), tbl)
-  expect_equal(vec_size(tbl), 1)
-  expect_true(all(field(tbl, "feature") == 1L))
+  expect_identical(tbl, geo_tbl_point(geo_xy(10, 40)))
 })
 
 test_that("geo_tbl_linestring conversion works", {
@@ -41,9 +38,10 @@ test_that("geo_tbl_linestring conversion works", {
   )
   tbl <- geo_restore(raw)
 
-  expect_identical(validate_geo_tbl_linestring(tbl), tbl)
-  expect_equal(vec_size(tbl), 3)
-  expect_true(all(field(tbl, "feature") == 1L))
+  expect_identical(
+    tbl,
+    geo_tbl_linestring(geo_xy(c(30, 10, 40), c(10, 30, 40)))
+  )
 })
 
 test_that("geo_tbl_multipoint conversion works", {
@@ -53,11 +51,10 @@ test_that("geo_tbl_multipoint conversion works", {
   )
   tbl <- geo_restore(raw)
 
-  expect_identical(validate_geo_tbl_multipoint(tbl), tbl)
-  expect_equal(vec_size(tbl), 2)
-  expect_true(all(field(tbl, "feature") == 1L))
-  expect_setequal(field(tbl, "part"), c(1L, 2L))
-  tbl <- geo_restore(raw)
+  expect_identical(
+    tbl,
+    geo_tbl_multipoint(geo_xy(c(10, 40), c(40, 30)), feature = 1)
+  )
 })
 
 test_that("geo_tbl_multilinestring conversion works", {
@@ -67,9 +64,17 @@ test_that("geo_tbl_multilinestring conversion works", {
   )
   tbl <- geo_restore(raw)
 
-  expect_identical(validate_geo_tbl_multilinestring(tbl), tbl)
-  expect_equal(vec_size(tbl), 7)
-  expect_setequal(field(tbl, "part"), c(1L, 2L))
+  expect_identical(
+    tbl,
+    geo_tbl_multilinestring(
+      geo_xy(
+        c(10, 20, 10, 40, 30, 40, 30),
+        c(10, 20, 40, 40, 30, 20, 10)
+      ),
+      feature = 1,
+      part = c(1, 1, 1, 2, 2, 2, 2)
+    )
+  )
 })
 
 test_that("error occurs with unknown object in conversions", {

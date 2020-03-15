@@ -23,7 +23,14 @@ List geometry_to_geo_tbl(GEOSContextHandle_t context, GEOSGeometry* geometry, in
 
   } else if(type == GEOSGeomTypes::GEOS_MULTIPOINT) {
     CharacterVector cls = CharacterVector::create("geo_tbl_multipoint", "geo_tbl", "vctrs_rcrd", "vctrs_vctr");
-    geoTbl = simple_multi_geometry_to_geo_tbl(context, geometry, feature);
+
+    // mulitpoint doesn't need  the "part" field
+    List tblBase = simple_multi_geometry_to_geo_tbl(context, geometry, feature);
+
+    geoTbl = List::create(
+      _["xy"] = tblBase["xy"],
+      _["feature"] = tblBase["feature"]
+    );
     geoTbl.attr("class") = cls;
 
   } else if(type == GEOSGeomTypes::GEOS_MULTILINESTRING) {
