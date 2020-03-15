@@ -136,15 +136,63 @@ public:
   virtual void init();
   virtual SEXP operate();
   virtual GEOSGeometry* operateNext(GEOSGeometry* geometry) = 0;
-  virtual SEXP finish();
+  virtual void finish();
 
   virtual size_t size();
+
+private:
+  void initBase();
+  SEXP finishBase();
 };
+
+// --- identity operator
 
 class IdentityOperator: public UnaryGeometryOperator {
 public:
   IdentityOperator(GeometryProvider* provider, GeometryExporter* exporter);
   GEOSGeometry* operateNext(GEOSGeometry* geometry);
+};
+
+// --- buffer operator
+
+class BufferOperator: public UnaryGeometryOperator {
+public:
+  double width;
+  int quadSegs;
+  int endCapStyle;
+  int joinStyle;
+  double mitreLimit;
+  int singleSided;
+  GEOSBufferParams* params;
+
+  BufferOperator(GeometryProvider* provider, GeometryExporter* exporter,
+                 double width, int quadSegs,
+                 int endCapStyle, int joinStyle, double mitreLimit,
+                 int singleSided);
+  void init();
+  GEOSGeometry* operateNext(GEOSGeometry* geometry);
+  void finish();
+};
+
+// ------------- binary operators ----------------
+
+class BinaryGeometryOperator {
+public:
+  GeometryProvider* providerLeft;
+  GeometryProvider* providerRight;
+  GeometryExporter* exporter;
+  GEOSContextHandle_t context;
+
+  BinaryGeometryOperator(GeometryProvider* providerLeft,
+                         GeometryProvider* providerRight,
+                         GeometryExporter* exporter);
+
+  virtual void init();
+  virtual SEXP operate();
+  virtual GEOSGeometry* operateNext(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight) = 0;
+  virtual SEXP finish();
+
+  virtual size_t size();
 };
 
 #endif

@@ -5,6 +5,10 @@ geomcpp_convert <- function(data, ptype) {
     .Call(`_geom_geomcpp_convert`, data, ptype)
 }
 
+geomcpp_buffer <- function(data, ptype, width, quadSegs, endCapStyle, joinStyle, mitreLimit, singleSided) {
+    .Call(`_geom_geomcpp_buffer`, data, ptype, width, quadSegs, endCapStyle, joinStyle, mitreLimit, singleSided)
+}
+
 geomcpp_validate_provider <- function(data) {
     .Call(`_geom_geomcpp_validate_provider`, data)
 }
