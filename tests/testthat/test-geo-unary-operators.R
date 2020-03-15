@@ -114,11 +114,9 @@ test_that("error occurs with unknown object in conversions", {
 
 test_that("geo_buffer works", {
   point <- geo_wkt("POINT (0 0)")
-  result <- geo_buffer(point, 1, quad_segs = 1)
-
-  # TODO better test for geom buffer
-  expect_length(result, 1)
-  expect_is(result, "geo_wkt")
+  result <- geo_buffer(point, 1, quad_segs = 2, to = geo_tbl())
+  expect_equal(max(field(field(result, "xy"), "x")), 1)
+  expect_equal(min(field(field(result, "xy"), "x")), -1)
+  expect_equal(max(field(field(result, "xy"), "y")), 1)
+  expect_equal(min(field(field(result, "xy"), "y")), -1)
 })
-
-
