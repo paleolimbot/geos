@@ -13,9 +13,9 @@ geo_ptype(x)
 
 \method{geo_ptype}{default}(x)
 
-geo_restore(x, to)
+geo_restore(to, x)
 
-\method{geo_restore}{default}(x, to)
+\method{geo_restore}{default}(to, x)
 
 geo_cast(x, to)
 

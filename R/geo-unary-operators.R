@@ -1,4 +1,14 @@
 
+#' Convert a geometry to a different data structure
+#'
+#' @inheritParams geo_ptype
+#'
+#' @return A geometry vector, in the format defined by `to`.
+#'
+geo_convert <- function(x, to) {
+  geo_restore(to, geomcpp_convert(x, to))
+}
+
 #' Buffer a geometry
 #'
 #' @inheritParams geo_ptype
@@ -37,5 +47,5 @@ geo_buffer <- function(x, width, quad_segs = 30,
     singleSided = single_sided
   )
 
-  geo_restore(result, to)
+  geo_restore(to, result)
 }

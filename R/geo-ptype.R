@@ -27,13 +27,13 @@ geo_ptype.default <- function(x) {
 
 #' @rdname geo_ptype
 #' @export
-geo_restore <- function(x, to) {
+geo_restore <- function(to, x) {
   UseMethod("geo_restore")
 }
 
 #' @rdname geo_ptype
 #' @export
-geo_restore.default <- function(x, to) {
+geo_restore.default <- function(to, x) {
   vec_restore(x, to)
 }
 

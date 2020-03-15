@@ -164,7 +164,7 @@ vec_cast.list.geo_tbl <- function(x, to, ...) {
 }
 
 #' @export
-geo_restore.nested_geo_tbl <- function(x, to) {
+geo_restore.geo_tbl <- function(to, x) {
   # the C++ data structure  for these is list() of geo_tbls
   vec_c(!!!x)
 }
