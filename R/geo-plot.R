@@ -62,18 +62,21 @@ geo_plot_add <- function(x, ...) {
 
 #' @importFrom graphics plot
 #' @rdname geo_plot
+#' @export
 plot.geo_tbl <- function(x, ...) {
   geo_plot(x, ...)
 }
 
 #' @importFrom graphics plot
 #' @rdname geo_plot
+#' @export
 plot.geo_wkt <- function(x, ...) {
   geo_plot(x, ...)
 }
 
 #' @importFrom graphics plot
 #' @rdname geo_plot
+#' @export
 plot.geo_wkb <- function(x, ...) {
   geo_plot(x, ...)
 }
@@ -82,7 +85,7 @@ plot.geo_wkb <- function(x, ...) {
 #' @export
 geo_plot_add.default <- function(x, ...) {
   tbl <- geo_convert_geo_tbl_lazy(x)
-  geo_plot(tbl)
+  geo_plot_add(tbl)
   invisible(x)
 }
 
