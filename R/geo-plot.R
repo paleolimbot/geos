@@ -33,7 +33,7 @@
 geo_plot <- function(x, ..., asp = 1, xlim = NULL, ylim = NULL, xlab = "", ylab = "") {
   # until there is a geo_bbox() function
   if (is.null(xlim) || is.null(ylim)) {
-    tbl <- geo_convert(x, geo_tbl())
+    tbl <- geo_convert_geo_tbl_lazy(x)
     xy <- field(tbl, "xy")
     obj <- tbl
   } else {
@@ -81,7 +81,7 @@ plot.geo_wkb <- function(x, ...) {
 #' @rdname geo_plot
 #' @export
 geo_plot_add.default <- function(x, ...) {
-  tbl <- geo_convert(x, geo_tbl())
+  tbl <- geo_convert_geo_tbl_lazy(x)
   geo_plot(tbl)
   invisible(x)
 }
@@ -141,6 +141,15 @@ geo_plot_add.geo_tbl_multipolygon <- function(x, ..., rule = "evenodd") {
     graphics::polypath(field(xy, "x"), field(xy, "y"), ..., rule = rule)
   }
   invisible(x)
+}
+
+# until the laziness of geo_convert is sorted
+geo_convert_geo_tbl_lazy <- function(x) {
+  if (inherits(x, "geo_tbl")) {
+    x
+  } else {
+    geo_convert(x, geo_tbl())
+  }
 }
 
 separate_groups_with_na <- function(x, groups) {
