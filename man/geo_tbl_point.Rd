@@ -26,7 +26,7 @@ geo_tbl_multipolygon(xy, feature = 1L, piece = 1L, part = 1L)
 \item{xy}{A \code{\link[=geo_xy]{geo_xy()}} (or something castable to \code{\link[=geo_xy]{geo_xy()}}) of coordinates}
 
 \item{feature}{An integer ID that whose unique values can
-be used to identify and/or separate features}
+be used to identify and/or separate features.}
 
 \item{part}{An ID used to separate parts within a feature of a multi* geometry}
 
@@ -38,7 +38,13 @@ is assumed to be the outer ring.}
 A vctr
 }
 \description{
-Coordinate-long representations of geometries
+R's graphics use coordinate-long representations of geometries (i.e.,
+one row per coordinate). Additionally, these can be more easily manipulated
+than some other representations of geometry. \strong{Important}: order matters
+when passing a \verb{geo_tbl_*()} to other functions, which assume
+that you use sequential \code{feature}, \code{piece}, and \code{part} values starting at 1.
+Helpers to construct this particular representation of geometry from
+a tibble are in the works.
 }
 \examples{
 geo_tbl_point(geo_xy(30, 10))

@@ -4,6 +4,11 @@
 #' @inheritParams geo_ptype
 #'
 #' @return A geometry vector, in the format defined by `to`.
+#' @export
+#'
+#' @examples
+#' geo_convert(geo_wkt("POINT (20 10)"), geo_wkb())
+#' geo_convert(geo_wkt("POINT (20 10)"), geo_tbl())
 #'
 geo_convert <- function(x, to) {
   geo_restore(to, geomcpp_convert(x, to))
@@ -12,7 +17,8 @@ geo_convert <- function(x, to) {
 #' Buffer a geometry
 #'
 #' @inheritParams geo_ptype
-#' @param width The buffer distance
+#' @param width The buffer distance. "Width" is the GEOS term - it is more
+#'   accurately thought of as "radius" or "half-width".
 #' @param quad_segs The number of segments per quadrant. A higher number
 #'   here will increase the apparent resolution of the resulting polygon.
 #' @param end_cap_style One of "round", "flat", or "square".
@@ -24,6 +30,11 @@ geo_convert <- function(x, to) {
 #'
 #' @return A geometry-like polygon or multipolygon, in the format defined by `to`.
 #' @export
+#'
+#' @examples
+#' point <- geo_wkt("POINT (0 0)")
+#' geo_plot(geo_buffer(point, width = 0.5))
+#' geo_plot_add(point)
 #'
 geo_buffer <- function(x, width, quad_segs = 30,
                        end_cap_style = c("round", "flat", "square"),

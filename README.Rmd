@@ -7,6 +7,7 @@ output: github_document
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
+  dpi =  300,
   comment = "#>",
   fig.path = "man/figures/README-",
   out.width = "100%"
@@ -20,7 +21,7 @@ knitr::opts_chunk$set(
 ![R-CMD-check](https://github.com/paleolimbot/geom/workflows/R-CMD-check/badge.svg)
 <!-- badges: end -->
 
-The goal of geom is to provide low-level access to the GEOS library.
+The goal of geom is to provide [low-level access to the GEOS library](https://geos.osgeo.org/doxygen/geos__c_8h_source.html), supporting several common input/output formats to facilitate geoprocessing in R.
 
 ## Installation
 
@@ -39,9 +40,35 @@ library(geom)
 
 ## Example
 
-Right now the package doesn't do much except between well-known text and well-known binary.
+Right now the package doesn't do much except convert between a few useful input/output formats:
 
 ```{r}
-(wkb <- as_geo_wkb(geo_wkt("POINT (1 0)")))
-as_geo_wkt(wkb)
+geo_convert(geo_wkt("POINT (20 10)"), geo_wkb())
+tibble::as_tibble(geo_convert(geo_wkt("POINT (20 10)"), geo_tbl()))
 ```
+
+The package can do operations from the GEOS library, returing the results in any of the supported output formats:
+
+```{r}
+geo_buffer(
+  geo_wkt("POINT (0 0)"), 
+  width = 0.5, quad_segs = 4, 
+  to = geo_tbl() 
+)
+```
+
+Also, the results can be plotted!
+
+```{r ex-plot}
+point <- geo_wkt("POINT (0 0)")
+geo_plot(geo_buffer(point, width = 0.5))
+geo_plot_add(point)
+```
+
+## Philosophy
+
+- Minimize conversion between in-memory formats
+- Operate one feature at a time
+- Use [vctrs](https://vctrs.r-lib.org/) where possible to make sure that geometry vectors can exist in a data frame.
+- Clear size and type stability
+- Don't consider spatial constraints (That's what [sf](https://r-spatial.github.io/sf) is so good at!)

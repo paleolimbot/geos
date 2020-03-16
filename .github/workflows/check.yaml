@@ -54,6 +54,7 @@ jobs:
         run: |
           /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
           brew install geos
+          brew cask install xquartz
 
       - name: Install system dependencies (Linux)
         if: runner.os == 'Linux'

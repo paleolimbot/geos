@@ -18,7 +18,8 @@ geo_buffer(
 \arguments{
 \item{x}{A geometry-like object}
 
-\item{width}{The buffer distance}
+\item{width}{The buffer distance. "Width" is the GEOS term - it is more
+accurately thought of as "radius" or "half-width".}
 
 \item{quad_segs}{The number of segments per quadrant. A higher number
 here will increase the apparent resolution of the resulting polygon.}
@@ -40,4 +41,10 @@ A geometry-like polygon or multipolygon, in the format defined by \code{to}.
 }
 \description{
 Buffer a geometry
+}
+\examples{
+point <- geo_wkt("POINT (0 0)")
+geo_plot(geo_buffer(point, width = 0.5))
+geo_plot_add(point)
+
 }

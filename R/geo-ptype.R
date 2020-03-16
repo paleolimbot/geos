@@ -36,15 +36,3 @@ geo_restore <- function(to, x) {
 geo_restore.default <- function(to, x) {
   vec_restore(x, to)
 }
-
-#' @rdname geo_ptype
-#' @export
-geo_cast <- function(x, to) {
-  UseMethod("geo_cast")
-}
-
-#' @rdname geo_ptype
-#' @export
-geo_cast.default <- function(x, to) {
-  vec_cast(x, to)
-}

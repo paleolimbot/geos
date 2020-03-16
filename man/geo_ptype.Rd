@@ -5,8 +5,6 @@
 \alias{geo_ptype.default}
 \alias{geo_restore}
 \alias{geo_restore.default}
-\alias{geo_cast}
-\alias{geo_cast.default}
 \title{Geometry-specific coersion}
 \usage{
 geo_ptype(x)
@@ -16,10 +14,6 @@ geo_ptype(x)
 geo_restore(to, x)
 
 \method{geo_restore}{default}(to, x)
-
-geo_cast(x, to)
-
-\method{geo_cast}{default}(x, to)
 }
 \arguments{
 \item{x}{A geometry-like object}

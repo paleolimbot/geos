@@ -112,6 +112,10 @@ test_that("error occurs with unknown object in conversions", {
   expect_error(geomcpp_convert(NULL, new_geo_wkt()), "Can't resolve")
 })
 
+test_that("geo_buffer() returns the same format as the input by default", {
+  expect_is(geo_buffer(geo_wkt("POINT (0 0)"), 1), "geo_wkt")
+})
+
 test_that("geo_buffer works", {
   point <- geo_wkt("POINT (0 0)")
   result <- geo_buffer(point, 1, quad_segs = 2, to = geo_tbl())
