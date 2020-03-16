@@ -23,6 +23,10 @@ stop_for_non_parseable <- function(is_parseable) {
   }
 }
 
+n_distinct <- function(x) {
+  length(unique(x))
+}
+
 rep_len_or_fail <- function(x, template) {
   x_quo <- rlang::enquo(x)
   template_quo <- rlang::enquo(template)

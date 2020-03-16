@@ -1,9 +1,17 @@
 
 #' Coordinate-long representations of geometries
 #'
+#' R's graphics use coordinate-long representations of geometries (i.e.,
+#' one row per coordinate). Additionally, these can be more easily manipulated
+#' than some other representations of geometry. **Important**: order matters
+#' when passing a `geo_tbl_*()` to other functions, which assume
+#' that you use sequential `feature`, `piece`, and `part` values starting at 1.
+#' Helpers to construct this particular representation of geometry from
+#' a tibble are in the works.
+#'
 #' @param xy A [geo_xy()] (or something castable to [geo_xy()]) of coordinates
 #' @param feature An integer ID that whose unique values can
-#'   be used to identify and/or separate features
+#'   be used to identify and/or separate features.
 #' @param piece An ID used to separate rings within polygons. The
 #'   smallest `piece` value within a `feature`/`part` combination
 #'   is assumed to be the outer ring.
