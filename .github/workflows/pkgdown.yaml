@@ -11,6 +11,11 @@ jobs:
       - uses: actions/checkout@master
       - uses: r-lib/actions/setup-r@master
       - uses: r-lib/actions/setup-pandoc@master
+      - name: Install system dependencies (MacOS)
+        if: runner.os == 'MacOS'
+        run: |
+          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+          brew install geos
       - name: Install dependencies
         run: |
           install.packages("remotes")
