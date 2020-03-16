@@ -54,6 +54,7 @@ jobs:
         run: |
           /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
           brew install geos
+          brew cask install xquartz
 
       - name: Install system dependencies (Linux)
         if: runner.os == 'Linux'
@@ -80,8 +81,6 @@ jobs:
 
       - name: Check (not Windows)
         if: runner.os != 'Windows'
-        env:
-          VDIFFR_RUN_TESTS: false
         run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "warning", check_dir = "check")
         shell: Rscript {0}
 
