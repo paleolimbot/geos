@@ -80,6 +80,8 @@ jobs:
 
       - name: Check (not Windows)
         if: runner.os != 'Windows'
+        env:
+          VDIFFR_RUN_TESTS: false
         run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "warning", check_dir = "check")
         shell: Rscript {0}
 
