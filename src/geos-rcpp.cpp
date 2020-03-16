@@ -3,11 +3,12 @@
 // can focus on geom operations
 
 #include "geos-rcpp.h"
+#include "geos-coords.h"
 #include <Rcpp.h>
 
 using namespace Rcpp;
 
-static void __errorHandler(const char *fmt, ...) { // #nocov start
+static void __errorHandler(const char *fmt, ...) {
 
   char buf[BUFSIZ], *p;
   va_list ap;
@@ -20,7 +21,7 @@ static void __errorHandler(const char *fmt, ...) { // #nocov start
   Rcpp::Function error(".stop_geos", Rcpp::Environment::namespace_env("geom"));
   error(buf);
 
-  return; // #nocov end
+  return;
 }
 
 static void __warningHandler(const char *fmt, ...) {
@@ -39,14 +40,12 @@ static void __warningHandler(const char *fmt, ...) {
   return;
 }
 
-// #nocov start
 static void __countErrorHandler(const char *fmt, void *userdata) {
   int *i = (int *) userdata;
   *i = *i + 1;
 }
 
 static void __emptyNoticeHandler(const char *fmt, void *userdata) { }
-// #nocov end
 
 GEOSContextHandle_t geos_init(void) {
 #ifdef HAVE350
@@ -67,12 +66,6 @@ void geos_finish(GEOSContextHandle_t context) {
 #endif
 }
 
-GeomPtr geos_ptr(GEOSGeometry* g, GEOSContextHandle_t context) {
-  auto deleter = std::bind(GEOSGeom_destroy_r, context, std::placeholders::_1);
-  return GeomPtr(g, deleter);
-}
-
-
 // ---------- geometry provider implementations -------------
 
 
@@ -89,12 +82,12 @@ void GeometryProvider::finish() {
 
 // --- base exporter
 
-void GeometryExporter::init(GEOSContextHandle_t context) {
+void GeometryExporter::init(GEOSContextHandle_t context, size_t size) {
   this->context = context;
 }
 
-void GeometryExporter::finish() {
-
+SEXP GeometryExporter::finish() {
+  return R_NilValue;
 }
 
 // --- WKT provider
@@ -129,14 +122,15 @@ size_t WKTGeometryProvider::size() {
 
 // --- WKT exporter
 
-WKTGeometryExporter::WKTGeometryExporter(CharacterVector data) {
-  this->data = data;
+WKTGeometryExporter::WKTGeometryExporter() {
   this->counter = 0;
 }
 
-void WKTGeometryExporter::init(GEOSContextHandle_t context) {
+void WKTGeometryExporter::init(GEOSContextHandle_t context, size_t size) {
   this->context = context;
   this->wkt_writer = GEOSWKTWriter_create_r(context);
+  CharacterVector data(size);
+  this->data = data;
 }
 
 void WKTGeometryExporter::putNext(GEOSGeometry* geometry) {
@@ -146,8 +140,9 @@ void WKTGeometryExporter::putNext(GEOSGeometry* geometry) {
   this->counter = this->counter + 1;
 }
 
-void WKTGeometryExporter::finish() {
+SEXP WKTGeometryExporter::finish() {
   GEOSWKTWriter_destroy_r(this->context, this->wkt_writer);
+  return this->data;
 }
 
 // --- WKB provider
@@ -179,14 +174,15 @@ size_t WKBGeometryProvider::size() {
 
 // --- WKB exporter
 
-WKBGeometryExporter::WKBGeometryExporter(List data) {
-  this->data = data;
+WKBGeometryExporter::WKBGeometryExporter() {
   this->counter = 0;
 }
 
-void WKBGeometryExporter::init(GEOSContextHandle_t context) {
+void WKBGeometryExporter::init(GEOSContextHandle_t context, size_t size) {
   this->context = context;
   this->wkb_writer = GEOSWKBWriter_create_r(context);
+  List data(size);
+  this->data = data;
 }
 
 void WKBGeometryExporter::putNext(GEOSGeometry* geometry) {
@@ -200,8 +196,32 @@ void WKBGeometryExporter::putNext(GEOSGeometry* geometry) {
   this->counter = this->counter + 1;
 }
 
-void WKBGeometryExporter::finish() {
+SEXP WKBGeometryExporter::finish() {
   GEOSWKBWriter_destroy_r(this->context, this->wkb_writer);
+  return data;
+}
+
+// --- nested geotbl exporter
+
+NestedGeoTblExporter::NestedGeoTblExporter() {
+
+}
+
+void NestedGeoTblExporter::init(GEOSContextHandle_t context, size_t size) {
+  List data(size);
+  data.attr("class") = "nested_geo_tbl";
+  this->data = data;
+  this->context = context;
+  this->counter = 0;
+}
+
+void NestedGeoTblExporter::putNext(GEOSGeometry* geometry) {
+  data[this->counter] = geometry_to_geo_tbl(this->context, geometry, this->counter + 1);
+  this->counter = this->counter + 1;
+}
+
+SEXP NestedGeoTblExporter::finish() {
+  return this->data;
 }
 
 // ---------- geometry provider resolvers -------------
@@ -216,6 +236,18 @@ GeometryProvider* resolve_provider(SEXP data) {
   stop("Can't resolve GeometryProvider");
 }
 
+GeometryExporter* resolve_exporter(SEXP ptype) {
+  if (Rf_inherits(ptype, "geo_wkt")) {
+    return new WKTGeometryExporter();
+  } else if(Rf_inherits(ptype, "geo_wkb")) {
+    return new WKBGeometryExporter();
+  } else if(Rf_inherits(ptype, "geo_tbl")) {
+    return new NestedGeoTblExporter();
+  }
+
+  stop("Can't resolve GeometryProvider");
+}
+
 // ------------- unary operators ----------------
 
 UnaryGeometryOperator::UnaryGeometryOperator(GeometryProvider* provider,
@@ -225,19 +257,28 @@ UnaryGeometryOperator::UnaryGeometryOperator(GeometryProvider* provider,
 }
 
 void UnaryGeometryOperator::init() {
-  this->context = geos_init();
-  this->provider->init(this->context);
-  this->exporter->init(this->context);
+
 }
 
-void UnaryGeometryOperator::operate() {
+void UnaryGeometryOperator::initBase() {
+  this->context = geos_init();
+  this->provider->init(this->context);
+  this->exporter->init(this->context, this->provider->size());
+}
+
+SEXP UnaryGeometryOperator::operate() {
+  this->initBase();
   this->init();
 
+  // TODO: there is probably a memory leak here, but
+  // GEOSGeom_destroy_r(this->context, geometry) gives
+  // an error
   GEOSGeometry* geometry;
   GEOSGeometry* result;
 
   try {
     for (int i=0; i < this->size(); i++) {
+      checkUserInterrupt();
       geometry = this->provider->getNext();
       result = this->operateNext(geometry);
       this->exporter->putNext(result);
@@ -248,19 +289,25 @@ void UnaryGeometryOperator::operate() {
   }
 
   this->finish();
+  return this->finishBase();
 }
 
 void UnaryGeometryOperator::finish() {
+
+}
+
+SEXP UnaryGeometryOperator::finishBase() {
   this->provider->finish();
-  this->exporter->finish();
+  SEXP value = this->exporter->finish();
   geos_finish(this->context);
+  return value;
 }
 
 size_t UnaryGeometryOperator::size() {
   return this->provider->size();
 }
 
-// --- idenetity operator
+// --- identity operator
 
 IdentityOperator::IdentityOperator(GeometryProvider* provider, GeometryExporter* exporter) :
   UnaryGeometryOperator(provider, exporter) {
@@ -269,3 +316,99 @@ IdentityOperator::IdentityOperator(GeometryProvider* provider, GeometryExporter*
 GEOSGeometry* IdentityOperator::operateNext(GEOSGeometry* geometry) {
   return geometry;
 }
+
+// --- buffer operator
+
+BufferOperator::BufferOperator(GeometryProvider* provider, GeometryExporter* exporter,
+                               double width, int quadSegs,
+                               int endCapStyle, int joinStyle, double mitreLimit,
+                               int singleSided) :
+  UnaryGeometryOperator(provider, exporter) {
+  this->width = width;
+  this->endCapStyle = endCapStyle;
+  this->joinStyle = joinStyle;
+  this->mitreLimit = mitreLimit;
+  this->quadSegs = quadSegs;
+  this->singleSided = singleSided;
+}
+
+void BufferOperator::init() {
+  this->params = GEOSBufferParams_create_r(this->context);
+  GEOSBufferParams_setEndCapStyle_r(this->context, this->params, this->endCapStyle);
+  GEOSBufferParams_setJoinStyle_r(this->context, this->params, this->joinStyle);
+  GEOSBufferParams_setMitreLimit_r(this->context, this->params, this->mitreLimit);
+  GEOSBufferParams_setQuadrantSegments_r(this->context, this->params, this->quadSegs);
+  GEOSBufferParams_setSingleSided_r(this->context, this->params, this->singleSided);
+}
+
+GEOSGeometry* BufferOperator::operateNext(GEOSGeometry* geometry) {
+  return GEOSBufferWithParams_r(this->context, geometry, this->params, this->width);
+}
+
+void BufferOperator::finish() {
+  GEOSBufferParams_destroy_r(this->context, this->params);
+}
+
+// ------------- binary operators ----------------
+
+BinaryGeometryOperator::BinaryGeometryOperator(GeometryProvider* providerLeft,
+                                               GeometryProvider* providerRight,
+                                               GeometryExporter* exporter) {
+  this->providerLeft = providerLeft;
+  this->providerRight = providerRight;
+  this->exporter = exporter;
+}
+
+void BinaryGeometryOperator::init() {
+  this->context = geos_init();
+  this->providerLeft->init(this->context);
+  this->providerRight->init(this->context);
+
+  // check sizes: left and right must be equal
+  if (this->providerLeft->size() != this->providerRight->size()) {
+    stop("Providers with two different lengths passed to BinaryGeometryOperator");
+  }
+
+  this->exporter->init(this->context, this->providerLeft->size());
+}
+
+SEXP BinaryGeometryOperator::operate() {
+  this->init();
+
+  // TODO: there is probably a memory leak here, but
+  // GEOSGeom_destroy_r(this->context, geometry) gives
+  // an error
+  GEOSGeometry* geometryLeft;
+  GEOSGeometry* geometryRight;
+  GEOSGeometry* result;
+
+  try {
+    for (int i=0; i < this->size(); i++) {
+      checkUserInterrupt();
+      geometryLeft = this->providerLeft->getNext();
+      geometryRight = this->providerRight->getNext();
+      result = this->operateNext(geometryLeft, geometryRight);
+      this->exporter->putNext(result);
+    }
+  } catch(std::exception e) {
+    this->finish();
+    throw e;
+  }
+
+  return this->finish();
+}
+
+SEXP BinaryGeometryOperator::finish() {
+  this->providerLeft->finish();
+  this->providerRight->finish();
+  SEXP value = this->exporter->finish();
+  geos_finish(this->context);
+  return value;
+}
+
+size_t BinaryGeometryOperator::size() {
+  return this->providerLeft->size();
+}
+
+
+

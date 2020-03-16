@@ -2,11 +2,14 @@
 % Please edit documentation in R/geo-tbl.R
 \name{is_geo_tbl}
 \alias{is_geo_tbl}
+\alias{geo_tbl}
 \alias{vec_ptype2.geo_tbl}
 \alias{vec_cast.geo_tbl}
 \title{Generics common to geo_tbl_*() classes}
 \usage{
 is_geo_tbl(x)
+
+geo_tbl()
 
 \method{vec_ptype2}{geo_tbl}(x, y, ...)
 

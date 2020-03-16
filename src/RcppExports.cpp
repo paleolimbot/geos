@@ -5,25 +5,33 @@
 
 using namespace Rcpp;
 
-// geomcpp_convert_wkt
-CharacterVector geomcpp_convert_wkt(SEXP data);
-RcppExport SEXP _geom_geomcpp_convert_wkt(SEXP dataSEXP) {
+// geomcpp_convert
+SEXP geomcpp_convert(SEXP data, SEXP ptype);
+RcppExport SEXP _geom_geomcpp_convert(SEXP dataSEXP, SEXP ptypeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type data(dataSEXP);
-    rcpp_result_gen = Rcpp::wrap(geomcpp_convert_wkt(data));
+    Rcpp::traits::input_parameter< SEXP >::type ptype(ptypeSEXP);
+    rcpp_result_gen = Rcpp::wrap(geomcpp_convert(data, ptype));
     return rcpp_result_gen;
 END_RCPP
 }
-// geomcpp_convert_wkb
-List geomcpp_convert_wkb(SEXP data);
-RcppExport SEXP _geom_geomcpp_convert_wkb(SEXP dataSEXP) {
+// geomcpp_buffer
+SEXP geomcpp_buffer(SEXP data, SEXP ptype, double width, int quadSegs, int endCapStyle, int joinStyle, double mitreLimit, int singleSided);
+RcppExport SEXP _geom_geomcpp_buffer(SEXP dataSEXP, SEXP ptypeSEXP, SEXP widthSEXP, SEXP quadSegsSEXP, SEXP endCapStyleSEXP, SEXP joinStyleSEXP, SEXP mitreLimitSEXP, SEXP singleSidedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type data(dataSEXP);
-    rcpp_result_gen = Rcpp::wrap(geomcpp_convert_wkb(data));
+    Rcpp::traits::input_parameter< SEXP >::type ptype(ptypeSEXP);
+    Rcpp::traits::input_parameter< double >::type width(widthSEXP);
+    Rcpp::traits::input_parameter< int >::type quadSegs(quadSegsSEXP);
+    Rcpp::traits::input_parameter< int >::type endCapStyle(endCapStyleSEXP);
+    Rcpp::traits::input_parameter< int >::type joinStyle(joinStyleSEXP);
+    Rcpp::traits::input_parameter< double >::type mitreLimit(mitreLimitSEXP);
+    Rcpp::traits::input_parameter< int >::type singleSided(singleSidedSEXP);
+    rcpp_result_gen = Rcpp::wrap(geomcpp_buffer(data, ptype, width, quadSegs, endCapStyle, joinStyle, mitreLimit, singleSided));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -59,8 +67,8 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_geom_geomcpp_convert_wkt", (DL_FUNC) &_geom_geomcpp_convert_wkt, 1},
-    {"_geom_geomcpp_convert_wkb", (DL_FUNC) &_geom_geomcpp_convert_wkb, 1},
+    {"_geom_geomcpp_convert", (DL_FUNC) &_geom_geomcpp_convert, 2},
+    {"_geom_geomcpp_buffer", (DL_FUNC) &_geom_geomcpp_buffer, 8},
     {"_geom_geomcpp_validate_provider", (DL_FUNC) &_geom_geomcpp_validate_provider, 1},
     {"_geom_geos_version_impl", (DL_FUNC) &_geom_geos_version_impl, 0},
     {"_geom_geos_test_throw_error", (DL_FUNC) &_geom_geos_test_throw_error, 0},
