@@ -9,6 +9,10 @@ geomcpp_test_throw_error <- function() {
     invisible(.Call(`_geom_geomcpp_test_throw_error`))
 }
 
+geomcpp_intersection <- function(dataLeft, dataRight, ptype) {
+    .Call(`_geom_geomcpp_intersection`, dataLeft, dataRight, ptype)
+}
+
 geomcpp_buffer <- function(data, ptype, width, quadSegs, endCapStyle, joinStyle, mitreLimit, singleSided) {
     .Call(`_geom_geomcpp_buffer`, data, ptype, width, quadSegs, endCapStyle, joinStyle, mitreLimit, singleSided)
 }

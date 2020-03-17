@@ -24,6 +24,19 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
+// geomcpp_intersection
+SEXP geomcpp_intersection(SEXP dataLeft, SEXP dataRight, SEXP ptype);
+RcppExport SEXP _geom_geomcpp_intersection(SEXP dataLeftSEXP, SEXP dataRightSEXP, SEXP ptypeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type dataLeft(dataLeftSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type dataRight(dataRightSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type ptype(ptypeSEXP);
+    rcpp_result_gen = Rcpp::wrap(geomcpp_intersection(dataLeft, dataRight, ptype));
+    return rcpp_result_gen;
+END_RCPP
+}
 // geomcpp_buffer
 SEXP geomcpp_buffer(SEXP data, SEXP ptype, double width, int quadSegs, int endCapStyle, int joinStyle, double mitreLimit, int singleSided);
 RcppExport SEXP _geom_geomcpp_buffer(SEXP dataSEXP, SEXP ptypeSEXP, SEXP widthSEXP, SEXP quadSegsSEXP, SEXP endCapStyleSEXP, SEXP joinStyleSEXP, SEXP mitreLimitSEXP, SEXP singleSidedSEXP) {
@@ -69,6 +82,7 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_geom_geomcpp_version_impl", (DL_FUNC) &_geom_geomcpp_version_impl, 0},
     {"_geom_geomcpp_test_throw_error", (DL_FUNC) &_geom_geomcpp_test_throw_error, 0},
+    {"_geom_geomcpp_intersection", (DL_FUNC) &_geom_geomcpp_intersection, 3},
     {"_geom_geomcpp_buffer", (DL_FUNC) &_geom_geomcpp_buffer, 8},
     {"_geom_geomcpp_convert", (DL_FUNC) &_geom_geomcpp_convert, 2},
     {"_geom_geomcpp_validate_provider", (DL_FUNC) &_geom_geomcpp_validate_provider, 1},

@@ -4,6 +4,15 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 
+// [[Rcpp::export]]
+SEXP geomcpp_intersection(SEXP dataLeft, SEXP dataRight, SEXP ptype) {
+  GeometryProvider* providerLeft = resolve_provider(dataLeft);
+  GeometryProvider* providerRight = resolve_provider(dataRight);
+  GeometryExporter* exporter = resolve_exporter(ptype);
+
+  IntersectionOperator* op = new IntersectionOperator(providerLeft, providerRight, exporter);
+  return op->operate();
+}
 
 // ------------- binary operators ----------------
 
@@ -64,4 +73,16 @@ SEXP BinaryGeometryOperator::finish() {
 
 size_t BinaryGeometryOperator::size() {
   return this->providerLeft->size();
+}
+
+// --- intersection!
+
+IntersectionOperator::IntersectionOperator(GeometryProvider* providerLeft,
+                                           GeometryProvider* providerRight,
+                                           GeometryExporter* exporter) :
+  BinaryGeometryOperator(providerLeft, providerRight, exporter) {
+}
+
+GEOSGeometry* IntersectionOperator::operateNext(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight) {
+  return GEOSIntersection_r(this->context, geometryLeft, geometryRight);
 }
