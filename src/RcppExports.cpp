@@ -5,22 +5,22 @@
 
 using namespace Rcpp;
 
-// geos_version_impl
-std::string geos_version_impl();
-RcppExport SEXP _geom_geos_version_impl() {
+// geomcpp_version_impl
+std::string geomcpp_version_impl();
+RcppExport SEXP _geom_geomcpp_version_impl() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(geos_version_impl());
+    rcpp_result_gen = Rcpp::wrap(geomcpp_version_impl());
     return rcpp_result_gen;
 END_RCPP
 }
-// geos_test_throw_error
-void geos_test_throw_error();
-RcppExport SEXP _geom_geos_test_throw_error() {
+// geomcpp_test_throw_error
+void geomcpp_test_throw_error();
+RcppExport SEXP _geom_geomcpp_test_throw_error() {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
-    geos_test_throw_error();
+    geomcpp_test_throw_error();
     return R_NilValue;
 END_RCPP
 }
@@ -67,8 +67,8 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_geom_geos_version_impl", (DL_FUNC) &_geom_geos_version_impl, 0},
-    {"_geom_geos_test_throw_error", (DL_FUNC) &_geom_geos_test_throw_error, 0},
+    {"_geom_geomcpp_version_impl", (DL_FUNC) &_geom_geomcpp_version_impl, 0},
+    {"_geom_geomcpp_test_throw_error", (DL_FUNC) &_geom_geomcpp_test_throw_error, 0},
     {"_geom_geomcpp_buffer", (DL_FUNC) &_geom_geomcpp_buffer, 8},
     {"_geom_geomcpp_convert", (DL_FUNC) &_geom_geomcpp_convert, 2},
     {"_geom_geomcpp_validate_provider", (DL_FUNC) &_geom_geomcpp_validate_provider, 1},

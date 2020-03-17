@@ -7,5 +7,5 @@ test_that("geos_version works", {
 
 test_that("GEOS errors are properly thrown", {
   skip("Don't know how to get .stop_geos() called")
-  expect_error(geos_test_throw_error(), class = "geos_error")
+  expect_error(geomcpp_test_throw_error(), class = "geos_error")
 })
