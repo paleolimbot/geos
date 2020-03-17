@@ -17,6 +17,7 @@ public:
   GeometryProvider* providerRight;
   GeometryExporter* exporter;
   GEOSContextHandle_t context;
+  int commonSize;
 
   BinaryGeometryOperator(GeometryProvider* providerLeft,
                          GeometryProvider* providerRight,

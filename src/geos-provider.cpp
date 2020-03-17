@@ -40,6 +40,12 @@ void WKTGeometryProvider::init(GEOSContextHandle_t context) {
 }
 
 GEOSGeometry* WKTGeometryProvider::getNext() {
+  if (this->counter == this->size() && this->size() == 1) {
+    this->counter = 0;
+  } else if(this->counter == this->size()) {
+    stop("Illegal recycle of WKTProvider");
+  }
+
   GEOSGeometry* geometry = GEOSWKTReader_read_r(
     this->context,
     this->wkt_reader,
@@ -95,6 +101,12 @@ void WKBGeometryProvider::init(GEOSContextHandle_t context) {
 }
 
 GEOSGeometry* WKBGeometryProvider::getNext() {
+  if (this->counter == this->size() && this->size() == 1) {
+    this->counter = 0;
+  } else if(this->counter == this->size()) {
+    stop("Illegal recycle of WKTProvider");
+  }
+
   RawVector r = this->data[this->counter];
   GEOSGeometry* geometry = GEOSWKBReader_read_r(context, this->wkb_reader, &(r[0]), r.size());
   this->counter = this->counter + 1;

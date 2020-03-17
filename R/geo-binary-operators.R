@@ -2,7 +2,8 @@
 #' Intersect two geometry vectors
 #'
 #' @inheritParams geo_ptype
-#' @param y A geometry-like object
+#' @param y A geometry-like object. `x` and `y` of length 1
+#'   is recycled to the length of the other (like [tibble::tibble()]).
 #'
 #' @return A geometry-like object, in the format defined by `to`.
 #' @export

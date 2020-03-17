@@ -9,3 +9,21 @@ test_that("intersection works", {
   expect_identical(range(field(field(result, "xy"), "x")), c(5, 10))
   expect_identical(range(field(field(result, "xy"), "y")), c(5, 10))
 })
+
+test_that("intersection recycles geometry vectors", {
+  result1 <- geo_intersection(
+    geo_wkt("POINT (5 5)"),
+    rep(geo_wkt("POLYGON ((5 5, 5 15, 10 15, 15 5, 5 5))"), 5)
+  )
+
+  result2 <- geo_intersection(
+    rep(geo_wkt("POLYGON ((5 5, 5 15, 10 15, 15 5, 5 5))"), 5),
+    geo_wkt("POINT (5 5)")
+  )
+
+  expect_identical(result1, result2)
+
+  # the "zero length when anything is zero" behaviour mimics tibble::tibble()
+  expect_identical(geo_intersection(geo_wkt("POINT (5 5)"), geo_wkt()), geo_wkt())
+  expect_identical(geo_intersection(geo_wkt(), geo_wkt("POINT (5 5)")), geo_wkt())
+})

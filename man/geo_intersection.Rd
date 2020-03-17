@@ -9,7 +9,8 @@ geo_intersection(x, y, to = geo_ptype(x))
 \arguments{
 \item{x}{A geometry-like object}
 
-\item{y}{A geometry-like object}
+\item{y}{A geometry-like object. \code{x} and \code{y} of length 1
+is recycled to the length of the other (like \code{\link[tibble:tibble]{tibble::tibble()}}).}
 
 \item{to}{A prototype created by \code{\link[=geo_ptype]{geo_ptype()}}}
 }

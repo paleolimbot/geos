@@ -29,12 +29,20 @@ void BinaryGeometryOperator::init() {
   this->providerLeft->init(this->context);
   this->providerRight->init(this->context);
 
-  // check sizes: left and right must be equal
-  if (this->providerLeft->size() != this->providerRight->size()) {
-    stop("Providers with two different lengths passed to BinaryGeometryOperator");
+  // check sizes
+  if (this->providerLeft->size() == 0 || this->providerRight->size() == 0) {
+    this->commonSize = 0;
+  } else if(this->providerLeft->size() == 1) {
+    this->commonSize = this->providerRight->size();
+  } else if(this->providerRight->size() == 1) {
+    this->commonSize = this->providerLeft->size();
+  } else if(this->providerLeft->size() == this->providerRight->size()) {
+    this->commonSize = this->providerLeft->size();
+  } else {
+    stop("Providers with incompatible lengths passed to BinaryGeometryOperator");
   }
 
-  this->exporter->init(this->context, this->providerLeft->size());
+  this->exporter->init(this->context, this->commonSize);
 }
 
 SEXP BinaryGeometryOperator::operate() {
@@ -72,7 +80,7 @@ SEXP BinaryGeometryOperator::finish() {
 }
 
 size_t BinaryGeometryOperator::size() {
-  return this->providerLeft->size();
+  return this->commonSize;
 }
 
 // --- intersection!
