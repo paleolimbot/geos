@@ -85,7 +85,7 @@ plot.geo_wkb <- function(x, ...) {
 #' @export
 geo_plot_add.default <- function(x, ...) {
   tbl <- geo_convert_geo_tbl_lazy(x)
-  geo_plot_add(tbl)
+  geo_plot_add(tbl, ...)
   invisible(x)
 }
 
