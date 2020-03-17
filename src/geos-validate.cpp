@@ -1,5 +1,6 @@
 
-#include "geos-rcpp.h"
+#include "geos-base.h"
+#include "geos-provider.h"
 #include <Rcpp.h>
 using namespace Rcpp;
 

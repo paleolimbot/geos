@@ -1,5 +1,5 @@
 
-#include "geos-rcpp.h"
+#include "geos-base.h"
 #include <Rcpp.h>
 
 // [[Rcpp::export]]

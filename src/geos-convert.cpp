@@ -1,5 +1,7 @@
 
-#include "geos-rcpp.h"
+#include "geos-base.h"
+#include "geos-provider.h"
+#include "geos-unary-operators.h"
 #include <Rcpp.h>
 using namespace Rcpp;
 
