@@ -91,7 +91,10 @@ test_that("geo_tbl_polygon conversion works", {
 
 test_that("geo_tbl_multi_polygon conversion works", {
   tbl <- geo_convert(
-    geo_wkt("MULTIPOLYGON (((40 40, 20 45, 45 30, 40 40)), ((20 35, 10 30, 10 10, 30 5, 45 20, 20 35), (30 20, 20 15, 20 25, 30 20)))"),
+    geo_wkt(
+    "MULTIPOLYGON (((40 40, 20 45, 45 30, 40 40)),
+            ((20 35, 10 30, 10 10, 30 5, 45 20, 20 35), (30 20, 20 15, 20 25, 30 20)))
+    "),
     geo_tbl()
   )
 
@@ -106,6 +109,11 @@ test_that("geo_tbl_multi_polygon conversion works", {
       piece = c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2)
     )
   )
+})
+
+test_that("empty geometrycollections can  be converted to a geotbl", {
+  skip("geometrycollections not implemented but should be")
+  geo_convert(geo_wkt("GEOMETRYCOLLECTION EMPTY"), geo_tbl())
 })
 
 test_that("error occurs with unknown object in conversions", {

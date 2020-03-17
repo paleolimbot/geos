@@ -98,6 +98,9 @@ List geometry_to_geo_tbl(GEOSContextHandle_t context, GEOSGeometry* geometry, in
   } else if(type == GEOSGeomTypes::GEOS_MULTIPOLYGON) {
     return multipolygon_to_geo_tbl(context, geometry, feature);
 
+  } else if(type == GEOSGeomTypes::GEOS_GEOMETRYCOLLECTION) {
+    return geometrycollection_to_tbl(context, geometry, feature);
+
   } else {
     stop("Can only convert point, linestring, polygon, and multi- variants to a geo_tbl");
   }
@@ -216,4 +219,18 @@ List multipolygon_to_geo_tbl(GEOSContextHandle_t context, GEOSGeometry* geometry
   }
 
   return geo_tbl_reclass(new_geo_tbl(xVec, yVec, partVec, piece, feature), "geo_tbl_multipolygon");
+}
+
+List geometrycollection_to_tbl(GEOSContextHandle_t context, GEOSGeometry* geometry, int feature) {
+  // an empty collection is often returned in binary operations, so it is useful to handle this
+  // case
+  int nCoordinates = GEOSGetNumCoordinates_r(context, geometry);
+  if (nCoordinates == 0) {
+    return geo_tbl_reclass(
+      new_geo_tbl(NumericVector::create(), NumericVector::create(), feature),
+      "geo_tbl_point"
+    );
+  } else {
+    stop("Can't create a geo_tbl_geometrycollection()");
+  }
 }
