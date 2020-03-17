@@ -11,6 +11,8 @@ SEXP geomcpp_buffer(SEXP data, SEXP ptype, double width, int quadSegs,
                     int endCapStyle, int joinStyle, double mitreLimit,
                     int singleSided);
 
+SEXP geomcpp_convert(SEXP data, SEXP ptype);
+
 // ------------- unary operators ----------------
 
 class UnaryGeometryOperator {

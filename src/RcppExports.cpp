@@ -5,16 +5,23 @@
 
 using namespace Rcpp;
 
-// geomcpp_convert
-SEXP geomcpp_convert(SEXP data, SEXP ptype);
-RcppExport SEXP _geom_geomcpp_convert(SEXP dataSEXP, SEXP ptypeSEXP) {
+// geos_version_impl
+std::string geos_version_impl();
+RcppExport SEXP _geom_geos_version_impl() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type ptype(ptypeSEXP);
-    rcpp_result_gen = Rcpp::wrap(geomcpp_convert(data, ptype));
+    rcpp_result_gen = Rcpp::wrap(geos_version_impl());
     return rcpp_result_gen;
+END_RCPP
+}
+// geos_test_throw_error
+void geos_test_throw_error();
+RcppExport SEXP _geom_geos_test_throw_error() {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    geos_test_throw_error();
+    return R_NilValue;
 END_RCPP
 }
 // geomcpp_buffer
@@ -35,6 +42,18 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// geomcpp_convert
+SEXP geomcpp_convert(SEXP data, SEXP ptype);
+RcppExport SEXP _geom_geomcpp_convert(SEXP dataSEXP, SEXP ptypeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type ptype(ptypeSEXP);
+    rcpp_result_gen = Rcpp::wrap(geomcpp_convert(data, ptype));
+    return rcpp_result_gen;
+END_RCPP
+}
 // geomcpp_validate_provider
 LogicalVector geomcpp_validate_provider(SEXP data);
 RcppExport SEXP _geom_geomcpp_validate_provider(SEXP dataSEXP) {
@@ -46,32 +65,13 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// geos_version_impl
-std::string geos_version_impl();
-RcppExport SEXP _geom_geos_version_impl() {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(geos_version_impl());
-    return rcpp_result_gen;
-END_RCPP
-}
-// geos_test_throw_error
-void geos_test_throw_error();
-RcppExport SEXP _geom_geos_test_throw_error() {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    geos_test_throw_error();
-    return R_NilValue;
-END_RCPP
-}
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_geom_geomcpp_convert", (DL_FUNC) &_geom_geomcpp_convert, 2},
-    {"_geom_geomcpp_buffer", (DL_FUNC) &_geom_geomcpp_buffer, 8},
-    {"_geom_geomcpp_validate_provider", (DL_FUNC) &_geom_geomcpp_validate_provider, 1},
     {"_geom_geos_version_impl", (DL_FUNC) &_geom_geos_version_impl, 0},
     {"_geom_geos_test_throw_error", (DL_FUNC) &_geom_geos_test_throw_error, 0},
+    {"_geom_geomcpp_buffer", (DL_FUNC) &_geom_geomcpp_buffer, 8},
+    {"_geom_geomcpp_convert", (DL_FUNC) &_geom_geomcpp_convert, 2},
+    {"_geom_geomcpp_validate_provider", (DL_FUNC) &_geom_geomcpp_validate_provider, 1},
     {NULL, NULL, 0}
 };
 

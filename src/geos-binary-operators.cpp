@@ -65,5 +65,3 @@ SEXP BinaryGeometryOperator::finish() {
 size_t BinaryGeometryOperator::size() {
   return this->providerLeft->size();
 }
-
-
