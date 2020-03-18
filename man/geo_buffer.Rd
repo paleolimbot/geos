@@ -40,7 +40,7 @@ of the geometry.}
 A geometry-like polygon or multipolygon, in the format defined by \code{to}.
 }
 \description{
-Buffer a geometry
+Vectorized along \code{x} and \code{width}.
 }
 \examples{
 point <- geo_wkt("POINT (0 0)")
