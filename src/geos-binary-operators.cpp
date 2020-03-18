@@ -10,21 +10,25 @@ SEXP geomcpp_intersection(SEXP dataLeft, SEXP dataRight, SEXP ptype) {
   GeometryProvider* providerRight = resolve_provider(dataRight);
   GeometryExporter* exporter = resolve_exporter(ptype);
 
-  IntersectionOperator* op = new IntersectionOperator(providerLeft, providerRight, exporter);
-  return op->operate();
+  IntersectionOperator* op = new IntersectionOperator();
+  op->initProvider(providerLeft, providerRight, exporter);
+  SEXP result = op->operate();
+  op->finishProvider();
+
+  return result;
 }
 
 // ------------- binary operators ----------------
 
-BinaryGeometryOperator::BinaryGeometryOperator(GeometryProvider* providerLeft,
-                                               GeometryProvider* providerRight,
-                                               GeometryExporter* exporter) {
+void BinaryGeometryOperator::initProvider(GeometryProvider* providerLeft,
+                                          GeometryProvider* providerRight,
+                                          GeometryExporter* exporter) {
   this->providerLeft = providerLeft;
   this->providerRight = providerRight;
   this->exporter = exporter;
 }
 
-void BinaryGeometryOperator::init() {
+void BinaryGeometryOperator::initBase() {
   this->context = geos_init();
   this->providerLeft->init(this->context);
   this->providerRight->init(this->context);
@@ -45,7 +49,12 @@ void BinaryGeometryOperator::init() {
   this->exporter->init(this->context, this->commonSize);
 }
 
+void BinaryGeometryOperator::init() {
+
+}
+
 SEXP BinaryGeometryOperator::operate() {
+  this->initBase();
   this->init();
 
   // TODO: there is probably a memory leak here, but
@@ -68,10 +77,15 @@ SEXP BinaryGeometryOperator::operate() {
     throw e;
   }
 
-  return this->finish();
+  this->finish();
+  return this->finishBase();
 }
 
-SEXP BinaryGeometryOperator::finish() {
+void BinaryGeometryOperator::finish() {
+
+}
+
+SEXP BinaryGeometryOperator::finishBase() {
   this->providerLeft->finish();
   this->providerRight->finish();
   SEXP value = this->exporter->finish();
@@ -79,17 +93,15 @@ SEXP BinaryGeometryOperator::finish() {
   return value;
 }
 
+void BinaryGeometryOperator::finishProvider() {
+
+}
+
 size_t BinaryGeometryOperator::size() {
   return this->commonSize;
 }
 
 // --- intersection!
-
-IntersectionOperator::IntersectionOperator(GeometryProvider* providerLeft,
-                                           GeometryProvider* providerRight,
-                                           GeometryExporter* exporter) :
-  BinaryGeometryOperator(providerLeft, providerRight, exporter) {
-}
 
 GEOSGeometry* IntersectionOperator::operateNext(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight) {
   return GEOSIntersection_r(this->context, geometryLeft, geometryRight);

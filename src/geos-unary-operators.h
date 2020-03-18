@@ -21,12 +21,12 @@ public:
   GeometryExporter* exporter;
   GEOSContextHandle_t context;
 
-  UnaryGeometryOperator(GeometryProvider* provider, GeometryExporter* exporter);
-
+  virtual void initProvider(GeometryProvider* provider, GeometryExporter* exporter);
   virtual void init();
   virtual SEXP operate();
   virtual GEOSGeometry* operateNext(GEOSGeometry* geometry) = 0;
   virtual void finish();
+  virtual void finishProvider();
 
   virtual size_t size();
 
@@ -39,7 +39,6 @@ private:
 
 class IdentityOperator: public UnaryGeometryOperator {
 public:
-  IdentityOperator(GeometryProvider* provider, GeometryExporter* exporter);
   GEOSGeometry* operateNext(GEOSGeometry* geometry);
 };
 
@@ -55,8 +54,7 @@ public:
   int singleSided;
   GEOSBufferParams* params;
 
-  BufferOperator(GeometryProvider* provider, GeometryExporter* exporter,
-                 double width, int quadSegs,
+  BufferOperator(double width, int quadSegs,
                  int endCapStyle, int joinStyle, double mitreLimit,
                  int singleSided);
   void init();

@@ -19,23 +19,24 @@ public:
   GEOSContextHandle_t context;
   int commonSize;
 
-  BinaryGeometryOperator(GeometryProvider* providerLeft,
-                         GeometryProvider* providerRight,
-                         GeometryExporter* exporter);
-
+  virtual void initProvider(GeometryProvider* providerLeft,
+                            GeometryProvider* providerRight,
+                            GeometryExporter* exporter);
   virtual void init();
   virtual SEXP operate();
   virtual GEOSGeometry* operateNext(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight) = 0;
-  virtual SEXP finish();
+  virtual void finish();
+  virtual void finishProvider();
 
   virtual size_t size();
+
+private:
+  void initBase();
+  SEXP finishBase();
 };
 
 class IntersectionOperator: public BinaryGeometryOperator {
 public:
-  IntersectionOperator(GeometryProvider* providerLeft,
-                       GeometryProvider* providerRight,
-                       GeometryExporter* exporter);
   GEOSGeometry* operateNext(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight);
 };
 

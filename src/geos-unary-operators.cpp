@@ -13,12 +13,16 @@ SEXP geomcpp_buffer(SEXP data, SEXP ptype, double width, int quadSegs,
   GeometryExporter* exporter = resolve_exporter(ptype);
 
   BufferOperator* op = new BufferOperator(
-    provider, exporter, width, quadSegs,
+    width, quadSegs,
     endCapStyle, joinStyle, mitreLimit,
     singleSided
   );
 
-  return op->operate();
+  op->initProvider(provider, exporter);
+  SEXP result = op->operate();
+  op->finishProvider();
+
+  return result;
 }
 
 // [[Rcpp::export]]
@@ -26,14 +30,17 @@ SEXP geomcpp_convert(SEXP data, SEXP ptype) {
   GeometryProvider* provider = resolve_provider(data);
   GeometryExporter* exporter = resolve_exporter(ptype);
 
-  IdentityOperator* op = new IdentityOperator(provider, exporter);
-  return op->operate();
+  IdentityOperator* op = new IdentityOperator();
+  op->initProvider(provider, exporter);
+  SEXP result = op->operate();
+  op->finishProvider();
+
+  return result;
 }
 
 // ------------- unary operators ----------------
 
-UnaryGeometryOperator::UnaryGeometryOperator(GeometryProvider* provider,
-                                             GeometryExporter* exporter) {
+void UnaryGeometryOperator::initProvider(GeometryProvider* provider, GeometryExporter* exporter) {
   this->provider = provider;
   this->exporter = exporter;
 }
@@ -85,15 +92,15 @@ SEXP UnaryGeometryOperator::finishBase() {
   return value;
 }
 
+void UnaryGeometryOperator::finishProvider() {
+
+}
+
 size_t UnaryGeometryOperator::size() {
   return this->provider->size();
 }
 
 // --- identity operator
-
-IdentityOperator::IdentityOperator(GeometryProvider* provider, GeometryExporter* exporter) :
-  UnaryGeometryOperator(provider, exporter) {
-}
 
 GEOSGeometry* IdentityOperator::operateNext(GEOSGeometry* geometry) {
   return geometry;
@@ -101,11 +108,9 @@ GEOSGeometry* IdentityOperator::operateNext(GEOSGeometry* geometry) {
 
 // --- buffer operator
 
-BufferOperator::BufferOperator(GeometryProvider* provider, GeometryExporter* exporter,
-                               double width, int quadSegs,
+BufferOperator::BufferOperator(double width, int quadSegs,
                                int endCapStyle, int joinStyle, double mitreLimit,
-                               int singleSided) :
-  UnaryGeometryOperator(provider, exporter) {
+                               int singleSided) {
   this->width = width;
   this->endCapStyle = endCapStyle;
   this->joinStyle = joinStyle;
