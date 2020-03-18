@@ -83,14 +83,14 @@ public:
   SEXP finish();
 };
 
-// --- nested geotbl exporter
+// --- nested GeoCoord exporter
 
-class NestedGeoTblExporter: public GeometryExporter {
+class NestedGeoCoordExporter: public GeometryExporter {
 public:
   List data;
   size_t counter;
 
-  NestedGeoTblExporter();
+  NestedGeoCoordExporter();
   void init(GEOSContextHandle_t context, size_t size);
   void putNext(GEOSGeometry* geometry);
   SEXP finish();

@@ -111,7 +111,7 @@ test_that("geo_coord_multi_polygon conversion works", {
   )
 })
 
-test_that("empty geometrycollections can  be converted to a geotbl", {
+test_that("empty geometrycollections can  be converted to a GeoCoord", {
   skip("geometrycollections not implemented but should be")
   geo_convert(geo_wkt("GEOMETRYCOLLECTION EMPTY"), geo_coord())
 })

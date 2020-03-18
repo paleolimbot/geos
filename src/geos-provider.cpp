@@ -150,13 +150,13 @@ SEXP WKBGeometryExporter::finish() {
   return data;
 }
 
-// --- nested geotbl exporter
+// --- nested GeoCoord exporter
 
-NestedGeoTblExporter::NestedGeoTblExporter() {
+NestedGeoCoordExporter::NestedGeoCoordExporter() {
 
 }
 
-void NestedGeoTblExporter::init(GEOSContextHandle_t context, size_t size) {
+void NestedGeoCoordExporter::init(GEOSContextHandle_t context, size_t size) {
   List data(size);
   data.attr("class") = "nested_geo_coord";
   this->data = data;
@@ -164,12 +164,12 @@ void NestedGeoTblExporter::init(GEOSContextHandle_t context, size_t size) {
   this->counter = 0;
 }
 
-void NestedGeoTblExporter::putNext(GEOSGeometry* geometry) {
+void NestedGeoCoordExporter::putNext(GEOSGeometry* geometry) {
   data[this->counter] = geometry_to_geo_coord(this->context, geometry, this->counter + 1);
   this->counter = this->counter + 1;
 }
 
-SEXP NestedGeoTblExporter::finish() {
+SEXP NestedGeoCoordExporter::finish() {
   return this->data;
 }
 
@@ -191,7 +191,7 @@ GeometryExporter* resolve_exporter(SEXP ptype) {
   } else if(Rf_inherits(ptype, "geo_wkb")) {
     return new WKBGeometryExporter();
   } else if(Rf_inherits(ptype, "geo_coord")) {
-    return new NestedGeoTblExporter();
+    return new NestedGeoCoordExporter();
   }
 
   stop("Can't resolve GeometryProvider");
