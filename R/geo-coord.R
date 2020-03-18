@@ -175,5 +175,9 @@ geo_restore.geo_coord <- function(to, x) {
 
 #' @export
 geo_size.geo_coord <- function(x) {
-  max(field(x, "feature"))
+  if (vec_size(x) > 0) {
+    max(field(x, "feature"))
+  } else {
+    0
+  }
 }

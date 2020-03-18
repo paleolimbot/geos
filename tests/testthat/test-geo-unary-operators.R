@@ -126,6 +126,21 @@ test_that("rect conversion works", {
   )
 })
 
+test_that("xy conversion works", {
+  expect_identical(
+    geo_convert(geo_xy(1:5, 6:10), geo_coord()),
+    geo_coord_point(geo_xy(1:5, 6:10))
+  )
+
+  # handling of NA, NaN (inf handled no prob, apparently)
+  expect_equal(geo_convert(geo_xy(NA, NA), geo_wkt()), geo_wkt("POINT EMPTY"))
+  expect_equal(geo_convert(geo_xy(NA, 1), geo_wkt()), geo_wkt("POINT EMPTY"))
+  expect_equal(geo_convert(geo_xy(1, NA), geo_wkt()), geo_wkt("POINT EMPTY"))
+  expect_equal(geo_convert(geo_xy(NaN, 1), geo_wkt()), geo_wkt("POINT EMPTY"))
+  expect_equal(geo_convert(geo_xy(1, NaN), geo_wkt()), geo_wkt("POINT EMPTY"))
+  expect_equal(geo_convert(geo_xy(NaN, NaN), geo_wkt()), geo_wkt("POINT EMPTY"))
+})
+
 test_that("empty geometrycollections can  be converted to a GeoCoord", {
   skip("geometrycollections not implemented but should be")
   geo_convert(geo_wkt("GEOMETRYCOLLECTION EMPTY"), geo_coord())

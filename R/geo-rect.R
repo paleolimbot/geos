@@ -118,10 +118,10 @@ geo_size.geo_rect <- function(x, ...) {
 
 #' @export
 geo_ptype.geo_rect <- function(x, ...) {
-  # returning a geo_coord() here means that we can use
+  # returning a geo_wkt() here means that we can use
   # a geo_rect() as an input to geometry functions without
   # getting only getting bboxes back
-  geo_coord()
+  geo_wkt()
 }
 
 #' @export

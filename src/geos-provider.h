@@ -109,6 +109,20 @@ public:
   SEXP finish();
 };
 
+// --- XY
+
+class XYProvider: public GeometryProvider {
+public:
+  NumericVector x;
+  NumericVector y;
+  size_t counter;
+
+  XYProvider(NumericVector x, NumericVector y);
+  void init(GEOSContextHandle_t context);
+  GEOSGeometry* getNext();
+  size_t size();
+};
+
 // --- rect exporter
 
 class GeoRectExporter: public GeometryExporter {

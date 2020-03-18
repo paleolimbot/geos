@@ -188,6 +188,40 @@ SEXP NestedGeoCoordExporter::finish() {
   return this->data;
 }
 
+// --- XY
+
+XYProvider::XYProvider(NumericVector x, NumericVector y) {
+  this->x = x;
+  this->y = y;
+}
+
+void XYProvider::init(GEOSContextHandle_t context) {
+  this->context = context;
+  this->counter = 0;
+}
+
+GEOSGeometry* XYProvider::getNext() {
+  GEOSGeometry* geometry;
+
+  if (NumericVector::is_na(x[this->counter]) || NumericVector::is_na(y[this->counter])) {
+    geometry = GEOSGeom_createEmptyPoint_r(this->context);
+  } else {
+    GEOSCoordSequence* seq = GEOSCoordSeq_create_r(this->context, 1, 2);
+    GEOSCoordSeq_setX_r(this->context, seq, 0, x[this->counter]);
+    GEOSCoordSeq_setY_r(this->context, seq, 0, y[this->counter]);
+
+    geometry = GEOSGeom_createPoint_r(this->context, seq);
+  }
+
+  this->counter = this->counter + 1;
+  return geometry;
+}
+
+size_t XYProvider::size() {
+  return (this->x).size();
+}
+
+
 // --- GeoRect exporter
 
 void GeoRectExporter::init(GEOSContextHandle_t context, size_t size) {
@@ -241,6 +275,7 @@ GeometryProvider* resolve_provider(SEXP data) {
     } else {
       return wktProvider;
     }
+
   } else if(Rf_inherits(data, "geo_wkb")) {
     List dataList = (List) data;
     GeometryProvider* wkbProvider = new WKBGeometryProvider(dataList);
@@ -250,6 +285,16 @@ GeometryProvider* resolve_provider(SEXP data) {
       return wkbProvider;
     }
     return new WKBGeometryProvider((List) data);
+  } else if(Rf_inherits(data, "geo_xy")) {
+    List xy = (List) data;
+    NumericVector x = xy["x"];
+    NumericVector y = xy["y"];
+    GeometryProvider* xyProvider = new XYProvider(x, y);
+    if (x.size() ==  1) {
+      return new ConstantGeometryProvider(xyProvider);
+    } else {
+      return xyProvider;
+    }
   }
 
   stop("Can't resolve GeometryProvider");
