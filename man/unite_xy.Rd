@@ -2,14 +2,17 @@
 % Please edit documentation in R/geo-tbl.R
 \name{unite_xy}
 \alias{unite_xy}
+\alias{separate_xy}
 \title{Create geometries from data frames}
 \usage{
 unite_xy(data, col, x, y, remove = TRUE)
+
+separate_xy(data, col, into = c("x", "y"), remove = TRUE)
 }
 \arguments{
 \item{data}{A \code{\link[tibble:tibble]{tibble::tibble()}} or data frame}
 
-\item{col}{A column name as a quoted string}
+\item{col}{A column name for the \code{\link[=geo_xy]{geo_xy()}} object}
 
 \item{x, y}{Column specifications for x and y coordinate
 columns, respectively. Use \code{\link[dplyr:select]{dplyr::select()}} syntax.}
