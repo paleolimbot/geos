@@ -16,6 +16,8 @@ geo_convert <- function(x, to) {
 
 #' Buffer a geometry
 #'
+#' Vectorized along `x` and `width`.
+#'
 #' @inheritParams geo_ptype
 #' @param width The buffer distance. "Width" is the GEOS term - it is more
 #'   accurately thought of as "radius" or "half-width".
@@ -47,6 +49,8 @@ geo_buffer <- function(x, width, quad_segs = 30,
 
   join_style <- match.arg(join_style)
   join_style_int <- match(join_style, c("round", "mitre", "bevel"))
+
+  width <- rep_len_or_fail(width, geo_size(x))
 
   result <- geomcpp_buffer(
     x, to,

@@ -7,7 +7,7 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 
-SEXP geomcpp_buffer(SEXP data, SEXP ptype, double width, int quadSegs,
+SEXP geomcpp_buffer(SEXP data, SEXP ptype, NumericVector width, int quadSegs,
                     int endCapStyle, int joinStyle, double mitreLimit,
                     int singleSided);
 
@@ -20,7 +20,10 @@ public:
   GeometryProvider* provider;
   GeometryExporter* exporter;
   GEOSContextHandle_t context;
+  size_t commonSize;
+  size_t counter;
 
+  virtual size_t maxParameterLength();
   virtual void initProvider(GeometryProvider* provider, GeometryExporter* exporter);
   virtual void init();
   virtual SEXP operate();
@@ -46,7 +49,7 @@ public:
 
 class BufferOperator: public UnaryGeometryOperator {
 public:
-  double width;
+  NumericVector width;
   int quadSegs;
   int endCapStyle;
   int joinStyle;
@@ -54,9 +57,10 @@ public:
   int singleSided;
   GEOSBufferParams* params;
 
-  BufferOperator(double width, int quadSegs,
+  BufferOperator(NumericVector width, int quadSegs,
                  int endCapStyle, int joinStyle, double mitreLimit,
                  int singleSided);
+  size_t maxParameterLength();
   void init();
   GEOSGeometry* operateNext(GEOSGeometry* geometry);
   void finish();

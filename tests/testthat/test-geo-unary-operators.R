@@ -132,3 +132,17 @@ test_that("geo_buffer works", {
   expect_equal(max(field(field(result, "xy"), "y")), 1)
   expect_equal(min(field(field(result, "xy"), "y")), -1)
 })
+
+test_that("geo_buffer is vectorized along 'width'", {
+  point <- geo_wkt(c("POINT (0 0)", "POINT (1 1)"))
+  result1 <- geo_buffer(point, 1, quad_segs = 2)
+  expect_length(result1, 2)
+
+  expect_identical(
+    geo_buffer(point, c(1, 2), quad_segs = 2),
+    c(
+      geo_buffer(point[1], 1, quad_segs = 2),
+      geo_buffer(point[2], 2, quad_segs = 2)
+    )
+  )
+})

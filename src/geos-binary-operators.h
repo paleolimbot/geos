@@ -22,6 +22,7 @@ public:
   virtual void initProvider(GeometryProvider* providerLeft,
                             GeometryProvider* providerRight,
                             GeometryExporter* exporter);
+  virtual size_t maxParameterLength();
   virtual void init();
   virtual SEXP operate();
   virtual GEOSGeometry* operateNext(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight) = 0;

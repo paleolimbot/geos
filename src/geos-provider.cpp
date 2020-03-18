@@ -17,6 +17,33 @@ void GeometryProvider::finish() {
 
 }
 
+// --- constant provider
+
+ConstantGeometryProvider::ConstantGeometryProvider(GeometryProvider* baseProvider) {
+  this->baseProvider = baseProvider;
+}
+
+void ConstantGeometryProvider::init(GEOSContextHandle_t context) {
+  this->context = context;
+  this->baseProvider->init(context);
+  this->geometry = nullptr;
+}
+
+GEOSGeometry* ConstantGeometryProvider::getNext() {
+  if (this->geometry == nullptr) {
+    this->geometry = this->baseProvider->getNext();
+  }
+  return this->geometry;
+}
+
+void ConstantGeometryProvider::finish() {
+  this->baseProvider->finish();
+}
+
+size_t ConstantGeometryProvider::size() {
+  return 1;
+}
+
 // --- base exporter
 
 void GeometryExporter::init(GEOSContextHandle_t context, size_t size) {
@@ -40,12 +67,6 @@ void WKTGeometryProvider::init(GEOSContextHandle_t context) {
 }
 
 GEOSGeometry* WKTGeometryProvider::getNext() {
-  if (this->counter == this->size() && this->size() == 1) {
-    this->counter = 0;
-  } else if(this->counter == this->size()) {
-    stop("Illegal recycle of WKTProvider");
-  }
-
   GEOSGeometry* geometry = GEOSWKTReader_read_r(
     this->context,
     this->wkt_reader,
@@ -101,12 +122,6 @@ void WKBGeometryProvider::init(GEOSContextHandle_t context) {
 }
 
 GEOSGeometry* WKBGeometryProvider::getNext() {
-  if (this->counter == this->size() && this->size() == 1) {
-    this->counter = 0;
-  } else if(this->counter == this->size()) {
-    stop("Illegal recycle of WKTProvider");
-  }
-
   RawVector r = this->data[this->counter];
   GEOSGeometry* geometry = GEOSWKBReader_read_r(context, this->wkb_reader, &(r[0]), r.size());
   this->counter = this->counter + 1;
@@ -177,8 +192,21 @@ SEXP NestedGeoCoordExporter::finish() {
 
 GeometryProvider* resolve_provider(SEXP data) {
   if (Rf_inherits(data, "geo_wkt")) {
-    return new WKTGeometryProvider((CharacterVector) data);
+    CharacterVector dataChar = (CharacterVector) data;
+    GeometryProvider* wktProvider = new WKTGeometryProvider(dataChar);
+    if (dataChar.size() ==  1) {
+      return new ConstantGeometryProvider(wktProvider);
+    } else {
+      return wktProvider;
+    }
   } else if(Rf_inherits(data, "geo_wkb")) {
+    List dataList = (List) data;
+    GeometryProvider* wkbProvider = new WKBGeometryProvider(dataList);
+    if (dataList.size() ==  1) {
+      return new ConstantGeometryProvider(wkbProvider);
+    } else {
+      return wkbProvider;
+    }
     return new WKBGeometryProvider((List) data);
   }
 

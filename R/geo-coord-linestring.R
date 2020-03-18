@@ -6,7 +6,7 @@ geo_coord_linestring <- function(xy, feature = 1L) {
   feature <- vec_cast(feature, integer())
   tbl <- list(
     xy = xy,
-    feature = rep_len_or_fail(feature, xy)
+    feature = rep_along_or_fail(feature, xy)
   )
 
   validate_geo_coord_linestring(tbl)
@@ -21,8 +21,8 @@ geo_coord_multilinestring <- function(xy, feature = 1L, part = 1L) {
   part <- vec_cast(part, integer())
   tbl <- list(
     xy = xy,
-    feature = rep_len_or_fail(feature, xy),
-    part = rep_len_or_fail(part, xy)
+    feature = rep_along_or_fail(feature, xy),
+    part = rep_along_or_fail(part, xy)
   )
 
   validate_geo_coord_multilinestring(tbl)

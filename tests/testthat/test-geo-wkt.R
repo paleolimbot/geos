@@ -6,6 +6,7 @@ test_that("geo_wkt class works", {
   expect_is(wkt, "geo_wkt")
   expect_true(is_geo_wkt(wkt))
   expect_true(vec_is(wkt))
+  expect_equal(geo_size(wkt), 1)
 })
 
 test_that("parse problems for WKT are detected", {

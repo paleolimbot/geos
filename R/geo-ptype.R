@@ -36,3 +36,15 @@ geo_restore <- function(to, x) {
 geo_restore.default <- function(to, x) {
   vec_restore(x, to)
 }
+
+#' @rdname geo_ptype
+#' @export
+geo_size <- function(x) {
+  UseMethod("geo_size")
+}
+
+#' @rdname geo_ptype
+#' @export
+geo_size.default <- function(x) {
+  vec_size(x)
+}

@@ -168,3 +168,8 @@ geo_restore.geo_coord <- function(to, x) {
   # the C++ data structure  for these is list() of geo_coords
   vec_c(!!!x)
 }
+
+#' @export
+geo_size.geo_coord <- function(x) {
+  max(field(x, "feature"))
+}

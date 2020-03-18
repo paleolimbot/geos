@@ -7,8 +7,8 @@ geo_coord_polygon <- function(xy, feature = 1L, piece = 1L) {
   piece <- vec_cast(piece, integer())
   tbl <- list(
     xy = xy,
-    feature = rep_len_or_fail(feature, xy),
-    piece = rep_len_or_fail(piece, xy)
+    feature = rep_along_or_fail(feature, xy),
+    piece = rep_along_or_fail(piece, xy)
   )
 
   validate_geo_coord_polygon(tbl)
@@ -24,9 +24,9 @@ geo_coord_multipolygon <- function(xy, feature = 1L, piece = 1L, part = 1L) {
   part <- vec_cast(part, integer())
   tbl <- list(
     xy = xy,
-    feature = rep_len_or_fail(feature, xy),
-    part = rep_len_or_fail(part, xy),
-    piece = rep_len_or_fail(piece, xy)
+    feature = rep_along_or_fail(feature, xy),
+    part = rep_along_or_fail(part, xy),
+    piece = rep_along_or_fail(piece, xy)
   )
 
   validate_geo_coord_multipolygon(tbl)

@@ -6,7 +6,7 @@
 using namespace Rcpp;
 
 // [[Rcpp::export]]
-SEXP geomcpp_buffer(SEXP data, SEXP ptype, double width, int quadSegs,
+SEXP geomcpp_buffer(SEXP data, SEXP ptype, NumericVector width, int quadSegs,
                     int endCapStyle, int joinStyle, double mitreLimit,
                     int singleSided) {
   GeometryProvider* provider = resolve_provider(data);
@@ -45,6 +45,10 @@ void UnaryGeometryOperator::initProvider(GeometryProvider* provider, GeometryExp
   this->exporter = exporter;
 }
 
+size_t UnaryGeometryOperator::maxParameterLength() {
+  return 1;
+}
+
 void UnaryGeometryOperator::init() {
 
 }
@@ -53,6 +57,24 @@ void UnaryGeometryOperator::initBase() {
   this->context = geos_init();
   this->provider->init(this->context);
   this->exporter->init(this->context, this->provider->size());
+
+  IntegerVector allSizes = IntegerVector::create(
+    this->maxParameterLength(),
+    this->provider->size()
+  );
+
+  IntegerVector nonConstantSizes = allSizes[allSizes != 1];
+  if (nonConstantSizes.size() == 0) {
+    this->commonSize = 1;
+  } else {
+    this->commonSize = nonConstantSizes[0];
+  }
+
+  for (int i=0; i<nonConstantSizes.size(); i++) {
+    if (nonConstantSizes[i] != this->commonSize) {
+      stop("Providers with incompatible lengths passed to BinaryGeometryOperator");
+    }
+  }
 }
 
 SEXP UnaryGeometryOperator::operate() {
@@ -68,6 +90,7 @@ SEXP UnaryGeometryOperator::operate() {
   try {
     for (int i=0; i < this->size(); i++) {
       checkUserInterrupt();
+      this->counter = i;
       geometry = this->provider->getNext();
       result = this->operateNext(geometry);
       this->exporter->putNext(result);
@@ -97,7 +120,7 @@ void UnaryGeometryOperator::finishProvider() {
 }
 
 size_t UnaryGeometryOperator::size() {
-  return this->provider->size();
+  return this->commonSize;
 }
 
 // --- identity operator
@@ -108,7 +131,7 @@ GEOSGeometry* IdentityOperator::operateNext(GEOSGeometry* geometry) {
 
 // --- buffer operator
 
-BufferOperator::BufferOperator(double width, int quadSegs,
+BufferOperator::BufferOperator(NumericVector width, int quadSegs,
                                int endCapStyle, int joinStyle, double mitreLimit,
                                int singleSided) {
   this->width = width;
@@ -117,6 +140,10 @@ BufferOperator::BufferOperator(double width, int quadSegs,
   this->mitreLimit = mitreLimit;
   this->quadSegs = quadSegs;
   this->singleSided = singleSided;
+}
+
+size_t BufferOperator::maxParameterLength() {
+  return (this->width).size();
 }
 
 void BufferOperator::init() {
@@ -129,7 +156,7 @@ void BufferOperator::init() {
 }
 
 GEOSGeometry* BufferOperator::operateNext(GEOSGeometry* geometry) {
-  return GEOSBufferWithParams_r(this->context, geometry, this->params, this->width);
+  return GEOSBufferWithParams_r(this->context, geometry, this->params, this->width[this->counter]);
 }
 
 void BufferOperator::finish() {

@@ -28,22 +28,32 @@ void BinaryGeometryOperator::initProvider(GeometryProvider* providerLeft,
   this->exporter = exporter;
 }
 
+size_t BinaryGeometryOperator::maxParameterLength() {
+  return 1;
+}
+
 void BinaryGeometryOperator::initBase() {
   this->context = geos_init();
   this->providerLeft->init(this->context);
   this->providerRight->init(this->context);
 
-  // check sizes
-  if (this->providerLeft->size() == 0 || this->providerRight->size() == 0) {
-    this->commonSize = 0;
-  } else if(this->providerLeft->size() == 1) {
-    this->commonSize = this->providerRight->size();
-  } else if(this->providerRight->size() == 1) {
-    this->commonSize = this->providerLeft->size();
-  } else if(this->providerLeft->size() == this->providerRight->size()) {
-    this->commonSize = this->providerLeft->size();
+  IntegerVector allSizes = IntegerVector::create(
+    this->maxParameterLength(),
+    this->providerLeft->size(),
+    this->providerRight->size()
+  );
+
+  IntegerVector nonConstantSizes = allSizes[allSizes != 1];
+  if (nonConstantSizes.size() == 0) {
+    this->commonSize = 1;
   } else {
-    stop("Providers with incompatible lengths passed to BinaryGeometryOperator");
+    this->commonSize = nonConstantSizes[0];
+  }
+
+  for (int i=0; i<nonConstantSizes.size(); i++) {
+    if (nonConstantSizes[i] != this->commonSize) {
+      stop("Providers with incompatible lengths passed to BinaryGeometryOperator");
+    }
   }
 
   this->exporter->init(this->context, this->commonSize);

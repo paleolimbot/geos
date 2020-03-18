@@ -29,7 +29,7 @@ geo_coord_point <- function(xy, feature = seq_len(vec_size(xy))) {
   xy <- vec_cast(xy, geo_xy())
   tbl <- list(
     xy = xy,
-    feature = rep_len_or_fail(feature, xy)
+    feature = rep_along_or_fail(feature, xy)
   )
 
   validate_geo_coord_point(tbl)
@@ -43,7 +43,7 @@ geo_coord_multipoint <- function(xy, feature = seq_len(vec_size(xy))) {
   xy <- vec_cast(xy, geo_xy())
   tbl <- list(
     xy = xy,
-    feature = rep_len_or_fail(feature, xy)
+    feature = rep_along_or_fail(feature, xy)
   )
 
   validate_geo_coord_multipoint(tbl)
@@ -114,7 +114,7 @@ print.geo_coord_point <- function(x, ...) {
   cat(
     sprintf(
       "<%s [%s coords, %s features]>\n",
-      class(x)[1], vec_size(x), length(unique(field(x, "feature")))
+      class(x)[1], vec_size(x), geo_size(x)
     )
   )
   print(format(x), ..., quote = FALSE)

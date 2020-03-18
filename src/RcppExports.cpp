@@ -38,14 +38,14 @@ BEGIN_RCPP
 END_RCPP
 }
 // geomcpp_buffer
-SEXP geomcpp_buffer(SEXP data, SEXP ptype, double width, int quadSegs, int endCapStyle, int joinStyle, double mitreLimit, int singleSided);
+SEXP geomcpp_buffer(SEXP data, SEXP ptype, NumericVector width, int quadSegs, int endCapStyle, int joinStyle, double mitreLimit, int singleSided);
 RcppExport SEXP _geom_geomcpp_buffer(SEXP dataSEXP, SEXP ptypeSEXP, SEXP widthSEXP, SEXP quadSegsSEXP, SEXP endCapStyleSEXP, SEXP joinStyleSEXP, SEXP mitreLimitSEXP, SEXP singleSidedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type data(dataSEXP);
     Rcpp::traits::input_parameter< SEXP >::type ptype(ptypeSEXP);
-    Rcpp::traits::input_parameter< double >::type width(widthSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type width(widthSEXP);
     Rcpp::traits::input_parameter< int >::type quadSegs(quadSegsSEXP);
     Rcpp::traits::input_parameter< int >::type endCapStyle(endCapStyleSEXP);
     Rcpp::traits::input_parameter< int >::type joinStyle(joinStyleSEXP);

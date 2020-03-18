@@ -11,6 +11,7 @@ using namespace Rcpp;
 class GeometryProvider {
 public:
   GEOSContextHandle_t context;
+  size_t recycleSize;
 
   virtual void init(GEOSContextHandle_t context);
   virtual GEOSGeometry* getNext() = 0;
@@ -25,6 +26,18 @@ public:
   virtual void init(GEOSContextHandle_t context, size_t size);
   virtual void putNext(GEOSGeometry* geometry) = 0;
   virtual SEXP finish();
+};
+
+class ConstantGeometryProvider: public GeometryProvider {
+public:
+  GeometryProvider* baseProvider;
+  GEOSGeometry* geometry;
+
+  ConstantGeometryProvider(GeometryProvider* baseProvider);
+  void init(GEOSContextHandle_t context);
+  GEOSGeometry* getNext();
+  void finish();
+  size_t size();
 };
 
 using namespace Rcpp;
