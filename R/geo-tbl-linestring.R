@@ -1,7 +1,7 @@
 
-#' @rdname geo_tbl_point
+#' @rdname geo_coord_point
 #' @export
-geo_tbl_linestring <- function(xy, feature = 1L) {
+geo_coord_linestring <- function(xy, feature = 1L) {
   xy <- vec_cast(xy, geo_xy())
   feature <- vec_cast(feature, integer())
   tbl <- list(
@@ -9,13 +9,13 @@ geo_tbl_linestring <- function(xy, feature = 1L) {
     feature = rep_len_or_fail(feature, xy)
   )
 
-  validate_geo_tbl_linestring(tbl)
-  new_geo_tbl_linestring(tbl)
+  validate_geo_coord_linestring(tbl)
+  new_geo_coord_linestring(tbl)
 }
 
-#' @rdname geo_tbl_point
+#' @rdname geo_coord_point
 #' @export
-geo_tbl_multilinestring <- function(xy, feature = 1L, part = 1L) {
+geo_coord_multilinestring <- function(xy, feature = 1L, part = 1L) {
   xy <- vec_cast(xy, geo_xy())
   feature <- vec_cast(feature, integer())
   part <- vec_cast(part, integer())
@@ -25,76 +25,76 @@ geo_tbl_multilinestring <- function(xy, feature = 1L, part = 1L) {
     part = rep_len_or_fail(part, xy)
   )
 
-  validate_geo_tbl_multilinestring(tbl)
-  new_geo_tbl_multilinestring(tbl)
+  validate_geo_coord_multilinestring(tbl)
+  new_geo_coord_multilinestring(tbl)
 }
 
 
 #' S3 Details for (multi)linestring geometries
 #'
-#' @param x A (possibly) [geo_tbl_linestring()] or [geo_tbl_multilinestring()]
+#' @param x A (possibly) [geo_coord_linestring()] or [geo_coord_multilinestring()]
 #' @param ... Unused
 #'
 #' @export
 #'
-new_geo_tbl_linestring <- function(x = list(xy = geo_xy(), feature = integer(0))) {
+new_geo_coord_linestring <- function(x = list(xy = geo_xy(), feature = integer(0))) {
   vec_assert(x$xy, geo_xy())
   vec_assert(x$feature, integer())
-  new_rcrd(x, class = c("geo_tbl_linestring", "geo_tbl"))
+  new_rcrd(x, class = c("geo_coord_linestring", "geo_coord"))
 }
 
-#' @rdname new_geo_tbl_linestring
+#' @rdname new_geo_coord_linestring
 #' @export
-new_geo_tbl_multilinestring <- function(x = list(xy = geo_xy(),
+new_geo_coord_multilinestring <- function(x = list(xy = geo_xy(),
                                                  feature = integer(0),
                                                  part = integer(0))) {
   vec_assert(x$xy, geo_xy())
   vec_assert(x$feature, integer())
   vec_assert(x$part, integer())
-  new_rcrd(x, class = c("geo_tbl_multilinestring", "geo_tbl"))
+  new_rcrd(x, class = c("geo_coord_multilinestring", "geo_coord"))
 }
 
-#' @rdname new_geo_tbl_linestring
+#' @rdname new_geo_coord_linestring
 #' @export
-validate_geo_tbl_linestring <- function(x) {
+validate_geo_coord_linestring <- function(x) {
   # Can't think of validation that is't already done in new*
   invisible(x)
 }
 
-#' @rdname new_geo_tbl_linestring
+#' @rdname new_geo_coord_linestring
 #' @export
-validate_geo_tbl_multilinestring <- function(x) {
+validate_geo_coord_multilinestring <- function(x) {
   # Can't think of any validation that isn't already done in new_*
   invisible(x)
 }
 
-#' @rdname new_geo_tbl_linestring
+#' @rdname new_geo_coord_linestring
 #' @export
-is_geo_tbl_linestring <- function(x) {
-  inherits(x, "geo_tbl_linestring")
+is_geo_coord_linestring <- function(x) {
+  inherits(x, "geo_coord_linestring")
 }
 
-#' @rdname new_geo_tbl_linestring
+#' @rdname new_geo_coord_linestring
 #' @export
-is_geo_tbl_multilinestring <- function(x) {
-  inherits(x, "geo_tbl_multilinestring")
-}
-
-#' @export
-#' @rdname new_geo_tbl_linestring
-format.geo_tbl_linestring <- function(x, ...) {
-  format.geo_tbl_point(x, ...)
+is_geo_coord_multilinestring <- function(x) {
+  inherits(x, "geo_coord_multilinestring")
 }
 
 #' @export
-#' @rdname new_geo_tbl_linestring
-print.geo_tbl_linestring <- function(x, ...) {
-  print.geo_tbl_point(x, ...)
+#' @rdname new_geo_coord_linestring
+format.geo_coord_linestring <- function(x, ...) {
+  format.geo_coord_point(x, ...)
 }
 
 #' @export
-#' @rdname new_geo_tbl_linestring
-format.geo_tbl_multilinestring <- function(x, ...) {
+#' @rdname new_geo_coord_linestring
+print.geo_coord_linestring <- function(x, ...) {
+  print.geo_coord_point(x, ...)
+}
+
+#' @export
+#' @rdname new_geo_coord_linestring
+format.geo_coord_multilinestring <- function(x, ...) {
   sprintf(
     "<feat `%s.%s` %s>",
     field(x, "feature"),
@@ -104,43 +104,43 @@ format.geo_tbl_multilinestring <- function(x, ...) {
 }
 
 #' @export
-#' @rdname new_geo_tbl_linestring
-print.geo_tbl_multilinestring <- function(x, ...) {
-  print.geo_tbl_multipoint(x, ...)
+#' @rdname new_geo_coord_linestring
+print.geo_coord_multilinestring <- function(x, ...) {
+  print.geo_coord_multipoint(x, ...)
 }
 
-#' @rdname new_geo_tbl_linestring
+#' @rdname new_geo_coord_linestring
 #' @export
-vec_ptype_abbr.geo_tbl_linestring <- function(x, ...) {
+vec_ptype_abbr.geo_coord_linestring <- function(x, ...) {
   "tblls"
 }
 
-#' @rdname new_geo_tbl_linestring
+#' @rdname new_geo_coord_linestring
 #' @export
-vec_ptype_abbr.geo_tbl_multilinestring <- function(x, ...) {
+vec_ptype_abbr.geo_coord_multilinestring <- function(x, ...) {
   "tblmls"
 }
 
-#' @rdname new_geo_tbl_linestring
+#' @rdname new_geo_coord_linestring
 #' @export
-as_geo_tbl_linestring <- function(x, ...) {
-  UseMethod("as_geo_tbl_linestring")
+as_geo_coord_linestring <- function(x, ...) {
+  UseMethod("as_geo_coord_linestring")
 }
 
-#' @rdname new_geo_tbl_linestring
+#' @rdname new_geo_coord_linestring
 #' @export
-as_geo_tbl_linestring.default <- function(x, ...) {
-  vec_cast(x, new_geo_tbl_linestring())
+as_geo_coord_linestring.default <- function(x, ...) {
+  vec_cast(x, new_geo_coord_linestring())
 }
 
-#' @rdname new_geo_tbl_linestring
+#' @rdname new_geo_coord_linestring
 #' @export
-as_geo_tbl_multilinestring <- function(x, ...) {
-  UseMethod("as_geo_tbl_multilinestring")
+as_geo_coord_multilinestring <- function(x, ...) {
+  UseMethod("as_geo_coord_multilinestring")
 }
 
-#' @rdname new_geo_tbl_linestring
+#' @rdname new_geo_coord_linestring
 #' @export
-as_geo_tbl_multilinestring.default <- function(x, ...) {
-  vec_cast(x, new_geo_tbl_multilinestring())
+as_geo_coord_multilinestring.default <- function(x, ...) {
+  vec_cast(x, new_geo_coord_multilinestring())
 }

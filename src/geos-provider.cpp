@@ -158,14 +158,14 @@ NestedGeoTblExporter::NestedGeoTblExporter() {
 
 void NestedGeoTblExporter::init(GEOSContextHandle_t context, size_t size) {
   List data(size);
-  data.attr("class") = "nested_geo_tbl";
+  data.attr("class") = "nested_geo_coord";
   this->data = data;
   this->context = context;
   this->counter = 0;
 }
 
 void NestedGeoTblExporter::putNext(GEOSGeometry* geometry) {
-  data[this->counter] = geometry_to_geo_tbl(this->context, geometry, this->counter + 1);
+  data[this->counter] = geometry_to_geo_coord(this->context, geometry, this->counter + 1);
   this->counter = this->counter + 1;
 }
 
@@ -190,7 +190,7 @@ GeometryExporter* resolve_exporter(SEXP ptype) {
     return new WKTGeometryExporter();
   } else if(Rf_inherits(ptype, "geo_wkb")) {
     return new WKBGeometryExporter();
-  } else if(Rf_inherits(ptype, "geo_tbl")) {
+  } else if(Rf_inherits(ptype, "geo_coord")) {
     return new NestedGeoTblExporter();
   }
 

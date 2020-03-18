@@ -4,7 +4,7 @@
 #' R's graphics use coordinate-long representations of geometries (i.e.,
 #' one row per coordinate). Additionally, these can be more easily manipulated
 #' than some other representations of geometry. **Important**: order matters
-#' when passing a `geo_tbl_*()` to other functions, which assume
+#' when passing a `geo_coord_*()` to other functions, which assume
 #' that you use sequential `feature`, `piece`, and `part` values starting at 1.
 #' Helpers to construct this particular representation of geometry from
 #' a tibble are in the works.
@@ -21,10 +21,10 @@
 #' @export
 #'
 #' @examples
-#' geo_tbl_point(geo_xy(30, 10))
-#' geo_tbl_multipoint(geo_xy(1:4, 1:4), feature = c(1, 1, 2, 2))
+#' geo_coord_point(geo_xy(30, 10))
+#' geo_coord_multipoint(geo_xy(1:4, 1:4), feature = c(1, 1, 2, 2))
 #'
-geo_tbl_point <- function(xy, feature = seq_len(vec_size(xy))) {
+geo_coord_point <- function(xy, feature = seq_len(vec_size(xy))) {
   feature <- vec_cast(feature, integer())
   xy <- vec_cast(xy, geo_xy())
   tbl <- list(
@@ -32,13 +32,13 @@ geo_tbl_point <- function(xy, feature = seq_len(vec_size(xy))) {
     feature = rep_len_or_fail(feature, xy)
   )
 
-  validate_geo_tbl_point(tbl)
-  new_geo_tbl_point(tbl)
+  validate_geo_coord_point(tbl)
+  new_geo_coord_point(tbl)
 }
 
-#' @rdname geo_tbl_point
+#' @rdname geo_coord_point
 #' @export
-geo_tbl_multipoint <- function(xy, feature = seq_len(vec_size(xy))) {
+geo_coord_multipoint <- function(xy, feature = seq_len(vec_size(xy))) {
   feature <- vec_cast(feature, integer())
   xy <- vec_cast(xy, geo_xy())
   tbl <- list(
@@ -46,71 +46,71 @@ geo_tbl_multipoint <- function(xy, feature = seq_len(vec_size(xy))) {
     feature = rep_len_or_fail(feature, xy)
   )
 
-  validate_geo_tbl_multipoint(tbl)
-  new_geo_tbl_multipoint(tbl)
+  validate_geo_coord_multipoint(tbl)
+  new_geo_coord_multipoint(tbl)
 }
 
 #' S3 Details for (multi)point geometries
 #'
-#' @param x A (possibly) [geo_tbl_point()] or [geo_tbl_multipoint()]
+#' @param x A (possibly) [geo_coord_point()] or [geo_coord_multipoint()]
 #' @param ... Unused
 #'
 #' @export
 #'
-new_geo_tbl_point <- function(x = list(xy = geo_xy(), feature = integer(0))) {
+new_geo_coord_point <- function(x = list(xy = geo_xy(), feature = integer(0))) {
   vec_assert(x$xy, geo_xy())
   vec_assert(x$feature, integer())
-  new_rcrd(x, class = c("geo_tbl_point", "geo_tbl"))
+  new_rcrd(x, class = c("geo_coord_point", "geo_coord"))
 }
 
-#' @rdname new_geo_tbl_point
+#' @rdname new_geo_coord_point
 #' @export
-new_geo_tbl_multipoint <- function(x = list(xy = geo_xy(), feature = integer(0))) {
+new_geo_coord_multipoint <- function(x = list(xy = geo_xy(), feature = integer(0))) {
   vec_assert(x$xy, geo_xy())
   vec_assert(x$feature, integer())
-  new_rcrd(x, class = c("geo_tbl_multipoint", "geo_tbl"))
+  new_rcrd(x, class = c("geo_coord_multipoint", "geo_coord"))
 }
 
-#' @rdname new_geo_tbl_point
+#' @rdname new_geo_coord_point
 #' @export
-validate_geo_tbl_point <- function(x) {
+validate_geo_coord_point <- function(x) {
   if (length(unique(field(x, "feature"))) != length(field(x, "feature"))) {
     abort(
-      "Only one point per feature allowed in a geo_tbl_point()\nDid you mean `geo_tbl_multipoint()`?"
+      "Only one point per feature allowed in a geo_coord_point()\nDid you mean `geo_coord_multipoint()`?"
     )
   }
 
   invisible(x)
 }
 
-#' @rdname new_geo_tbl_point
+#' @rdname new_geo_coord_point
 #' @export
-validate_geo_tbl_multipoint <- function(x) {
+validate_geo_coord_multipoint <- function(x) {
   # Can't think of any validation that isn't already done in new_*
   invisible(x)
 }
 
-#' @rdname new_geo_tbl_point
+#' @rdname new_geo_coord_point
 #' @export
-is_geo_tbl_point <- function(x) {
-  inherits(x, "geo_tbl_point")
+is_geo_coord_point <- function(x) {
+  inherits(x, "geo_coord_point")
 }
 
-#' @rdname new_geo_tbl_point
+#' @rdname new_geo_coord_point
 #' @export
-is_geo_tbl_multipoint <- function(x) {
-  inherits(x, "geo_tbl_multipoint")
+is_geo_coord_multipoint <- function(x) {
+  inherits(x, "geo_coord_multipoint")
 }
 
 #' @export
-#' @rdname new_geo_tbl_point
-format.geo_tbl_point <- function(x, ...) {
+#' @rdname new_geo_coord_point
+format.geo_coord_point <- function(x, ...) {
   sprintf("<feat `%s` %s>", field(x, "feature"), format(field(x, "xy"), ...))
 }
 
 #' @export
-#' @rdname new_geo_tbl_point
-print.geo_tbl_point <- function(x, ...) {
+#' @rdname new_geo_coord_point
+print.geo_coord_point <- function(x, ...) {
   cat(
     sprintf(
       "<%s [%s coords, %s features]>\n",
@@ -122,49 +122,49 @@ print.geo_tbl_point <- function(x, ...) {
 }
 
 #' @export
-#' @rdname new_geo_tbl_point
-format.geo_tbl_multipoint <- function(x, ...) {
+#' @rdname new_geo_coord_point
+format.geo_coord_multipoint <- function(x, ...) {
   sprintf("<feat `%s.1` %s>", field(x, "feature"), format(field(x, "xy"), ...))
 }
 
 #' @export
-#' @rdname new_geo_tbl_point
-print.geo_tbl_multipoint <- function(x, ...) {
-  print.geo_tbl_point(x, ...)
+#' @rdname new_geo_coord_point
+print.geo_coord_multipoint <- function(x, ...) {
+  print.geo_coord_point(x, ...)
 }
 
-#' @rdname new_geo_tbl_point
+#' @rdname new_geo_coord_point
 #' @export
-vec_ptype_abbr.geo_tbl_point <- function(x, ...) {
+vec_ptype_abbr.geo_coord_point <- function(x, ...) {
   "tblpnt"
 }
 
-#' @rdname new_geo_tbl_point
+#' @rdname new_geo_coord_point
 #' @export
-vec_ptype_abbr.geo_tbl_multipoint <- function(x, ...) {
+vec_ptype_abbr.geo_coord_multipoint <- function(x, ...) {
   "tblmpnt"
 }
 
-#' @rdname new_geo_tbl_point
+#' @rdname new_geo_coord_point
 #' @export
-as_geo_tbl_point <- function(x, ...) {
-  UseMethod("as_geo_tbl_point")
+as_geo_coord_point <- function(x, ...) {
+  UseMethod("as_geo_coord_point")
 }
 
-#' @rdname new_geo_tbl_point
+#' @rdname new_geo_coord_point
 #' @export
-as_geo_tbl_point.default <- function(x, ...) {
-  vec_cast(x, new_geo_tbl_point())
+as_geo_coord_point.default <- function(x, ...) {
+  vec_cast(x, new_geo_coord_point())
 }
 
-#' @rdname new_geo_tbl_point
+#' @rdname new_geo_coord_point
 #' @export
-as_geo_tbl_multipoint <- function(x, ...) {
-  UseMethod("as_geo_tbl_multipoint")
+as_geo_coord_multipoint <- function(x, ...) {
+  UseMethod("as_geo_coord_multipoint")
 }
 
-#' @rdname new_geo_tbl_point
+#' @rdname new_geo_coord_point
 #' @export
-as_geo_tbl_multipoint.default <- function(x, ...) {
-  vec_cast(x, new_geo_tbl_multipoint())
+as_geo_coord_multipoint.default <- function(x, ...) {
+  vec_cast(x, new_geo_coord_multipoint())
 }
