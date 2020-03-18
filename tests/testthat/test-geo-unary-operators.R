@@ -176,3 +176,17 @@ test_that("geo_buffer is vectorized along 'width'", {
     )
   )
 })
+
+test_that("geo_buffer works with all providers", {
+  point <- geo_wkt("POINT (0 0)")
+  buffered <- geo_buffer(point, 4)
+  expect_identical(
+    geo_buffer(geo_convert(point, geo_wkb()), 4, to = geo_wkt()),
+    buffered
+  )
+
+  expect_identical(
+    geo_buffer(geo_xy(0, 0), 4, to = geo_wkt()),
+    buffered
+  )
+})

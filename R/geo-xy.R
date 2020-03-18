@@ -94,3 +94,8 @@ geo_ptype.geo_xy <- function(x, ...) {
   # getting only getting bboxes back
   geo_wkt()
 }
+
+#' @export
+geo_size.geo_xy <- function(x) {
+  vec_size(x)
+}
