@@ -110,3 +110,21 @@ as.matrix.geo_rect <- function(x, ...) {
   as.matrix(as.data.frame(x))
 }
 
+#' @export
+#' @rdname new_geo_rect
+geo_size.geo_rect <- function(x, ...) {
+  vec_size(x)
+}
+
+#' @export
+geo_ptype.geo_rect <- function(x, ...) {
+  # returning a geo_coord() here means that we can use
+  # a geo_rect() as an input to geometry functions without
+  # getting only getting bboxes back
+  geo_coord()
+}
+
+#' @export
+geo_restore.geo_rect <- function(to, x) {
+  x
+}

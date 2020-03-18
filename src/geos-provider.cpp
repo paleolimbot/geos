@@ -188,6 +188,48 @@ SEXP NestedGeoCoordExporter::finish() {
   return this->data;
 }
 
+// --- GeoRect exporter
+
+void GeoRectExporter::init(GEOSContextHandle_t context, size_t size) {
+  NumericVector xmin(size);
+  NumericVector ymin(size);
+  NumericVector xmax(size);
+  NumericVector ymax(size);
+  this->xmin = xmin;
+  this->ymin = ymin;
+  this->xmax = xmax;
+  this->ymax = ymax;
+
+  this->context = context;
+  this->counter = 0;
+}
+
+void GeoRectExporter::putNext(GEOSGeometry* geometry) {
+  double xmin1, ymin1, xmax1, ymax1;
+  GEOSGeom_getXMin_r(this->context, geometry, &xmin1);
+  GEOSGeom_getYMin_r(this->context, geometry, &ymin1);
+  GEOSGeom_getXMax_r(this->context, geometry, &xmax1);
+  GEOSGeom_getYMax_r(this->context, geometry, &ymax1);
+
+  this->xmin[this->counter] = xmin1;
+  this->ymin[this->counter] = ymin1;
+  this->xmax[this->counter] = xmax1;
+  this->ymax[this->counter] = ymax1;
+
+  this->counter = this->counter + 1;
+}
+
+SEXP GeoRectExporter::finish() {
+  List result = List::create(
+    _["xmin"] = this->xmin,
+    _["ymin"] = this->ymin,
+    _["xmax"] = this->xmax,
+    _["ymax"] = this->ymax
+  );
+  result.attr("class") = CharacterVector::create("geo_rect", "geo_coord", "vctrs_rcrd", "vctrs_vctr");
+  return result;
+}
+
 // ---------- geometry provider resolvers -------------
 
 GeometryProvider* resolve_provider(SEXP data) {
@@ -216,11 +258,16 @@ GeometryProvider* resolve_provider(SEXP data) {
 GeometryExporter* resolve_exporter(SEXP ptype) {
   if (Rf_inherits(ptype, "geo_wkt")) {
     return new WKTGeometryExporter();
+
   } else if(Rf_inherits(ptype, "geo_wkb")) {
     return new WKBGeometryExporter();
+
+  } else if(Rf_inherits(ptype, "geo_rect")) {
+    return new GeoRectExporter();
+
   } else if(Rf_inherits(ptype, "geo_coord")) {
     return new NestedGeoCoordExporter();
   }
 
-  stop("Can't resolve GeometryProvider");
+  stop("Can't resolve GeometryExporter");
 }

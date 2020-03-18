@@ -10,7 +10,7 @@
 #' geo_xy(0:5, 1:6)
 #'
 geo_xy <- function(x = double(), y = double()) {
-  new_geo_xy(list(x = vec_cast(x, double()), y = vec_cast(y, double())))
+  new_geo_xy(vec_recycle_common(x = vec_cast(x, double()), y = vec_cast(y, double())))
 }
 
 #' S3 details for geo_xy

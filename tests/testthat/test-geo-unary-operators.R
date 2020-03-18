@@ -111,6 +111,21 @@ test_that("geo_coord_multi_polygon conversion works", {
   )
 })
 
+test_that("rect conversion works", {
+  rect <- geo_convert(
+    geo_wkt(
+      "MULTIPOLYGON (((40 40, 20 45, 45 30, 40 40)),
+            ((20 35, 10 30, 10 10, 30 5, 45 20, 20 35), (30 20, 20 15, 20 25, 30 20)))
+    "),
+    geo_rect()
+  )
+
+  expect_identical(
+    rect,
+    geo_rect(xmin = 10, ymin = 5, xmax = 45, ymax = 45)
+  )
+})
+
 test_that("empty geometrycollections can  be converted to a GeoCoord", {
   skip("geometrycollections not implemented but should be")
   geo_convert(geo_wkt("GEOMETRYCOLLECTION EMPTY"), geo_coord())
@@ -126,11 +141,11 @@ test_that("geo_buffer() returns the same format as the input by default", {
 
 test_that("geo_buffer works", {
   point <- geo_wkt("POINT (0 0)")
-  result <- geo_buffer(point, 1, quad_segs = 2, to = geo_coord())
-  expect_equal(max(field(field(result, "xy"), "x")), 1)
-  expect_equal(min(field(field(result, "xy"), "x")), -1)
-  expect_equal(max(field(field(result, "xy"), "y")), 1)
-  expect_equal(min(field(field(result, "xy"), "y")), -1)
+  result <- geo_buffer(point, width = 1)
+  expect_identical(
+    geo_convert(result, geo_rect()),
+    geo_rect(-1, -1, 1, 1)
+  )
 })
 
 test_that("geo_buffer is vectorized along 'width'", {

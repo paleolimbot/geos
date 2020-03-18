@@ -109,6 +109,21 @@ public:
   SEXP finish();
 };
 
+// --- rect exporter
+
+class GeoRectExporter: public GeometryExporter {
+public:
+  NumericVector xmin;
+  NumericVector ymin;
+  NumericVector xmax;
+  NumericVector ymax;
+  size_t counter;
+
+  void init(GEOSContextHandle_t context, size_t size);
+  void putNext(GEOSGeometry* geometry);
+  SEXP finish();
+};
+
 // --- geometry provider/exporter resolvers
 
 GeometryProvider* resolve_provider(SEXP data);
