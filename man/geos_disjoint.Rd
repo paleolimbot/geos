@@ -87,11 +87,11 @@ points that intersect the exterior of the other.
 }
 \item{\code{\link[=geos_covers]{geos_covers()}}}{
 Returns \code{TRUE} if every point in \code{y} is a point of \code{x}. Is the opposite
-of \code{\link[=geos_covered_by]{geos_covered_by()}}.
+of \code{\link[=geos_is_covered_by]{geos_is_covered_by()}}.
 }
 \item{\code{\link[=geos_is_covered_by]{geos_is_covered_by()}}}{
 Returns \code{TRUE} if every point in \code{x} is a point of \code{y}. Is the opposite
-of \code{\link[=geos_covered_by]{geos_covered_by()}}.
+of \code{\link[=geos_covers]{geos_covers()}}.
 }
 }
 }

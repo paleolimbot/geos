@@ -240,10 +240,33 @@ void GeoRectExporter::init(GEOSContextHandle_t context, size_t size) {
 
 void GeoRectExporter::putNext(GEOSGeometry* geometry) {
   double xmin1, ymin1, xmax1, ymax1;
+
+  if (GEOSisEmpty_r(this->context, geometry)) {
+    xmin1 = R_PosInf;
+    ymin1 = R_PosInf;
+    xmax1 = R_NegInf;
+    ymax1 = R_NegInf;
+  } else {
+
+#ifdef HAVE361
+  // these functions are not available in GEOS 3.5.x
+  // which is the version on the (common) Xenial build image
   GEOSGeom_getXMin_r(this->context, geometry, &xmin1);
   GEOSGeom_getYMin_r(this->context, geometry, &ymin1);
   GEOSGeom_getXMax_r(this->context, geometry, &xmax1);
   GEOSGeom_getYMax_r(this->context, geometry, &ymax1);
+#else
+  List coords = geometry_to_geo_coord(context, geometry, 0);
+  List xy = coords["xy"];
+  NumericVector x = as<NumericVector>(xy["x"]);
+  NumericVector y = as<NumericVector>(xy["y"]);
+  xmin1 = min(x);
+  ymin1 = min(y);
+  xmax1 = max(x);
+  ymax1 = max(y);
+#endif
+
+  }
 
   this->xmin[this->counter] = xmin1;
   this->ymin[this->counter] = ymin1;

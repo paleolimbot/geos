@@ -126,6 +126,10 @@ test_that("rect conversion works", {
   )
 })
 
+test_that("rect conversion works on empty geometries", {
+  expect_identical(geo_convert(geo_wkt("POINT EMPTY"), geo_rect()), geo_rect(Inf, Inf, -Inf, -Inf))
+})
+
 test_that("xy conversion works", {
   expect_identical(
     geo_convert(geo_xy(1:5, 6:10), geo_coord()),
