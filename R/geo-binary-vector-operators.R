@@ -44,11 +44,11 @@
 #'   }
 #'   \item{[geos_covers()]}{
 #'     Returns `TRUE` if every point in `y` is a point of `x`. Is the opposite
-#'     of [geos_covered_by()].
+#'     of [geos_is_covered_by()].
 #'   }
 #'   \item{[geos_is_covered_by()]}{
 #'     Returns `TRUE` if every point in `x` is a point of `y`. Is the opposite
-#'     of [geos_covered_by()].
+#'     of [geos_covers()].
 #'   }
 #' }
 #'
