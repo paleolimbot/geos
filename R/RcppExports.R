@@ -21,6 +21,10 @@ geomcpp_convert <- function(data, ptype) {
     .Call(`_geom_geomcpp_convert`, data, ptype)
 }
 
+geomcpp_is_empty <- function(data) {
+    .Call(`_geom_geomcpp_is_empty`, data)
+}
+
 geomcpp_validate_provider <- function(data) {
     .Call(`_geom_geomcpp_validate_provider`, data)
 }

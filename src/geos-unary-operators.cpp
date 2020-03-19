@@ -56,7 +56,6 @@ void UnaryGeometryOperator::init() {
 void UnaryGeometryOperator::initBase() {
   this->context = geos_init();
   this->provider->init(this->context);
-  this->exporter->init(this->context, this->provider->size());
 
   IntegerVector allSizes = IntegerVector::create(
     this->maxParameterLength(),
@@ -75,6 +74,8 @@ void UnaryGeometryOperator::initBase() {
       stop("Providers with incompatible lengths passed to BinaryGeometryOperator");
     }
   }
+
+  this->exporter->init(this->context, this->size());
 }
 
 SEXP UnaryGeometryOperator::operate() {

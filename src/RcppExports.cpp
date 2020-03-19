@@ -67,6 +67,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// geomcpp_is_empty
+LogicalVector geomcpp_is_empty(SEXP data);
+RcppExport SEXP _geom_geomcpp_is_empty(SEXP dataSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type data(dataSEXP);
+    rcpp_result_gen = Rcpp::wrap(geomcpp_is_empty(data));
+    return rcpp_result_gen;
+END_RCPP
+}
 // geomcpp_validate_provider
 LogicalVector geomcpp_validate_provider(SEXP data);
 RcppExport SEXP _geom_geomcpp_validate_provider(SEXP dataSEXP) {
@@ -85,6 +96,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_geom_geomcpp_intersection", (DL_FUNC) &_geom_geomcpp_intersection, 3},
     {"_geom_geomcpp_buffer", (DL_FUNC) &_geom_geomcpp_buffer, 8},
     {"_geom_geomcpp_convert", (DL_FUNC) &_geom_geomcpp_convert, 2},
+    {"_geom_geomcpp_is_empty", (DL_FUNC) &_geom_geomcpp_is_empty, 1},
     {"_geom_geomcpp_validate_provider", (DL_FUNC) &_geom_geomcpp_validate_provider, 1},
     {NULL, NULL, 0}
 };

@@ -19,6 +19,8 @@ columns, respectively. Use \code{\link[dplyr:select]{dplyr::select()}} syntax.}
 
 \item{remove}{Use \code{remove = FALSE} to keep \code{x} and \code{y} as columns
 in the output.}
+
+\item{into}{Column names for the \code{x} and \code{y} coordinates, respectively.}
 }
 \value{
 \code{data}, with a new column \code{col}

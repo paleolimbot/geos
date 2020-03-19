@@ -3,6 +3,7 @@
 #'
 #' @param data A [tibble::tibble()] or data frame
 #' @param col A column name for the [geo_xy()] object
+#' @param into Column names for the `x` and `y` coordinates, respectively.
 #' @param x,y Column specifications for x and y coordinate
 #'   columns, respectively. Use [dplyr::select()] syntax.
 #' @param remove Use `remove = FALSE` to keep `x` and `y` as columns
