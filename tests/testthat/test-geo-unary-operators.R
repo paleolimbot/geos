@@ -150,43 +150,43 @@ test_that("error occurs with unknown object in conversions", {
   expect_error(geomcpp_convert(NULL, new_geo_wkt()), "Can't resolve")
 })
 
-test_that("geo_buffer() returns the same format as the input by default", {
-  expect_is(geo_buffer(geo_wkt("POINT (0 0)"), 1), "geo_wkt")
+test_that("geos_buffer() returns the same format as the input by default", {
+  expect_is(geos_buffer(geo_wkt("POINT (0 0)"), 1), "geo_wkt")
 })
 
-test_that("geo_buffer works", {
+test_that("geos_buffer works", {
   point <- geo_wkt("POINT (0 0)")
-  result <- geo_buffer(point, width = 1)
+  result <- geos_buffer(point, width = 1)
   expect_identical(
     geo_convert(result, geo_rect()),
     geo_rect(-1, -1, 1, 1)
   )
 })
 
-test_that("geo_buffer is vectorized along 'width'", {
+test_that("geos_buffer is vectorized along 'width'", {
   point <- geo_wkt(c("POINT (0 0)", "POINT (1 1)"))
-  result1 <- geo_buffer(point, 1, quad_segs = 2)
+  result1 <- geos_buffer(point, 1, quad_segs = 2)
   expect_length(result1, 2)
 
   expect_identical(
-    geo_buffer(point, c(1, 2), quad_segs = 2),
+    geos_buffer(point, c(1, 2), quad_segs = 2),
     c(
-      geo_buffer(point[1], 1, quad_segs = 2),
-      geo_buffer(point[2], 2, quad_segs = 2)
+      geos_buffer(point[1], 1, quad_segs = 2),
+      geos_buffer(point[2], 2, quad_segs = 2)
     )
   )
 })
 
-test_that("geo_buffer works with all providers", {
+test_that("geos_buffer works with all providers", {
   point <- geo_wkt("POINT (0 0)")
-  buffered <- geo_buffer(point, 4)
+  buffered <- geos_buffer(point, 4)
   expect_identical(
-    geo_buffer(geo_convert(point, geo_wkb()), 4, to = geo_wkt()),
+    geos_buffer(geo_convert(point, geo_wkb()), 4, to = geo_wkt()),
     buffered
   )
 
   expect_identical(
-    geo_buffer(geo_xy(0, 0), 4, to = geo_wkt()),
+    geos_buffer(geo_xy(0, 0), 4, to = geo_wkt()),
     buffered
   )
 })

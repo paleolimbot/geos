@@ -13,8 +13,8 @@
 #' poly2 <- geo_wkt("POLYGON ((5 5, 5 15, 15 15, 15 5, 5 5))")
 #'
 #' geo_plot(c(poly1, poly2))
-#' geo_plot_add(geo_intersection(poly1, poly2), col = "grey90")
+#' geo_plot_add(geos_intersection(poly1, poly2), col = "grey90")
 #'
-geo_intersection <- function(x, y, to = geo_ptype(x)) {
+geos_intersection <- function(x, y, to = geo_ptype(x)) {
   geo_restore(to, geomcpp_intersection(x, y, to))
 }

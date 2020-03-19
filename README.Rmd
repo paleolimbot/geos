@@ -44,16 +44,16 @@ Right now the package doesn't do much except convert between a few useful input/
 
 ```{r}
 geo_convert(geo_wkt("POINT (20 10)"), geo_wkb())
-tibble::as_tibble(geo_convert(geo_wkt("POINT (20 10)"), geo_tbl()))
+tibble::as_tibble(geo_convert(geo_wkt("POINT (20 10)"), geo_coord()))
 ```
 
 The package can do operations from the GEOS library, returing the results in any of the supported output formats:
 
 ```{r}
-geo_buffer(
+geos_buffer(
   geo_wkt("POINT (0 0)"), 
   width = 0.5, quad_segs = 4, 
-  to = geo_tbl() 
+  to = geo_coord() 
 )
 ```
 
@@ -61,7 +61,7 @@ Also, the results can be plotted!
 
 ```{r ex-plot}
 point <- geo_wkt("POINT (0 0)")
-geo_plot(geo_buffer(point, width = 0.5))
+geo_plot(geos_buffer(point, width = 0.5))
 geo_plot_add(point)
 ```
 

@@ -35,10 +35,10 @@ geo_convert <- function(x, to) {
 #'
 #' @examples
 #' point <- geo_wkt("POINT (0 0)")
-#' geo_plot(geo_buffer(point, width = 0.5))
+#' geo_plot(geos_buffer(point, width = 0.5))
 #' geo_plot_add(point)
 #'
-geo_buffer <- function(x, width, quad_segs = 30,
+geos_buffer <- function(x, width, quad_segs = 30,
                        end_cap_style = c("round", "flat", "square"),
                        join_style = c("round", "mitre", "bevel"),
                        mitre_limit = 1,
