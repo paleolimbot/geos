@@ -258,8 +258,8 @@ void GeoRectExporter::putNext(GEOSGeometry* geometry) {
 #else
   List coords = geometry_to_geo_coord(context, geometry, 0);
   List xy = coords["xy"];
-  NumericVector x = (NumericVector) coords["x"];
-  NumericVector y = (NumericVector) coords["y"];
+  NumericVector x = as<NumericVector>(xy["x"]);
+  NumericVector y = as<NumericVector>(xy["y"]);
   xmin1 = min(x);
   ymin1 = min(y);
   xmax1 = max(x);
