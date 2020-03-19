@@ -13,6 +13,10 @@ geomcpp_intersection <- function(dataLeft, dataRight, ptype) {
     .Call(`_geom_geomcpp_intersection`, dataLeft, dataRight, ptype)
 }
 
+geomcpp_binary_predicate <- function(dataLeft, dataRight, predicate) {
+    .Call(`_geom_geomcpp_binary_predicate`, dataLeft, dataRight, predicate)
+}
+
 geomcpp_buffer <- function(data, ptype, width, quadSegs, endCapStyle, joinStyle, mitreLimit, singleSided) {
     .Call(`_geom_geomcpp_buffer`, data, ptype, width, quadSegs, endCapStyle, joinStyle, mitreLimit, singleSided)
 }
