@@ -25,8 +25,8 @@ geomcpp_convert <- function(data, ptype) {
     .Call(`_geom_geomcpp_convert`, data, ptype)
 }
 
-geomcpp_is_empty <- function(data) {
-    .Call(`_geom_geomcpp_is_empty`, data)
+geomcpp_unary_predicate <- function(data, predicate) {
+    .Call(`_geom_geomcpp_unary_predicate`, data, predicate)
 }
 
 geomcpp_validate_provider <- function(data) {

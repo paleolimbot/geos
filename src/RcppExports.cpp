@@ -80,14 +80,15 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// geomcpp_is_empty
-LogicalVector geomcpp_is_empty(SEXP data);
-RcppExport SEXP _geom_geomcpp_is_empty(SEXP dataSEXP) {
+// geomcpp_unary_predicate
+LogicalVector geomcpp_unary_predicate(SEXP data, int predicate);
+RcppExport SEXP _geom_geomcpp_unary_predicate(SEXP dataSEXP, SEXP predicateSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type data(dataSEXP);
-    rcpp_result_gen = Rcpp::wrap(geomcpp_is_empty(data));
+    Rcpp::traits::input_parameter< int >::type predicate(predicateSEXP);
+    rcpp_result_gen = Rcpp::wrap(geomcpp_unary_predicate(data, predicate));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -110,7 +111,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_geom_geomcpp_binary_predicate", (DL_FUNC) &_geom_geomcpp_binary_predicate, 3},
     {"_geom_geomcpp_buffer", (DL_FUNC) &_geom_geomcpp_buffer, 8},
     {"_geom_geomcpp_convert", (DL_FUNC) &_geom_geomcpp_convert, 2},
-    {"_geom_geomcpp_is_empty", (DL_FUNC) &_geom_geomcpp_is_empty, 1},
+    {"_geom_geomcpp_unary_predicate", (DL_FUNC) &_geom_geomcpp_unary_predicate, 2},
     {"_geom_geomcpp_validate_provider", (DL_FUNC) &_geom_geomcpp_validate_provider, 1},
     {NULL, NULL, 0}
 };

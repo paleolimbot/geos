@@ -2,9 +2,18 @@
 % Please edit documentation in R/geo-unary-vector-operators.R
 \name{geo_is_empty}
 \alias{geo_is_empty}
+\alias{geo_is_simple}
+\alias{geo_has_z}
+\alias{geo_is_closed}
 \title{Check for empty geometries}
 \usage{
 geo_is_empty(x)
+
+geo_is_simple(x)
+
+geo_has_z(x)
+
+geo_is_closed(x)
 }
 \arguments{
 \item{x}{A geometry-like object}
