@@ -71,3 +71,45 @@ test_that("spatial predicates work", {
     )
   )
 })
+
+test_that("binary operators recycle geometry providers to a common length", {
+  expect_length(
+    geo_intersects(
+      rep(geo_wkt("POINT (5 5)"), 5),
+      geo_wkt("POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))")
+    ),
+    5
+  )
+
+  expect_length(
+    geo_intersects(
+      rep(geo_wkt("POINT (5 5)"), 0),
+      geo_wkt("POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))")
+    ),
+    0
+  )
+
+  expect_length(
+    geo_intersects(
+      geo_wkt("POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"),
+      rep(geo_wkt("POINT (5 5)"), 5)
+    ),
+    5
+  )
+
+  expect_length(
+    geo_intersects(
+      geo_wkt("POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"),
+      rep(geo_wkt("POINT (5 5)"), 0)
+    ),
+    0
+  )
+
+  expect_length(
+    geo_intersects(
+      rep(geo_wkt("POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"), 5),
+      rep(geo_wkt("POINT (5 5)"), 5)
+    ),
+    5
+  )
+})
