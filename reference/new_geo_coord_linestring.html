@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>S3 details for geo_xy — new_geo_xy • geom</title>
+<title>S3 Details for (multi)linestring geometries — new_geo_coord_linestring • geom</title>
 
 
 <!-- jquery -->
@@ -35,8 +35,8 @@
 
 
 
-<meta property="og:title" content="S3 details for geo_xy — new_geo_xy" />
-<meta property="og:description" content="S3 details for geo_xy" />
+<meta property="og:title" content="S3 Details for (multi)linestring geometries — new_geo_coord_linestring" />
+<meta property="og:description" content="S3 Details for (multi)linestring geometries" />
 
 
 
@@ -104,44 +104,63 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>S3 details for geo_xy</h1>
-    <small class="dont-index">Source: <a href='https://github.com/paleolimbot/geom/blob/master/R/geo-xy.R'><code>R/geo-xy.R</code></a></small>
-    <div class="hidden name"><code>new_geo_xy.Rd</code></div>
+    <h1>S3 Details for (multi)linestring geometries</h1>
+    <small class="dont-index">Source: <a href='https://github.com/paleolimbot/geom/blob/master/R/geo-coord-linestring.R'><code>R/geo-coord-linestring.R</code></a></small>
+    <div class="hidden name"><code>new_geo_coord_linestring.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>S3 details for geo_xy</p>
+    <p>S3 Details for (multi)linestring geometries</p>
     </div>
 
-    <pre class="usage"><span class='fu'>new_geo_xy</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/double.html'>double</a></span>(), <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/double.html'>double</a></span>()))
+    <pre class="usage"><span class='fu'>new_geo_coord_linestring</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>xy</span> <span class='kw'>=</span> <span class='fu'><a href='geo_xy.html'>geo_xy</a></span>(), <span class='kw'>feature</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>integer</a></span>(<span class='fl'>0</span>)))
 
-<span class='fu'>is_geo_xy</span>(<span class='no'>x</span>)
+<span class='fu'>new_geo_coord_multilinestring</span>(
+  <span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>xy</span> <span class='kw'>=</span> <span class='fu'><a href='geo_xy.html'>geo_xy</a></span>(), <span class='kw'>feature</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>integer</a></span>(<span class='fl'>0</span>), <span class='kw'>part</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>integer</a></span>(<span class='fl'>0</span>))
+)
 
-<span class='fu'>validate_geo_xy</span>(<span class='no'>x</span>)
+<span class='fu'>validate_geo_coord_linestring</span>(<span class='no'>x</span>)
 
-<span class='co'># S3 method for geo_xy</span>
-<span class='fu'>vec_ptype_abbr</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+<span class='fu'>validate_geo_coord_multilinestring</span>(<span class='no'>x</span>)
 
-<span class='co'># S3 method for geo_xy</span>
+<span class='fu'>is_geo_coord_linestring</span>(<span class='no'>x</span>)
+
+<span class='fu'>is_geo_coord_multilinestring</span>(<span class='no'>x</span>)
+
+<span class='co'># S3 method for geo_coord_linestring</span>
 <span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span>(<span class='no'>x</span>, <span class='no'>...</span>)
 
-<span class='fu'>as_geo_xy</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+<span class='co'># S3 method for geo_coord_linestring</span>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for geo_coord_multilinestring</span>
+<span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for geo_coord_multilinestring</span>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for geo_coord_linestring</span>
+<span class='fu'>vec_ptype_abbr</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for geo_coord_multilinestring</span>
+<span class='fu'>vec_ptype_abbr</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='fu'>as_geo_coord_linestring</span>(<span class='no'>x</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for default</span>
-<span class='fu'>as_geo_xy</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+<span class='fu'>as_geo_coord_linestring</span>(<span class='no'>x</span>, <span class='no'>...</span>)
 
-<span class='co'># S3 method for matrix</span>
-<span class='fu'>as_geo_xy</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+<span class='fu'>as_geo_coord_multilinestring</span>(<span class='no'>x</span>, <span class='no'>...</span>)
 
-<span class='co'># S3 method for geo_xy</span>
-<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
+<span class='co'># S3 method for default</span>
+<span class='fu'>as_geo_coord_multilinestring</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>A (possibly) <code><a href='geo_xy.html'>geo_xy()</a></code></p></td>
+      <td><p>A (possibly) <code><a href='geo_coord_point.html'>geo_coord_linestring()</a></code> or <code><a href='geo_coord_point.html'>geo_coord_multilinestring()</a></code></p></td>
     </tr>
     <tr>
       <th>...</th>

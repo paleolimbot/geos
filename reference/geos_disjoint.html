@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>S3 details for geo_xy — new_geo_xy • geom</title>
+<title>Binary predicate operators — geos_disjoint • geom</title>
 
 
 <!-- jquery -->
@@ -35,8 +35,9 @@
 
 
 
-<meta property="og:title" content="S3 details for geo_xy — new_geo_xy" />
-<meta property="og:description" content="S3 details for geo_xy" />
+<meta property="og:title" content="Binary predicate operators — geos_disjoint" />
+<meta property="og:description" content="Binary predicate operators take
+two geometries and return TRUE or FALSE for each geometry pair." />
 
 
 
@@ -104,50 +105,84 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>S3 details for geo_xy</h1>
-    <small class="dont-index">Source: <a href='https://github.com/paleolimbot/geom/blob/master/R/geo-xy.R'><code>R/geo-xy.R</code></a></small>
-    <div class="hidden name"><code>new_geo_xy.Rd</code></div>
+    <h1>Binary predicate operators</h1>
+    <small class="dont-index">Source: <a href='https://github.com/paleolimbot/geom/blob/master/R/geo-binary-vector-operators.R'><code>R/geo-binary-vector-operators.R</code></a></small>
+    <div class="hidden name"><code>geos_disjoint.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>S3 details for geo_xy</p>
+    <p><a href='https://en.wikipedia.org/wiki/DE-9IM#Spatial_predicates'>Binary predicate operators</a> take
+two geometries and return <code>TRUE</code> or <code>FALSE</code> for each geometry pair.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>new_geo_xy</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/double.html'>double</a></span>(), <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/double.html'>double</a></span>()))
+    <pre class="usage"><span class='fu'>geos_disjoint</span>(<span class='no'>x</span>, <span class='no'>y</span>)
 
-<span class='fu'>is_geo_xy</span>(<span class='no'>x</span>)
+<span class='fu'>geos_touches</span>(<span class='no'>x</span>, <span class='no'>y</span>)
 
-<span class='fu'>validate_geo_xy</span>(<span class='no'>x</span>)
+<span class='fu'>geos_intersects</span>(<span class='no'>x</span>, <span class='no'>y</span>)
 
-<span class='co'># S3 method for geo_xy</span>
-<span class='fu'>vec_ptype_abbr</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+<span class='fu'>geos_crosses</span>(<span class='no'>x</span>, <span class='no'>y</span>)
 
-<span class='co'># S3 method for geo_xy</span>
-<span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span>(<span class='no'>x</span>, <span class='no'>...</span>)
+<span class='fu'>geos_is_within</span>(<span class='no'>x</span>, <span class='no'>y</span>)
 
-<span class='fu'>as_geo_xy</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+<span class='fu'>geos_contains</span>(<span class='no'>x</span>, <span class='no'>y</span>)
 
-<span class='co'># S3 method for default</span>
-<span class='fu'>as_geo_xy</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+<span class='fu'>geos_overlaps</span>(<span class='no'>x</span>, <span class='no'>y</span>)
 
-<span class='co'># S3 method for matrix</span>
-<span class='fu'>as_geo_xy</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+<span class='fu'>geos_equals</span>(<span class='no'>x</span>, <span class='no'>y</span>)
 
-<span class='co'># S3 method for geo_xy</span>
-<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>geos_covers</span>(<span class='no'>x</span>, <span class='no'>y</span>)
+
+<span class='fu'>geos_is_covered_by</span>(<span class='no'>x</span>, <span class='no'>y</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>A (possibly) <code><a href='geo_xy.html'>geo_xy()</a></code></p></td>
+      <td><p>A geometry-like object</p></td>
     </tr>
     <tr>
-      <th>...</th>
-      <td><p>Unused</p></td>
+      <th>y</th>
+      <td><p>A geometry-like object. <code>x</code> and <code>y</code> of length 1
+is recycled to the length of the other (like <code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble::tibble()</a></code>).</p></td>
     </tr>
     </table>
+
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A logical vector</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    
+<dl class='dl-horizontal'>
+<dt><code>geos_disjoint()</code></dt><dd><p>Returns <code>TRUE</code> if <code>x</code> and <code>y</code> <em>do not</em> have a point in common. Is
+the opposite of <code>geos_intersects()</code>.</p></dd>
+<dt><code>geos_touches()</code></dt><dd><p>Returns <code>TRUE</code> if <code>x</code> and <code>y</code> have a point in common, but
+their interiors do not intersect.</p></dd>
+<dt><code>geos_intersects()</code></dt><dd><p>Returns <code>TRUE</code> if <code>x</code> and <code>y</code> have a point in common, regardless
+of whether or not their interiors intersect. Is the opposite
+of <code>geos_disjoint()</code>.</p></dd>
+<dt><code>geos_is_within()</code></dt><dd><p>Returns <code>TRUE</code> if all points in <code>x</code> are are also within <code>y</code>.
+<code>geos_within(x, y)</code> is identical to <code>geos_contains(y, x)</code>.</p></dd>
+<dt><code>geos_contains()</code></dt><dd><p>Returns <code>TRUE</code> if all points in <code>y</code> are are also within <code>x</code>.
+<code>geos_contains(x, y)</code> is identical to <code>geos_within(y, x)</code>.</p></dd>
+<dt><code>geos_overlaps()</code></dt><dd><p>Returns <code>TRUE</code> if <code>x</code> and <code>y</code> have <em>some</em> but <em>not all</em> points
+in common, and the intersection of the two is the same geometry
+type as the input. For example, two polygons can overlap, but
+a polygon and a line cannot.</p></dd>
+<dt><code>geos_crosses()</code></dt><dd><p>Returns <code>TRUE</code> if <code>x</code> and <code>y</code> have <em>some</em> but <em>not all</em> points
+in common, and the intersection of the two is the <em>not</em> the
+same geometry type as the input. For example, a polygon
+and a line can cross, but two polygons cannot.</p></dd>
+<dt><code>geos_equals()</code></dt><dd><p>Returns <code>TRUE</code> if <code>x</code> and <code>y</code> have <em>all</em> points in common and no
+points that intersect the exterior of the other.</p></dd>
+<dt><code>geos_covers()</code></dt><dd><p>Returns <code>TRUE</code> if every point in <code>y</code> is a point of <code>x</code>. Is the opposite
+of <code>geos_covered_by()</code>.</p></dd>
+<dt><code>geos_is_covered_by()</code></dt><dd><p>Returns <code>TRUE</code> if every point in <code>x</code> is a point of <code>y</code>. Is the opposite
+of <code>geos_covered_by()</code>.</p></dd>
+
+</dl>
 
 
   </div>
@@ -155,6 +190,8 @@
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#value">Value</a></li>
+      <li><a href="#details">Details</a></li>
     </ul>
 
   </div>

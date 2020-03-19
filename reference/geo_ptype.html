@@ -39,7 +39,7 @@
 <meta property="og:description" content="Similar to vctrs::vec_cast() and vctrs::vec_ptype(),
 except that some important geometry data structures are
 not strictly vctrs, in the sense that vctrs::vec_size()
-may be different or not applicable (e.g., for a geo_tbl_linestring()).
+may be different or not applicable (e.g., for a geo_coord_linestring()).
 These functions help geometry operators accept a number of different
 input and output formats. In particular, geo_restore() provides
 any conversion that may be necessary between the C++ data structure
@@ -93,7 +93,7 @@ and the R data  structure." />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/paleolimbot/geom">
+  <a href="https://github.com/paleolimbot/geom/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -120,7 +120,7 @@ and the R data  structure." />
     <p>Similar to <code><a href='https://rdrr.io/pkg/vctrs/man/vec_cast.html'>vctrs::vec_cast()</a></code> and <code><a href='https://rdrr.io/pkg/vctrs/man/vec_ptype.html'>vctrs::vec_ptype()</a></code>,
 except that some important geometry data structures are
 not strictly vctrs, in the sense that <code><a href='https://rdrr.io/pkg/vctrs/man/vec_size.html'>vctrs::vec_size()</a></code>
-may be different or not applicable (e.g., for a <code><a href='geo_tbl_point.html'>geo_tbl_linestring()</a></code>).
+may be different or not applicable (e.g., for a <code><a href='geo_coord_point.html'>geo_coord_linestring()</a></code>).
 These functions help geometry operators accept a number of different
 input and output formats. In particular, <code>geo_restore()</code> provides
 any conversion that may be necessary between the C++ data structure
@@ -135,7 +135,12 @@ and the R data  structure.</p>
 <span class='fu'>geo_restore</span>(<span class='no'>to</span>, <span class='no'>x</span>)
 
 <span class='co'># S3 method for default</span>
-<span class='fu'>geo_restore</span>(<span class='no'>to</span>, <span class='no'>x</span>)</pre>
+<span class='fu'>geo_restore</span>(<span class='no'>to</span>, <span class='no'>x</span>)
+
+<span class='fu'>geo_size</span>(<span class='no'>x</span>)
+
+<span class='co'># S3 method for default</span>
+<span class='fu'>geo_size</span>(<span class='no'>x</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

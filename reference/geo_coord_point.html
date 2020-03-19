@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create and validate well-known text — geo_wkt • geom</title>
+<title>Coordinate-long representations of geometries — geo_coord_linestring • geom</title>
 
 
 <!-- jquery -->
@@ -35,10 +35,14 @@
 
 
 
-<meta property="og:title" content="Create and validate well-known text — geo_wkt" />
-<meta property="og:description" content="Like other geo types, geo_wkt() doesn't convert its input
-but does validate it using validate_geo_wkt().
-To skip validation, use new_geo_wkt()." />
+<meta property="og:title" content="Coordinate-long representations of geometries — geo_coord_linestring" />
+<meta property="og:description" content="R's graphics use coordinate-long representations of geometries (i.e.,
+one row per coordinate). Additionally, these can be more easily manipulated
+than some other representations of geometry. Important: order matters
+when passing a geo_coord_*() to other functions, which assume
+that you use sequential feature, piece, and part values starting at 1.
+Helpers to construct this particular representation of geometry from
+a tibble are in the works." />
 
 
 
@@ -106,35 +110,65 @@ To skip validation, use new_geo_wkt()." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create and validate well-known text</h1>
-    <small class="dont-index">Source: <a href='https://github.com/paleolimbot/geom/blob/master/R/geo-wkt.R'><code>R/geo-wkt.R</code></a></small>
-    <div class="hidden name"><code>geo_wkt.Rd</code></div>
+    <h1>Coordinate-long representations of geometries</h1>
+    <small class="dont-index">Source: <a href='https://github.com/paleolimbot/geom/blob/master/R/geo-coord-linestring.R'><code>R/geo-coord-linestring.R</code></a>, <a href='https://github.com/paleolimbot/geom/blob/master/R/geo-coord-point.R'><code>R/geo-coord-point.R</code></a>, <a href='https://github.com/paleolimbot/geom/blob/master/R/geo-coord-polygon.R'><code>R/geo-coord-polygon.R</code></a></small>
+    <div class="hidden name"><code>geo_coord_point.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Like other geo types, <code>geo_wkt()</code> doesn't convert its input
-but does validate it using <code><a href='new_geo_wkt.html'>validate_geo_wkt()</a></code>.
-To skip validation, use <code><a href='new_geo_wkt.html'>new_geo_wkt()</a></code>.</p>
+    <p>R's graphics use coordinate-long representations of geometries (i.e.,
+one row per coordinate). Additionally, these can be more easily manipulated
+than some other representations of geometry. <strong>Important</strong>: order matters
+when passing a <code>geo_coord_*()</code> to other functions, which assume
+that you use sequential <code>feature</code>, <code>piece</code>, and <code>part</code> values starting at 1.
+Helpers to construct this particular representation of geometry from
+a tibble are in the works.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>geo_wkt</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>())</pre>
+    <pre class="usage"><span class='fu'>geo_coord_linestring</span>(<span class='no'>xy</span>, <span class='kw'>feature</span> <span class='kw'>=</span> <span class='fl'>1L</span>)
+
+<span class='fu'>geo_coord_multilinestring</span>(<span class='no'>xy</span>, <span class='kw'>feature</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>part</span> <span class='kw'>=</span> <span class='fl'>1L</span>)
+
+<span class='fu'>geo_coord_point</span>(<span class='no'>xy</span>, <span class='kw'>feature</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq_len</a></span>(<span class='fu'>vec_size</span>(<span class='no'>xy</span>)))
+
+<span class='fu'>geo_coord_multipoint</span>(<span class='no'>xy</span>, <span class='kw'>feature</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq_len</a></span>(<span class='fu'>vec_size</span>(<span class='no'>xy</span>)))
+
+<span class='fu'>geo_coord_polygon</span>(<span class='no'>xy</span>, <span class='kw'>feature</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>piece</span> <span class='kw'>=</span> <span class='fl'>1L</span>)
+
+<span class='fu'>geo_coord_multipolygon</span>(<span class='no'>xy</span>, <span class='kw'>feature</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>piece</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>part</span> <span class='kw'>=</span> <span class='fl'>1L</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>A character vector containing well-known text</p></td>
+      <th>xy</th>
+      <td><p>A <code><a href='geo_xy.html'>geo_xy()</a></code> (or something castable to <code><a href='geo_xy.html'>geo_xy()</a></code>) of coordinates</p></td>
+    </tr>
+    <tr>
+      <th>feature</th>
+      <td><p>An integer ID that whose unique values can
+be used to identify and/or separate features.</p></td>
+    </tr>
+    <tr>
+      <th>part</th>
+      <td><p>An ID used to separate parts within a feature of a multi* geometry</p></td>
+    </tr>
+    <tr>
+      <th>piece</th>
+      <td><p>An ID used to separate rings within polygons. The
+smallest <code>piece</code> value within a <code>feature</code>/<code>part</code> combination
+is assumed to be the outer ring.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <code><a href='new_geo_wkt.html'>new_geo_wkt()</a></code></p>
+    <p>A vctr</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>geo_wkt</span>(<span class='st'>"POINT (30 10)"</span>)</div><div class='output co'>#&gt; &lt;geo_wkt[1]&gt;
-#&gt; [1] POINT (30 10)</div><div class='input'>
+    <pre class="examples"><div class='input'><span class='fu'>geo_coord_point</span>(<span class='fu'><a href='geo_xy.html'>geo_xy</a></span>(<span class='fl'>30</span>, <span class='fl'>10</span>))</div><div class='output co'>#&gt; &lt;geo_coord_point [1 coords, 1 features]&gt;
+#&gt; [1] &lt;feat `1` (30 10)&gt;</div><div class='input'><span class='fu'>geo_coord_multipoint</span>(<span class='fu'><a href='geo_xy.html'>geo_xy</a></span>(<span class='fl'>1</span>:<span class='fl'>4</span>, <span class='fl'>1</span>:<span class='fl'>4</span>), <span class='kw'>feature</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>))</div><div class='output co'>#&gt; &lt;geo_coord_multipoint [4 coords, 2 features]&gt;
+#&gt; [1] &lt;feat `1.1` (1 1)&gt; &lt;feat `1.1` (2 2)&gt; &lt;feat `2.1` (3 3)&gt; &lt;feat `2.1` (4 4)&gt;</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

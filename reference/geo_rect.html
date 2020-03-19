@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>S3 details for geo_xy — new_geo_xy • geom</title>
+<title>Rectangles — geo_rect • geom</title>
 
 
 <!-- jquery -->
@@ -35,8 +35,8 @@
 
 
 
-<meta property="og:title" content="S3 details for geo_xy — new_geo_xy" />
-<meta property="og:description" content="S3 details for geo_xy" />
+<meta property="og:title" content="Rectangles — geo_rect" />
+<meta property="og:description" content="Rectangles" />
 
 
 
@@ -104,57 +104,42 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>S3 details for geo_xy</h1>
-    <small class="dont-index">Source: <a href='https://github.com/paleolimbot/geom/blob/master/R/geo-xy.R'><code>R/geo-xy.R</code></a></small>
-    <div class="hidden name"><code>new_geo_xy.Rd</code></div>
+    <h1>Rectangles</h1>
+    <small class="dont-index">Source: <a href='https://github.com/paleolimbot/geom/blob/master/R/geo-rect.R'><code>R/geo-rect.R</code></a></small>
+    <div class="hidden name"><code>geo_rect.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>S3 details for geo_xy</p>
+    <p>Rectangles</p>
     </div>
 
-    <pre class="usage"><span class='fu'>new_geo_xy</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/double.html'>double</a></span>(), <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/double.html'>double</a></span>()))
-
-<span class='fu'>is_geo_xy</span>(<span class='no'>x</span>)
-
-<span class='fu'>validate_geo_xy</span>(<span class='no'>x</span>)
-
-<span class='co'># S3 method for geo_xy</span>
-<span class='fu'>vec_ptype_abbr</span>(<span class='no'>x</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for geo_xy</span>
-<span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span>(<span class='no'>x</span>, <span class='no'>...</span>)
-
-<span class='fu'>as_geo_xy</span>(<span class='no'>x</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for default</span>
-<span class='fu'>as_geo_xy</span>(<span class='no'>x</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for matrix</span>
-<span class='fu'>as_geo_xy</span>(<span class='no'>x</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for geo_xy</span>
-<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>geo_rect</span>(<span class='kw'>xmin</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/double.html'>double</a></span>(), <span class='kw'>ymin</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/double.html'>double</a></span>(), <span class='kw'>xmax</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/double.html'>double</a></span>(), <span class='kw'>ymax</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/double.html'>double</a></span>())</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>A (possibly) <code><a href='geo_xy.html'>geo_xy()</a></code></p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>Unused</p></td>
+      <th>xmin, ymin, xmax, ymax</th>
+      <td><p>Border values, recycled to a common
+length using <code><a href='https://rdrr.io/pkg/vctrs/man/vec_recycle.html'>vctrs::vec_recycle_common()</a></code>.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>A <code><a href='new_geo_rect.html'>new_geo_rect()</a></code></p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>geo_rect</span>(<span class='kw'>xmin</span> <span class='kw'>=</span> <span class='fl'>0</span>:<span class='fl'>5</span>, <span class='kw'>ymin</span> <span class='kw'>=</span> <span class='fl'>0</span>:<span class='fl'>5</span>, <span class='kw'>xmax</span> <span class='kw'>=</span> <span class='fl'>2</span>:<span class='fl'>7</span>, <span class='kw'>ymax</span> <span class='kw'>=</span> <span class='fl'>2</span>:<span class='fl'>7</span>)</div><div class='output co'>#&gt; &lt;geo_rect[6]&gt;
+#&gt; [1] (0 0)x(2 2) (1 1)x(3 3) (2 2)x(4 4) (3 3)x(5 5) (4 4)x(6 6) (5 5)x(7 7)</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#value">Value</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>

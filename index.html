@@ -49,7 +49,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/paleolimbot/geom">
+  <a href="https://github.com/paleolimbot/geom/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -88,18 +88,18 @@
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw"><a href="reference/geo_convert.html">geo_convert</a></span>(<span class="kw"><a href="reference/geo_wkt.html">geo_wkt</a></span>(<span class="st">"POINT (20 10)"</span>), <span class="kw"><a href="reference/geo_wkb.html">geo_wkb</a></span>())</span>
 <span id="cb3-2"><a href="#cb3-2"></a><span class="co">#&gt; &lt;geo_wkb [1]&gt;</span></span>
 <span id="cb3-3"><a href="#cb3-3"></a><span class="co">#&gt; &lt;raw [21]&gt;</span></span>
-<span id="cb3-4"><a href="#cb3-4"></a>tibble<span class="op">::</span><span class="kw"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span>(<span class="kw"><a href="reference/geo_convert.html">geo_convert</a></span>(<span class="kw"><a href="reference/geo_wkt.html">geo_wkt</a></span>(<span class="st">"POINT (20 10)"</span>), <span class="kw"><a href="reference/is_geo_tbl.html">geo_tbl</a></span>()))</span>
+<span id="cb3-4"><a href="#cb3-4"></a>tibble<span class="op">::</span><span class="kw"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span>(<span class="kw"><a href="reference/geo_convert.html">geo_convert</a></span>(<span class="kw"><a href="reference/geo_wkt.html">geo_wkt</a></span>(<span class="st">"POINT (20 10)"</span>), <span class="kw"><a href="reference/is_geo_coord.html">geo_coord</a></span>()))</span>
 <span id="cb3-5"><a href="#cb3-5"></a><span class="co">#&gt; # A tibble: 1 x 2</span></span>
 <span id="cb3-6"><a href="#cb3-6"></a><span class="co">#&gt;        xy feature</span></span>
 <span id="cb3-7"><a href="#cb3-7"></a><span class="co">#&gt;      &lt;xy&gt;   &lt;int&gt;</span></span>
 <span id="cb3-8"><a href="#cb3-8"></a><span class="co">#&gt; 1 (20 10)       1</span></span></code></pre></div>
 <p>The package can do operations from the GEOS library, returing the results in any of the supported output formats:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw"><a href="reference/geo_buffer.html">geo_buffer</a></span>(</span>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw"><a href="reference/geos_buffer.html">geos_buffer</a></span>(</span>
 <span id="cb4-2"><a href="#cb4-2"></a>  <span class="kw"><a href="reference/geo_wkt.html">geo_wkt</a></span>(<span class="st">"POINT (0 0)"</span>), </span>
 <span id="cb4-3"><a href="#cb4-3"></a>  <span class="dt">width =</span> <span class="fl">0.5</span>, <span class="dt">quad_segs =</span> <span class="dv">4</span>, </span>
-<span id="cb4-4"><a href="#cb4-4"></a>  <span class="dt">to =</span> <span class="kw"><a href="reference/is_geo_tbl.html">geo_tbl</a></span>() </span>
+<span id="cb4-4"><a href="#cb4-4"></a>  <span class="dt">to =</span> <span class="kw"><a href="reference/is_geo_coord.html">geo_coord</a></span>() </span>
 <span id="cb4-5"><a href="#cb4-5"></a>)</span>
-<span id="cb4-6"><a href="#cb4-6"></a><span class="co">#&gt; &lt;geo_tbl_polygon [17 coords, 1 features]&gt;</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="co">#&gt; &lt;geo_coord_polygon [17 coords, 1 features]&gt;</span></span>
 <span id="cb4-7"><a href="#cb4-7"></a><span class="co">#&gt;  [1] &lt;feat `1` (5.000000e-01 0.000000e+00)&gt;  </span></span>
 <span id="cb4-8"><a href="#cb4-8"></a><span class="co">#&gt;  [2] &lt;feat `1` (4.619398e-01 -1.913417e-01)&gt; </span></span>
 <span id="cb4-9"><a href="#cb4-9"></a><span class="co">#&gt;  [3] &lt;feat `1` (3.535534e-01 -3.535534e-01)&gt; </span></span>
@@ -119,7 +119,7 @@
 <span id="cb4-23"><a href="#cb4-23"></a><span class="co">#&gt; [17] &lt;feat `1` (5.000000e-01 0.000000e+00)&gt;</span></span></code></pre></div>
 <p>Also, the results can be plotted!</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>point &lt;-<span class="st"> </span><span class="kw"><a href="reference/geo_wkt.html">geo_wkt</a></span>(<span class="st">"POINT (0 0)"</span>)</span>
-<span id="cb5-2"><a href="#cb5-2"></a><span class="kw"><a href="reference/geo_plot.html">geo_plot</a></span>(<span class="kw"><a href="reference/geo_buffer.html">geo_buffer</a></span>(point, <span class="dt">width =</span> <span class="fl">0.5</span>))</span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="kw"><a href="reference/geo_plot.html">geo_plot</a></span>(<span class="kw"><a href="reference/geos_buffer.html">geos_buffer</a></span>(point, <span class="dt">width =</span> <span class="fl">0.5</span>))</span>
 <span id="cb5-3"><a href="#cb5-3"></a><span class="kw"><a href="reference/geo_plot.html">geo_plot_add</a></span>(point)</span></code></pre></div>
 <p><img src="reference/figures/README-ex-plot-1.png" width="100%"></p>
 </div>
@@ -141,7 +141,7 @@
     <div class="links">
 <h2>Links</h2>
 <ul class="list-unstyled">
-<li>Browse source code at <br><a href="https://github.com/paleolimbot/geom">https://​github.com/​paleolimbot/​geom</a>
+<li>Browse source code at <br><a href="https://github.com/paleolimbot/geom/">https://​github.com/​paleolimbot/​geom/​</a>
 </li>
 <li>Report a bug at <br><a href="https://github.com/paleolimbot/geom/issues">https://​github.com/​paleolimbot/​geom/​issues</a>
 </li>
