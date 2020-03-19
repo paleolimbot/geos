@@ -1,170 +1,77 @@
 
-#' Generics common to geo_tbl_*() classes
+#' Create geometries from data frames
 #'
-#' @param x A (possibly) [geo_tbl_point()], [geo_tbl_multipoint()],
-#'   [geo_tbl_linestring()], [geo_tbl_multilinestring()],
-#'   [geo_tbl_polygon()], or [geo_tbl_multipolygon()], or [geo_xy()]
-#' @param y,to See [vctrs::vec_cast()] and [vctrs::vec_ptype2()]
-#' @param ... Unused
+#' @param data A [tibble::tibble()] or data frame
+#' @param col A column name for the [geo_xy()] object
+#' @param into Column names for the `x` and `y` coordinates, respectively.
+#' @param x,y Column specifications for x and y coordinate
+#'   columns, respectively. Use [dplyr::select()] syntax.
+#' @param remove Use `remove = FALSE` to keep `x` and `y` as columns
+#'   in the output.
 #'
+#' @return `data`, with a new column `col`
 #' @export
 #'
-is_geo_tbl <- function(x) {
-  inherits(x, "geo_tbl")
-}
+#' @examples
+#' tbl <- tibble(x = 1, y = 2)
+#' unite_xy(tbl, "xy", x, y, remove = FALSE)
+#'
+unite_xy <- function(data, col, x, y, remove = TRUE) {
+  data <- tibble::as_tibble(data)
 
-#' @rdname is_geo_tbl
-#' @export
-geo_tbl <- function() {
-  structure(list(), class = "geo_tbl")
-}
-
-#' @method vec_ptype2 geo_tbl
-#' @export
-#' @export vec_ptype2.geo_tbl
-#' @rdname is_geo_tbl
-vec_ptype2.geo_tbl <- function(x, y, ...) {
-  UseMethod("vec_ptype2.geo_tbl", y)
-}
-
-#' @method vec_ptype2.geo_tbl default
-#' @export
-vec_ptype2.geo_tbl.default <- function(x, y, ..., x_arg = "x", y_arg = "y") {
-  vec_default_ptype2(x, y, x_arg = x_arg, y_arg = y_arg)
-}
-
-#' @method vec_ptype2.geo_tbl geo_tbl
-#' @export
-vec_ptype2.geo_tbl.geo_tbl <- function(x, y, ..., x_arg = "x", y_arg = "y") {
-  # always pick 'multi' for common types
-  # slightly easier to do it here rather than using a million double dispatch
-  # methods
-  if (inherits(x, "geo_tbl_point") && inherits(y, "geo_tbl_multipoint")) {
-    new_geo_tbl_multipoint()
-  } else if(inherits(x, "geo_tbl_multipoint") && inherits(y, "geo_tbl_point")) {
-    new_geo_tbl_multipoint()
-  } else if (inherits(x, "geo_tbl_linestring") && inherits(y, "geo_tbl_multilinestring")) {
-    new_geo_tbl_multilinestring()
-  } else if(inherits(x, "geo_tbl_multilinestring") && inherits(y, "geo_tbl_linestring")) {
-    new_geo_tbl_multilinestring()
-  } else if (inherits(x, "geo_tbl_polygon") && inherits(y, "geo_tbl_multipolygon")) {
-    new_geo_tbl_multipolygon()
-  } else if(inherits(x, "geo_tbl_multipolygon") && inherits(y, "geo_tbl_polygon")) {
-    new_geo_tbl_multipolygon()
-  } else {
-    NextMethod()
-  }
-}
-
-#' @method vec_ptype2.geo_tbl data.frame
-#' @export
-vec_ptype2.geo_tbl.data.frame <- function(x, y, ..., x_arg = "x", y_arg = "y") {
-  as.data.frame(geo_get_ptype_df(x))
-}
-
-#' @method vec_ptype2.geo_tbl tbl_df
-#' @export
-vec_ptype2.geo_tbl.tbl_df <- function(x, y, ..., x_arg = "x", y_arg = "y") {
-  geo_get_ptype_df(x)
-}
-
-#' @method vec_ptype2.data.frame geo_tbl
-#' @export
-vec_ptype2.data.frame.geo_tbl <- function(x, y, ..., x_arg = "x", y_arg = "y") {
-  as.data.frame(geo_get_ptype_df(y))
-}
-
-geo_get_ptype_df <- function(geo_tbl) {
-  ptype_default <- tibble(
-    x = double(),
-    y = double(),
-    xy = geo_xy(),
-    feature = integer(),
-    part = integer(),
-    piece = integer()
+  x_col <- tidyselect::eval_select(enquo(x), data, strict = TRUE)
+  y_col <- tidyselect::eval_select(enquo(y), data, strict = TRUE)
+  stopifnot(
+    length(x_col) == 1,
+    length(y_col) == 1,
+    length(col) ==  1, is.character(col)
   )
-  ptype_default[names(vec_data(geo_tbl))]
+
+  xy <- geo_xy(x = data[[x_col]], y = data[[y_col]])
+
+  insert_column(data, col, xy, c(x_col, y_col), remove)
 }
 
+#' @rdname unite_xy
 #' @export
-as_tibble.geo_tbl <- function(x, ...) {
-  as_tibble(vec_data(x))
+separate_xy <- function(data, col, into = c("x", "y"), remove = TRUE) {
+  data <- tibble::as_tibble(data)
+
+  xy_col <- tidyselect::eval_select(enquo(col), data, strict = TRUE)
+  stopifnot(
+    length(xy_col) == 1,
+    length(into) == 2,
+    is.character(into)
+  )
+
+  xy <- data[[xy_col]]
+  stopifnot(is_geo_xy(xy))
+
+  x <- field(xy, "x")
+  y <- field(xy, "y")
+
+  # until insert_column properly handles col as a tibble...
+  data <- insert_column(data, into[2], y, xy_col, remove = remove)
+  insert_column(data, into[1], x, xy_col, remove = FALSE)
 }
 
-#' @export
-as.data.frame.geo_tbl <- function(x, ...) {
-  as.data.frame(as_tibble(x))
-}
+insert_column <- function(data, col, value, source_cols, remove) {
+  source_cols <- sort(source_cols)
 
-#' @method vec_cast geo_tbl
-#' @export
-#' @export vec_cast.geo_tbl
-#' @rdname is_geo_tbl
-vec_cast.geo_tbl <- function(x, to, ...) {
-  UseMethod("vec_cast.geo_tbl")
-}
+  if (remove) {
+    data[[source_cols[1]]] = value
+    names(data)[source_cols[1]] <- col
+    if (length(source_cols) > 1) {
+      data <- data[-source_cols[-1]]
+    }
 
-#' @method vec_cast.geo_tbl default
-#' @export
-vec_cast.geo_tbl.default <- function(x, to, ...) {
-  vec_default_cast(x, to)
-}
-
-#' @method vec_cast.geo_tbl geo_tbl
-#' @export
-vec_cast.geo_tbl.geo_tbl <- function(x, to, ...) {
-  # always pick 'multi' for common types
-  # slightly easier to do it here rather than using a million double dispatch
-  # methods
-  if (inherits(x, "geo_tbl_point") && inherits(to, "geo_tbl_multipoint")) {
-    new_geo_tbl_multipoint(vec_data(x))
-  } else if (inherits(x, "geo_tbl_linestring") && inherits(to, "geo_tbl_multilinestring")) {
-    data <- vec_data(x)
-    data$part <- rep_len(1L, vec_size(x))
-    new_geo_tbl_multilinestring(data)
-  } else if (inherits(x, "geo_tbl_polygon") && inherits(to, "geo_tbl_multipolygon")) {
-    data <- vec_data(x)
-    data$part <- rep_len(1L, vec_size(x))
-    new_geo_tbl_multipolygon(data)
-  } else if(identical(class(x), class(to))) {
-    x
+    data
   } else {
-    NextMethod()
+    before <- source_cols[1]
+    vec_cbind(
+      data[seq_len(before - 1)],
+      tibble(!!col := value),
+      data[before:ncol(data)]
+    )
   }
-}
-
-#' @method vec_cast.geo_tbl data.frame
-#' @export
-vec_cast.geo_tbl.data.frame <- function(x, to, ...) {
-  vec_cast.geo_tbl.list(x, to, ...)
-}
-
-#' @method vec_cast.data.frame geo_tbl
-#' @export
-vec_cast.data.frame.geo_tbl <- function(x, to, ...) {
-  as.data.frame(as_tibble(vec_data(x)))
-}
-
-#' @method vec_cast.geo_tbl list
-#' @export
-vec_cast.geo_tbl.list <- function(x, to, ...) {
-  to_class <- class(to)[1]
-  if (!rlang::is_dictionaryish(x)) {
-    abort(sprintf("Can't convert an unnamed list to <%s>", to_class))
-  }
-  constructor <- rlang::as_function(to_class, env = getNamespace("geom"))
-  arg_names <- intersect(names(x), names(formals(constructor)))
-  rlang::exec(constructor, !!!x[arg_names])
-}
-
-#' @method vec_cast.list geo_tbl
-#' @export
-vec_cast.list.geo_tbl <- function(x, to, ...) {
-  vec_data(x)
-}
-
-#' @export
-geo_restore.geo_tbl <- function(to, x) {
-  # the C++ data structure  for these is list() of geo_tbls
-  vec_c(!!!x)
 }

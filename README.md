@@ -40,7 +40,7 @@ useful input/output formats:
 geo_convert(geo_wkt("POINT (20 10)"), geo_wkb())
 #> <geo_wkb [1]>
 #> <raw [21]>
-tibble::as_tibble(geo_convert(geo_wkt("POINT (20 10)"), geo_tbl()))
+tibble::as_tibble(geo_convert(geo_wkt("POINT (20 10)"), geo_coord()))
 #> # A tibble: 1 x 2
 #>        xy feature
 #>      <xy>   <int>
@@ -51,12 +51,12 @@ The package can do operations from the GEOS library, returing the
 results in any of the supported output formats:
 
 ``` r
-geo_buffer(
+geos_buffer(
   geo_wkt("POINT (0 0)"), 
   width = 0.5, quad_segs = 4, 
-  to = geo_tbl() 
+  to = geo_coord() 
 )
-#> <geo_tbl_polygon [17 coords, 1 features]>
+#> <geo_coord_polygon [17 coords, 1 features]>
 #>  [1] <feat `1` (5.000000e-01 0.000000e+00)>  
 #>  [2] <feat `1` (4.619398e-01 -1.913417e-01)> 
 #>  [3] <feat `1` (3.535534e-01 -3.535534e-01)> 
@@ -80,7 +80,7 @@ Also, the results can be plotted\!
 
 ``` r
 point <- geo_wkt("POINT (0 0)")
-geo_plot(geo_buffer(point, width = 0.5))
+geo_plot(geos_buffer(point, width = 0.5))
 geo_plot_add(point)
 ```
 

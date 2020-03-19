@@ -4,7 +4,7 @@
 #' Similar to [vctrs::vec_cast()] and [vctrs::vec_ptype()],
 #' except that some important geometry data structures are
 #' not strictly vctrs, in the sense that [vctrs::vec_size()]
-#' may be different or not applicable (e.g., for a [geo_tbl_linestring()]).
+#' may be different or not applicable (e.g., for a [geo_coord_linestring()]).
 #' These functions help geometry operators accept a number of different
 #' input and output formats. In particular, [geo_restore()] provides
 #' any conversion that may be necessary between the C++ data structure
@@ -35,4 +35,16 @@ geo_restore <- function(to, x) {
 #' @export
 geo_restore.default <- function(to, x) {
   vec_restore(x, to)
+}
+
+#' @rdname geo_ptype
+#' @export
+geo_size <- function(x) {
+  UseMethod("geo_size")
+}
+
+#' @rdname geo_ptype
+#' @export
+geo_size.default <- function(x) {
+  vec_size(x)
 }

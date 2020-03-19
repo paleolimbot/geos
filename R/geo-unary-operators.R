@@ -8,13 +8,15 @@
 #'
 #' @examples
 #' geo_convert(geo_wkt("POINT (20 10)"), geo_wkb())
-#' geo_convert(geo_wkt("POINT (20 10)"), geo_tbl())
+#' geo_convert(geo_wkt("POINT (20 10)"), geo_coord())
 #'
 geo_convert <- function(x, to) {
   geo_restore(to, geomcpp_convert(x, to))
 }
 
 #' Buffer a geometry
+#'
+#' Vectorized along `x` and `width`.
 #'
 #' @inheritParams geo_ptype
 #' @param width The buffer distance. "Width" is the GEOS term - it is more
@@ -33,10 +35,10 @@ geo_convert <- function(x, to) {
 #'
 #' @examples
 #' point <- geo_wkt("POINT (0 0)")
-#' geo_plot(geo_buffer(point, width = 0.5))
+#' geo_plot(geos_buffer(point, width = 0.5))
 #' geo_plot_add(point)
 #'
-geo_buffer <- function(x, width, quad_segs = 30,
+geos_buffer <- function(x, width, quad_segs = 30,
                        end_cap_style = c("round", "flat", "square"),
                        join_style = c("round", "mitre", "bevel"),
                        mitre_limit = 1,
@@ -47,6 +49,8 @@ geo_buffer <- function(x, width, quad_segs = 30,
 
   join_style <- match.arg(join_style)
   join_style_int <- match(join_style, c("round", "mitre", "bevel"))
+
+  width <- rep_len_or_fail(width, geo_size(x))
 
   result <- geomcpp_buffer(
     x, to,

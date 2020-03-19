@@ -10,7 +10,7 @@
 #' geo_xy(0:5, 1:6)
 #'
 geo_xy <- function(x = double(), y = double()) {
-  new_geo_xy(list(x = vec_cast(x, double()), y = vec_cast(y, double())))
+  new_geo_xy(vec_recycle_common(x = vec_cast(x, double()), y = vec_cast(y, double())))
 }
 
 #' S3 details for geo_xy
@@ -23,7 +23,7 @@ geo_xy <- function(x = double(), y = double()) {
 new_geo_xy <- function(x = list(x = double(), y = double())) {
   vec_assert(x$x, double())
   vec_assert(x$y, double())
-  new_rcrd(x, class = c("geo_xy", "geo_tbl"))
+  new_rcrd(x, class = c("geo_xy", "geo_coord"))
 }
 
 #' @export
@@ -85,4 +85,17 @@ as_geo_xy.matrix <- function(x, ...) {
 #' @rdname new_geo_xy
 as.matrix.geo_xy <- function(x, ...) {
   as.matrix(as.data.frame(x))
+}
+
+#' @export
+geo_ptype.geo_xy <- function(x, ...) {
+  # returning a geo_wkt() here means that we can use
+  # a geo_rect() as an input to geometry functions without
+  # getting only getting bboxes back
+  geo_wkt()
+}
+
+#' @export
+geo_size.geo_xy <- function(x) {
+  vec_size(x)
 }

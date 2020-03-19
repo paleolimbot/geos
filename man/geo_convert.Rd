@@ -19,6 +19,6 @@ Convert a geometry to a different data structure
 }
 \examples{
 geo_convert(geo_wkt("POINT (20 10)"), geo_wkb())
-geo_convert(geo_wkt("POINT (20 10)"), geo_tbl())
+geo_convert(geo_wkt("POINT (20 10)"), geo_coord())
 
 }

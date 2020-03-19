@@ -12,6 +12,7 @@ Provides data structures to convert various
 \seealso{
 Useful links:
 \itemize{
+  \item \url{https://paleolimbot.github.io/geom}
   \item \url{https://github.com/paleolimbot/geom}
   \item Report bugs at \url{https://github.com/paleolimbot/geom/issues}
 }

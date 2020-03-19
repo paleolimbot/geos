@@ -13,6 +13,7 @@ test_that("geo_wkb class works", {
   expect_is(wkb, "geo_wkb")
   expect_true(is_geo_wkb(wkb))
   expect_true(vec_is(wkb))
+  expect_equal(geo_size(wkb), 1)
 })
 
 test_that("geo_wkb parse validation works", {
