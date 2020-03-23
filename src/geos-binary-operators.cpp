@@ -1,6 +1,13 @@
 
-#include "geos-binary-operators.h"
+#include "geos-operator.h"
 using namespace Rcpp;
+
+class IntersectionOperator: public BinaryGeometryOperator {
+public:
+  GEOSGeometry* operateNext(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight) {
+    return GEOSIntersection_r(this->context, geometryLeft, geometryRight);
+  }
+};
 
 // [[Rcpp::export]]
 SEXP geomcpp_intersection(SEXP dataLeft, SEXP dataRight, SEXP ptype) {
@@ -14,10 +21,4 @@ SEXP geomcpp_intersection(SEXP dataLeft, SEXP dataRight, SEXP ptype) {
   op->finishProvider();
 
   return result;
-}
-
-// --- intersection!
-
-GEOSGeometry* IntersectionOperator::operateNext(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight) {
-  return GEOSIntersection_r(this->context, geometryLeft, geometryRight);
 }
