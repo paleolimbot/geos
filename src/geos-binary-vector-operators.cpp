@@ -76,11 +76,9 @@ public:
 
 // [[Rcpp::export]]
 LogicalVector geomcpp_binary_predicate(SEXP dataLeft, SEXP dataRight, int predicate) {
-  GeometryProvider* providerLeft = resolve_provider(dataLeft);
-  GeometryProvider* providerRight = resolve_provider(dataRight);
-
   BinaryPredicateOperator* op = new  BinaryPredicateOperator(predicate);
-  op->initProvider(providerLeft, providerRight);
+
+  op->initProvider(dataLeft, dataRight);
   LogicalVector result = op->operate();
   op->finishProvider();
 

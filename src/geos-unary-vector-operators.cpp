@@ -52,10 +52,9 @@ public:
 
 // [[Rcpp::export]]
 LogicalVector geomcpp_unary_predicate(SEXP data, int predicate) {
-  GeometryProvider* provider = resolve_provider(data);
-
   UnaryPredicateOperator* op = new UnaryPredicateOperator(predicate);
-  op->initProvider(provider);
+
+  op->initProvider(data);
   LogicalVector result = op->operate();
   op->finishProvider();
 

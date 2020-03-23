@@ -4,9 +4,9 @@ using namespace Rcpp;
 
 // ------------- unary operators ----------------
 
-void UnaryGeometryOperator::initProvider(GeometryProvider* provider, GeometryExporter* exporter) {
-  this->provider = provider;
-  this->exporter = exporter;
+void UnaryGeometryOperator::initProvider(SEXP provider, SEXP exporter) {
+  this->provider = resolve_provider(provider);
+  this->exporter = resolve_exporter(exporter);
 }
 
 size_t UnaryGeometryOperator::maxParameterLength() {
@@ -91,12 +91,12 @@ size_t UnaryGeometryOperator::size() {
 
 // ------------- binary operators ----------------
 
-void BinaryGeometryOperator::initProvider(GeometryProvider* providerLeft,
-                                          GeometryProvider* providerRight,
-                                          GeometryExporter* exporter) {
-  this->providerLeft = providerLeft;
-  this->providerRight = providerRight;
-  this->exporter = exporter;
+void BinaryGeometryOperator::initProvider(SEXP providerLeft,
+                                          SEXP providerRight,
+                                          SEXP exporter) {
+  this->providerLeft = resolve_provider(providerLeft);
+  this->providerRight = resolve_provider(providerRight);
+  this->exporter = resolve_exporter(exporter);
 }
 
 size_t BinaryGeometryOperator::maxParameterLength() {

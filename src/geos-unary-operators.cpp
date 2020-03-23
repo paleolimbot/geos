@@ -49,16 +49,13 @@ public:
 SEXP geomcpp_buffer(SEXP data, SEXP ptype, NumericVector width, int quadSegs,
                     int endCapStyle, int joinStyle, double mitreLimit,
                     int singleSided) {
-  GeometryProvider* provider = resolve_provider(data);
-  GeometryExporter* exporter = resolve_exporter(ptype);
-
   BufferOperator* op = new BufferOperator(
     width, quadSegs,
     endCapStyle, joinStyle, mitreLimit,
     singleSided
   );
 
-  op->initProvider(provider, exporter);
+  op->initProvider(data, ptype);
   SEXP result = op->operate();
   op->finishProvider();
 
@@ -75,11 +72,9 @@ public:
 
 // [[Rcpp::export]]
 SEXP geomcpp_convert(SEXP data, SEXP ptype) {
-  GeometryProvider* provider = resolve_provider(data);
-  GeometryExporter* exporter = resolve_exporter(ptype);
-
   IdentityOperator* op = new IdentityOperator();
-  op->initProvider(provider, exporter);
+
+  op->initProvider(data, ptype);
   SEXP result = op->operate();
   op->finishProvider();
 

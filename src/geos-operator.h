@@ -17,7 +17,7 @@ public:
   size_t counter;
 
   virtual size_t maxParameterLength();
-  virtual void initProvider(GeometryProvider* provider, GeometryExporter* exporter);
+  virtual void initProvider(SEXP provider, SEXP exporter);
   virtual void init();
   virtual SEXP operate();
   virtual GEOSGeometry* operateNext(GEOSGeometry* geometry) = 0;
@@ -43,7 +43,7 @@ public:
   size_t counter;
 
   virtual size_t maxParameterLength();
-  virtual void initProvider(GeometryProvider* provider);
+  virtual void initProvider(SEXP provider);
   virtual void init();
   virtual VectorType operate();
   virtual ScalarType operateNext(GEOSGeometry* geometry) = 0;
@@ -67,9 +67,9 @@ public:
   GEOSContextHandle_t context;
   int commonSize;
 
-  virtual void initProvider(GeometryProvider* providerLeft,
-                            GeometryProvider* providerRight,
-                            GeometryExporter* exporter);
+  virtual void initProvider(SEXP providerLeft,
+                            SEXP providerRight,
+                            SEXP exporter);
   virtual size_t maxParameterLength();
   virtual void init();
   virtual SEXP operate();
@@ -97,7 +97,7 @@ public:
   size_t counter;
 
   virtual size_t maxParameterLength();
-  virtual void initProvider(GeometryProvider* providerLeft, GeometryProvider* providerRight);
+  virtual void initProvider(SEXP providerLeft, SEXP providerRight);
   virtual void init();
   virtual VectorType operate();
   virtual ScalarType operateNext(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight) = 0;
@@ -116,8 +116,8 @@ private:
 // but putting them there results in a linker error
 
 template <class VectorType, class ScalarType>
-void UnaryVectorOperator<VectorType, ScalarType>::initProvider(GeometryProvider* provider) {
-  this->provider = provider;
+void UnaryVectorOperator<VectorType, ScalarType>::initProvider(SEXP provider) {
+  this->provider = resolve_provider(provider);
 }
 
 template <class VectorType, class ScalarType>
@@ -212,10 +212,10 @@ size_t UnaryVectorOperator<VectorType, ScalarType>::size() {
 // but putting them there results in a linker error
 
 template <class VectorType, class ScalarType>
-void BinaryVectorOperator<VectorType, ScalarType>::initProvider(GeometryProvider* providerLeft,
-                                                                GeometryProvider* providerRight) {
-  this->providerLeft = providerLeft;
-  this->providerRight = providerRight;
+void BinaryVectorOperator<VectorType, ScalarType>::initProvider(SEXP providerLeft,
+                                                                SEXP providerRight) {
+  this->providerLeft = resolve_provider(providerLeft);
+  this->providerRight = resolve_provider(providerRight);
 }
 
 template <class VectorType, class ScalarType>

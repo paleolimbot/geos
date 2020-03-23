@@ -11,12 +11,9 @@ public:
 
 // [[Rcpp::export]]
 SEXP geomcpp_intersection(SEXP dataLeft, SEXP dataRight, SEXP ptype) {
-  GeometryProvider* providerLeft = resolve_provider(dataLeft);
-  GeometryProvider* providerRight = resolve_provider(dataRight);
-  GeometryExporter* exporter = resolve_exporter(ptype);
-
   IntersectionOperator* op = new IntersectionOperator();
-  op->initProvider(providerLeft, providerRight, exporter);
+
+  op->initProvider(dataLeft, dataRight, ptype);
   SEXP result = op->operate();
   op->finishProvider();
 
