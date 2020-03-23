@@ -84,6 +84,33 @@ private:
   SEXP finishBase();
 };
 
+// ---------- binary vector operators -------------
+
+template <class VectorType, class ScalarType>
+class BinaryVectorOperator {
+public:
+  GeometryProvider* providerLeft;
+  GeometryProvider* providerRight;
+  VectorType data;
+  GEOSContextHandle_t context;
+  size_t commonSize;
+  size_t counter;
+
+  virtual size_t maxParameterLength();
+  virtual void initProvider(GeometryProvider* providerLeft, GeometryProvider* providerRight);
+  virtual void init();
+  virtual VectorType operate();
+  virtual ScalarType operateNext(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight) = 0;
+  virtual void finish();
+  virtual void finishProvider();
+
+  virtual size_t size();
+
+private:
+  void initBase();
+  VectorType finishBase();
+};
+
 // ------ unary vector operators implementation --------
 // I don't know  why these can't be defined in geos-operator.cpp
 // but putting them there results in a linker error
@@ -179,5 +206,109 @@ template <class VectorType, class ScalarType>
 size_t UnaryVectorOperator<VectorType, ScalarType>::size() {
   return this->commonSize;
 }
+
+// ------ binary vector operators implementation --------
+// I don't know  why these can't be defined in geos-operator.cpp
+// but putting them there results in a linker error
+
+template <class VectorType, class ScalarType>
+void BinaryVectorOperator<VectorType, ScalarType>::initProvider(GeometryProvider* providerLeft,
+                                                                GeometryProvider* providerRight) {
+  this->providerLeft = providerLeft;
+  this->providerRight = providerRight;
+}
+
+template <class VectorType, class ScalarType>
+size_t BinaryVectorOperator<VectorType, ScalarType>::maxParameterLength() {
+  return 1;
+}
+
+template <class VectorType, class ScalarType>
+void BinaryVectorOperator<VectorType, ScalarType>::init() {
+
+}
+
+template <class VectorType, class ScalarType>
+void BinaryVectorOperator<VectorType, ScalarType>::initBase() {
+  this->context = geos_init();
+  this->providerLeft->init(this->context);
+  this->providerRight->init(this->context);
+
+  IntegerVector allSizes = IntegerVector::create(
+    this->maxParameterLength(),
+    this->providerLeft->size(),
+    this->providerRight->size()
+  );
+
+  IntegerVector nonConstantSizes = allSizes[allSizes != 1];
+  if (nonConstantSizes.size() == 0) {
+    this->commonSize = 1;
+  } else {
+    this->commonSize = nonConstantSizes[0];
+  }
+
+  for (int i=0; i<nonConstantSizes.size(); i++) {
+    if (nonConstantSizes[i] != this->commonSize) {
+      stop("Providers with incompatible lengths passed to BinaryVectorOperator");
+    }
+  }
+
+  VectorType data(this->size());
+  this->data = data;
+}
+
+template <class VectorType, class ScalarType>
+VectorType BinaryVectorOperator<VectorType, ScalarType>::operate() {
+  this->initBase();
+  this->init();
+
+  // TODO: there is probably a memory leak here, but
+  // GEOSGeom_destroy_r(this->context, geometry) gives
+  // an error
+  GEOSGeometry* geometryLeft;
+  GEOSGeometry* geometryRight;
+  ScalarType result;
+
+  try {
+    for (int i=0; i < this->size(); i++) {
+      checkUserInterrupt();
+      this->counter = i;
+      geometryLeft = this->providerLeft->getNext();
+      geometryRight = this->providerRight->getNext();
+      result = this->operateNext(geometryLeft, geometryRight);
+      this->data[i] = result;
+    }
+  } catch(std::exception e) {
+    this->finish();
+    throw e;
+  }
+
+  this->finish();
+  return this->finishBase();
+}
+
+template <class VectorType, class ScalarType>
+void BinaryVectorOperator<VectorType, ScalarType>::finish() {
+
+}
+
+template <class VectorType, class ScalarType>
+VectorType BinaryVectorOperator<VectorType, ScalarType>::finishBase() {
+  this->providerLeft->finish();
+  this->providerRight->finish();
+  geos_finish(this->context);
+  return this->data;
+}
+
+template <class VectorType, class ScalarType>
+void BinaryVectorOperator<VectorType, ScalarType>::finishProvider() {
+
+}
+
+template <class VectorType, class ScalarType>
+size_t BinaryVectorOperator<VectorType, ScalarType>::size() {
+  return this->commonSize;
+}
+
 
 # endif
