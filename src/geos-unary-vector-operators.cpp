@@ -1,8 +1,5 @@
 
-#include "geos-base.h"
-#include "geos-provider.h"
 #include "geos-unary-vector-operators.h"
-#include <Rcpp.h>
 using namespace Rcpp;
 
 // [[Rcpp::export]]
@@ -17,7 +14,7 @@ LogicalVector geomcpp_unary_predicate(SEXP data, int predicate) {
   return result;
 }
 
-// --- base operator
+// ------ unary vector operators --------
 
 template <class VectorType, class ScalarType>
 void UnaryVectorOperator<VectorType, ScalarType>::initProvider(GeometryProvider* provider) {

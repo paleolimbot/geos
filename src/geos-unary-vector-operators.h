@@ -2,10 +2,10 @@
 #ifndef GEOS_UNARY_VECTOR_OPERATORS_H
 #define GEOS_UNARY_VECTOR_OPERATORS_H
 
-#include "geos-base.h"
-#include "geos-provider.h"
-#include <Rcpp.h>
+#include "geos-operator.h"
 using namespace Rcpp;
+
+// ----- unary vector operators -----
 
 template <class VectorType, class ScalarType>
 class UnaryVectorOperator {
@@ -47,7 +47,5 @@ public:
   bool operateNext(GEOSGeometry* geometry);
   char operateNextGEOS(GEOSGeometry* geometry);
 };
-
-
 
 #endif
