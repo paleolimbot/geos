@@ -2,9 +2,7 @@
 #ifndef GEOS_OPERATOR_H
 #define GEOS_OPERATOR_H
 
-#include "geos-base.h"
 #include "geos-provider.h"
-#include <Rcpp.h>
 using namespace Rcpp;
 
 // ------------- unary operators ----------------
