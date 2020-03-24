@@ -2,19 +2,37 @@
 #include "geos-operator.h"
 using namespace Rcpp;
 
+// --------- base class ---------
+
+void Operator::init() {
+
+}
+
+size_t Operator::maxParameterLength() {
+  return 1;
+}
+
+void Operator::finish() {
+
+}
+
+size_t Operator::size() {
+  return this->commonSize;
+}
+
+void Operator::finishProvider() {
+
+}
+
+Operator::~Operator() {
+
+}
+
 // ------------- unary operators ----------------
 
 void UnaryGeometryOperator::initProvider(SEXP provider, SEXP exporter) {
   this->provider = resolve_provider(provider);
   this->exporter = resolve_exporter(exporter);
-}
-
-size_t UnaryGeometryOperator::maxParameterLength() {
-  return 1;
-}
-
-void UnaryGeometryOperator::init() {
-
 }
 
 void UnaryGeometryOperator::initBase() {
@@ -69,25 +87,12 @@ SEXP UnaryGeometryOperator::operate() {
   return this->finishBase();
 }
 
-void UnaryGeometryOperator::finish() {
-
-}
-
 SEXP UnaryGeometryOperator::finishBase() {
   this->provider->finish();
   SEXP value = this->exporter->finish();
   geos_finish(this->context);
   return value;
 }
-
-void UnaryGeometryOperator::finishProvider() {
-
-}
-
-size_t UnaryGeometryOperator::size() {
-  return this->commonSize;
-}
-
 
 // ------------- binary operators ----------------
 
@@ -97,10 +102,6 @@ void BinaryGeometryOperator::initProvider(SEXP providerLeft,
   this->providerLeft = resolve_provider(providerLeft);
   this->providerRight = resolve_provider(providerRight);
   this->exporter = resolve_exporter(exporter);
-}
-
-size_t BinaryGeometryOperator::maxParameterLength() {
-  return 1;
 }
 
 void BinaryGeometryOperator::initBase() {
@@ -128,10 +129,6 @@ void BinaryGeometryOperator::initBase() {
   }
 
   this->exporter->init(this->context, this->commonSize);
-}
-
-void BinaryGeometryOperator::init() {
-
 }
 
 SEXP BinaryGeometryOperator::operate() {
@@ -162,22 +159,10 @@ SEXP BinaryGeometryOperator::operate() {
   return this->finishBase();
 }
 
-void BinaryGeometryOperator::finish() {
-
-}
-
 SEXP BinaryGeometryOperator::finishBase() {
   this->providerLeft->finish();
   this->providerRight->finish();
   SEXP value = this->exporter->finish();
   geos_finish(this->context);
   return value;
-}
-
-void BinaryGeometryOperator::finishProvider() {
-
-}
-
-size_t BinaryGeometryOperator::size() {
-  return this->commonSize;
 }

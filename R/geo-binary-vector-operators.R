@@ -5,7 +5,7 @@
 #' two geometries and return `TRUE` or `FALSE` for each geometry pair.
 #'
 #' \describe{
-#'   \item{[geos_disjoint()]}{
+#'   \item{[geos_is_disjoint()]}{
 #'     Returns `TRUE` if `x` and `y` *do not* have a point in common. Is
 #'     the opposite of [geos_intersects()].
 #'   }
@@ -16,7 +16,7 @@
 #'   \item{[geos_intersects()]}{
 #'     Returns `TRUE` if `x` and `y` have a point in common, regardless
 #'     of whether or not their interiors intersect. Is the opposite
-#'     of [geos_disjoint()].
+#'     of [geos_is_disjoint()].
 #'   }
 #'   \item{[geos_is_within()]}{
 #'     Returns `TRUE` if all points in `x` are are also within `y`.
@@ -57,72 +57,60 @@
 #' @return A logical vector
 #' @export
 #'
-geos_disjoint <- function(x, y) {
-  geomcpp_binary_predicate(x, y, BP_DISJOINT)
+geos_is_disjoint <- function(x, y) {
+  cpp_is_disjoint(x, y)
 }
 
-#' @rdname geos_disjoint
+#' @rdname geos_is_disjoint
 #' @export
 geos_touches <- function(x, y) {
-  geomcpp_binary_predicate(x, y, BP_TOUCHES)
+  cpp_touches(x, y)
 }
 
-#' @rdname geos_disjoint
+#' @rdname geos_is_disjoint
 #' @export
 geos_intersects <- function(x, y) {
-  geomcpp_binary_predicate(x, y, BP_INTERSECTS)
+  cpp_intersects(x, y)
 }
 
-#' @rdname geos_disjoint
+#' @rdname geos_is_disjoint
 #' @export
 geos_crosses <- function(x, y) {
-  geomcpp_binary_predicate(x, y, BP_CROSSES)
+  cpp_crosses(x, y)
 }
 
-#' @rdname geos_disjoint
+#' @rdname geos_is_disjoint
 #' @export
 geos_is_within <- function(x, y) {
-  geomcpp_binary_predicate(x, y, BP_IS_WITHIN)
+  cpp_is_within(x, y)
 }
 
-#' @rdname geos_disjoint
+#' @rdname geos_is_disjoint
 #' @export
 geos_contains <- function(x, y) {
-  geomcpp_binary_predicate(x, y, BP_CONTAINS)
+  cpp_contains(x, y)
 }
 
-#' @rdname geos_disjoint
+#' @rdname geos_is_disjoint
 #' @export
 geos_overlaps <- function(x, y) {
-  geomcpp_binary_predicate(x, y, BP_OVERLAPS)
+  cpp_overlaps(x, y)
 }
 
-#' @rdname geos_disjoint
+#' @rdname geos_is_disjoint
 #' @export
 geos_equals <- function(x, y) {
-  geomcpp_binary_predicate(x, y, BP_EQUALS)
+  cpp_equals(x, y)
 }
 
-#' @rdname geos_disjoint
+#' @rdname geos_is_disjoint
 #' @export
 geos_covers <- function(x, y) {
-  geomcpp_binary_predicate(x, y, BP_COVERS)
+  cpp_covers(x, y)
 }
 
-#' @rdname geos_disjoint
+#' @rdname geos_is_disjoint
 #' @export
 geos_is_covered_by <- function(x, y) {
-  geomcpp_binary_predicate(x, y, BP_IS_COVERED_BY)
+  cpp_is_covered_by(x, y)
 }
-
-BP_DISJOINT <- 1
-BP_TOUCHES <- 2
-BP_INTERSECTS <- 3
-BP_CROSSES <- 4
-BP_IS_WITHIN <- 5
-BP_CONTAINS <- 6
-BP_OVERLAPS <- 7
-BP_EQUALS <- 8
-BP_EQUALS_EXACT <- 9
-BP_COVERS <- 10
-BP_IS_COVERED_BY <- 11

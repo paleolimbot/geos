@@ -31,29 +31,23 @@
 #'
 #'
 geos_is_empty <- function(x) {
-  geomcpp_unary_predicate(x, UP_IS_EMPTY)
+  cpp_is_empty(x)
 }
 
 #' @rdname geos_is_empty
 #' @export
 geos_is_simple <- function(x) {
-  geomcpp_unary_predicate(x, UP_IS_SIMPLE)
+  cpp_is_simple(x)
 }
 
 #' @rdname geos_is_empty
 #' @export
 geos_has_z <- function(x) {
-  geomcpp_unary_predicate(x, UP_HAS_Z)
+  cpp_has_z(x)
 }
 
 #' @rdname geos_is_empty
 #' @export
 geos_is_closed <- function(x) {
-  geomcpp_unary_predicate(x, UP_IS_CLOSED)
+  cpp_is_closed(x)
 }
-
-UP_IS_EMPTY <- 1
-UP_IS_SIMPLE <- 2
-UP_IS_RING <- 3
-UP_HAS_Z <- 4
-UP_IS_CLOSED <- 5

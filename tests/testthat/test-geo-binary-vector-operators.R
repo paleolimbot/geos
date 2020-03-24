@@ -2,7 +2,7 @@
 test_that("spatial predicates work", {
 
   expect_false(
-    geos_disjoint(
+    geos_is_disjoint(
       geo_wkt("POINT (5 5)"),
       geo_wkt("POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))")
     )

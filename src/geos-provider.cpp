@@ -17,16 +17,20 @@ void GeometryProvider::finish() {
 
 }
 
+GeometryProvider::~GeometryProvider() {
+
+}
+
 // --- constant provider
 
 ConstantGeometryProvider::ConstantGeometryProvider(GeometryProvider* baseProvider) {
-  this->baseProvider = baseProvider;
+  this->baseProvider = std::unique_ptr<GeometryProvider> { baseProvider };
+  this->geometry = nullptr;
 }
 
 void ConstantGeometryProvider::init(GEOSContextHandle_t context) {
   this->context = context;
   this->baseProvider->init(context);
-  this->geometry = nullptr;
 }
 
 GEOSGeometry* ConstantGeometryProvider::getNext() {
@@ -52,6 +56,10 @@ void GeometryExporter::init(GEOSContextHandle_t context, size_t size) {
 
 SEXP GeometryExporter::finish() {
   return R_NilValue;
+}
+
+GeometryExporter::~GeometryExporter() {
+
 }
 
 // --- WKT provider
@@ -289,52 +297,52 @@ SEXP GeoRectExporter::finish() {
 
 // ---------- geometry provider resolvers -------------
 
-GeometryProvider* resolve_provider(SEXP data) {
+std::unique_ptr<GeometryProvider> resolve_provider(SEXP data) {
   if (Rf_inherits(data, "geo_wkt")) {
     CharacterVector dataChar = (CharacterVector) data;
-    GeometryProvider* wktProvider = new WKTGeometryProvider(dataChar);
+
     if (dataChar.size() ==  1) {
-      return new ConstantGeometryProvider(wktProvider);
+      return std::unique_ptr<GeometryProvider> { new ConstantGeometryProvider(new WKTGeometryProvider(dataChar)) };
     } else {
-      return wktProvider;
+      return std::unique_ptr<GeometryProvider> { new WKTGeometryProvider(dataChar) };
     }
 
   } else if(Rf_inherits(data, "geo_wkb")) {
     List dataList = (List) data;
-    GeometryProvider* wkbProvider = new WKBGeometryProvider(dataList);
+
     if (dataList.size() ==  1) {
-      return new ConstantGeometryProvider(wkbProvider);
+      return std::unique_ptr<GeometryProvider> { new ConstantGeometryProvider(new WKBGeometryProvider(dataList)) };
     } else {
-      return wkbProvider;
+      return std::unique_ptr<GeometryProvider> { new WKBGeometryProvider(dataList) };
     }
-    return new WKBGeometryProvider((List) data);
+
   } else if(Rf_inherits(data, "geo_xy")) {
     List xy = (List) data;
     NumericVector x = xy["x"];
     NumericVector y = xy["y"];
-    GeometryProvider* xyProvider = new XYProvider(x, y);
+
     if (x.size() ==  1) {
-      return new ConstantGeometryProvider(xyProvider);
+      return std::unique_ptr<GeometryProvider> { new ConstantGeometryProvider(new XYProvider(x, y)) };
     } else {
-      return xyProvider;
+      return std::unique_ptr<GeometryProvider> { new XYProvider(x, y) };
     }
   }
 
   stop("Can't resolve GeometryProvider");
 }
 
-GeometryExporter* resolve_exporter(SEXP ptype) {
+std::unique_ptr<GeometryExporter> resolve_exporter(SEXP ptype) {
   if (Rf_inherits(ptype, "geo_wkt")) {
-    return new WKTGeometryExporter();
+    return std::unique_ptr<GeometryExporter> { new WKTGeometryExporter() };
 
   } else if(Rf_inherits(ptype, "geo_wkb")) {
-    return new WKBGeometryExporter();
+    return std::unique_ptr<GeometryExporter> { new WKBGeometryExporter() };
 
   } else if(Rf_inherits(ptype, "geo_rect")) {
-    return new GeoRectExporter();
+    return std::unique_ptr<GeometryExporter> { new GeoRectExporter() };
 
   } else if(Rf_inherits(ptype, "geo_coord")) {
-    return new NestedGeoCoordExporter();
+    return std::unique_ptr<GeometryExporter> { new NestedGeoCoordExporter() };
   }
 
   stop("Can't resolve GeometryExporter");

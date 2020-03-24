@@ -16,5 +16,5 @@
 #' geo_plot_add(geos_intersection(poly1, poly2), col = "grey90")
 #'
 geos_intersection <- function(x, y, to = geo_ptype(x)) {
-  geo_restore(to, geomcpp_intersection(x, y, to))
+  geo_restore(to, cpp_intersection(x, y, to))
 }

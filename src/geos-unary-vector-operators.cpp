@@ -2,21 +2,8 @@
 #include "geos-operator.h"
 using namespace Rcpp;
 
-enum UnaryPredicates {
-  IS_EMPTY = 1,
-  IS_SIMPLE = 2,
-  IS_RING = 3,
-  HAS_Z = 4,
-  IS_CLOSED = 5
-};
-
 class UnaryPredicateOperator: public UnaryVectorOperator<LogicalVector, bool> {
 public:
-  int predicate;
-
-  UnaryPredicateOperator(int predicate) {
-    this->predicate = predicate;
-  }
 
   bool operateNext(GEOSGeometry* geometry)  {
     char result = this->operateNextGEOS(geometry);
@@ -31,32 +18,57 @@ public:
     }
   }
 
+  virtual char operateNextGEOS(GEOSGeometry* geometry) = 0;
+};
+
+class IsEmptyOperator: public UnaryPredicateOperator {
   char operateNextGEOS(GEOSGeometry* geometry) {
-    switch(this->predicate) {
-    case UnaryPredicates::IS_EMPTY:
-      return GEOSisEmpty_r(this->context, geometry);
-
-    case UnaryPredicates::IS_SIMPLE:
-      return GEOSisSimple_r(this->context, geometry);
-
-    case UnaryPredicates::HAS_Z:
-      return GEOSHasZ_r(this->context, geometry);
-
-    case UnaryPredicates::IS_CLOSED:
-      return GEOSisClosed_r(this->context, geometry);
-    }
-
-    stop("No such unary predicate");
+    return GEOSisEmpty_r(this->context, geometry);
   }
 };
 
 // [[Rcpp::export]]
-LogicalVector geomcpp_unary_predicate(SEXP data, int predicate) {
-  UnaryPredicateOperator* op = new UnaryPredicateOperator(predicate);
+LogicalVector cpp_is_empty(SEXP data) {
+  IsEmptyOperator op;
+  op.initProvider(data);
+  return op.operate();
+}
 
-  op->initProvider(data);
-  LogicalVector result = op->operate();
-  op->finishProvider();
+class IsSimpleOperator: public UnaryPredicateOperator {
+  char operateNextGEOS(GEOSGeometry* geometry) {
+    return GEOSisSimple_r(this->context, geometry);
+  }
+};
 
-  return result;
+// [[Rcpp::export]]
+LogicalVector cpp_is_simple(SEXP data) {
+  IsSimpleOperator op;
+  op.initProvider(data);
+  return op.operate();
+}
+
+class HasZOperator: public UnaryPredicateOperator {
+  char operateNextGEOS(GEOSGeometry* geometry) {
+    return GEOSHasZ_r(this->context, geometry);
+  }
+};
+
+// [[Rcpp::export]]
+LogicalVector cpp_has_z(SEXP data) {
+  HasZOperator op;
+  op.initProvider(data);
+  return op.operate();
+}
+
+class IsClosedOperator: public UnaryPredicateOperator {
+  char operateNextGEOS(GEOSGeometry* geometry) {
+    return GEOSisClosed_r(this->context, geometry);
+  }
+};
+
+// [[Rcpp::export]]
+LogicalVector cpp_is_closed(SEXP data) {
+  IsClosedOperator op;
+  op.initProvider(data);
+  return op.operate();
 }

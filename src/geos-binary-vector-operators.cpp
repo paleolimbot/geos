@@ -2,27 +2,8 @@
 #include "geos-operator.h"
 using namespace Rcpp;
 
-enum BinaryPredicates {
-  DISJOINT = 1,
-  TOUCHES = 2,
-  INTERSECTS = 3,
-  CROSSES = 4,
-  WITHIN = 5,
-  CONTAINS = 6,
-  OVERLAPS = 7,
-  EQUALS = 8,
-  EQUALS_EXACT = 9,
-  COVERS = 10,
-  COVERED_BY = 11
-};
-
 class BinaryPredicateOperator: public BinaryVectorOperator<LogicalVector, bool> {
 public:
-  int predicate;
-
-  BinaryPredicateOperator(int predicate) {
-    this->predicate = predicate;
-  }
 
   bool operateNext(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight) {
     char result = this->operateNextGEOS(geometryLeft, geometryRight);
@@ -37,50 +18,135 @@ public:
     }
   }
 
+  virtual char operateNextGEOS(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight) = 0;
+};
+
+class DisjointOperator: public BinaryPredicateOperator {
   char operateNextGEOS(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight) {
-    switch(this->predicate) {
-    case BinaryPredicates::DISJOINT:
-      return GEOSDisjoint_r(this->context, geometryLeft, geometryRight);
-
-    case BinaryPredicates::TOUCHES:
-      return GEOSTouches_r(this->context, geometryLeft, geometryRight);
-
-    case BinaryPredicates::INTERSECTS:
-      return GEOSIntersects_r(this->context, geometryLeft, geometryRight);
-
-    case BinaryPredicates::CROSSES:
-      return GEOSCrosses_r(this->context, geometryLeft, geometryRight);
-
-    case BinaryPredicates::WITHIN:
-      return GEOSWithin_r(this->context, geometryLeft, geometryRight);
-
-    case BinaryPredicates::CONTAINS:
-      return GEOSContains_r(this->context, geometryLeft, geometryRight);
-
-    case BinaryPredicates::OVERLAPS:
-      return GEOSOverlaps_r(this->context, geometryLeft, geometryRight);
-
-    case BinaryPredicates::EQUALS:
-      return GEOSEquals_r(this->context, geometryLeft, geometryRight);
-
-    case BinaryPredicates::COVERS:
-      return GEOSCovers_r(this->context, geometryLeft, geometryRight);
-
-    case BinaryPredicates::COVERED_BY:
-      return GEOSCoveredBy_r(this->context, geometryLeft, geometryRight);
-    }
-
-    stop("No such binary predicate");
+    return GEOSDisjoint_r(this->context, geometryLeft, geometryRight);
   }
 };
 
 // [[Rcpp::export]]
-LogicalVector geomcpp_binary_predicate(SEXP dataLeft, SEXP dataRight, int predicate) {
-  BinaryPredicateOperator* op = new  BinaryPredicateOperator(predicate);
+LogicalVector cpp_is_disjoint(SEXP dataLeft, SEXP dataRight) {
+  DisjointOperator op;
+  op.initProvider(dataLeft, dataRight);
+  return op.operate();
+}
 
-  op->initProvider(dataLeft, dataRight);
-  LogicalVector result = op->operate();
-  op->finishProvider();
+class TouchesOperator: public BinaryPredicateOperator {
+  char operateNextGEOS(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight) {
+    return GEOSTouches_r(this->context, geometryLeft, geometryRight);
+  }
+};
 
-  return result;
+// [[Rcpp::export]]
+LogicalVector cpp_touches(SEXP dataLeft, SEXP dataRight) {
+  TouchesOperator op;
+  op.initProvider(dataLeft, dataRight);
+  return op.operate();
+}
+
+class IntersectsOperator: public BinaryPredicateOperator {
+  char operateNextGEOS(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight) {
+    return GEOSIntersects_r(this->context, geometryLeft, geometryRight);
+  }
+};
+
+// [[Rcpp::export]]
+LogicalVector cpp_intersects(SEXP dataLeft, SEXP dataRight) {
+  IntersectsOperator op;
+  op.initProvider(dataLeft, dataRight);
+  return op.operate();
+}
+
+class CrossesOperator: public BinaryPredicateOperator {
+  char operateNextGEOS(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight) {
+    return GEOSCrosses_r(this->context, geometryLeft, geometryRight);
+  }
+};
+
+// [[Rcpp::export]]
+LogicalVector cpp_crosses(SEXP dataLeft, SEXP dataRight) {
+  CrossesOperator op;
+  op.initProvider(dataLeft, dataRight);
+  return op.operate();
+}
+
+class WithinOperator: public BinaryPredicateOperator {
+  char operateNextGEOS(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight) {
+    return GEOSWithin_r(this->context, geometryLeft, geometryRight);
+  }
+};
+
+// [[Rcpp::export]]
+LogicalVector cpp_is_within(SEXP dataLeft, SEXP dataRight) {
+  WithinOperator op;
+  op.initProvider(dataLeft, dataRight);
+  return op.operate();
+}
+
+class ContainsOperator: public BinaryPredicateOperator {
+  char operateNextGEOS(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight) {
+    return GEOSContains_r(this->context, geometryLeft, geometryRight);
+  }
+};
+
+// [[Rcpp::export]]
+LogicalVector cpp_contains(SEXP dataLeft, SEXP dataRight) {
+  ContainsOperator op;
+  op.initProvider(dataLeft, dataRight);
+  return op.operate();
+}
+
+class OverlapsOperator: public BinaryPredicateOperator {
+  char operateNextGEOS(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight) {
+    return GEOSOverlaps_r(this->context, geometryLeft, geometryRight);
+  }
+};
+
+// [[Rcpp::export]]
+LogicalVector cpp_overlaps(SEXP dataLeft, SEXP dataRight) {
+  OverlapsOperator op;
+  op.initProvider(dataLeft, dataRight);
+  return op.operate();
+}
+
+class EqualsOperator: public BinaryPredicateOperator {
+  char operateNextGEOS(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight) {
+    return GEOSEquals_r(this->context, geometryLeft, geometryRight);
+  }
+};
+
+// [[Rcpp::export]]
+LogicalVector cpp_equals(SEXP dataLeft, SEXP dataRight) {
+  EqualsOperator op;
+  op.initProvider(dataLeft, dataRight);
+  return op.operate();
+}
+
+class CoversOperator: public BinaryPredicateOperator {
+  char operateNextGEOS(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight) {
+    return GEOSCovers_r(this->context, geometryLeft, geometryRight);
+  }
+};
+
+// [[Rcpp::export]]
+LogicalVector cpp_covers(SEXP dataLeft, SEXP dataRight) {
+  CoversOperator op;
+  op.initProvider(dataLeft, dataRight);
+  return op.operate();
+}
+
+class CoveredByOperator: public BinaryPredicateOperator {
+  char operateNextGEOS(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight) {
+    return GEOSCoveredBy_r(this->context, geometryLeft, geometryRight);
+  }
+};
+
+// [[Rcpp::export]]
+LogicalVector cpp_is_covered_by(SEXP dataLeft, SEXP dataRight) {
+  CoveredByOperator op;
+  op.initProvider(dataLeft, dataRight);
+  return op.operate();
 }

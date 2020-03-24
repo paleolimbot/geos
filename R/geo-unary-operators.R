@@ -11,7 +11,7 @@
 #' geo_convert(geo_wkt("POINT (20 10)"), geo_coord())
 #'
 geo_convert <- function(x, to) {
-  geo_restore(to, geomcpp_convert(x, to))
+  geo_restore(to, cpp_convert(x, to))
 }
 
 #' Buffer a geometry
@@ -52,7 +52,7 @@ geos_buffer <- function(x, width, quad_segs = 30,
 
   width <- rep_len_or_fail(width, geo_size(x))
 
-  result <- geomcpp_buffer(
+  result <- cpp_buffer(
     x, to,
     width = width,
     quadSegs = quad_segs,
