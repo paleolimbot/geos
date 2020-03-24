@@ -4,9 +4,9 @@
 geo_coord_linestring <- function(xy, feature = 1L) {
   xy <- vec_cast(xy, geo_xy())
   feature <- vec_cast(feature, integer())
-  tbl <- list(
+  tbl <- vec_recycle_common(
     xy = xy,
-    feature = rep_along_or_fail(feature, xy)
+    feature = feature
   )
 
   validate_geo_coord_linestring(tbl)
@@ -19,10 +19,10 @@ geo_coord_multilinestring <- function(xy, feature = 1L, part = 1L) {
   xy <- vec_cast(xy, geo_xy())
   feature <- vec_cast(feature, integer())
   part <- vec_cast(part, integer())
-  tbl <- list(
+  tbl <- vec_recycle_common(
     xy = xy,
-    feature = rep_along_or_fail(feature, xy),
-    part = rep_along_or_fail(part, xy)
+    feature = feature,
+    part = part
   )
 
   validate_geo_coord_multilinestring(tbl)

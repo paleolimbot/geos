@@ -179,6 +179,14 @@ test_that("geos_buffer is vectorized along 'width'", {
       geos_buffer(point[2], 2, quad_segs = 2)
     )
   )
+
+  expect_identical(
+    geos_buffer(point[1], c(1, 2), quad_segs = 2),
+    c(
+      geos_buffer(point[1], 1, quad_segs = 2),
+      geos_buffer(point[1], 2, quad_segs = 2)
+    )
+  )
 })
 
 test_that("geos_buffer works with all providers", {

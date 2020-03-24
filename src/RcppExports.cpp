@@ -157,6 +157,56 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// cpp_project
+NumericVector cpp_project(SEXP dataLeft, SEXP dataRight);
+RcppExport SEXP _geom_cpp_project(SEXP dataLeftSEXP, SEXP dataRightSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type dataLeft(dataLeftSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type dataRight(dataRightSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_project(dataLeft, dataRight));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cpp_project_normalized
+NumericVector cpp_project_normalized(SEXP dataLeft, SEXP dataRight);
+RcppExport SEXP _geom_cpp_project_normalized(SEXP dataLeftSEXP, SEXP dataRightSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type dataLeft(dataLeftSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type dataRight(dataRightSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_project_normalized(dataLeft, dataRight));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cpp_interpolate
+SEXP cpp_interpolate(SEXP data, SEXP ptype, NumericVector distance);
+RcppExport SEXP _geom_cpp_interpolate(SEXP dataSEXP, SEXP ptypeSEXP, SEXP distanceSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type ptype(ptypeSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type distance(distanceSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_interpolate(data, ptype, distance));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cpp_interpolate_normalized
+SEXP cpp_interpolate_normalized(SEXP data, SEXP ptype, NumericVector distance);
+RcppExport SEXP _geom_cpp_interpolate_normalized(SEXP dataSEXP, SEXP ptypeSEXP, SEXP distanceSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type ptype(ptypeSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type distance(distanceSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_interpolate_normalized(data, ptype, distance));
+    return rcpp_result_gen;
+END_RCPP
+}
 // cpp_buffer
 SEXP cpp_buffer(SEXP data, SEXP ptype, NumericVector width, int quadSegs, int endCapStyle, int joinStyle, double mitreLimit, int singleSided);
 RcppExport SEXP _geom_cpp_buffer(SEXP dataSEXP, SEXP ptypeSEXP, SEXP widthSEXP, SEXP quadSegsSEXP, SEXP endCapStyleSEXP, SEXP joinStyleSEXP, SEXP mitreLimitSEXP, SEXP singleSidedSEXP) {
@@ -257,6 +307,10 @@ static const R_CallMethodDef CallEntries[] = {
     {"_geom_cpp_equals", (DL_FUNC) &_geom_cpp_equals, 2},
     {"_geom_cpp_covers", (DL_FUNC) &_geom_cpp_covers, 2},
     {"_geom_cpp_is_covered_by", (DL_FUNC) &_geom_cpp_is_covered_by, 2},
+    {"_geom_cpp_project", (DL_FUNC) &_geom_cpp_project, 2},
+    {"_geom_cpp_project_normalized", (DL_FUNC) &_geom_cpp_project_normalized, 2},
+    {"_geom_cpp_interpolate", (DL_FUNC) &_geom_cpp_interpolate, 3},
+    {"_geom_cpp_interpolate_normalized", (DL_FUNC) &_geom_cpp_interpolate_normalized, 3},
     {"_geom_cpp_buffer", (DL_FUNC) &_geom_cpp_buffer, 8},
     {"_geom_cpp_convert", (DL_FUNC) &_geom_cpp_convert, 2},
     {"_geom_cpp_is_empty", (DL_FUNC) &_geom_cpp_is_empty, 1},

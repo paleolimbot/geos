@@ -50,9 +50,11 @@ rep_along_or_fail <- function(x, template) {
 rep_len_or_fail <- function(x, size) {
   x_quo <- rlang::enquo(x)
 
-  if (vec_size(x) == 1) {
+  if (size == 1 || vec_size(x) == size) {
+    x
+  } else if (vec_size(x) == 1) {
     vec_repeat(x, times = size)
-  } else if (vec_size(x) != size) {
+  } else {
     x_label <- rlang::as_label(x_quo)
     abort(
       sprintf(
@@ -61,7 +63,5 @@ rep_len_or_fail <- function(x, size) {
       ),
       class = "rep_len_error"
     )
-  } else {
-    x
   }
 }

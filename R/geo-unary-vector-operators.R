@@ -28,7 +28,17 @@
 #' geos_is_empty(geo_wkt("POINT EMPTY"))
 #' geos_is_empty(geo_wkt("POINT (30 10)"))
 #'
+#' # first geometry intersects itself
+#' geos_is_simple(geo_wkt("LINESTRING (0 0, 0 10, 10 0, 0 0, 10 10)"))
+#' geos_is_simple(geo_wkt("LINESTRING (0 0, 0 10, 10 0, 0 0)"))
 #'
+#' # first geometry is 3D
+#' geos_has_z(geo_wkt("POINT (10 10 1)"))
+#' geos_has_z(geo_wkt("POINT (10 10)"))
+#'
+#' # first geometry is closed
+#' geos_is_closed(geo_wkt("LINESTRING (0 0, 0 10, 10 0, 0 0)"))
+#' geos_is_closed(geo_wkt("LINESTRING (0 0, 0 10, 10 0)"))
 #'
 geos_is_empty <- function(x) {
   cpp_is_empty(x)

@@ -53,6 +53,22 @@ cpp_is_covered_by <- function(dataLeft, dataRight) {
     .Call(`_geom_cpp_is_covered_by`, dataLeft, dataRight)
 }
 
+cpp_project <- function(dataLeft, dataRight) {
+    .Call(`_geom_cpp_project`, dataLeft, dataRight)
+}
+
+cpp_project_normalized <- function(dataLeft, dataRight) {
+    .Call(`_geom_cpp_project_normalized`, dataLeft, dataRight)
+}
+
+cpp_interpolate <- function(data, ptype, distance) {
+    .Call(`_geom_cpp_interpolate`, data, ptype, distance)
+}
+
+cpp_interpolate_normalized <- function(data, ptype, distance) {
+    .Call(`_geom_cpp_interpolate_normalized`, data, ptype, distance)
+}
+
 cpp_buffer <- function(data, ptype, width, quadSegs, endCapStyle, joinStyle, mitreLimit, singleSided) {
     .Call(`_geom_cpp_buffer`, data, ptype, width, quadSegs, endCapStyle, joinStyle, mitreLimit, singleSided)
 }
