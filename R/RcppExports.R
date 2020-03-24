@@ -77,6 +77,18 @@ cpp_interpolate_normalized <- function(data, ptype, distance) {
     .Call(`_geom_cpp_interpolate_normalized`, data, ptype, distance)
 }
 
+cpp_area <- function(x) {
+    .Call(`_geom_cpp_area`, x)
+}
+
+cpp_length <- function(x) {
+    .Call(`_geom_cpp_length`, x)
+}
+
+cpp_distance <- function(x, y) {
+    .Call(`_geom_cpp_distance`, x, y)
+}
+
 cpp_is_empty <- function(data) {
     .Call(`_geom_cpp_is_empty`, data)
 }

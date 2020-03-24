@@ -237,6 +237,40 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// cpp_area
+NumericVector cpp_area(SEXP x);
+RcppExport SEXP _geom_cpp_area(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_area(x));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cpp_length
+NumericVector cpp_length(SEXP x);
+RcppExport SEXP _geom_cpp_length(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_length(x));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cpp_distance
+NumericVector cpp_distance(SEXP x, SEXP y);
+RcppExport SEXP _geom_cpp_distance(SEXP xSEXP, SEXP ySEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type y(ySEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_distance(x, y));
+    return rcpp_result_gen;
+END_RCPP
+}
 // cpp_is_empty
 LogicalVector cpp_is_empty(SEXP data);
 RcppExport SEXP _geom_cpp_is_empty(SEXP dataSEXP) {
@@ -313,6 +347,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"_geom_cpp_project_normalized", (DL_FUNC) &_geom_cpp_project_normalized, 2},
     {"_geom_cpp_interpolate", (DL_FUNC) &_geom_cpp_interpolate, 3},
     {"_geom_cpp_interpolate_normalized", (DL_FUNC) &_geom_cpp_interpolate_normalized, 3},
+    {"_geom_cpp_area", (DL_FUNC) &_geom_cpp_area, 1},
+    {"_geom_cpp_length", (DL_FUNC) &_geom_cpp_length, 1},
+    {"_geom_cpp_distance", (DL_FUNC) &_geom_cpp_distance, 2},
     {"_geom_cpp_is_empty", (DL_FUNC) &_geom_cpp_is_empty, 1},
     {"_geom_cpp_is_simple", (DL_FUNC) &_geom_cpp_is_simple, 1},
     {"_geom_cpp_has_z", (DL_FUNC) &_geom_cpp_has_z, 1},
