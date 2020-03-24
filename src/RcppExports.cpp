@@ -80,15 +80,47 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// cpp_unary_predicate
-LogicalVector cpp_unary_predicate(SEXP data, int predicate);
-RcppExport SEXP _geom_cpp_unary_predicate(SEXP dataSEXP, SEXP predicateSEXP) {
+// cpp_is_empty
+LogicalVector cpp_is_empty(SEXP data);
+RcppExport SEXP _geom_cpp_is_empty(SEXP dataSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< int >::type predicate(predicateSEXP);
-    rcpp_result_gen = Rcpp::wrap(cpp_unary_predicate(data, predicate));
+    rcpp_result_gen = Rcpp::wrap(cpp_is_empty(data));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cpp_is_simple
+LogicalVector cpp_is_simple(SEXP data);
+RcppExport SEXP _geom_cpp_is_simple(SEXP dataSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type data(dataSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_is_simple(data));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cpp_has_z
+LogicalVector cpp_has_z(SEXP data);
+RcppExport SEXP _geom_cpp_has_z(SEXP dataSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type data(dataSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_has_z(data));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cpp_is_closed
+LogicalVector cpp_is_closed(SEXP data);
+RcppExport SEXP _geom_cpp_is_closed(SEXP dataSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type data(dataSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_is_closed(data));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -111,7 +143,10 @@ static const R_CallMethodDef CallEntries[] = {
     {"_geom_cpp_binary_predicate", (DL_FUNC) &_geom_cpp_binary_predicate, 3},
     {"_geom_cpp_buffer", (DL_FUNC) &_geom_cpp_buffer, 8},
     {"_geom_cpp_convert", (DL_FUNC) &_geom_cpp_convert, 2},
-    {"_geom_cpp_unary_predicate", (DL_FUNC) &_geom_cpp_unary_predicate, 2},
+    {"_geom_cpp_is_empty", (DL_FUNC) &_geom_cpp_is_empty, 1},
+    {"_geom_cpp_is_simple", (DL_FUNC) &_geom_cpp_is_simple, 1},
+    {"_geom_cpp_has_z", (DL_FUNC) &_geom_cpp_has_z, 1},
+    {"_geom_cpp_is_closed", (DL_FUNC) &_geom_cpp_is_closed, 1},
     {"_geom_cpp_validate_provider", (DL_FUNC) &_geom_cpp_validate_provider, 1},
     {NULL, NULL, 0}
 };

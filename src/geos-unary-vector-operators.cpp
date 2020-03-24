@@ -2,14 +2,6 @@
 #include "geos-operator.h"
 using namespace Rcpp;
 
-enum UnaryPredicates {
-  IS_EMPTY = 1,
-  IS_SIMPLE = 2,
-  IS_RING = 3,
-  HAS_Z = 4,
-  IS_CLOSED = 5
-};
-
 class UnaryPredicateOperator: public UnaryVectorOperator<LogicalVector, bool> {
 public:
 
@@ -35,17 +27,50 @@ class IsEmptyOperator: public UnaryPredicateOperator {
   }
 };
 
+// [[Rcpp::export]]
+LogicalVector cpp_is_empty(SEXP data) {
+  UnaryPredicateOperator* op = new IsEmptyOperator();
+
+  op->initProvider(data);
+  LogicalVector result = op->operate();
+  op->finishProvider();
+
+  return result;
+}
+
 class IsSimpleOperator: public UnaryPredicateOperator {
   char operateNextGEOS(GEOSGeometry* geometry) {
     return GEOSisSimple_r(this->context, geometry);
   }
 };
 
+// [[Rcpp::export]]
+LogicalVector cpp_is_simple(SEXP data) {
+  UnaryPredicateOperator* op = new IsSimpleOperator();
+
+  op->initProvider(data);
+  LogicalVector result = op->operate();
+  op->finishProvider();
+
+  return result;
+}
+
 class HasZOperator: public UnaryPredicateOperator {
   char operateNextGEOS(GEOSGeometry* geometry) {
     return GEOSHasZ_r(this->context, geometry);
   }
 };
+
+// [[Rcpp::export]]
+LogicalVector cpp_has_z(SEXP data) {
+  UnaryPredicateOperator* op = new HasZOperator();
+
+  op->initProvider(data);
+  LogicalVector result = op->operate();
+  op->finishProvider();
+
+  return result;
+}
 
 class IsClosedOperator: public UnaryPredicateOperator {
   char operateNextGEOS(GEOSGeometry* geometry) {
@@ -54,29 +79,8 @@ class IsClosedOperator: public UnaryPredicateOperator {
 };
 
 // [[Rcpp::export]]
-LogicalVector cpp_unary_predicate(SEXP data, int predicate) {
-  UnaryPredicateOperator* op;
-
-  switch(predicate) {
-  case UnaryPredicates::IS_EMPTY:
-    op = new IsEmptyOperator();
-    break;
-
-  case UnaryPredicates::IS_SIMPLE:
-    op = new IsSimpleOperator();
-    break;
-
-  case UnaryPredicates::HAS_Z:
-    op = new HasZOperator();
-    break;
-
-  case UnaryPredicates::IS_CLOSED:
-    op = new IsClosedOperator();
-    break;
-
-  default:
-    stop("No such unary predicate");
-  }
+LogicalVector cpp_is_closed(SEXP data) {
+  UnaryPredicateOperator* op = new IsClosedOperator();
 
   op->initProvider(data);
   LogicalVector result = op->operate();

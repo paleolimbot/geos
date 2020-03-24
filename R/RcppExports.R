@@ -25,8 +25,20 @@ cpp_convert <- function(data, ptype) {
     .Call(`_geom_cpp_convert`, data, ptype)
 }
 
-cpp_unary_predicate <- function(data, predicate) {
-    .Call(`_geom_cpp_unary_predicate`, data, predicate)
+cpp_is_empty <- function(data) {
+    .Call(`_geom_cpp_is_empty`, data)
+}
+
+cpp_is_simple <- function(data) {
+    .Call(`_geom_cpp_is_simple`, data)
+}
+
+cpp_has_z <- function(data) {
+    .Call(`_geom_cpp_has_z`, data)
+}
+
+cpp_is_closed <- function(data) {
+    .Call(`_geom_cpp_is_closed`, data)
 }
 
 cpp_validate_provider <- function(data) {
