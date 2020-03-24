@@ -18,11 +18,6 @@ enum BinaryPredicates {
 
 class BinaryPredicateOperator: public BinaryVectorOperator<LogicalVector, bool> {
 public:
-  int predicate;
-
-  BinaryPredicateOperator(int predicate) {
-    this->predicate = predicate;
-  }
 
   bool operateNext(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight) {
     char result = this->operateNextGEOS(geometryLeft, geometryRight);
@@ -37,46 +32,116 @@ public:
     }
   }
 
+  virtual char operateNextGEOS(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight) = 0;
+};
+
+class DisjointOperator: public BinaryPredicateOperator {
   char operateNextGEOS(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight) {
-    switch(this->predicate) {
-    case BinaryPredicates::DISJOINT:
-      return GEOSDisjoint_r(this->context, geometryLeft, geometryRight);
+    return GEOSDisjoint_r(this->context, geometryLeft, geometryRight);
+  }
+};
 
-    case BinaryPredicates::TOUCHES:
-      return GEOSTouches_r(this->context, geometryLeft, geometryRight);
+class TouchesOperator: public BinaryPredicateOperator {
+  char operateNextGEOS(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight) {
+    return GEOSTouches_r(this->context, geometryLeft, geometryRight);
+  }
+};
 
-    case BinaryPredicates::INTERSECTS:
-      return GEOSIntersects_r(this->context, geometryLeft, geometryRight);
+class IntersectsOperator: public BinaryPredicateOperator {
+  char operateNextGEOS(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight) {
+    return GEOSIntersects_r(this->context, geometryLeft, geometryRight);
+  }
+};
 
-    case BinaryPredicates::CROSSES:
-      return GEOSCrosses_r(this->context, geometryLeft, geometryRight);
+class CrossesOperator: public BinaryPredicateOperator {
+  char operateNextGEOS(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight) {
+    return GEOSCrosses_r(this->context, geometryLeft, geometryRight);
+  }
+};
 
-    case BinaryPredicates::WITHIN:
-      return GEOSWithin_r(this->context, geometryLeft, geometryRight);
+class WithinOperator: public BinaryPredicateOperator {
+  char operateNextGEOS(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight) {
+    return GEOSWithin_r(this->context, geometryLeft, geometryRight);
+  }
+};
 
-    case BinaryPredicates::CONTAINS:
-      return GEOSContains_r(this->context, geometryLeft, geometryRight);
+class ContainsOperator: public BinaryPredicateOperator {
+  char operateNextGEOS(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight) {
+    return GEOSContains_r(this->context, geometryLeft, geometryRight);
+  }
+};
 
-    case BinaryPredicates::OVERLAPS:
-      return GEOSOverlaps_r(this->context, geometryLeft, geometryRight);
+class OverlapsOperator: public BinaryPredicateOperator {
+  char operateNextGEOS(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight) {
+    return GEOSOverlaps_r(this->context, geometryLeft, geometryRight);
+  }
+};
 
-    case BinaryPredicates::EQUALS:
-      return GEOSEquals_r(this->context, geometryLeft, geometryRight);
+class EqualsOperator: public BinaryPredicateOperator {
+  char operateNextGEOS(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight) {
+    return GEOSEquals_r(this->context, geometryLeft, geometryRight);
+  }
+};
 
-    case BinaryPredicates::COVERS:
-      return GEOSCovers_r(this->context, geometryLeft, geometryRight);
+class CoversOperator: public BinaryPredicateOperator {
+  char operateNextGEOS(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight) {
+    return GEOSCovers_r(this->context, geometryLeft, geometryRight);
+  }
+};
 
-    case BinaryPredicates::COVERED_BY:
-      return GEOSCoveredBy_r(this->context, geometryLeft, geometryRight);
-    }
-
-    stop("No such binary predicate");
+class CoveredByOperator: public BinaryPredicateOperator {
+  char operateNextGEOS(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight) {
+    return GEOSCoveredBy_r(this->context, geometryLeft, geometryRight);
   }
 };
 
 // [[Rcpp::export]]
 LogicalVector geomcpp_binary_predicate(SEXP dataLeft, SEXP dataRight, int predicate) {
-  BinaryPredicateOperator* op = new  BinaryPredicateOperator(predicate);
+  BinaryPredicateOperator* op;
+
+  switch(predicate) {
+  case BinaryPredicates::DISJOINT:
+    op = new DisjointOperator();
+    break;
+
+  case BinaryPredicates::TOUCHES:
+    op = new TouchesOperator();
+
+  case BinaryPredicates::INTERSECTS:
+    op = new IntersectsOperator();
+    break;
+
+  case BinaryPredicates::CROSSES:
+    op = new CrossesOperator();
+    break;
+
+  case BinaryPredicates::WITHIN:
+    op = new WithinOperator();
+    break;
+
+  case BinaryPredicates::CONTAINS:
+    op = new ContainsOperator();
+    break;
+
+  case BinaryPredicates::OVERLAPS:
+    op = new OverlapsOperator();
+    break;
+
+  case BinaryPredicates::EQUALS:
+    op = new EqualsOperator();
+    break;
+
+  case BinaryPredicates::COVERS:
+    op = new CoversOperator();
+    break;
+
+  case BinaryPredicates::COVERED_BY:
+    op = new CoveredByOperator();
+    break;
+
+  default:
+    stop("No such binary predicate");
+  }
 
   op->initProvider(dataLeft, dataRight);
   LogicalVector result = op->operate();
