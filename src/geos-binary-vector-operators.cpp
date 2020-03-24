@@ -2,20 +2,6 @@
 #include "geos-operator.h"
 using namespace Rcpp;
 
-enum BinaryPredicates {
-  DISJOINT = 1,
-  TOUCHES = 2,
-  INTERSECTS = 3,
-  CROSSES = 4,
-  WITHIN = 5,
-  CONTAINS = 6,
-  OVERLAPS = 7,
-  EQUALS = 8,
-  EQUALS_EXACT = 9,
-  COVERS = 10,
-  COVERED_BY = 11
-};
-
 class BinaryPredicateOperator: public BinaryVectorOperator<LogicalVector, bool> {
 public:
 
@@ -41,11 +27,33 @@ class DisjointOperator: public BinaryPredicateOperator {
   }
 };
 
+// [[Rcpp::export]]
+LogicalVector cpp_is_disjoint(SEXP dataLeft, SEXP dataRight) {
+  BinaryPredicateOperator* op = new DisjointOperator();
+
+  op->initProvider(dataLeft, dataRight);
+  LogicalVector result = op->operate();
+  op->finishProvider();
+
+  return result;
+}
+
 class TouchesOperator: public BinaryPredicateOperator {
   char operateNextGEOS(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight) {
     return GEOSTouches_r(this->context, geometryLeft, geometryRight);
   }
 };
+
+// [[Rcpp::export]]
+LogicalVector cpp_touches(SEXP dataLeft, SEXP dataRight) {
+  BinaryPredicateOperator* op = new TouchesOperator();
+
+  op->initProvider(dataLeft, dataRight);
+  LogicalVector result = op->operate();
+  op->finishProvider();
+
+  return result;
+}
 
 class IntersectsOperator: public BinaryPredicateOperator {
   char operateNextGEOS(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight) {
@@ -53,11 +61,33 @@ class IntersectsOperator: public BinaryPredicateOperator {
   }
 };
 
+// [[Rcpp::export]]
+LogicalVector cpp_intersects(SEXP dataLeft, SEXP dataRight) {
+  BinaryPredicateOperator* op = new IntersectsOperator();
+
+  op->initProvider(dataLeft, dataRight);
+  LogicalVector result = op->operate();
+  op->finishProvider();
+
+  return result;
+}
+
 class CrossesOperator: public BinaryPredicateOperator {
   char operateNextGEOS(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight) {
     return GEOSCrosses_r(this->context, geometryLeft, geometryRight);
   }
 };
+
+// [[Rcpp::export]]
+LogicalVector cpp_crosses(SEXP dataLeft, SEXP dataRight) {
+  BinaryPredicateOperator* op = new CrossesOperator();
+
+  op->initProvider(dataLeft, dataRight);
+  LogicalVector result = op->operate();
+  op->finishProvider();
+
+  return result;
+}
 
 class WithinOperator: public BinaryPredicateOperator {
   char operateNextGEOS(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight) {
@@ -65,11 +95,33 @@ class WithinOperator: public BinaryPredicateOperator {
   }
 };
 
+// [[Rcpp::export]]
+LogicalVector cpp_is_within(SEXP dataLeft, SEXP dataRight) {
+  BinaryPredicateOperator* op = new WithinOperator();
+
+  op->initProvider(dataLeft, dataRight);
+  LogicalVector result = op->operate();
+  op->finishProvider();
+
+  return result;
+}
+
 class ContainsOperator: public BinaryPredicateOperator {
   char operateNextGEOS(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight) {
     return GEOSContains_r(this->context, geometryLeft, geometryRight);
   }
 };
+
+// [[Rcpp::export]]
+LogicalVector cpp_contains(SEXP dataLeft, SEXP dataRight) {
+  BinaryPredicateOperator* op = new ContainsOperator();
+
+  op->initProvider(dataLeft, dataRight);
+  LogicalVector result = op->operate();
+  op->finishProvider();
+
+  return result;
+}
 
 class OverlapsOperator: public BinaryPredicateOperator {
   char operateNextGEOS(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight) {
@@ -77,17 +129,50 @@ class OverlapsOperator: public BinaryPredicateOperator {
   }
 };
 
+// [[Rcpp::export]]
+LogicalVector cpp_overlaps(SEXP dataLeft, SEXP dataRight) {
+  BinaryPredicateOperator* op = new OverlapsOperator();
+
+  op->initProvider(dataLeft, dataRight);
+  LogicalVector result = op->operate();
+  op->finishProvider();
+
+  return result;
+}
+
 class EqualsOperator: public BinaryPredicateOperator {
   char operateNextGEOS(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight) {
     return GEOSEquals_r(this->context, geometryLeft, geometryRight);
   }
 };
 
+// [[Rcpp::export]]
+LogicalVector cpp_equals(SEXP dataLeft, SEXP dataRight) {
+  BinaryPredicateOperator* op = new EqualsOperator();
+
+  op->initProvider(dataLeft, dataRight);
+  LogicalVector result = op->operate();
+  op->finishProvider();
+
+  return result;
+}
+
 class CoversOperator: public BinaryPredicateOperator {
   char operateNextGEOS(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight) {
     return GEOSCovers_r(this->context, geometryLeft, geometryRight);
   }
 };
+
+// [[Rcpp::export]]
+LogicalVector cpp_covers(SEXP dataLeft, SEXP dataRight) {
+  BinaryPredicateOperator* op = new CoversOperator();
+
+  op->initProvider(dataLeft, dataRight);
+  LogicalVector result = op->operate();
+  op->finishProvider();
+
+  return result;
+}
 
 class CoveredByOperator: public BinaryPredicateOperator {
   char operateNextGEOS(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight) {
@@ -96,52 +181,8 @@ class CoveredByOperator: public BinaryPredicateOperator {
 };
 
 // [[Rcpp::export]]
-LogicalVector cpp_binary_predicate(SEXP dataLeft, SEXP dataRight, int predicate) {
-  BinaryPredicateOperator* op;
-
-  switch(predicate) {
-  case BinaryPredicates::DISJOINT:
-    op = new DisjointOperator();
-    break;
-
-  case BinaryPredicates::TOUCHES:
-    op = new TouchesOperator();
-
-  case BinaryPredicates::INTERSECTS:
-    op = new IntersectsOperator();
-    break;
-
-  case BinaryPredicates::CROSSES:
-    op = new CrossesOperator();
-    break;
-
-  case BinaryPredicates::WITHIN:
-    op = new WithinOperator();
-    break;
-
-  case BinaryPredicates::CONTAINS:
-    op = new ContainsOperator();
-    break;
-
-  case BinaryPredicates::OVERLAPS:
-    op = new OverlapsOperator();
-    break;
-
-  case BinaryPredicates::EQUALS:
-    op = new EqualsOperator();
-    break;
-
-  case BinaryPredicates::COVERS:
-    op = new CoversOperator();
-    break;
-
-  case BinaryPredicates::COVERED_BY:
-    op = new CoveredByOperator();
-    break;
-
-  default:
-    stop("No such binary predicate");
-  }
+LogicalVector cpp_is_covered_by(SEXP dataLeft, SEXP dataRight) {
+  BinaryPredicateOperator* op = new CoveredByOperator();
 
   op->initProvider(dataLeft, dataRight);
   LogicalVector result = op->operate();

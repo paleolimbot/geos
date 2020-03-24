@@ -13,8 +13,44 @@ cpp_intersection <- function(dataLeft, dataRight, ptype) {
     .Call(`_geom_cpp_intersection`, dataLeft, dataRight, ptype)
 }
 
-cpp_binary_predicate <- function(dataLeft, dataRight, predicate) {
-    .Call(`_geom_cpp_binary_predicate`, dataLeft, dataRight, predicate)
+cpp_is_disjoint <- function(dataLeft, dataRight) {
+    .Call(`_geom_cpp_is_disjoint`, dataLeft, dataRight)
+}
+
+cpp_touches <- function(dataLeft, dataRight) {
+    .Call(`_geom_cpp_touches`, dataLeft, dataRight)
+}
+
+cpp_intersects <- function(dataLeft, dataRight) {
+    .Call(`_geom_cpp_intersects`, dataLeft, dataRight)
+}
+
+cpp_crosses <- function(dataLeft, dataRight) {
+    .Call(`_geom_cpp_crosses`, dataLeft, dataRight)
+}
+
+cpp_is_within <- function(dataLeft, dataRight) {
+    .Call(`_geom_cpp_is_within`, dataLeft, dataRight)
+}
+
+cpp_contains <- function(dataLeft, dataRight) {
+    .Call(`_geom_cpp_contains`, dataLeft, dataRight)
+}
+
+cpp_overlaps <- function(dataLeft, dataRight) {
+    .Call(`_geom_cpp_overlaps`, dataLeft, dataRight)
+}
+
+cpp_equals <- function(dataLeft, dataRight) {
+    .Call(`_geom_cpp_equals`, dataLeft, dataRight)
+}
+
+cpp_covers <- function(dataLeft, dataRight) {
+    .Call(`_geom_cpp_covers`, dataLeft, dataRight)
+}
+
+cpp_is_covered_by <- function(dataLeft, dataRight) {
+    .Call(`_geom_cpp_is_covered_by`, dataLeft, dataRight)
 }
 
 cpp_buffer <- function(data, ptype, width, quadSegs, endCapStyle, joinStyle, mitreLimit, singleSided) {
