@@ -14,29 +14,21 @@ public:
   size_t counter;
   GEOSContextHandle_t context;
 
-  virtual void initProvider();
-  virtual void initProvider(SEXP data1);
-  virtual void initProvider(SEXP data1, SEXP data2);
-  virtual void initProvider(SEXP data1, SEXP data2, SEXP data3);
   virtual SEXP operate() = 0;
   virtual void init();
   virtual size_t maxParameterLength();
   virtual void finish();
   virtual size_t size();
   virtual void finishProvider();
+  virtual ~Operator();
 };
-
-SEXP cpp_do_operate(Operator* op);
-SEXP cpp_do_operate(Operator* op, SEXP data1);
-SEXP cpp_do_operate(Operator* op, SEXP data1, SEXP data2);
-SEXP cpp_do_operate(Operator* op, SEXP data1, SEXP data2, SEXP data3);
 
 // ------------- unary operators ----------------
 
 class UnaryGeometryOperator: public Operator {
 public:
-  GeometryProvider* provider;
-  GeometryExporter* exporter;
+  std::unique_ptr<GeometryProvider> provider;
+  std::unique_ptr<GeometryExporter> exporter;
 
   virtual void initProvider(SEXP provider, SEXP exporter);
   virtual SEXP operate();
@@ -52,7 +44,7 @@ private:
 template <class VectorType, class ScalarType>
 class UnaryVectorOperator: public Operator {
 public:
-  GeometryProvider* provider;
+  std::unique_ptr<GeometryProvider> provider;
   VectorType data;
 
   virtual void initProvider(SEXP provider);
@@ -68,13 +60,11 @@ private:
 
 class BinaryGeometryOperator: public Operator {
 public:
-  GeometryProvider* providerLeft;
-  GeometryProvider* providerRight;
-  GeometryExporter* exporter;
+  std::unique_ptr<GeometryProvider> providerLeft;
+  std::unique_ptr<GeometryProvider> providerRight;
+  std::unique_ptr<GeometryExporter> exporter;
 
-  virtual void initProvider(SEXP providerLeft,
-                            SEXP providerRight,
-                            SEXP exporter);
+  virtual void initProvider(SEXP providerLeft, SEXP providerRight, SEXP exporter);
   virtual SEXP operate();
   virtual GEOSGeometry* operateNext(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight) = 0;
 
@@ -88,8 +78,8 @@ private:
 template <class VectorType, class ScalarType>
 class BinaryVectorOperator: public Operator {
 public:
-  GeometryProvider* providerLeft;
-  GeometryProvider* providerRight;
+  std::unique_ptr<GeometryProvider> providerLeft;
+  std::unique_ptr<GeometryProvider> providerRight;
   VectorType data;
 
   virtual void initProvider(SEXP providerLeft, SEXP providerRight);
@@ -177,8 +167,7 @@ VectorType UnaryVectorOperator<VectorType, ScalarType>::finishBase() {
 // but putting them there results in a linker error
 
 template <class VectorType, class ScalarType>
-void BinaryVectorOperator<VectorType, ScalarType>::initProvider(SEXP providerLeft,
-                                                                SEXP providerRight) {
+void BinaryVectorOperator<VectorType, ScalarType>::initProvider(SEXP providerLeft, SEXP providerRight) {
   this->providerLeft = resolve_provider(providerLeft);
   this->providerRight = resolve_provider(providerRight);
 }

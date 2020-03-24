@@ -3,6 +3,7 @@
 #define GEOS_PROVIDER_H
 
 #include "geos-base.h"
+#include <memory.h>
 #include <Rcpp.h>
 using namespace Rcpp;
 
@@ -17,6 +18,8 @@ public:
   virtual GEOSGeometry* getNext() = 0;
   virtual void finish();
   virtual size_t size() = 0;
+
+  virtual ~GeometryProvider();
 };
 
 class GeometryExporter {
@@ -26,11 +29,13 @@ public:
   virtual void init(GEOSContextHandle_t context, size_t size);
   virtual void putNext(GEOSGeometry* geometry) = 0;
   virtual SEXP finish();
+
+  virtual ~GeometryExporter();
 };
 
 class ConstantGeometryProvider: public GeometryProvider {
 public:
-  GeometryProvider* baseProvider;
+  std::unique_ptr<GeometryProvider> baseProvider;
   GEOSGeometry* geometry;
 
   ConstantGeometryProvider(GeometryProvider* baseProvider);
@@ -140,7 +145,7 @@ public:
 
 // --- geometry provider/exporter resolvers
 
-GeometryProvider* resolve_provider(SEXP data);
-GeometryExporter* resolve_exporter(SEXP ptype);
+std::unique_ptr<GeometryProvider> resolve_provider(SEXP data);
+std::unique_ptr<GeometryExporter> resolve_exporter(SEXP ptype);
 
 #endif

@@ -1,12 +1,13 @@
 
 #include "geos-base.h"
 #include "geos-provider.h"
+#include <memory.h>
 #include <Rcpp.h>
 using namespace Rcpp;
 
 // [[Rcpp::export]]
 LogicalVector cpp_validate_provider(SEXP data) {
-  GeometryProvider* provider = resolve_provider(data);
+  std::unique_ptr<GeometryProvider> provider = resolve_provider(data);
   LogicalVector output(provider->size());
   GEOSContextHandle_t context = geos_init();
   provider->init(context);

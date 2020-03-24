@@ -4,22 +4,6 @@ using namespace Rcpp;
 
 // --------- base class ---------
 
-void Operator::initProvider() {
-  stop("Not implemented");
-}
-
-void Operator::initProvider(SEXP data1) {
-  stop("Not implemented");
-}
-
-void Operator::initProvider(SEXP data1, SEXP data2) {
-  stop("Not implemented");
-}
-
-void Operator::initProvider(SEXP data1, SEXP data2, SEXP data3) {
-  stop("Not implemented");
-}
-
 void Operator::init() {
 
 }
@@ -40,32 +24,8 @@ void Operator::finishProvider() {
 
 }
 
-SEXP cpp_do_operate(Operator* op) {
-  op->initProvider();
-  SEXP result = op->operate();
-  op->finishProvider();
-  return result;
-}
+Operator::~Operator() {
 
-SEXP cpp_do_operate(Operator* op, SEXP data1) {
-  op->initProvider(data1);
-  SEXP result = op->operate();
-  op->finishProvider();
-  return result;
-}
-
-SEXP cpp_do_operate(Operator* op, SEXP data1, SEXP data2) {
-  op->initProvider(data1, data2);
-  SEXP result = op->operate();
-  op->finishProvider();
-  return result;
-}
-
-SEXP cpp_do_operate(Operator* op, SEXP data1, SEXP data2, SEXP data3) {
-  op->initProvider(data1, data2, data3);
-  SEXP result = op->operate();
-  op->finishProvider();
-  return result;
 }
 
 // ------------- unary operators ----------------
