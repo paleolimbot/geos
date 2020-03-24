@@ -11,7 +11,7 @@ test_that("geo_wkt class works", {
 
 test_that("parse problems for WKT are detected", {
   expect_identical(
-    geomcpp_validate_provider(new_geo_wkt(c("POINT (30 10)", "POINT EMPTY", "MERR", "POINT FISH"))),
+    cpp_validate_provider(new_geo_wkt(c("POINT (30 10)", "POINT EMPTY", "MERR", "POINT FISH"))),
     c(TRUE, TRUE, FALSE, FALSE)
   )
 

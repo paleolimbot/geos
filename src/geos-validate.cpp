@@ -5,7 +5,7 @@
 using namespace Rcpp;
 
 // [[Rcpp::export]]
-LogicalVector geomcpp_validate_provider(SEXP data) {
+LogicalVector cpp_validate_provider(SEXP data) {
   GeometryProvider* provider = resolve_provider(data);
   LogicalVector output(provider->size());
   GEOSContextHandle_t context = geos_init();

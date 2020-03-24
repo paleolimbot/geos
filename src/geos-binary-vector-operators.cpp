@@ -96,7 +96,7 @@ class CoveredByOperator: public BinaryPredicateOperator {
 };
 
 // [[Rcpp::export]]
-LogicalVector geomcpp_binary_predicate(SEXP dataLeft, SEXP dataRight, int predicate) {
+LogicalVector cpp_binary_predicate(SEXP dataLeft, SEXP dataRight, int predicate) {
   BinaryPredicateOperator* op;
 
   switch(predicate) {

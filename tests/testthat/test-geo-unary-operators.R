@@ -151,7 +151,7 @@ test_that("empty geometrycollections can  be converted to a GeoCoord", {
 })
 
 test_that("error occurs with unknown object in conversions", {
-  expect_error(geomcpp_convert(NULL, new_geo_wkt()), "Can't resolve")
+  expect_error(cpp_convert(NULL, new_geo_wkt()), "Can't resolve")
 })
 
 test_that("geos_buffer() returns the same format as the input by default", {

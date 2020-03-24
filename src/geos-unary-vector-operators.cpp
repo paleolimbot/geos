@@ -54,7 +54,7 @@ class IsClosedOperator: public UnaryPredicateOperator {
 };
 
 // [[Rcpp::export]]
-LogicalVector geomcpp_unary_predicate(SEXP data, int predicate) {
+LogicalVector cpp_unary_predicate(SEXP data, int predicate) {
   UnaryPredicateOperator* op;
 
   switch(predicate) {

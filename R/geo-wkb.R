@@ -63,7 +63,7 @@ is_geo_wkb <- function(x) {
 #' @rdname new_geo_wkb
 #' @export
 validate_geo_wkb <- function(x) {
-  is_parseable <- geomcpp_validate_provider(x)
+  is_parseable <- cpp_validate_provider(x)
   stop_for_non_parseable(is_parseable)
   invisible(x)
 }
@@ -139,5 +139,5 @@ vec_cast.geo_wkb.list <- function(x, to, ...) {
 #' @export
 #' @rdname new_geo_wkb
 vec_cast.geo_wkb.geo_wkt <- function(x, to, ...) {
-  new_geo_wkb(vec_cast(geomcpp_convert(x, new_geo_wkb()), list_of(raw())))
+  new_geo_wkb(vec_cast(cpp_convert(x, new_geo_wkb()), list_of(raw())))
 }

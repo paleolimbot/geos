@@ -10,7 +10,7 @@ public:
 };
 
 // [[Rcpp::export]]
-SEXP geomcpp_intersection(SEXP dataLeft, SEXP dataRight, SEXP ptype) {
+SEXP cpp_intersection(SEXP dataLeft, SEXP dataRight, SEXP ptype) {
   IntersectionOperator* op = new IntersectionOperator();
 
   op->initProvider(dataLeft, dataRight, ptype);

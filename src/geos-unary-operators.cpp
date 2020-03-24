@@ -46,7 +46,7 @@ public:
 };
 
 // [[Rcpp::export]]
-SEXP geomcpp_buffer(SEXP data, SEXP ptype, NumericVector width, int quadSegs,
+SEXP cpp_buffer(SEXP data, SEXP ptype, NumericVector width, int quadSegs,
                     int endCapStyle, int joinStyle, double mitreLimit,
                     int singleSided) {
   BufferOperator* op = new BufferOperator(
@@ -71,7 +71,7 @@ public:
 };
 
 // [[Rcpp::export]]
-SEXP geomcpp_convert(SEXP data, SEXP ptype) {
+SEXP cpp_convert(SEXP data, SEXP ptype) {
   IdentityOperator* op = new IdentityOperator();
 
   op->initProvider(data, ptype);

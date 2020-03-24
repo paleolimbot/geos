@@ -58,61 +58,61 @@
 #' @export
 #'
 geos_disjoint <- function(x, y) {
-  geomcpp_binary_predicate(x, y, BP_DISJOINT)
+  cpp_binary_predicate(x, y, BP_DISJOINT)
 }
 
 #' @rdname geos_disjoint
 #' @export
 geos_touches <- function(x, y) {
-  geomcpp_binary_predicate(x, y, BP_TOUCHES)
+  cpp_binary_predicate(x, y, BP_TOUCHES)
 }
 
 #' @rdname geos_disjoint
 #' @export
 geos_intersects <- function(x, y) {
-  geomcpp_binary_predicate(x, y, BP_INTERSECTS)
+  cpp_binary_predicate(x, y, BP_INTERSECTS)
 }
 
 #' @rdname geos_disjoint
 #' @export
 geos_crosses <- function(x, y) {
-  geomcpp_binary_predicate(x, y, BP_CROSSES)
+  cpp_binary_predicate(x, y, BP_CROSSES)
 }
 
 #' @rdname geos_disjoint
 #' @export
 geos_is_within <- function(x, y) {
-  geomcpp_binary_predicate(x, y, BP_IS_WITHIN)
+  cpp_binary_predicate(x, y, BP_IS_WITHIN)
 }
 
 #' @rdname geos_disjoint
 #' @export
 geos_contains <- function(x, y) {
-  geomcpp_binary_predicate(x, y, BP_CONTAINS)
+  cpp_binary_predicate(x, y, BP_CONTAINS)
 }
 
 #' @rdname geos_disjoint
 #' @export
 geos_overlaps <- function(x, y) {
-  geomcpp_binary_predicate(x, y, BP_OVERLAPS)
+  cpp_binary_predicate(x, y, BP_OVERLAPS)
 }
 
 #' @rdname geos_disjoint
 #' @export
 geos_equals <- function(x, y) {
-  geomcpp_binary_predicate(x, y, BP_EQUALS)
+  cpp_binary_predicate(x, y, BP_EQUALS)
 }
 
 #' @rdname geos_disjoint
 #' @export
 geos_covers <- function(x, y) {
-  geomcpp_binary_predicate(x, y, BP_COVERS)
+  cpp_binary_predicate(x, y, BP_COVERS)
 }
 
 #' @rdname geos_disjoint
 #' @export
 geos_is_covered_by <- function(x, y) {
-  geomcpp_binary_predicate(x, y, BP_IS_COVERED_BY)
+  cpp_binary_predicate(x, y, BP_IS_COVERED_BY)
 }
 
 BP_DISJOINT <- 1
