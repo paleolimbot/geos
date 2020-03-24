@@ -5,10 +5,10 @@ geo_coord_polygon <- function(xy, feature = 1L, piece = 1L) {
   xy <- vec_cast(xy, geo_xy())
   feature <- vec_cast(feature, integer())
   piece <- vec_cast(piece, integer())
-  tbl <- list(
+  tbl <- vec_recycle_common(
     xy = xy,
-    feature = rep_along_or_fail(feature, xy),
-    piece = rep_along_or_fail(piece, xy)
+    feature = feature,
+    piece = piece
   )
 
   validate_geo_coord_polygon(tbl)
@@ -22,11 +22,11 @@ geo_coord_multipolygon <- function(xy, feature = 1L, piece = 1L, part = 1L) {
   feature <- vec_cast(feature, integer())
   piece <- vec_cast(piece, integer())
   part <- vec_cast(part, integer())
-  tbl <- list(
+  tbl <- vec_recycle_common(
     xy = xy,
-    feature = rep_along_or_fail(feature, xy),
-    part = rep_along_or_fail(part, xy),
-    piece = rep_along_or_fail(piece, xy)
+    feature = feature,
+    part = part,
+    piece = piece
   )
 
   validate_geo_coord_multipolygon(tbl)
