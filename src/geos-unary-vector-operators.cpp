@@ -29,7 +29,9 @@ class IsEmptyOperator: public UnaryPredicateOperator {
 
 // [[Rcpp::export]]
 LogicalVector cpp_is_empty(SEXP data) {
-  return cpp_do_operate(new IsEmptyOperator(), data);
+  IsEmptyOperator op;
+  op.initProvider(data);
+  return op.operate();
 }
 
 class IsSimpleOperator: public UnaryPredicateOperator {
@@ -40,7 +42,9 @@ class IsSimpleOperator: public UnaryPredicateOperator {
 
 // [[Rcpp::export]]
 LogicalVector cpp_is_simple(SEXP data) {
-  return cpp_do_operate(new IsSimpleOperator(), data);
+  IsSimpleOperator op;
+  op.initProvider(data);
+  return op.operate();
 }
 
 class HasZOperator: public UnaryPredicateOperator {
@@ -51,7 +55,9 @@ class HasZOperator: public UnaryPredicateOperator {
 
 // [[Rcpp::export]]
 LogicalVector cpp_has_z(SEXP data) {
-  return cpp_do_operate(new HasZOperator(), data);
+  HasZOperator op;
+  op.initProvider(data);
+  return op.operate();
 }
 
 class IsClosedOperator: public UnaryPredicateOperator {
@@ -62,5 +68,7 @@ class IsClosedOperator: public UnaryPredicateOperator {
 
 // [[Rcpp::export]]
 LogicalVector cpp_is_closed(SEXP data) {
-  return cpp_do_operate(new IsClosedOperator(), data);
+  IsClosedOperator op;
+  op.initProvider(data);
+  return op.operate();
 }

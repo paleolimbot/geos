@@ -11,5 +11,7 @@ public:
 
 // [[Rcpp::export]]
 SEXP cpp_intersection(SEXP dataLeft, SEXP dataRight, SEXP ptype) {
-  return cpp_do_operate(new IntersectionOperator(), dataLeft, dataRight, ptype);
+  IntersectionOperator op;
+  op.initProvider(dataLeft, dataRight, ptype);
+  return op.operate();
 }

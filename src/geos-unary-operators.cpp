@@ -49,12 +49,13 @@ public:
 SEXP cpp_buffer(SEXP data, SEXP ptype, NumericVector width, int quadSegs,
                     int endCapStyle, int joinStyle, double mitreLimit,
                     int singleSided) {
-  BufferOperator* op = new BufferOperator(
+  BufferOperator op(
     width, quadSegs,
     endCapStyle, joinStyle, mitreLimit,
     singleSided
   );
-  return cpp_do_operate(op, data, ptype);
+  op.initProvider(data, ptype);
+  return op.operate();
 }
 
 
@@ -67,6 +68,7 @@ public:
 
 // [[Rcpp::export]]
 SEXP cpp_convert(SEXP data, SEXP ptype) {
-  IdentityOperator* op = new IdentityOperator();
-  return cpp_do_operate(op, data, ptype);
+  IdentityOperator op;
+  op.initProvider(data, ptype);
+  return op.operate();
 }

@@ -29,7 +29,9 @@ class DisjointOperator: public BinaryPredicateOperator {
 
 // [[Rcpp::export]]
 LogicalVector cpp_is_disjoint(SEXP dataLeft, SEXP dataRight) {
-  return cpp_do_operate(new DisjointOperator(), dataLeft, dataRight);
+  DisjointOperator op;
+  op.initProvider(dataLeft, dataRight);
+  return op.operate();
 }
 
 class TouchesOperator: public BinaryPredicateOperator {
@@ -40,7 +42,9 @@ class TouchesOperator: public BinaryPredicateOperator {
 
 // [[Rcpp::export]]
 LogicalVector cpp_touches(SEXP dataLeft, SEXP dataRight) {
-  return cpp_do_operate(new TouchesOperator(), dataLeft, dataRight);
+  TouchesOperator op;
+  op.initProvider(dataLeft, dataRight);
+  return op.operate();
 }
 
 class IntersectsOperator: public BinaryPredicateOperator {
@@ -51,7 +55,9 @@ class IntersectsOperator: public BinaryPredicateOperator {
 
 // [[Rcpp::export]]
 LogicalVector cpp_intersects(SEXP dataLeft, SEXP dataRight) {
-  return cpp_do_operate(new IntersectsOperator(), dataLeft, dataRight);
+  IntersectsOperator op;
+  op.initProvider(dataLeft, dataRight);
+  return op.operate();
 }
 
 class CrossesOperator: public BinaryPredicateOperator {
@@ -62,7 +68,9 @@ class CrossesOperator: public BinaryPredicateOperator {
 
 // [[Rcpp::export]]
 LogicalVector cpp_crosses(SEXP dataLeft, SEXP dataRight) {
-  return cpp_do_operate(new CrossesOperator(), dataLeft, dataRight);
+  CrossesOperator op;
+  op.initProvider(dataLeft, dataRight);
+  return op.operate();
 }
 
 class WithinOperator: public BinaryPredicateOperator {
@@ -73,7 +81,9 @@ class WithinOperator: public BinaryPredicateOperator {
 
 // [[Rcpp::export]]
 LogicalVector cpp_is_within(SEXP dataLeft, SEXP dataRight) {
-  return cpp_do_operate(new WithinOperator(), dataLeft, dataRight);
+  WithinOperator op;
+  op.initProvider(dataLeft, dataRight);
+  return op.operate();
 }
 
 class ContainsOperator: public BinaryPredicateOperator {
@@ -84,7 +94,9 @@ class ContainsOperator: public BinaryPredicateOperator {
 
 // [[Rcpp::export]]
 LogicalVector cpp_contains(SEXP dataLeft, SEXP dataRight) {
-  return cpp_do_operate(new ContainsOperator(), dataLeft, dataRight);
+  ContainsOperator op;
+  op.initProvider(dataLeft, dataRight);
+  return op.operate();
 }
 
 class OverlapsOperator: public BinaryPredicateOperator {
@@ -95,7 +107,9 @@ class OverlapsOperator: public BinaryPredicateOperator {
 
 // [[Rcpp::export]]
 LogicalVector cpp_overlaps(SEXP dataLeft, SEXP dataRight) {
-  return cpp_do_operate(new OverlapsOperator(), dataLeft, dataRight);
+  OverlapsOperator op;
+  op.initProvider(dataLeft, dataRight);
+  return op.operate();
 }
 
 class EqualsOperator: public BinaryPredicateOperator {
@@ -106,7 +120,9 @@ class EqualsOperator: public BinaryPredicateOperator {
 
 // [[Rcpp::export]]
 LogicalVector cpp_equals(SEXP dataLeft, SEXP dataRight) {
-  return cpp_do_operate(new EqualsOperator(), dataLeft, dataRight);
+  EqualsOperator op;
+  op.initProvider(dataLeft, dataRight);
+  return op.operate();
 }
 
 class CoversOperator: public BinaryPredicateOperator {
@@ -117,7 +133,9 @@ class CoversOperator: public BinaryPredicateOperator {
 
 // [[Rcpp::export]]
 LogicalVector cpp_covers(SEXP dataLeft, SEXP dataRight) {
-  return cpp_do_operate(new CoversOperator(), dataLeft, dataRight);
+  CoversOperator op;
+  op.initProvider(dataLeft, dataRight);
+  return op.operate();
 }
 
 class CoveredByOperator: public BinaryPredicateOperator {
@@ -128,5 +146,7 @@ class CoveredByOperator: public BinaryPredicateOperator {
 
 // [[Rcpp::export]]
 LogicalVector cpp_is_covered_by(SEXP dataLeft, SEXP dataRight) {
-  return cpp_do_operate(new CoveredByOperator(), dataLeft, dataRight);
+  CoveredByOperator op;
+  op.initProvider(dataLeft, dataRight);
+  return op.operate();
 }
