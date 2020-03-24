@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Unary geometry predicates — geos_is_empty • geom</title>
+<title>Linear referencing — geos_project • geom</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Unary geometry predicates — geos_is_empty" />
-<meta property="og:description" content="Unary geometry predicates take one geometry and  return a logical vector." />
+<meta property="og:title" content="Linear referencing — geos_project" />
+<meta property="og:description" content="Vectorized along x and distance." />
 
 
 
@@ -108,56 +108,69 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Unary geometry predicates</h1>
-    <small class="dont-index">Source: <a href='https://github.com/paleolimbot/geom/blob/master/R/geo-unary-vector-operators.R'><code>R/geo-unary-vector-operators.R</code></a></small>
-    <div class="hidden name"><code>geos_is_empty.Rd</code></div>
+    <h1>Linear referencing</h1>
+    <small class="dont-index">Source: <a href='https://github.com/paleolimbot/geom/blob/master/R/geos-linear-referencing.R'><code>R/geos-linear-referencing.R</code></a></small>
+    <div class="hidden name"><code>geos_project.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Unary geometry predicates take one geometry and  return a logical vector.</p>
+    <p>Vectorized along <code>x</code> and <code>distance</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>geos_is_empty</span>(<span class='no'>x</span>)
+    <pre class="usage"><span class='fu'>geos_project</span>(<span class='no'>x</span>, <span class='no'>point</span>)
 
-<span class='fu'>geos_is_simple</span>(<span class='no'>x</span>)
+<span class='fu'>geos_project_normalized</span>(<span class='no'>x</span>, <span class='no'>point</span>)
 
-<span class='fu'>geos_has_z</span>(<span class='no'>x</span>)
+<span class='fu'>geos_interpolate</span>(<span class='no'>x</span>, <span class='no'>distance</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='fu'><a href='geo_ptype.html'>geo_ptype</a></span>(<span class='no'>x</span>))
 
-<span class='fu'>geos_is_closed</span>(<span class='no'>x</span>)</pre>
+<span class='fu'>geos_interpolate_normalized</span>(<span class='no'>x</span>, <span class='no'>distance</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='fu'><a href='geo_ptype.html'>geo_ptype</a></span>(<span class='no'>x</span>))</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>A geometry-like object</p></td>
+      <td><p>A geometry-like (linestring) along which to interpolate
+(or on which to project).</p></td>
+    </tr>
+    <tr>
+      <th>point</th>
+      <td><p>A (point) geometry-like object</p></td>
+    </tr>
+    <tr>
+      <th>distance</th>
+      <td><p>The distance along the geometry.</p></td>
+    </tr>
+    <tr>
+      <th>to</th>
+      <td><p>A prototype created by <code><a href='geo_ptype.html'>geo_ptype()</a></code></p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A logical vector</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    
-<dl'>
-<dt><code>geos_is_empty()</code></dt><dd><p>Returns <code>TRUE</code> if <code>x</code> contains no coordinates.</p></dd>
-<dt><code>geos_is_simple()</code></dt><dd><p>Returns <code>TRUE</code> if <code>x</code> does not intersect itself.</p></dd>
-<dt><code>geos_has_z()</code></dt><dd><p>Returns <code>TRUE</code> if <code>x</code> contains z coordinates.</p></dd>
-<dt><code>geos_is_closed()</code></dt><dd><p>Returns <code>TRUE</code> if the first coordinate of <code>x</code> is also the
-last coordinate of <code>x</code>.</p></dd>
-
-</dl>
-
+    <p><code>geos_project()</code> and <code>geos_project_normalized()</code> both return
+a geometry-like point vector; <code>geos_interpolate()</code> and
+<code>geos_interpolate_normalized()</code> both return</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>geos_is_empty</span>(<span class='fu'><a href='geo_wkt.html'>geo_wkt</a></span>(<span class='st'>"POINT EMPTY"</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>geos_is_empty</span>(<span class='fu'><a href='geo_wkt.html'>geo_wkt</a></span>(<span class='st'>"POINT (30 10)"</span>))</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
-<span class='co'># first geometry intersects itself</span>
-<span class='fu'>geos_is_simple</span>(<span class='fu'><a href='geo_wkt.html'>geo_wkt</a></span>(<span class='st'>"LINESTRING (0 0, 0 10, 10 0, 0 0, 10 10)"</span>))</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'><span class='fu'>geos_is_simple</span>(<span class='fu'><a href='geo_wkt.html'>geo_wkt</a></span>(<span class='st'>"LINESTRING (0 0, 0 10, 10 0, 0 0)"</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-<span class='co'># first geometry is 3D</span>
-<span class='fu'>geos_has_z</span>(<span class='fu'><a href='geo_wkt.html'>geo_wkt</a></span>(<span class='st'>"POINT (10 10 1)"</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>geos_has_z</span>(<span class='fu'><a href='geo_wkt.html'>geo_wkt</a></span>(<span class='st'>"POINT (10 10)"</span>))</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
-<span class='co'># first geometry is closed</span>
-<span class='fu'>geos_is_closed</span>(<span class='fu'><a href='geo_wkt.html'>geo_wkt</a></span>(<span class='st'>"LINESTRING (0 0, 0 10, 10 0, 0 0)"</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>geos_is_closed</span>(<span class='fu'><a href='geo_wkt.html'>geo_wkt</a></span>(<span class='st'>"LINESTRING (0 0, 0 10, 10 0)"</span>))</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
+    <pre class="examples"><div class='input'><span class='no'>line</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='geo_wkt.html'>geo_wkt</a></span>(<span class='st'>"LINESTRING (0 0, 10 10)"</span>)
+<span class='fu'><a href='geo_plot.html'>geo_plot</a></span>(<span class='no'>line</span>)</div><div class='input'>
+<span class='co'># geos_interpolate() works in absolute distances</span>
+<span class='fu'><a href='geo_plot.html'>geo_plot_add</a></span>(
+  <span class='fu'>geos_interpolate</span>(<span class='no'>line</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>5</span>, <span class='fl'>10</span>)),
+  <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>
+)</div><div class='input'>
+<span class='co'># geos_interpolate() works in relative distances (from 0..1)</span>
+<span class='co'># this is useful for generating a number of equally-spaced points</span>
+<span class='co'># along a line</span>
+<span class='fu'><a href='geo_plot.html'>geo_plot_add</a></span>(
+   <span class='fu'>geos_interpolate_normalized</span>(<span class='no'>line</span>, <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='kw'>length.out</span> <span class='kw'>=</span> <span class='fl'>5</span>)),
+  <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"blue"</span>
+)</div><div class='img'><img src='geos_project-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># geos_project() and geos_project_normalized() are the opposite</span>
+<span class='co'># of these operations</span>
+<span class='fu'>geos_project</span>(<span class='no'>line</span>, <span class='fu'><a href='geo_wkt.html'>geo_wkt</a></span>(<span class='st'>"POINT (5 5)"</span>))</div><div class='output co'>#&gt; [1] 7.071068</div><div class='input'><span class='fu'>geos_project_normalized</span>(<span class='no'>line</span>, <span class='fu'><a href='geo_wkt.html'>geo_wkt</a></span>(<span class='st'>"POINT (5 5)"</span>))</div><div class='output co'>#&gt; [1] 0.5</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
