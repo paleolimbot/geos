@@ -10,8 +10,9 @@
 #' @param distance The distance along the geometry.
 #'
 #' @return [geos_project()] and [geos_project_normalized()] both return
-#'   a geometry-like point vector; [geos_interpolate()] and
-#'   [geos_interpolate_normalized()] both return
+#'   a numeric vector of distances; [geos_interpolate()] and
+#'   [geos_interpolate_normalized()] both return a geometry-like point
+#'   vector.
 #'
 #' @export
 #'

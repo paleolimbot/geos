@@ -27,8 +27,9 @@ geos_interpolate_normalized(x, distance, to = geo_ptype(x))
 }
 \value{
 \code{\link[=geos_project]{geos_project()}} and \code{\link[=geos_project_normalized]{geos_project_normalized()}} both return
-a geometry-like point vector; \code{\link[=geos_interpolate]{geos_interpolate()}} and
-\code{\link[=geos_interpolate_normalized]{geos_interpolate_normalized()}} both return
+a numeric vector of distances; \code{\link[=geos_interpolate]{geos_interpolate()}} and
+\code{\link[=geos_interpolate_normalized]{geos_interpolate_normalized()}} both return a geometry-like point
+vector.
 }
 \description{
 Vectorized along \code{x} and \code{distance}.
