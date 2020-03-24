@@ -14,6 +14,10 @@ public:
   size_t counter;
   GEOSContextHandle_t context;
 
+  virtual void initProvider();
+  virtual void initProvider(SEXP data1);
+  virtual void initProvider(SEXP data1, SEXP data2);
+  virtual void initProvider(SEXP data1, SEXP data2, SEXP data3);
   virtual SEXP operate() = 0;
   virtual void init();
   virtual size_t maxParameterLength();
@@ -23,6 +27,9 @@ public:
 };
 
 SEXP cpp_do_operate(Operator* op);
+SEXP cpp_do_operate(Operator* op, SEXP data1);
+SEXP cpp_do_operate(Operator* op, SEXP data1, SEXP data2);
+SEXP cpp_do_operate(Operator* op, SEXP data1, SEXP data2, SEXP data3);
 
 // ------------- unary operators ----------------
 

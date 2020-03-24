@@ -54,12 +54,7 @@ SEXP cpp_buffer(SEXP data, SEXP ptype, NumericVector width, int quadSegs,
     endCapStyle, joinStyle, mitreLimit,
     singleSided
   );
-
-  op->initProvider(data, ptype);
-  SEXP result = op->operate();
-  op->finishProvider();
-
-  return result;
+  return cpp_do_operate(op, data, ptype);
 }
 
 
@@ -73,10 +68,5 @@ public:
 // [[Rcpp::export]]
 SEXP cpp_convert(SEXP data, SEXP ptype) {
   IdentityOperator* op = new IdentityOperator();
-
-  op->initProvider(data, ptype);
-  SEXP result = op->operate();
-  op->finishProvider();
-
-  return result;
+  return cpp_do_operate(op, data, ptype);
 }
