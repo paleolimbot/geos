@@ -12,7 +12,7 @@ LogicalVector cpp_validate_provider(SEXP data) {
   GEOSContextHandle_t context = geos_init();
   provider->init(context);
 
-  for (int i=0; i < provider->size(); i++) {
+  for (size_t i=0; i < provider->size(); i++) {
     try {
       provider->getNext();
       output[i] = true;

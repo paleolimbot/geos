@@ -44,7 +44,7 @@ unsigned int write_simple_geometry(GEOSContextHandle_t context, const GEOSGeomet
   double x;
   double y;
 
-  for (int i=0; i<size; i++) {
+  for (unsigned int i=0; i<size; i++) {
     GEOSCoordSeq_getX_r(context, seq, i, &x);
     GEOSCoordSeq_getY_r(context, seq, i, &y);
     xVec[offset + i] = x;
@@ -58,7 +58,7 @@ unsigned int write_simple_geometry(GEOSContextHandle_t context, const GEOSGeomet
                                    NumericVector xVec, NumericVector yVec, IntegerVector part,
                                    int partId, int offset) {
   unsigned int size = write_simple_geometry(context, geometry, xVec, yVec, offset);
-  for(int i=0; i<size; i++) {
+  for(unsigned int i=0; i<size; i++) {
     part[offset + i] = partId;
   }
   return size;
@@ -68,7 +68,7 @@ unsigned int write_simple_geometry(GEOSContextHandle_t context, const GEOSGeomet
                                    NumericVector xVec, NumericVector yVec, IntegerVector part,
                                    int partId, IntegerVector piece, int pieceId, int offset) {
   unsigned int size = write_simple_geometry(context, geometry, xVec, yVec, offset);
-  for(int i=0; i<size; i++) {
+  for(unsigned int i=0; i<size; i++) {
     part[offset + i] = partId;
     piece[offset + i] = pieceId;
   }
