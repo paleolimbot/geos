@@ -109,10 +109,12 @@ public:
   GEOSGeometry* operateNext(GEOSGeometry* geometry) {
 #ifdef HAVE380
     double radius;
-    // it's unclear to me who is responsible for destroying this
-    // geometry (probably me)
     GEOSGeometry* center;
-    return GEOSMinimumBoundingCircle_r(this->context, geometry, &radius, &center);
+
+    GEOSGeometry* circle = GEOSMinimumBoundingCircle_r(this->context, geometry, &radius, &center);
+    GEOSGeom_destroy_r(this->context, center);
+
+    return circle;
 #else
     stop("Need GEOS >= 3.8.0 to use GEOSMinimumBoundingCircle_r()");
 #endif
@@ -131,10 +133,11 @@ public:
   GEOSGeometry* operateNext(GEOSGeometry* geometry) {
 #ifdef HAVE380
     double radius;
-    // it's unclear to me who is responsible for destroying this
-    // geometry (probably me)
     GEOSGeometry* center;
+
     GEOSGeometry* circle = GEOSMinimumBoundingCircle_r(this->context, geometry, &radius, &center);
+    GEOSGeom_destroy_r(this->context, circle);
+
     return center;
 #else
     stop("Need GEOS >= 3.8.0 to use GEOSMinimumBoundingCircle_r()");
@@ -154,10 +157,12 @@ public:
   double operateNext(GEOSGeometry* geometry) {
 #ifdef HAVE380
     double radius;
-    // it's unclear to me who is responsible for destroying this
-    // geometry (probably me)
     GEOSGeometry* center;
+
     GEOSGeometry* circle = GEOSMinimumBoundingCircle_r(this->context, geometry, &radius, &center);
+    GEOSGeom_destroy_r(this->context, circle);
+    GEOSGeom_destroy_r(this->context, center);
+
     return radius;
 #else
     stop("Need GEOS >= 3.8.0 to use GEOSMinimumBoundingCircle_r()");
