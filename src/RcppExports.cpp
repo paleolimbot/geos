@@ -5,6 +5,18 @@
 
 using namespace Rcpp;
 
+// cpp_convert
+SEXP cpp_convert(SEXP data, SEXP ptype);
+RcppExport SEXP _geom_cpp_convert(SEXP dataSEXP, SEXP ptypeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type ptype(ptypeSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_convert(data, ptype));
+    return rcpp_result_gen;
+END_RCPP
+}
 // cpp_version_impl
 std::string cpp_version_impl();
 RcppExport SEXP _geom_cpp_version_impl() {
@@ -34,6 +46,85 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< SEXP >::type dataRight(dataRightSEXP);
     Rcpp::traits::input_parameter< SEXP >::type ptype(ptypeSEXP);
     rcpp_result_gen = Rcpp::wrap(cpp_intersection(dataLeft, dataRight, ptype));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cpp_difference
+SEXP cpp_difference(SEXP dataLeft, SEXP dataRight, SEXP ptype);
+RcppExport SEXP _geom_cpp_difference(SEXP dataLeftSEXP, SEXP dataRightSEXP, SEXP ptypeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type dataLeft(dataLeftSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type dataRight(dataRightSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type ptype(ptypeSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_difference(dataLeft, dataRight, ptype));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cpp_sym_difference
+SEXP cpp_sym_difference(SEXP dataLeft, SEXP dataRight, SEXP ptype);
+RcppExport SEXP _geom_cpp_sym_difference(SEXP dataLeftSEXP, SEXP dataRightSEXP, SEXP ptypeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type dataLeft(dataLeftSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type dataRight(dataRightSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type ptype(ptypeSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_sym_difference(dataLeft, dataRight, ptype));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cpp_union
+SEXP cpp_union(SEXP dataLeft, SEXP dataRight, SEXP ptype);
+RcppExport SEXP _geom_cpp_union(SEXP dataLeftSEXP, SEXP dataRightSEXP, SEXP ptypeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type dataLeft(dataLeftSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type dataRight(dataRightSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type ptype(ptypeSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_union(dataLeft, dataRight, ptype));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cpp_unary_union
+SEXP cpp_unary_union(SEXP dataLeft, SEXP ptype);
+RcppExport SEXP _geom_cpp_unary_union(SEXP dataLeftSEXP, SEXP ptypeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type dataLeft(dataLeftSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type ptype(ptypeSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_unary_union(dataLeft, ptype));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cpp_coverage_union
+SEXP cpp_coverage_union(SEXP dataLeft, SEXP ptype);
+RcppExport SEXP _geom_cpp_coverage_union(SEXP dataLeftSEXP, SEXP ptypeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type dataLeft(dataLeftSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type ptype(ptypeSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_coverage_union(dataLeft, ptype));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cpp_clip_by_rect
+SEXP cpp_clip_by_rect(SEXP dataLeft, NumericVector xmin, NumericVector ymin, NumericVector xmax, NumericVector ymax, SEXP to);
+RcppExport SEXP _geom_cpp_clip_by_rect(SEXP dataLeftSEXP, SEXP xminSEXP, SEXP yminSEXP, SEXP xmaxSEXP, SEXP ymaxSEXP, SEXP toSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type dataLeft(dataLeftSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type xmin(xminSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type ymin(yminSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type xmax(xmaxSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type ymax(ymaxSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type to(toSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_clip_by_rect(dataLeft, xmin, ymin, xmax, ymax, to));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -157,6 +248,41 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// cpp_offset_curve
+SEXP cpp_offset_curve(SEXP x, NumericVector width, int quadSegs, int endCapStyle, int joinStyle, double mitreLimit, SEXP to);
+RcppExport SEXP _geom_cpp_offset_curve(SEXP xSEXP, SEXP widthSEXP, SEXP quadSegsSEXP, SEXP endCapStyleSEXP, SEXP joinStyleSEXP, SEXP mitreLimitSEXP, SEXP toSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type width(widthSEXP);
+    Rcpp::traits::input_parameter< int >::type quadSegs(quadSegsSEXP);
+    Rcpp::traits::input_parameter< int >::type endCapStyle(endCapStyleSEXP);
+    Rcpp::traits::input_parameter< int >::type joinStyle(joinStyleSEXP);
+    Rcpp::traits::input_parameter< double >::type mitreLimit(mitreLimitSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type to(toSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_offset_curve(x, width, quadSegs, endCapStyle, joinStyle, mitreLimit, to));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cpp_buffer
+SEXP cpp_buffer(SEXP x, NumericVector width, int quadSegs, int endCapStyle, int joinStyle, double mitreLimit, int singleSided, SEXP to);
+RcppExport SEXP _geom_cpp_buffer(SEXP xSEXP, SEXP widthSEXP, SEXP quadSegsSEXP, SEXP endCapStyleSEXP, SEXP joinStyleSEXP, SEXP mitreLimitSEXP, SEXP singleSidedSEXP, SEXP toSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type width(widthSEXP);
+    Rcpp::traits::input_parameter< int >::type quadSegs(quadSegsSEXP);
+    Rcpp::traits::input_parameter< int >::type endCapStyle(endCapStyleSEXP);
+    Rcpp::traits::input_parameter< int >::type joinStyle(joinStyleSEXP);
+    Rcpp::traits::input_parameter< double >::type mitreLimit(mitreLimitSEXP);
+    Rcpp::traits::input_parameter< int >::type singleSided(singleSidedSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type to(toSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_buffer(x, width, quadSegs, endCapStyle, joinStyle, mitreLimit, singleSided, to));
+    return rcpp_result_gen;
+END_RCPP
+}
 // cpp_project
 NumericVector cpp_project(SEXP dataLeft, SEXP dataRight);
 RcppExport SEXP _geom_cpp_project(SEXP dataLeftSEXP, SEXP dataRightSEXP) {
@@ -207,33 +333,191 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// cpp_buffer
-SEXP cpp_buffer(SEXP data, SEXP ptype, NumericVector width, int quadSegs, int endCapStyle, int joinStyle, double mitreLimit, int singleSided);
-RcppExport SEXP _geom_cpp_buffer(SEXP dataSEXP, SEXP ptypeSEXP, SEXP widthSEXP, SEXP quadSegsSEXP, SEXP endCapStyleSEXP, SEXP joinStyleSEXP, SEXP mitreLimitSEXP, SEXP singleSidedSEXP) {
+// cpp_area
+NumericVector cpp_area(SEXP x);
+RcppExport SEXP _geom_cpp_area(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type ptype(ptypeSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type width(widthSEXP);
-    Rcpp::traits::input_parameter< int >::type quadSegs(quadSegsSEXP);
-    Rcpp::traits::input_parameter< int >::type endCapStyle(endCapStyleSEXP);
-    Rcpp::traits::input_parameter< int >::type joinStyle(joinStyleSEXP);
-    Rcpp::traits::input_parameter< double >::type mitreLimit(mitreLimitSEXP);
-    Rcpp::traits::input_parameter< int >::type singleSided(singleSidedSEXP);
-    rcpp_result_gen = Rcpp::wrap(cpp_buffer(data, ptype, width, quadSegs, endCapStyle, joinStyle, mitreLimit, singleSided));
+    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_area(x));
     return rcpp_result_gen;
 END_RCPP
 }
-// cpp_convert
-SEXP cpp_convert(SEXP data, SEXP ptype);
-RcppExport SEXP _geom_cpp_convert(SEXP dataSEXP, SEXP ptypeSEXP) {
+// cpp_length
+NumericVector cpp_length(SEXP x);
+RcppExport SEXP _geom_cpp_length(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_length(x));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cpp_distance
+NumericVector cpp_distance(SEXP x, SEXP y);
+RcppExport SEXP _geom_cpp_distance(SEXP xSEXP, SEXP ySEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type y(ySEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_distance(x, y));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cpp_point_on_surface
+SEXP cpp_point_on_surface(SEXP dataLeft, SEXP ptype);
+RcppExport SEXP _geom_cpp_point_on_surface(SEXP dataLeftSEXP, SEXP ptypeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type dataLeft(dataLeftSEXP);
     Rcpp::traits::input_parameter< SEXP >::type ptype(ptypeSEXP);
-    rcpp_result_gen = Rcpp::wrap(cpp_convert(data, ptype));
+    rcpp_result_gen = Rcpp::wrap(cpp_point_on_surface(dataLeft, ptype));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cpp_centroid
+SEXP cpp_centroid(SEXP dataLeft, SEXP ptype);
+RcppExport SEXP _geom_cpp_centroid(SEXP dataLeftSEXP, SEXP ptypeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type dataLeft(dataLeftSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type ptype(ptypeSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_centroid(dataLeft, ptype));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cpp_node
+SEXP cpp_node(SEXP dataLeft, SEXP ptype);
+RcppExport SEXP _geom_cpp_node(SEXP dataLeftSEXP, SEXP ptypeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type dataLeft(dataLeftSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type ptype(ptypeSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_node(dataLeft, ptype));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cpp_boundary
+SEXP cpp_boundary(SEXP dataLeft, SEXP ptype);
+RcppExport SEXP _geom_cpp_boundary(SEXP dataLeftSEXP, SEXP ptypeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type dataLeft(dataLeftSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type ptype(ptypeSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_boundary(dataLeft, ptype));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cpp_envelope
+SEXP cpp_envelope(SEXP dataLeft, SEXP ptype);
+RcppExport SEXP _geom_cpp_envelope(SEXP dataLeftSEXP, SEXP ptypeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type dataLeft(dataLeftSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type ptype(ptypeSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_envelope(dataLeft, ptype));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cpp_convex_hull
+SEXP cpp_convex_hull(SEXP dataLeft, SEXP ptype);
+RcppExport SEXP _geom_cpp_convex_hull(SEXP dataLeftSEXP, SEXP ptypeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type dataLeft(dataLeftSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type ptype(ptypeSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_convex_hull(dataLeft, ptype));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cpp_minimum_rotated_rectangle
+SEXP cpp_minimum_rotated_rectangle(SEXP dataLeft, SEXP ptype);
+RcppExport SEXP _geom_cpp_minimum_rotated_rectangle(SEXP dataLeftSEXP, SEXP ptypeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type dataLeft(dataLeftSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type ptype(ptypeSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_minimum_rotated_rectangle(dataLeft, ptype));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cpp_minimum_bounding_circle
+SEXP cpp_minimum_bounding_circle(SEXP dataLeft, SEXP ptype);
+RcppExport SEXP _geom_cpp_minimum_bounding_circle(SEXP dataLeftSEXP, SEXP ptypeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type dataLeft(dataLeftSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type ptype(ptypeSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_minimum_bounding_circle(dataLeft, ptype));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cpp_minimum_bounding_circle_center
+SEXP cpp_minimum_bounding_circle_center(SEXP dataLeft, SEXP ptype);
+RcppExport SEXP _geom_cpp_minimum_bounding_circle_center(SEXP dataLeftSEXP, SEXP ptypeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type dataLeft(dataLeftSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type ptype(ptypeSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_minimum_bounding_circle_center(dataLeft, ptype));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cpp_minimum_bounding_circle_radius
+NumericVector cpp_minimum_bounding_circle_radius(SEXP dataLeft);
+RcppExport SEXP _geom_cpp_minimum_bounding_circle_radius(SEXP dataLeftSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type dataLeft(dataLeftSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_minimum_bounding_circle_radius(dataLeft));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cpp_minimum_width
+SEXP cpp_minimum_width(SEXP dataLeft, SEXP ptype);
+RcppExport SEXP _geom_cpp_minimum_width(SEXP dataLeftSEXP, SEXP ptypeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type dataLeft(dataLeftSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type ptype(ptypeSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_minimum_width(dataLeft, ptype));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cpp_minimum_clearance_line
+SEXP cpp_minimum_clearance_line(SEXP dataLeft, SEXP ptype);
+RcppExport SEXP _geom_cpp_minimum_clearance_line(SEXP dataLeftSEXP, SEXP ptypeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type dataLeft(dataLeftSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type ptype(ptypeSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_minimum_clearance_line(dataLeft, ptype));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cpp_minimum_clearance
+NumericVector cpp_minimum_clearance(SEXP dataLeft);
+RcppExport SEXP _geom_cpp_minimum_clearance(SEXP dataLeftSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type dataLeft(dataLeftSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_minimum_clearance(dataLeft));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -294,9 +578,16 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_geom_cpp_convert", (DL_FUNC) &_geom_cpp_convert, 2},
     {"_geom_cpp_version_impl", (DL_FUNC) &_geom_cpp_version_impl, 0},
     {"_geom_cpp_test_throw_error", (DL_FUNC) &_geom_cpp_test_throw_error, 0},
     {"_geom_cpp_intersection", (DL_FUNC) &_geom_cpp_intersection, 3},
+    {"_geom_cpp_difference", (DL_FUNC) &_geom_cpp_difference, 3},
+    {"_geom_cpp_sym_difference", (DL_FUNC) &_geom_cpp_sym_difference, 3},
+    {"_geom_cpp_union", (DL_FUNC) &_geom_cpp_union, 3},
+    {"_geom_cpp_unary_union", (DL_FUNC) &_geom_cpp_unary_union, 2},
+    {"_geom_cpp_coverage_union", (DL_FUNC) &_geom_cpp_coverage_union, 2},
+    {"_geom_cpp_clip_by_rect", (DL_FUNC) &_geom_cpp_clip_by_rect, 6},
     {"_geom_cpp_is_disjoint", (DL_FUNC) &_geom_cpp_is_disjoint, 2},
     {"_geom_cpp_touches", (DL_FUNC) &_geom_cpp_touches, 2},
     {"_geom_cpp_intersects", (DL_FUNC) &_geom_cpp_intersects, 2},
@@ -307,12 +598,28 @@ static const R_CallMethodDef CallEntries[] = {
     {"_geom_cpp_equals", (DL_FUNC) &_geom_cpp_equals, 2},
     {"_geom_cpp_covers", (DL_FUNC) &_geom_cpp_covers, 2},
     {"_geom_cpp_is_covered_by", (DL_FUNC) &_geom_cpp_is_covered_by, 2},
+    {"_geom_cpp_offset_curve", (DL_FUNC) &_geom_cpp_offset_curve, 7},
+    {"_geom_cpp_buffer", (DL_FUNC) &_geom_cpp_buffer, 8},
     {"_geom_cpp_project", (DL_FUNC) &_geom_cpp_project, 2},
     {"_geom_cpp_project_normalized", (DL_FUNC) &_geom_cpp_project_normalized, 2},
     {"_geom_cpp_interpolate", (DL_FUNC) &_geom_cpp_interpolate, 3},
     {"_geom_cpp_interpolate_normalized", (DL_FUNC) &_geom_cpp_interpolate_normalized, 3},
-    {"_geom_cpp_buffer", (DL_FUNC) &_geom_cpp_buffer, 8},
-    {"_geom_cpp_convert", (DL_FUNC) &_geom_cpp_convert, 2},
+    {"_geom_cpp_area", (DL_FUNC) &_geom_cpp_area, 1},
+    {"_geom_cpp_length", (DL_FUNC) &_geom_cpp_length, 1},
+    {"_geom_cpp_distance", (DL_FUNC) &_geom_cpp_distance, 2},
+    {"_geom_cpp_point_on_surface", (DL_FUNC) &_geom_cpp_point_on_surface, 2},
+    {"_geom_cpp_centroid", (DL_FUNC) &_geom_cpp_centroid, 2},
+    {"_geom_cpp_node", (DL_FUNC) &_geom_cpp_node, 2},
+    {"_geom_cpp_boundary", (DL_FUNC) &_geom_cpp_boundary, 2},
+    {"_geom_cpp_envelope", (DL_FUNC) &_geom_cpp_envelope, 2},
+    {"_geom_cpp_convex_hull", (DL_FUNC) &_geom_cpp_convex_hull, 2},
+    {"_geom_cpp_minimum_rotated_rectangle", (DL_FUNC) &_geom_cpp_minimum_rotated_rectangle, 2},
+    {"_geom_cpp_minimum_bounding_circle", (DL_FUNC) &_geom_cpp_minimum_bounding_circle, 2},
+    {"_geom_cpp_minimum_bounding_circle_center", (DL_FUNC) &_geom_cpp_minimum_bounding_circle_center, 2},
+    {"_geom_cpp_minimum_bounding_circle_radius", (DL_FUNC) &_geom_cpp_minimum_bounding_circle_radius, 1},
+    {"_geom_cpp_minimum_width", (DL_FUNC) &_geom_cpp_minimum_width, 2},
+    {"_geom_cpp_minimum_clearance_line", (DL_FUNC) &_geom_cpp_minimum_clearance_line, 2},
+    {"_geom_cpp_minimum_clearance", (DL_FUNC) &_geom_cpp_minimum_clearance, 1},
     {"_geom_cpp_is_empty", (DL_FUNC) &_geom_cpp_is_empty, 1},
     {"_geom_cpp_is_simple", (DL_FUNC) &_geom_cpp_is_simple, 1},
     {"_geom_cpp_has_z", (DL_FUNC) &_geom_cpp_has_z, 1},

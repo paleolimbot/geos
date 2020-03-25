@@ -52,7 +52,6 @@ jobs:
       - name: Install system dependencies (MacOS)
         if: runner.os == 'MacOS'
         run: |
-          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
           brew install geos
           brew cask install xquartz
 

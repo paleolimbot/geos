@@ -92,7 +92,7 @@ test_that("geo_coord_polygon conversion works", {
 test_that("geo_coord_multi_polygon conversion works", {
   tbl <- geo_convert(
     geo_wkt(
-    "MULTIPOLYGON (((40 40, 20 45, 45 30, 40 40)),
+      "MULTIPOLYGON (((40 40, 20 45, 45 30, 40 40)),
             ((20 35, 10 30, 10 10, 30 5, 45 20, 20 35), (30 20, 20 15, 20 25, 30 20)))
     "),
     geo_coord()
@@ -152,53 +152,4 @@ test_that("empty geometrycollections can  be converted to a GeoCoord", {
 
 test_that("error occurs with unknown object in conversions", {
   expect_error(cpp_convert(NULL, new_geo_wkt()), "Can't resolve")
-})
-
-test_that("geos_buffer() returns the same format as the input by default", {
-  expect_is(geos_buffer(geo_wkt("POINT (0 0)"), 1), "geo_wkt")
-})
-
-test_that("geos_buffer works", {
-  point <- geo_wkt("POINT (0 0)")
-  result <- geos_buffer(point, width = 1)
-  expect_identical(
-    geo_convert(result, geo_rect()),
-    geo_rect(-1, -1, 1, 1)
-  )
-})
-
-test_that("geos_buffer is vectorized along 'width'", {
-  point <- geo_wkt(c("POINT (0 0)", "POINT (1 1)"))
-  result1 <- geos_buffer(point, 1, quad_segs = 2)
-  expect_length(result1, 2)
-
-  expect_identical(
-    geos_buffer(point, c(1, 2), quad_segs = 2),
-    c(
-      geos_buffer(point[1], 1, quad_segs = 2),
-      geos_buffer(point[2], 2, quad_segs = 2)
-    )
-  )
-
-  expect_identical(
-    geos_buffer(point[1], c(1, 2), quad_segs = 2),
-    c(
-      geos_buffer(point[1], 1, quad_segs = 2),
-      geos_buffer(point[1], 2, quad_segs = 2)
-    )
-  )
-})
-
-test_that("geos_buffer works with all providers", {
-  point <- geo_wkt("POINT (0 0)")
-  buffered <- geos_buffer(point, 4)
-  expect_identical(
-    geos_buffer(geo_convert(point, geo_wkb()), 4, to = geo_wkt()),
-    buffered
-  )
-
-  expect_identical(
-    geos_buffer(geo_xy(0, 0), 4, to = geo_wkt()),
-    buffered
-  )
 })

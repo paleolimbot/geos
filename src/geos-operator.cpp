@@ -51,7 +51,7 @@ void UnaryGeometryOperator::initBase() {
     this->commonSize = nonConstantSizes[0];
   }
 
-  for (int i=0; i<nonConstantSizes.size(); i++) {
+  for (size_t i=0; i<nonConstantSizes.size(); i++) {
     if (nonConstantSizes[i] != this->commonSize) {
       stop("Providers with incompatible lengths passed to BinaryGeometryOperator");
     }
@@ -71,7 +71,7 @@ SEXP UnaryGeometryOperator::operate() {
   GEOSGeometry* result;
 
   try {
-    for (int i=0; i < this->size(); i++) {
+    for (size_t i=0; i < this->size(); i++) {
       checkUserInterrupt();
       this->counter = i;
       geometry = this->provider->getNext();
@@ -122,7 +122,7 @@ void BinaryGeometryOperator::initBase() {
     this->commonSize = nonConstantSizes[0];
   }
 
-  for (int i=0; i<nonConstantSizes.size(); i++) {
+  for (size_t i=0; i<nonConstantSizes.size(); i++) {
     if (nonConstantSizes[i] != this->commonSize) {
       stop("Providers with incompatible lengths passed to BinaryGeometryOperator");
     }
@@ -143,7 +143,7 @@ SEXP BinaryGeometryOperator::operate() {
   GEOSGeometry* result;
 
   try {
-    for (int i=0; i < this->size(); i++) {
+    for (size_t i=0; i < this->size(); i++) {
       checkUserInterrupt();
       geometryLeft = this->providerLeft->getNext();
       geometryRight = this->providerRight->getNext();

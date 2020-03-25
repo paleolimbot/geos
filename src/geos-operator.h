@@ -117,7 +117,7 @@ void UnaryVectorOperator<VectorType, ScalarType>::initBase() {
     this->commonSize = nonConstantSizes[0];
   }
 
-  for (int i=0; i<nonConstantSizes.size(); i++) {
+  for (size_t i=0; i<nonConstantSizes.size(); i++) {
     if (nonConstantSizes[i] != this->commonSize) {
       stop("Providers with incompatible lengths passed to BinaryGeometryOperator");
     }
@@ -139,7 +139,7 @@ SEXP UnaryVectorOperator<VectorType, ScalarType>::operate() {
   ScalarType result;
 
   try {
-    for (int i=0; i < this->size(); i++) {
+    for (size_t i=0; i < this->size(); i++) {
       checkUserInterrupt();
       this->counter = i;
       geometry = this->provider->getNext();
@@ -191,7 +191,7 @@ void BinaryVectorOperator<VectorType, ScalarType>::initBase() {
     this->commonSize = nonConstantSizes[0];
   }
 
-  for (int i=0; i<nonConstantSizes.size(); i++) {
+  for (size_t i=0; i<nonConstantSizes.size(); i++) {
     if (nonConstantSizes[i] != this->commonSize) {
       stop("Providers with incompatible lengths passed to BinaryVectorOperator");
     }
@@ -214,7 +214,7 @@ SEXP BinaryVectorOperator<VectorType, ScalarType>::operate() {
   ScalarType result;
 
   try {
-    for (int i=0; i < this->size(); i++) {
+    for (size_t i=0; i < this->size(); i++) {
       checkUserInterrupt();
       this->counter = i;
       geometryLeft = this->providerLeft->getNext();
