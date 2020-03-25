@@ -16,7 +16,10 @@
 #' - [geos_minimum_rotated_rectangle()] returns the smallest possible rectangle
 #'   that completely contains the `x`.
 #' - [geos_minimum_bounding_circle()] returns the smallest possible rectangle
-#'   that completely contains the `x`.
+#'   that completely contains the `x`. The circle isn't particularly high
+#'   resolution, but you can construct it yourself using center and radius
+#'   provided by [geos_minimum_bounding_circle_center()] and
+#'   [geos_minimum_bounding_circle_radius()], respectively.
 #' - [geos_minimum_width()] returns the smallest possible "hole" (as a linestring)
 #'   that the geometry can fit through with a single rotation. If the geometry is
 #'   the couch, the length of this line is that you would measure before trying
@@ -35,7 +38,6 @@
 #' @export
 #'
 #' @examples
-#' point <- geo_wkt("POINT (30 10)")
 #' line <- geo_wkt("LINESTRING (30 10, 10 30, 40 40)")
 #' poly <- geo_wkt("
 #' POLYGON (
@@ -88,6 +90,14 @@
 #'   border = NA
 #' )
 #' geo_plot_add(poly)
+#' geo_plot_add(
+#'   geos_minimum_bounding_circle_center(
+#'     poly
+#'   ),
+#'   col = "red"
+#' )
+#'
+#' geos_minimum_bounding_circle_radius(poly)
 #'
 #' # minimum width
 #' geo_plot(poly)
@@ -146,6 +156,18 @@ geos_minimum_bounding_circle <- function(x, to = geo_ptype(x)) {
 
 #' @rdname geos_centroid
 #' @export
+geos_minimum_bounding_circle_radius <- function(x) {
+  cpp_minimum_bounding_circle_radius(x)
+}
+
+#' @rdname geos_centroid
+#' @export
+geos_minimum_bounding_circle_center <- function(x, to = geo_ptype(x)) {
+  geo_restore(to, cpp_minimum_bounding_circle_center(x, to))
+}
+
+#' @rdname geos_centroid
+#' @export
 geos_minimum_width <- function(x, to = geo_ptype(x)) {
   geo_restore(to, cpp_minimum_width(x, to))
 }
@@ -161,5 +183,3 @@ geos_minimum_clearance_line <- function(x, to = geo_ptype(x)) {
 geos_minimum_clearance <- function(x) {
   cpp_minimum_clearance(x)
 }
-
-

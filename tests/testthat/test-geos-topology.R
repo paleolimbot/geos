@@ -37,6 +37,13 @@ test_that("summarisers work", {
     )
   )
 
+  expect_identical(
+    geos_minimum_bounding_circle_center(poly),
+    geos_centroid(poly)
+  )
+
+  expect_equal(geos_minimum_bounding_circle_radius(poly), sqrt(200) / 2)
+
   expect_equal(geos_length(geos_minimum_width(poly)), 10)
   expect_equal(geos_length(geos_minimum_clearance_line(poly)), 10)
   expect_equal(geos_minimum_clearance(poly), 10)

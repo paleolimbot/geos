@@ -463,6 +463,29 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// cpp_minimum_bounding_circle_center
+SEXP cpp_minimum_bounding_circle_center(SEXP dataLeft, SEXP ptype);
+RcppExport SEXP _geom_cpp_minimum_bounding_circle_center(SEXP dataLeftSEXP, SEXP ptypeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type dataLeft(dataLeftSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type ptype(ptypeSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_minimum_bounding_circle_center(dataLeft, ptype));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cpp_minimum_bounding_circle_radius
+NumericVector cpp_minimum_bounding_circle_radius(SEXP dataLeft);
+RcppExport SEXP _geom_cpp_minimum_bounding_circle_radius(SEXP dataLeftSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type dataLeft(dataLeftSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_minimum_bounding_circle_radius(dataLeft));
+    return rcpp_result_gen;
+END_RCPP
+}
 // cpp_minimum_width
 SEXP cpp_minimum_width(SEXP dataLeft, SEXP ptype);
 RcppExport SEXP _geom_cpp_minimum_width(SEXP dataLeftSEXP, SEXP ptypeSEXP) {
@@ -592,6 +615,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_geom_cpp_convex_hull", (DL_FUNC) &_geom_cpp_convex_hull, 2},
     {"_geom_cpp_minimum_rotated_rectangle", (DL_FUNC) &_geom_cpp_minimum_rotated_rectangle, 2},
     {"_geom_cpp_minimum_bounding_circle", (DL_FUNC) &_geom_cpp_minimum_bounding_circle, 2},
+    {"_geom_cpp_minimum_bounding_circle_center", (DL_FUNC) &_geom_cpp_minimum_bounding_circle_center, 2},
+    {"_geom_cpp_minimum_bounding_circle_radius", (DL_FUNC) &_geom_cpp_minimum_bounding_circle_radius, 1},
     {"_geom_cpp_minimum_width", (DL_FUNC) &_geom_cpp_minimum_width, 2},
     {"_geom_cpp_minimum_clearance_line", (DL_FUNC) &_geom_cpp_minimum_clearance_line, 2},
     {"_geom_cpp_minimum_clearance", (DL_FUNC) &_geom_cpp_minimum_clearance, 1},

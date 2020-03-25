@@ -9,6 +9,8 @@
 \alias{geos_convex_hull}
 \alias{geos_minimum_rotated_rectangle}
 \alias{geos_minimum_bounding_circle}
+\alias{geos_minimum_bounding_circle_radius}
+\alias{geos_minimum_bounding_circle_center}
 \alias{geos_minimum_width}
 \alias{geos_minimum_clearance_line}
 \alias{geos_minimum_clearance}
@@ -29,6 +31,10 @@ geos_convex_hull(x, to = geo_ptype(x))
 geos_minimum_rotated_rectangle(x, to = geo_ptype(x))
 
 geos_minimum_bounding_circle(x, to = geo_ptype(x))
+
+geos_minimum_bounding_circle_radius(x)
+
+geos_minimum_bounding_circle_center(x, to = geo_ptype(x))
 
 geos_minimum_width(x, to = geo_ptype(x))
 
@@ -62,7 +68,10 @@ possible, which may be a point or a linestring.
 \item \code{\link[=geos_minimum_rotated_rectangle]{geos_minimum_rotated_rectangle()}} returns the smallest possible rectangle
 that completely contains the \code{x}.
 \item \code{\link[=geos_minimum_bounding_circle]{geos_minimum_bounding_circle()}} returns the smallest possible rectangle
-that completely contains the \code{x}.
+that completely contains the \code{x}. The circle isn't particularly high
+resolution, but you can construct it yourself using center and radius
+provided by \code{\link[=geos_minimum_bounding_circle_center]{geos_minimum_bounding_circle_center()}} and
+\code{\link[=geos_minimum_bounding_circle_radius]{geos_minimum_bounding_circle_radius()}}, respectively.
 \item \code{\link[=geos_minimum_width]{geos_minimum_width()}} returns the smallest possible "hole" (as a linestring)
 that the geometry can fit through with a single rotation. If the geometry is
 the couch, the length of this line is that you would measure before trying
@@ -76,7 +85,6 @@ move your couch through this geometry.
 }
 }
 \examples{
-point <- geo_wkt("POINT (30 10)")
 line <- geo_wkt("LINESTRING (30 10, 10 30, 40 40)")
 poly <- geo_wkt("
 POLYGON (
@@ -129,6 +137,14 @@ geo_plot(
   border = NA
 )
 geo_plot_add(poly)
+geo_plot_add(
+  geos_minimum_bounding_circle_center(
+    poly
+  ),
+  col = "red"
+)
+
+geos_minimum_bounding_circle_radius(poly)
 
 # minimum width
 geo_plot(poly)

@@ -149,6 +149,14 @@ cpp_minimum_bounding_circle <- function(dataLeft, ptype) {
     .Call(`_geom_cpp_minimum_bounding_circle`, dataLeft, ptype)
 }
 
+cpp_minimum_bounding_circle_center <- function(dataLeft, ptype) {
+    .Call(`_geom_cpp_minimum_bounding_circle_center`, dataLeft, ptype)
+}
+
+cpp_minimum_bounding_circle_radius <- function(dataLeft) {
+    .Call(`_geom_cpp_minimum_bounding_circle_radius`, dataLeft)
+}
+
 cpp_minimum_width <- function(dataLeft, ptype) {
     .Call(`_geom_cpp_minimum_width`, dataLeft, ptype)
 }

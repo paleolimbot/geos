@@ -118,6 +118,44 @@ SEXP cpp_minimum_bounding_circle(SEXP dataLeft, SEXP ptype) {
   return op.operate();
 }
 
+class MinimumBoundingCircleCenterOperator: public UnaryGeometryOperator {
+public:
+  GEOSGeometry* operateNext(GEOSGeometry* geometry) {
+    double radius;
+    // it's unclear to me who is responsible for destroying this
+    // geometry (probably me)
+    GEOSGeometry* center;
+    GEOSGeometry* circle = GEOSMinimumBoundingCircle_r(this->context, geometry, &radius, &center);
+    return center;
+  }
+};
+
+// [[Rcpp::export]]
+SEXP cpp_minimum_bounding_circle_center(SEXP dataLeft, SEXP ptype) {
+  MinimumBoundingCircleCenterOperator op;
+  op.initProvider(dataLeft, ptype);
+  return op.operate();
+}
+
+class MinimumBoundingCircleRadiusOperator: public UnaryVectorOperator<NumericVector, double> {
+public:
+  double operateNext(GEOSGeometry* geometry) {
+    double radius;
+    // it's unclear to me who is responsible for destroying this
+    // geometry (probably me)
+    GEOSGeometry* center;
+    GEOSGeometry* circle = GEOSMinimumBoundingCircle_r(this->context, geometry, &radius, &center);
+    return radius;
+  }
+};
+
+// [[Rcpp::export]]
+NumericVector cpp_minimum_bounding_circle_radius(SEXP dataLeft) {
+  MinimumBoundingCircleRadiusOperator op;
+  op.initProvider(dataLeft);
+  return op.operate();
+}
+
 class MinimumWidthOperator: public UnaryGeometryOperator {
 public:
   GEOSGeometry* operateNext(GEOSGeometry* geometry) {
