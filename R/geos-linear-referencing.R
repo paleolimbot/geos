@@ -18,9 +18,9 @@
 #'
 #' @examples
 #' line <- geo_wkt("LINESTRING (0 0, 10 10)")
-#' geo_plot(line)
 #'
 #' # geos_interpolate() works in absolute distances
+#' geo_plot(line)
 #' geo_plot_add(
 #'   geos_interpolate(line, c(1, 5, 10)),
 #'   col = "red"
@@ -29,6 +29,7 @@
 #' # geos_interpolate() works in relative distances (from 0..1)
 #' # this is useful for generating a number of equally-spaced points
 #' # along a line
+#' geo_plot(line)
 #' geo_plot_add(
 #'    geos_interpolate_normalized(line, seq(0, 1, length.out = 5)),
 #'   col = "blue"

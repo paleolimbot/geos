@@ -45,3 +45,6 @@ test_that("intersection recycles geometry vectors", {
     "incompatible lengths"
   )
 })
+
+
+
