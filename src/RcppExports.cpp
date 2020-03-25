@@ -169,21 +169,38 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// cpp_buffer
-SEXP cpp_buffer(SEXP data, SEXP ptype, NumericVector width, int quadSegs, int endCapStyle, int joinStyle, double mitreLimit, int singleSided);
-RcppExport SEXP _geom_cpp_buffer(SEXP dataSEXP, SEXP ptypeSEXP, SEXP widthSEXP, SEXP quadSegsSEXP, SEXP endCapStyleSEXP, SEXP joinStyleSEXP, SEXP mitreLimitSEXP, SEXP singleSidedSEXP) {
+// cpp_offset_curve
+SEXP cpp_offset_curve(SEXP x, NumericVector width, int quadSegs, int endCapStyle, int joinStyle, double mitreLimit, SEXP to);
+RcppExport SEXP _geom_cpp_offset_curve(SEXP xSEXP, SEXP widthSEXP, SEXP quadSegsSEXP, SEXP endCapStyleSEXP, SEXP joinStyleSEXP, SEXP mitreLimitSEXP, SEXP toSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type ptype(ptypeSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type width(widthSEXP);
+    Rcpp::traits::input_parameter< int >::type quadSegs(quadSegsSEXP);
+    Rcpp::traits::input_parameter< int >::type endCapStyle(endCapStyleSEXP);
+    Rcpp::traits::input_parameter< int >::type joinStyle(joinStyleSEXP);
+    Rcpp::traits::input_parameter< double >::type mitreLimit(mitreLimitSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type to(toSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_offset_curve(x, width, quadSegs, endCapStyle, joinStyle, mitreLimit, to));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cpp_buffer
+SEXP cpp_buffer(SEXP x, NumericVector width, int quadSegs, int endCapStyle, int joinStyle, double mitreLimit, int singleSided, SEXP to);
+RcppExport SEXP _geom_cpp_buffer(SEXP xSEXP, SEXP widthSEXP, SEXP quadSegsSEXP, SEXP endCapStyleSEXP, SEXP joinStyleSEXP, SEXP mitreLimitSEXP, SEXP singleSidedSEXP, SEXP toSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type width(widthSEXP);
     Rcpp::traits::input_parameter< int >::type quadSegs(quadSegsSEXP);
     Rcpp::traits::input_parameter< int >::type endCapStyle(endCapStyleSEXP);
     Rcpp::traits::input_parameter< int >::type joinStyle(joinStyleSEXP);
     Rcpp::traits::input_parameter< double >::type mitreLimit(mitreLimitSEXP);
     Rcpp::traits::input_parameter< int >::type singleSided(singleSidedSEXP);
-    rcpp_result_gen = Rcpp::wrap(cpp_buffer(data, ptype, width, quadSegs, endCapStyle, joinStyle, mitreLimit, singleSided));
+    Rcpp::traits::input_parameter< SEXP >::type to(toSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_buffer(x, width, quadSegs, endCapStyle, joinStyle, mitreLimit, singleSided, to));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -342,6 +359,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_geom_cpp_equals", (DL_FUNC) &_geom_cpp_equals, 2},
     {"_geom_cpp_covers", (DL_FUNC) &_geom_cpp_covers, 2},
     {"_geom_cpp_is_covered_by", (DL_FUNC) &_geom_cpp_is_covered_by, 2},
+    {"_geom_cpp_offset_curve", (DL_FUNC) &_geom_cpp_offset_curve, 7},
     {"_geom_cpp_buffer", (DL_FUNC) &_geom_cpp_buffer, 8},
     {"_geom_cpp_project", (DL_FUNC) &_geom_cpp_project, 2},
     {"_geom_cpp_project_normalized", (DL_FUNC) &_geom_cpp_project_normalized, 2},

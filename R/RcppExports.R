@@ -57,8 +57,12 @@ cpp_is_covered_by <- function(dataLeft, dataRight) {
     .Call(`_geom_cpp_is_covered_by`, dataLeft, dataRight)
 }
 
-cpp_buffer <- function(data, ptype, width, quadSegs, endCapStyle, joinStyle, mitreLimit, singleSided) {
-    .Call(`_geom_cpp_buffer`, data, ptype, width, quadSegs, endCapStyle, joinStyle, mitreLimit, singleSided)
+cpp_offset_curve <- function(x, width, quadSegs, endCapStyle, joinStyle, mitreLimit, to) {
+    .Call(`_geom_cpp_offset_curve`, x, width, quadSegs, endCapStyle, joinStyle, mitreLimit, to)
+}
+
+cpp_buffer <- function(x, width, quadSegs, endCapStyle, joinStyle, mitreLimit, singleSided, to) {
+    .Call(`_geom_cpp_buffer`, x, width, quadSegs, endCapStyle, joinStyle, mitreLimit, singleSided, to)
 }
 
 cpp_project <- function(dataLeft, dataRight) {

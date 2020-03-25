@@ -53,12 +53,12 @@ geos_project_normalized <- function(x, point) {
 #' @export
 geos_interpolate <- function(x, distance, to = geo_ptype(x)) {
   distance <- rep_len_or_fail(distance, geo_size(x))
-  geo_restore(cpp_interpolate(x, to, distance), to = to)
+  geo_restore(to, cpp_interpolate(x, to, distance))
 }
 
 #' @rdname geos_project
 #' @export
 geos_interpolate_normalized <- function(x, distance, to = geo_ptype(x)) {
   distance <- rep_len_or_fail(distance, geo_size(x))
-  geo_restore(cpp_interpolate_normalized(x, to, distance), to = to)
+  geo_restore(to, cpp_interpolate_normalized(x, to, distance))
 }

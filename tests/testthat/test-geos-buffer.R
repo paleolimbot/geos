@@ -47,3 +47,13 @@ test_that("geos_buffer works with all providers", {
     buffered
   )
 })
+
+test_that("geos_offset_curve works", {
+  line <- geo_wkt("LINESTRING (0 0, 0 10, 10 10, 10 0)")
+  result <- geos_offset_curve(line, 1)
+
+  expect_identical(
+    geo_convert(result, geo_rect()),
+    geo_rect(-1, 0, 11, 11)
+  )
+})

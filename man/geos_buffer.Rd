@@ -2,6 +2,7 @@
 % Please edit documentation in R/geos-buffer.R
 \name{geos_buffer}
 \alias{geos_buffer}
+\alias{geos_offset_curve}
 \title{Buffer a geometry}
 \usage{
 geos_buffer(
@@ -14,12 +15,23 @@ geos_buffer(
   single_sided = FALSE,
   to = geo_ptype(x)
 )
+
+geos_offset_curve(
+  x,
+  width,
+  quad_segs = 30,
+  end_cap_style = c("round", "flat", "square"),
+  join_style = c("round", "mitre", "bevel"),
+  mitre_limit = 1,
+  to = geo_ptype(x)
+)
 }
 \arguments{
 \item{x}{A geometry-like object}
 
 \item{width}{The buffer distance. "Width" is the GEOS term - it is more
-accurately thought of as "radius" or "half-width".}
+accurately thought of as "radius" or "half-width". Can be negative to buffer
+or offset on the other side of the geometry.}
 
 \item{quad_segs}{The number of segments per quadrant. A higher number
 here will increase the apparent resolution of the resulting polygon.}
@@ -37,14 +49,21 @@ of the geometry.}
 \item{to}{A prototype created by \code{\link[=geo_ptype]{geo_ptype()}}}
 }
 \value{
-A geometry-like polygon or multipolygon, in the format defined by \code{to}.
+\itemize{
+\item \code{\link[=geos_buffer]{geos_buffer()}} returns a geometry-like polygon or multipolygon.
+\item \code{\link[=geos_offset_curve]{geos_offset_curve()}} returns a linestring offset by \code{width}.
+}
 }
 \description{
 Vectorized along \code{x} and \code{width}.
 }
 \examples{
 point <- geo_wkt("POINT (0 0)")
-geo_plot(geos_buffer(point, width = 0.5))
+geo_plot(geos_buffer(point, width = 0.5), border = "red")
 geo_plot_add(point)
+
+line <- geo_wkt("LINESTRING (0 0, 0 10, 10 0)")
+geo_plot(geos_offset_curve(line, 1), col = "red")
+geo_plot_add(line)
 
 }
