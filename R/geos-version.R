@@ -8,13 +8,13 @@
 #' geos_capi_version()
 #'
 geos_version <- function() {
-  strsplit(cpp_version_impl(), "[- ]")[[1]][1]
+  package_version(strsplit(cpp_version_impl(), "[- ]")[[1]][1])
 }
 
 #' @export
 #' @rdname geos_version
 geos_capi_version <- function() {
-  strsplit(cpp_version_impl(), "[- ]")[[1]][3]
+  package_version(strsplit(cpp_version_impl(), "[- ]")[[1]][3])
 }
 
 .stop_geos <- function(msg) {

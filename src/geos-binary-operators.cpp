@@ -75,7 +75,11 @@ SEXP cpp_unary_union(SEXP dataLeft, SEXP ptype) {
 class CoverageUnionOperator: public UnaryGeometryOperator {
 public:
   GEOSGeometry* operateNext(GEOSGeometry* geometry) {
+#ifdef HAVE380
     return GEOSCoverageUnion_r(this->context, geometry);
+#else
+    stop("Need GEOS >= 3.8.0 to use GEOSCoverageUnion_r()");
+#endif
   }
 };
 

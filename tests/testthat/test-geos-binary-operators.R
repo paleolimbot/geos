@@ -35,21 +35,6 @@ test_that("operators work", {
     geos_union(poly1, poly2)
   )
 
-  # disjoint polygons
-  collection2 <- geo_wkt("
-    GEOMETRYCOLLECTION (
-      POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0)),
-      POLYGON ((11 11, 11 15, 15 15, 15 11, 11 11))
-    )
-  ")
-
-  expect_true(
-    geos_equals(
-      geos_coverage_union(collection2),
-      geos_unary_union(collection2)
-    )
-  )
-
   clip <- geo_wkt("POLYGON ((-1 -1, -1 8, 8 8, 8 -1, -1 -1))")
 
   expect_true(
@@ -92,5 +77,24 @@ test_that("operators recycle geometry vectors", {
       rep(geo_wkt("POLYGON ((5 5, 5 15, 10 15, 15 5, 5 5))"), 5)
     ),
     "incompatible lengths"
+  )
+})
+
+test_that("coverage union works", {
+  skip_if_not(geos_version() >= "3.8.0")
+
+  # disjoint polygons
+  collection2 <- geo_wkt("
+    GEOMETRYCOLLECTION (
+      POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0)),
+      POLYGON ((11 11, 11 15, 15 15, 15 11, 11 11))
+    )
+  ")
+
+  expect_true(
+    geos_equals(
+      geos_coverage_union(collection2),
+      geos_unary_union(collection2)
+    )
   )
 })
