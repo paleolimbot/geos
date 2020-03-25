@@ -151,18 +151,21 @@ geos_minimum_rotated_rectangle <- function(x, to = geo_ptype(x)) {
 #' @rdname geos_centroid
 #' @export
 geos_minimum_bounding_circle <- function(x, to = geo_ptype(x)) {
+  assert_geos_version("3.8.0")
   geo_restore(to, cpp_minimum_bounding_circle(x, to))
 }
 
 #' @rdname geos_centroid
 #' @export
 geos_minimum_bounding_circle_radius <- function(x) {
+  assert_geos_version("3.8.0")
   cpp_minimum_bounding_circle_radius(x)
 }
 
 #' @rdname geos_centroid
 #' @export
 geos_minimum_bounding_circle_center <- function(x, to = geo_ptype(x)) {
+  assert_geos_version("3.8.0")
   geo_restore(to, cpp_minimum_bounding_circle_center(x, to))
 }
 

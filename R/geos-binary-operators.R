@@ -106,10 +106,7 @@ geos_unary_union <- function(x, to = geo_ptype(x)) {
 #' @rdname geos_intersection
 #' @export
 geos_coverage_union <- function(x, to = geo_ptype(x)) {
-  if (geos_version() < "3.8.0") {
-    abort("Need GEOS >= 3.8.0 to use geos_coverage_union()")
-  }
-
+  assert_geos_version("3.8.0")
   geo_restore(to, cpp_coverage_union(x, to))
 }
 

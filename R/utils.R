@@ -1,4 +1,10 @@
 
+assert_geos_version <- function(version) {
+  if (geos_version() < version) {
+    abort(sprintf("GEOS >= %s is required", version))
+  }
+}
+
 stop_for_non_parseable <- function(is_parseable) {
   if (!all(is_parseable)) {
     bad_geometries <- paste(utils::head(which(!is_parseable), 20), collapse = ", ")

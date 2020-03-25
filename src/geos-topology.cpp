@@ -103,11 +103,15 @@ SEXP cpp_minimum_rotated_rectangle(SEXP dataLeft, SEXP ptype) {
 class MinimumBoundingCircleOperator: public UnaryGeometryOperator {
 public:
   GEOSGeometry* operateNext(GEOSGeometry* geometry) {
+#ifdef HAVE380
     double radius;
     // it's unclear to me who is responsible for destroying this
     // geometry (probably me)
     GEOSGeometry* center;
     return GEOSMinimumBoundingCircle_r(this->context, geometry, &radius, &center);
+#else
+    stop("Need GEOS >= 3.8.0 to use GEOSMinimumBoundingCircle_r()");
+#endif
   }
 };
 
@@ -121,12 +125,16 @@ SEXP cpp_minimum_bounding_circle(SEXP dataLeft, SEXP ptype) {
 class MinimumBoundingCircleCenterOperator: public UnaryGeometryOperator {
 public:
   GEOSGeometry* operateNext(GEOSGeometry* geometry) {
+#ifdef HAVE380
     double radius;
     // it's unclear to me who is responsible for destroying this
     // geometry (probably me)
     GEOSGeometry* center;
     GEOSGeometry* circle = GEOSMinimumBoundingCircle_r(this->context, geometry, &radius, &center);
     return center;
+#else
+    stop("Need GEOS >= 3.8.0 to use GEOSMinimumBoundingCircle_r()");
+#endif
   }
 };
 
@@ -140,12 +148,16 @@ SEXP cpp_minimum_bounding_circle_center(SEXP dataLeft, SEXP ptype) {
 class MinimumBoundingCircleRadiusOperator: public UnaryVectorOperator<NumericVector, double> {
 public:
   double operateNext(GEOSGeometry* geometry) {
+#ifdef HAVE380
     double radius;
     // it's unclear to me who is responsible for destroying this
     // geometry (probably me)
     GEOSGeometry* center;
     GEOSGeometry* circle = GEOSMinimumBoundingCircle_r(this->context, geometry, &radius, &center);
     return radius;
+#else
+    stop("Need GEOS >= 3.8.0 to use GEOSMinimumBoundingCircle_r()");
+#endif
   }
 };
 
