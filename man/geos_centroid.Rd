@@ -118,18 +118,9 @@ geo_plot_add(poly)
 geo_plot(geos_convex_hull(line), col = "grey90", border = NA)
 geo_plot_add(line)
 
-# minimum rotated rectangle
-geo_plot(
-  geos_minimum_rotated_rectangle(
-    poly
-  ),
-  col = "grey90",
-  border = NA
-)
-geo_plot_add(poly)
-
-# minimum bounding circle (only with GEOS >= 3.8.0)
 if (geos_version() >= "3.8.0") {
+
+  # minimum bounding circle (only with GEOS >= 3.8.0)
   geo_plot(
     geos_minimum_bounding_circle(
       poly
@@ -148,13 +139,26 @@ if (geos_version() >= "3.8.0") {
   geos_minimum_bounding_circle_radius(poly)
 }
 
-# minimum width
-geo_plot(poly)
-geo_plot_add(geos_minimum_width(poly), col = "red")
+if (geos_version() >= "3.6.1")  {
 
-# minimum clearance line
-geo_plot(poly)
-geo_plot_add(geos_minimum_clearance_line(poly), col = "red")
-geos_minimum_clearance(poly)
+  # minimum rotated rectangle
+  geo_plot(
+    geos_minimum_rotated_rectangle(
+      poly
+    ),
+    col = "grey90",
+    border = NA
+  )
+  geo_plot_add(poly)
+
+  # minimum width
+  geo_plot(poly)
+  geo_plot_add(geos_minimum_width(poly), col = "red")
+
+  # minimum clearance line
+  geo_plot(poly)
+  geo_plot_add(geos_minimum_clearance_line(poly), col = "red")
+  geos_minimum_clearance(poly)
+}
 
 }

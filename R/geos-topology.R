@@ -71,18 +71,9 @@
 #' geo_plot(geos_convex_hull(line), col = "grey90", border = NA)
 #' geo_plot_add(line)
 #'
-#' # minimum rotated rectangle
-#' geo_plot(
-#'   geos_minimum_rotated_rectangle(
-#'     poly
-#'   ),
-#'   col = "grey90",
-#'   border = NA
-#' )
-#' geo_plot_add(poly)
-#'
-#' # minimum bounding circle (only with GEOS >= 3.8.0)
 #' if (geos_version() >= "3.8.0") {
+#'
+#'   # minimum bounding circle (only with GEOS >= 3.8.0)
 #'   geo_plot(
 #'     geos_minimum_bounding_circle(
 #'       poly
@@ -101,14 +92,27 @@
 #'   geos_minimum_bounding_circle_radius(poly)
 #' }
 #'
-#' # minimum width
-#' geo_plot(poly)
-#' geo_plot_add(geos_minimum_width(poly), col = "red")
+#' if (geos_version() >= "3.6.1")  {
 #'
-#' # minimum clearance line
-#' geo_plot(poly)
-#' geo_plot_add(geos_minimum_clearance_line(poly), col = "red")
-#' geos_minimum_clearance(poly)
+#'   # minimum rotated rectangle
+#'   geo_plot(
+#'     geos_minimum_rotated_rectangle(
+#'       poly
+#'     ),
+#'     col = "grey90",
+#'     border = NA
+#'   )
+#'   geo_plot_add(poly)
+#'
+#'   # minimum width
+#'   geo_plot(poly)
+#'   geo_plot_add(geos_minimum_width(poly), col = "red")
+#'
+#'   # minimum clearance line
+#'   geo_plot(poly)
+#'   geo_plot_add(geos_minimum_clearance_line(poly), col = "red")
+#'   geos_minimum_clearance(poly)
+#' }
 #'
 geos_centroid <- function(x, to = geo_ptype(x)) {
   geo_restore(to, cpp_centroid(x, to))
@@ -147,6 +151,7 @@ geos_convex_hull <- function(x, to = geo_ptype(x)) {
 #' @rdname geos_centroid
 #' @export
 geos_minimum_rotated_rectangle <- function(x, to = geo_ptype(x)) {
+  assert_geos_version("3.6.1")
   geo_restore(to, cpp_minimum_rotated_rectangle(x, to))
 }
 
@@ -174,17 +179,20 @@ geos_minimum_bounding_circle_center <- function(x, to = geo_ptype(x)) {
 #' @rdname geos_centroid
 #' @export
 geos_minimum_width <- function(x, to = geo_ptype(x)) {
+  assert_geos_version("3.6.1")
   geo_restore(to, cpp_minimum_width(x, to))
 }
 
 #' @rdname geos_centroid
 #' @export
 geos_minimum_clearance_line <- function(x, to = geo_ptype(x)) {
+  assert_geos_version("3.6.1")
   geo_restore(to, cpp_minimum_clearance_line(x, to))
 }
 
 #' @rdname geos_centroid
 #' @export
 geos_minimum_clearance <- function(x) {
+  assert_geos_version("3.6.1")
   cpp_minimum_clearance(x)
 }

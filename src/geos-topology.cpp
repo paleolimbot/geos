@@ -89,7 +89,11 @@ SEXP cpp_convex_hull(SEXP dataLeft, SEXP ptype) {
 class MinimumRotatedRectangleOperator: public UnaryGeometryOperator {
 public:
   GEOSGeometry* operateNext(GEOSGeometry* geometry) {
+#ifdef HAVE361
     return GEOSMinimumRotatedRectangle_r(this->context, geometry);
+#else
+    stop("Need GEOS >= 3.6.1 to use GEOSMinimumRotatedRectangle_r()");
+#endif
   }
 };
 
@@ -171,7 +175,11 @@ NumericVector cpp_minimum_bounding_circle_radius(SEXP dataLeft) {
 class MinimumWidthOperator: public UnaryGeometryOperator {
 public:
   GEOSGeometry* operateNext(GEOSGeometry* geometry) {
+#ifdef HAVE361
     return GEOSMinimumWidth_r(this->context, geometry);
+#else
+    stop("Need GEOS >= 3.6.1 to use GEOSMinimumWidth_r()");
+#endif
   }
 };
 
@@ -185,7 +193,11 @@ SEXP cpp_minimum_width(SEXP dataLeft, SEXP ptype) {
 class MinimumClearanceLineOperator: public UnaryGeometryOperator {
 public:
   GEOSGeometry* operateNext(GEOSGeometry* geometry) {
+#ifdef HAVE361
     return GEOSMinimumClearanceLine_r(this->context, geometry);
+#else
+    stop("Need GEOS >= 3.6.1 to use GEOSMinimumClearanceLine_r()");
+#endif
   }
 };
 
@@ -199,9 +211,13 @@ SEXP cpp_minimum_clearance_line(SEXP dataLeft, SEXP ptype) {
 class MinimumClearanceOperator: public UnaryVectorOperator<NumericVector, double> {
 public:
   double operateNext(GEOSGeometry* geometry) {
+#ifdef HAVE361
     double distance;
     GEOSMinimumClearance_r(this->context, geometry, &distance);
     return distance;
+#else
+    stop("Need GEOS >= 3.6.1 to use GEOSMinimumClearance_r()");
+#endif
   }
 };
 

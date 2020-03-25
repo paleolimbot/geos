@@ -28,11 +28,6 @@ test_that("summarisers work", {
 
   expect_true(geos_equals(geos_envelope(poly), poly))
   expect_true(geos_equals(geos_convex_hull(poly), poly))
-  expect_true(geos_equals(geos_minimum_rotated_rectangle(poly), poly))
-
-  expect_equal(geos_length(geos_minimum_width(poly)), 10)
-  expect_equal(geos_length(geos_minimum_clearance_line(poly)), 10)
-  expect_equal(geos_minimum_clearance(poly), 10)
 
   line <- geo_wkt("LINESTRING (30 10, 10 30, 40 40)")
   expect_true(
@@ -41,6 +36,18 @@ test_that("summarisers work", {
       geo_wkt("POLYGON ((30 10, 10 30, 40 40, 30 10))")
     )
   )
+})
+
+test_that("operators in GEOS 3.6.1+ work", {
+  skip_if_not(geos_version() >= "3.6.1")
+
+  poly <- geo_wkt("POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))")
+
+  expect_true(geos_equals(geos_minimum_rotated_rectangle(poly), poly))
+
+  expect_equal(geos_length(geos_minimum_width(poly)), 10)
+  expect_equal(geos_length(geos_minimum_clearance_line(poly)), 10)
+  expect_equal(geos_minimum_clearance(poly), 10)
 })
 
 test_that("summarisers in GEOS 3.8+ work",  {
