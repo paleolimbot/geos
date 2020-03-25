@@ -109,7 +109,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Buffer a geometry</h1>
-    <small class="dont-index">Source: <a href='https://github.com/paleolimbot/geom/blob/master/R/geo-unary-operators.R'><code>R/geo-unary-operators.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/paleolimbot/geom/blob/master/R/geos-buffer.R'><code>R/geos-buffer.R</code></a></small>
     <div class="hidden name"><code>geos_buffer.Rd</code></div>
     </div>
 
@@ -126,6 +126,16 @@
   <span class='kw'>mitre_limit</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='kw'>single_sided</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>to</span> <span class='kw'>=</span> <span class='fu'><a href='geo_ptype.html'>geo_ptype</a></span>(<span class='no'>x</span>)
+)
+
+<span class='fu'>geos_offset_curve</span>(
+  <span class='no'>x</span>,
+  <span class='no'>width</span>,
+  <span class='kw'>quad_segs</span> <span class='kw'>=</span> <span class='fl'>30</span>,
+  <span class='kw'>end_cap_style</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"round"</span>, <span class='st'>"flat"</span>, <span class='st'>"square"</span>),
+  <span class='kw'>join_style</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"round"</span>, <span class='st'>"mitre"</span>, <span class='st'>"bevel"</span>),
+  <span class='kw'>mitre_limit</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>to</span> <span class='kw'>=</span> <span class='fu'><a href='geo_ptype.html'>geo_ptype</a></span>(<span class='no'>x</span>)
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -138,7 +148,8 @@
     <tr>
       <th>width</th>
       <td><p>The buffer distance. "Width" is the GEOS term - it is more
-accurately thought of as "radius" or "half-width".</p></td>
+accurately thought of as "radius" or "half-width". Can be negative to buffer
+or offset on the other side of the geometry.</p></td>
     </tr>
     <tr>
       <th>quad_segs</th>
@@ -171,11 +182,18 @@ of the geometry.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A geometry-like polygon or multipolygon, in the format defined by <code>to</code>.</p>
+    
+<ul>
+<li><p><code>geos_buffer()</code> returns a geometry-like polygon or multipolygon.</p></li>
+<li><p><code>geos_offset_curve()</code> returns a linestring offset by <code>width</code>.</p></li>
+</ul>
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>point</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='geo_wkt.html'>geo_wkt</a></span>(<span class='st'>"POINT (0 0)"</span>)
-<span class='fu'><a href='geo_plot.html'>geo_plot</a></span>(<span class='fu'>geos_buffer</span>(<span class='no'>point</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>0.5</span>))</div><div class='input'><span class='fu'><a href='geo_plot.html'>geo_plot_add</a></span>(<span class='no'>point</span>)</div><div class='img'><img src='geos_buffer-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='geo_plot.html'>geo_plot</a></span>(<span class='fu'>geos_buffer</span>(<span class='no'>point</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>0.5</span>), <span class='kw'>border</span> <span class='kw'>=</span> <span class='st'>"red"</span>)</div><div class='input'><span class='fu'><a href='geo_plot.html'>geo_plot_add</a></span>(<span class='no'>point</span>)</div><div class='img'><img src='geos_buffer-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='no'>line</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='geo_wkt.html'>geo_wkt</a></span>(<span class='st'>"LINESTRING (0 0, 0 10, 10 0)"</span>)
+<span class='fu'><a href='geo_plot.html'>geo_plot</a></span>(<span class='fu'>geos_offset_curve</span>(<span class='no'>line</span>, <span class='fl'>1</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>)</div><div class='input'><span class='fu'><a href='geo_plot.html'>geo_plot_add</a></span>(<span class='no'>line</span>)</div><div class='img'><img src='geos_buffer-2.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -192,7 +210,7 @@ of the geometry.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.9000.</p>
 </div>
 
       </footer>

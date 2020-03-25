@@ -150,24 +150,25 @@
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p><code>geos_project()</code> and <code>geos_project_normalized()</code> both return
-a geometry-like point vector; <code>geos_interpolate()</code> and
-<code>geos_interpolate_normalized()</code> both return</p>
+a numeric vector of distances; <code>geos_interpolate()</code> and
+<code>geos_interpolate_normalized()</code> both return a geometry-like point
+vector.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>line</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='geo_wkt.html'>geo_wkt</a></span>(<span class='st'>"LINESTRING (0 0, 10 10)"</span>)
-<span class='fu'><a href='geo_plot.html'>geo_plot</a></span>(<span class='no'>line</span>)</div><div class='input'>
+
 <span class='co'># geos_interpolate() works in absolute distances</span>
-<span class='fu'><a href='geo_plot.html'>geo_plot_add</a></span>(
+<span class='fu'><a href='geo_plot.html'>geo_plot</a></span>(<span class='no'>line</span>)</div><div class='input'><span class='fu'><a href='geo_plot.html'>geo_plot_add</a></span>(
   <span class='fu'>geos_interpolate</span>(<span class='no'>line</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>5</span>, <span class='fl'>10</span>)),
   <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>
-)</div><div class='input'>
+)</div><div class='img'><img src='geos_project-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># geos_interpolate() works in relative distances (from 0..1)</span>
 <span class='co'># this is useful for generating a number of equally-spaced points</span>
 <span class='co'># along a line</span>
-<span class='fu'><a href='geo_plot.html'>geo_plot_add</a></span>(
+<span class='fu'><a href='geo_plot.html'>geo_plot</a></span>(<span class='no'>line</span>)</div><div class='input'><span class='fu'><a href='geo_plot.html'>geo_plot_add</a></span>(
    <span class='fu'>geos_interpolate_normalized</span>(<span class='no'>line</span>, <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='kw'>length.out</span> <span class='kw'>=</span> <span class='fl'>5</span>)),
   <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"blue"</span>
-)</div><div class='img'><img src='geos_project-1.png' alt='' width='700' height='433' /></div><div class='input'>
+)</div><div class='img'><img src='geos_project-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># geos_project() and geos_project_normalized() are the opposite</span>
 <span class='co'># of these operations</span>
 <span class='fu'>geos_project</span>(<span class='no'>line</span>, <span class='fu'><a href='geo_wkt.html'>geo_wkt</a></span>(<span class='st'>"POINT (5 5)"</span>))</div><div class='output co'>#&gt; [1] 7.071068</div><div class='input'><span class='fu'>geos_project_normalized</span>(<span class='no'>line</span>, <span class='fu'><a href='geo_wkt.html'>geo_wkt</a></span>(<span class='st'>"POINT (5 5)"</span>))</div><div class='output co'>#&gt; [1] 0.5</div><div class='input'>
@@ -187,7 +188,7 @@ a geometry-like point vector; <code>geos_interpolate()</code> and
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.9000.</p>
 </div>
 
       </footer>
