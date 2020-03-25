@@ -17,6 +17,30 @@ cpp_intersection <- function(dataLeft, dataRight, ptype) {
     .Call(`_geom_cpp_intersection`, dataLeft, dataRight, ptype)
 }
 
+cpp_difference <- function(dataLeft, dataRight, ptype) {
+    .Call(`_geom_cpp_difference`, dataLeft, dataRight, ptype)
+}
+
+cpp_sym_difference <- function(dataLeft, dataRight, ptype) {
+    .Call(`_geom_cpp_sym_difference`, dataLeft, dataRight, ptype)
+}
+
+cpp_union <- function(dataLeft, dataRight, ptype) {
+    .Call(`_geom_cpp_union`, dataLeft, dataRight, ptype)
+}
+
+cpp_unary_union <- function(dataLeft, ptype) {
+    .Call(`_geom_cpp_unary_union`, dataLeft, ptype)
+}
+
+cpp_coverage_union <- function(dataLeft, ptype) {
+    .Call(`_geom_cpp_coverage_union`, dataLeft, ptype)
+}
+
+cpp_clip_by_rect <- function(dataLeft, xmin, ymin, xmax, ymax, to) {
+    .Call(`_geom_cpp_clip_by_rect`, dataLeft, xmin, ymin, xmax, ymax, to)
+}
+
 cpp_is_disjoint <- function(dataLeft, dataRight) {
     .Call(`_geom_cpp_is_disjoint`, dataLeft, dataRight)
 }
@@ -91,6 +115,50 @@ cpp_length <- function(x) {
 
 cpp_distance <- function(x, y) {
     .Call(`_geom_cpp_distance`, x, y)
+}
+
+cpp_point_on_surface <- function(dataLeft, ptype) {
+    .Call(`_geom_cpp_point_on_surface`, dataLeft, ptype)
+}
+
+cpp_centroid <- function(dataLeft, ptype) {
+    .Call(`_geom_cpp_centroid`, dataLeft, ptype)
+}
+
+cpp_nodes <- function(dataLeft, ptype) {
+    .Call(`_geom_cpp_nodes`, dataLeft, ptype)
+}
+
+cpp_boundary <- function(dataLeft, ptype) {
+    .Call(`_geom_cpp_boundary`, dataLeft, ptype)
+}
+
+cpp_envelope <- function(dataLeft, ptype) {
+    .Call(`_geom_cpp_envelope`, dataLeft, ptype)
+}
+
+cpp_convex_hull <- function(dataLeft, ptype) {
+    .Call(`_geom_cpp_convex_hull`, dataLeft, ptype)
+}
+
+cpp_minimum_rotated_rectangle <- function(dataLeft, ptype) {
+    .Call(`_geom_cpp_minimum_rotated_rectangle`, dataLeft, ptype)
+}
+
+cpp_minimum_bounding_circle <- function(dataLeft, ptype) {
+    .Call(`_geom_cpp_minimum_bounding_circle`, dataLeft, ptype)
+}
+
+cpp_minimum_width <- function(dataLeft, ptype) {
+    .Call(`_geom_cpp_minimum_width`, dataLeft, ptype)
+}
+
+cpp_minimum_clearance_line <- function(dataLeft, ptype) {
+    .Call(`_geom_cpp_minimum_clearance_line`, dataLeft, ptype)
+}
+
+cpp_minimum_clearance <- function(dataLeft) {
+    .Call(`_geom_cpp_minimum_clearance`, dataLeft)
 }
 
 cpp_is_empty <- function(data) {

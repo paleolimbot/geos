@@ -2,9 +2,27 @@
 % Please edit documentation in R/geos-binary-operators.R
 \name{geos_intersection}
 \alias{geos_intersection}
+\alias{geos_difference}
+\alias{geos_sym_difference}
+\alias{geos_union}
+\alias{geos_unary_union}
+\alias{geos_coverage_union}
+\alias{geos_clip_by_rect}
 \title{Intersect two geometry vectors}
 \usage{
 geos_intersection(x, y, to = geo_ptype(x))
+
+geos_difference(x, y, to = geo_ptype(x))
+
+geos_sym_difference(x, y, to = geo_ptype(x))
+
+geos_union(x, y, to = geo_ptype(x))
+
+geos_unary_union(x, to = geo_ptype(x))
+
+geos_coverage_union(x, to = geo_ptype(x))
+
+geos_clip_by_rect(x, rect, to = geo_ptype(x))
 }
 \arguments{
 \item{x}{A geometry-like object}
@@ -13,6 +31,9 @@ geos_intersection(x, y, to = geo_ptype(x))
 is recycled to the length of the other (like \code{\link[tibble:tibble]{tibble::tibble()}}).}
 
 \item{to}{A prototype created by \code{\link[=geo_ptype]{geo_ptype()}}}
+
+\item{rect}{A \code{\link[=geo_rect]{geo_rect()}} used for the non-robust clipping
+algorithm.}
 }
 \value{
 A geometry-like object, in the format defined by \code{to}.
