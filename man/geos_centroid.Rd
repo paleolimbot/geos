@@ -12,7 +12,7 @@
 \alias{geos_minimum_width}
 \alias{geos_minimum_clearance_line}
 \alias{geos_minimum_clearance}
-\title{Geometry summaries}
+\title{Geometry topology operators}
 \usage{
 geos_centroid(x, to = geo_ptype(x))
 
@@ -41,11 +41,102 @@ geos_minimum_clearance(x)
 
 \item{to}{A prototype created by \code{\link[=geo_ptype]{geo_ptype()}}}
 }
-\description{
-These functions return geometries that summarize the input in
-various ways.
+\value{
+A geometry vector, except \code{\link[=geos_minimum_clearance]{geos_minimum_clearance()}}, which
+returns a numeric vector.
 }
-\details{
-Fully node a set of linestrings using the least possible number of nodes
-while preserving all of the input nodes.
+\description{
+\itemize{
+\item \code{\link[=geos_centroid]{geos_centroid()}} returns the middle of the bounding box, regardless
+of whether or not the point lies within the feature.
+\item \code{\link[=geos_point_on_surface]{geos_point_on_surface()}} returns a point on the feature that is
+guaranteed to be within the feature.
+\item \code{\link[=geos_node]{geos_node()}} "nodes" the input (linestring or polygon), removing duplicate
+nodes that may exist in multiple features
+\item \code{\link[=geos_boundary]{geos_boundary()}} returns the boudnary of the feature. For a polygon,
+this will be a linestring; for a linestring, this will be a multipoint.
+\item \code{\link[=geos_envelope]{geos_envelope()}} returns the bounding box of the feature as a
+non-rotated rectangle as a polygon.
+\item \code{\link[=geos_convex_hull]{geos_convex_hull()}} returns the convex hull in the simplest form
+possible, which may be a point or a linestring.
+\item \code{\link[=geos_minimum_rotated_rectangle]{geos_minimum_rotated_rectangle()}} returns the smallest possible rectangle
+that completely contains the \code{x}.
+\item \code{\link[=geos_minimum_bounding_circle]{geos_minimum_bounding_circle()}} returns the smallest possible rectangle
+that completely contains the \code{x}.
+\item \code{\link[=geos_minimum_width]{geos_minimum_width()}} returns the smallest possible "hole" (as a linestring)
+that the geometry can fit through with a single rotation. If the geometry is
+the couch, the length of this line is that you would measure before trying
+to squeeze it through a narrow hallway.
+\item \code{\link[=geos_minimum_clearance_line]{geos_minimum_clearance_line()}} the smallest internal "hole". Here the
+geometry is the hallway, and this is the place you have to worry about
+when moving your couch through it.
+\item \code{\link[=geos_minimum_clearance]{geos_minimum_clearance()}} the length of \code{\link[=geos_minimum_clearance_line]{geos_minimum_clearance_line()}}.
+If the minimum width of your couch is larger than this value, do not try to
+move your couch through this geometry.
+}
+}
+\examples{
+point <- geo_wkt("POINT (30 10)")
+line <- geo_wkt("LINESTRING (30 10, 10 30, 40 40)")
+poly <- geo_wkt("
+POLYGON (
+  (35 10, 45 45, 15 40, 10 20, 35 10),
+  (20 30, 35 35, 30 20, 20 30)
+)
+")
+
+# centroid, point on surface for polygon
+geo_plot(poly)
+geo_plot_add(geos_centroid(poly), col = "red")
+geo_plot_add(geos_point_on_surface(poly), col = "blue")
+
+# centroid, point on surface for line
+geo_plot(line)
+geo_plot_add(geos_centroid(line), col = "red")
+geo_plot_add(geos_point_on_surface(line), col = "blue")
+
+# "noding"
+geos_node(geo_wkt("MULTILINESTRING ((0 0, 10 10), (0 0, 10 10))"))
+
+# boundary
+geo_plot(poly)
+geo_plot(geos_boundary(poly), col = "red")
+
+# envelope
+geo_plot(geos_envelope(poly), col = "grey90")
+geo_plot_add(poly)
+
+# convex hull
+geo_plot(geos_convex_hull(line), col = "grey90", border = NA)
+geo_plot_add(line)
+
+# minimum rotated rectangle
+geo_plot(
+  geos_minimum_rotated_rectangle(
+    poly
+  ),
+  col = "grey90",
+  border = NA
+)
+geo_plot_add(poly)
+
+# minimum bounding circle
+geo_plot(
+  geos_minimum_bounding_circle(
+    poly
+  ),
+  col = "grey90",
+  border = NA
+)
+geo_plot_add(poly)
+
+# minimum width
+geo_plot(poly)
+geo_plot_add(geos_minimum_width(poly), col = "red")
+
+# minimum clearance line
+geo_plot(poly)
+geo_plot_add(geos_minimum_clearance_line(poly), col = "red")
+geos_minimum_clearance(poly)
+
 }
