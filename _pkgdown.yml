@@ -1,1 +1,34 @@
 destination: docs
+
+reference:
+- title: Geometry operators
+  desc: Functions that operate on one or more geometry vectors
+  contents:
+  - geos_intersection
+  - geos_centroid
+  - geos_buffer
+  - geos_is_disjoint
+  - geos_is_empty
+  - geos_project
+  - geos_area
+
+- title: Geometry constructors
+  desc: Create, convert, and plot geometry vectors
+  contents:
+  - geo_xy
+  - geo_rect
+  - geo_wkb
+  - geo_wkt
+  - geo_coord_point
+  - geo_plot
+  - geo_ptype
+  - geo_convert
+
+- title: GEOS Information
+  contents:
+  - geos_version
+
+- title: S3 Details
+  contents:
+  - starts_with("new_")
+  - is_geo_coord

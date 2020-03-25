@@ -19,9 +19,10 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 ![R-CMD-check](https://github.com/paleolimbot/geom/workflows/R-CMD-check/badge.svg)
+[![Codecov test coverage](https://codecov.io/gh/paleolimbot/geom/branch/master/graph/badge.svg)](https://codecov.io/gh/paleolimbot/geom?branch=master)
 <!-- badges: end -->
 
-The goal of geom is to provide [low-level access to the GEOS library](https://geos.osgeo.org/doxygen/geos__c_8h_source.html), supporting several common input/output formats to facilitate geoprocessing in R.
+The goal of geom is to provide [low-level access to the GEOS library](https://geos.osgeo.org/doxygen/geos__c_8h_source.html), supporting several common input/output formats to facilitate geoprocessing in R. This package tries to solve the "hard" problems associated with wrapping a C/C++ library, exposing an R API and a C++ API that can be used in dependency packages.
 
 ## Installation
 
@@ -40,29 +41,12 @@ library(geom)
 
 ## Example
 
-Right now the package doesn't do much except convert between a few useful input/output formats:
-
-```{r}
-geo_convert(geo_wkt("POINT (20 10)"), geo_wkb())
-tibble::as_tibble(geo_convert(geo_wkt("POINT (20 10)"), geo_coord()))
-```
-
-The package can do operations from the GEOS library, returing the results in any of the supported output formats:
-
-```{r}
-geos_buffer(
-  geo_wkt("POINT (0 0)"), 
-  width = 0.5, quad_segs = 4, 
-  to = geo_coord() 
-)
-```
-
-Also, the results can be plotted!
+Create a line, buffer it, and plot!
 
 ```{r ex-plot}
-point <- geo_wkt("POINT (0 0)")
-geo_plot(geos_buffer(point, width = 0.5))
-geo_plot_add(point)
+line <- geo_wkt("LINESTRING (30 10, 10 30, 40 40)")
+geo_plot(geos_buffer(line, width = 4), col = "grey90")
+geo_plot_add(line)
 ```
 
 ## Philosophy
