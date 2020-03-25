@@ -3,7 +3,7 @@
 \name{geos_centroid}
 \alias{geos_centroid}
 \alias{geos_point_on_surface}
-\alias{geos_nodes}
+\alias{geos_node}
 \alias{geos_boundary}
 \alias{geos_envelope}
 \alias{geos_convex_hull}
@@ -18,7 +18,7 @@ geos_centroid(x, to = geo_ptype(x))
 
 geos_point_on_surface(x, to = geo_ptype(x))
 
-geos_nodes(x, to = geo_ptype(x))
+geos_node(x, to = geo_ptype(x))
 
 geos_boundary(x, to = geo_ptype(x))
 
@@ -44,4 +44,8 @@ geos_minimum_clearance(x)
 \description{
 These functions return geometries that summarize the input in
 various ways.
+}
+\details{
+Fully node a set of linestrings using the least possible number of nodes
+while preserving all of the input nodes.
 }

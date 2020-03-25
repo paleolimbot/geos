@@ -391,15 +391,15 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// cpp_nodes
-SEXP cpp_nodes(SEXP dataLeft, SEXP ptype);
-RcppExport SEXP _geom_cpp_nodes(SEXP dataLeftSEXP, SEXP ptypeSEXP) {
+// cpp_node
+SEXP cpp_node(SEXP dataLeft, SEXP ptype);
+RcppExport SEXP _geom_cpp_node(SEXP dataLeftSEXP, SEXP ptypeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type dataLeft(dataLeftSEXP);
     Rcpp::traits::input_parameter< SEXP >::type ptype(ptypeSEXP);
-    rcpp_result_gen = Rcpp::wrap(cpp_nodes(dataLeft, ptype));
+    rcpp_result_gen = Rcpp::wrap(cpp_node(dataLeft, ptype));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -586,7 +586,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_geom_cpp_distance", (DL_FUNC) &_geom_cpp_distance, 2},
     {"_geom_cpp_point_on_surface", (DL_FUNC) &_geom_cpp_point_on_surface, 2},
     {"_geom_cpp_centroid", (DL_FUNC) &_geom_cpp_centroid, 2},
-    {"_geom_cpp_nodes", (DL_FUNC) &_geom_cpp_nodes, 2},
+    {"_geom_cpp_node", (DL_FUNC) &_geom_cpp_node, 2},
     {"_geom_cpp_boundary", (DL_FUNC) &_geom_cpp_boundary, 2},
     {"_geom_cpp_envelope", (DL_FUNC) &_geom_cpp_envelope, 2},
     {"_geom_cpp_convex_hull", (DL_FUNC) &_geom_cpp_convex_hull, 2},

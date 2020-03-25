@@ -38,7 +38,7 @@ public:
 };
 
 // [[Rcpp::export]]
-SEXP cpp_nodes(SEXP dataLeft, SEXP ptype) {
+SEXP cpp_node(SEXP dataLeft, SEXP ptype) {
   NodeOperator op;
   op.initProvider(dataLeft, ptype);
   return op.operate();
@@ -75,7 +75,7 @@ SEXP cpp_envelope(SEXP dataLeft, SEXP ptype) {
 class ConvexHullOperator: public UnaryGeometryOperator {
 public:
   GEOSGeometry* operateNext(GEOSGeometry* geometry) {
-    return GEOSEnvelope_r(this->context, geometry);
+    return GEOSConvexHull_r(this->context, geometry);
   }
 };
 
@@ -127,7 +127,7 @@ public:
 
 // [[Rcpp::export]]
 SEXP cpp_minimum_width(SEXP dataLeft, SEXP ptype) {
-  MinimumRotatedRectangleOperator op;
+  MinimumWidthOperator op;
   op.initProvider(dataLeft, ptype);
   return op.operate();
 }

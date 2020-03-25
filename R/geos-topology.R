@@ -4,6 +4,9 @@
 #' These functions return geometries that summarize the input in
 #' various ways.
 #'
+#' Fully node a set of linestrings using the least possible number of nodes
+#' while preserving all of the input nodes.
+#'
 #' @inheritParams geo_ptype
 #'
 #' @export
@@ -21,8 +24,8 @@ geos_point_on_surface <- function(x, to = geo_ptype(x)) {
 
 #' @rdname geos_centroid
 #' @export
-geos_nodes <- function(x, to = geo_ptype(x)) {
-  geo_restore(to, cpp_nodes(x, to))
+geos_node <- function(x, to = geo_ptype(x)) {
+  geo_restore(to, cpp_node(x, to))
 }
 
 #' @rdname geos_centroid

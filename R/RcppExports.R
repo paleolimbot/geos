@@ -125,8 +125,8 @@ cpp_centroid <- function(dataLeft, ptype) {
     .Call(`_geom_cpp_centroid`, dataLeft, ptype)
 }
 
-cpp_nodes <- function(dataLeft, ptype) {
-    .Call(`_geom_cpp_nodes`, dataLeft, ptype)
+cpp_node <- function(dataLeft, ptype) {
+    .Call(`_geom_cpp_node`, dataLeft, ptype)
 }
 
 cpp_boundary <- function(dataLeft, ptype) {
