@@ -1,17 +1,66 @@
 
-test_that("intersection works", {
-  result <- geos_intersection(
-    geo_wkt("POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"),
-    geo_wkt("POLYGON ((5 5, 5 15, 10 15, 15 5, 5 5))")
+test_that("operators work", {
+  poly1 <- geo_wkt("POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))")
+  poly2 <- geo_wkt("POLYGON ((5 5, 5 15, 15 15, 15 5, 5 5))")
+
+  expect_identical(
+    geos_intersection(poly1, poly2, to = geo_rect()),
+    geo_rect(5, 5, 10, 10)
   )
 
   expect_identical(
-    geo_convert(result, geo_rect()),
-    geo_rect(5, 5, 10, 10)
+    geos_difference(poly1, poly2, to = geo_rect()),
+    geo_rect(0, 0, 10, 10)
+  )
+
+  expect_identical(
+    geos_sym_difference(poly1, poly2, to = geo_rect()),
+    geo_rect(0, 0, 15, 15)
+  )
+
+  expect_identical(
+    geos_union(poly1, poly2, to = geo_rect()),
+    geo_rect(0, 0, 15, 15)
+  )
+
+  collection <- geo_wkt("
+    GEOMETRYCOLLECTION (
+      POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0)),
+      POLYGON ((5 5, 5 15, 15 15, 15 5, 5 5))
+    )
+  ")
+
+  expect_identical(
+    geos_unary_union(collection),
+    geos_union(poly1, poly2)
+  )
+
+  # disjoint polygons
+  collection2 <- geo_wkt("
+    GEOMETRYCOLLECTION (
+      POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0)),
+      POLYGON ((11 11, 11 15, 15 15, 15 11, 11 11))
+    )
+  ")
+
+  expect_true(
+    geos_equals(
+      geos_coverage_union(collection2),
+      geos_unary_union(collection2)
+    )
+  )
+
+  clip <- geo_wkt("POLYGON ((-1 -1, -1 8, 8 8, 8 -1, -1 -1))")
+
+  expect_true(
+    geos_equals(
+      geos_clip_by_rect(poly1, geo_rect(-1, -1, 8, 8)),
+      geos_intersection(poly1, clip)
+    )
   )
 })
 
-test_that("intersection recycles geometry vectors", {
+test_that("operators recycle geometry vectors", {
   result1 <- geos_intersection(
     geo_wkt("POINT (5 5)"),
     rep(geo_wkt("POLYGON ((5 5, 5 15, 10 15, 15 5, 5 5))"), 5)
@@ -45,6 +94,3 @@ test_that("intersection recycles geometry vectors", {
     "incompatible lengths"
   )
 })
-
-
-
