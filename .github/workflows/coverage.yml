@@ -32,6 +32,7 @@ jobs:
         if: runner.os == 'MacOS'
         run: |
           brew install geos
+          brew cask install xquartz
 
       - name: Install dependencies
         run: |
