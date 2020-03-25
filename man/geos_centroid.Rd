@@ -128,23 +128,25 @@ geo_plot(
 )
 geo_plot_add(poly)
 
-# minimum bounding circle
-geo_plot(
-  geos_minimum_bounding_circle(
-    poly
-  ),
-  col = "grey90",
-  border = NA
-)
-geo_plot_add(poly)
-geo_plot_add(
-  geos_minimum_bounding_circle_center(
-    poly
-  ),
-  col = "red"
-)
+# minimum bounding circle (only with GEOS >= 3.8.0)
+if (geos_version() >= "3.8.0") {
+  geo_plot(
+    geos_minimum_bounding_circle(
+      poly
+    ),
+    col = "grey90",
+    border = NA
+  )
+  geo_plot_add(poly)
+  geo_plot_add(
+    geos_minimum_bounding_circle_center(
+      poly
+    ),
+    col = "red"
+  )
 
-geos_minimum_bounding_circle_radius(poly)
+  geos_minimum_bounding_circle_radius(poly)
+}
 
 # minimum width
 geo_plot(poly)

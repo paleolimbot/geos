@@ -63,9 +63,11 @@
 #' geo_plot_add(geos_unary_union(collection), col = "grey90")
 #'
 #' # coverage union is only for polygons, and does not dissolve
-#' # boundaries
-#' geo_plot(c(poly1, poly2))
-#' geo_plot_add(geos_coverage_union(collection), col = "grey90")
+#' # boundaries (only on GEOS >= 3.8.0)
+#' if (geos_version() >= "3.8.0") {
+#'   geo_plot(c(poly1, poly2))
+#'   geo_plot_add(geos_coverage_union(collection), col = "grey90")
+#' }
 #'
 #' # clip by rect performs a fast intersection with a rectangle
 #' # similar to an intersection
