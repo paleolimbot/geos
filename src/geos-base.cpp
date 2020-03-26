@@ -2,20 +2,11 @@
 #include "geos-base.h"
 #include "geos-coords.h"
 #include <Rcpp.h>
-
 using namespace Rcpp;
 
 // [[Rcpp::export]]
 std::string cpp_version_impl() {
   return GEOSversion();
-}
-
-// [[Rcpp::export]]
-void cpp_test_throw_error() {
-  GEOSContextHandle_t context = geos_init();
-  // do something that will cause an error
-  GEOSGeomFromWKT_r(context, "POINT NO COORDS");
-  geos_finish(context);
 }
 
 static void __errorHandler(const char *fmt, ...) {

@@ -9,10 +9,6 @@ cpp_version_impl <- function() {
     .Call(`_geom_cpp_version_impl`)
 }
 
-cpp_test_throw_error <- function() {
-    invisible(.Call(`_geom_cpp_test_throw_error`))
-}
-
 cpp_intersection <- function(dataLeft, dataRight, ptype) {
     .Call(`_geom_cpp_intersection`, dataLeft, dataRight, ptype)
 }
@@ -87,6 +83,54 @@ cpp_offset_curve <- function(x, width, quadSegs, endCapStyle, joinStyle, mitreLi
 
 cpp_buffer <- function(x, width, quadSegs, endCapStyle, joinStyle, mitreLimit, singleSided, to) {
     .Call(`_geom_cpp_buffer`, x, width, quadSegs, endCapStyle, joinStyle, mitreLimit, singleSided, to)
+}
+
+cpp_is_empty <- function(data) {
+    .Call(`_geom_cpp_is_empty`, data)
+}
+
+cpp_is_simple <- function(data) {
+    .Call(`_geom_cpp_is_simple`, data)
+}
+
+cpp_has_z <- function(data) {
+    .Call(`_geom_cpp_has_z`, data)
+}
+
+cpp_is_closed <- function(data) {
+    .Call(`_geom_cpp_is_closed`, data)
+}
+
+cpp_geom_type_id <- function(x) {
+    .Call(`_geom_cpp_geom_type_id`, x)
+}
+
+cpp_get_srid <- function(x) {
+    .Call(`_geom_cpp_get_srid`, x)
+}
+
+cpp_n_geometries <- function(x) {
+    .Call(`_geom_cpp_n_geometries`, x)
+}
+
+cpp_n_coordinates <- function(x) {
+    .Call(`_geom_cpp_n_coordinates`, x)
+}
+
+cpp_n_points <- function(x) {
+    .Call(`_geom_cpp_n_points`, x)
+}
+
+cpp_n_interior_rings <- function(x) {
+    .Call(`_geom_cpp_n_interior_rings`, x)
+}
+
+cpp_n_dimensions <- function(x) {
+    .Call(`_geom_cpp_n_dimensions`, x)
+}
+
+cpp_n_coordinate_dimensions <- function(x) {
+    .Call(`_geom_cpp_n_coordinate_dimensions`, x)
 }
 
 cpp_project <- function(dataLeft, dataRight) {
@@ -169,23 +213,15 @@ cpp_minimum_clearance <- function(dataLeft) {
     .Call(`_geom_cpp_minimum_clearance`, dataLeft)
 }
 
-cpp_is_empty <- function(data) {
-    .Call(`_geom_cpp_is_empty`, data)
-}
-
-cpp_is_simple <- function(data) {
-    .Call(`_geom_cpp_is_simple`, data)
-}
-
-cpp_has_z <- function(data) {
-    .Call(`_geom_cpp_has_z`, data)
-}
-
-cpp_is_closed <- function(data) {
-    .Call(`_geom_cpp_is_closed`, data)
-}
-
 cpp_validate_provider <- function(data) {
     .Call(`_geom_cpp_validate_provider`, data)
+}
+
+cpp_segment_intersection <- function(ax0, ay0, ax1, ay1, bx0, by0, bx1, by1) {
+    .Call(`_geom_cpp_segment_intersection`, ax0, ay0, ax1, ay1, bx0, by0, bx1, by1)
+}
+
+cpp_orientation_index <- function(ax, ay, bx, by, px, py) {
+    .Call(`_geom_cpp_orientation_index`, ax, ay, bx, by, px, py)
 }
 
