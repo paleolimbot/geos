@@ -23,6 +23,7 @@
 #' )
 #'
 geos_segment_intersection <- function(x, y) {
+  assert_geos_version("3.6.1")
   cpp_segment_intersection(
     field(field(x, "start"), "x"), field(field(x, "start"), "y"),
     field(field(x, "end"), "x"), field(field(x, "end"), "y"),

@@ -27,6 +27,7 @@ List cpp_segment_intersection(NumericVector ax0, NumericVector ay0,
       xOut[i] = NA_REAL;
       yOut[i] = NA_REAL;
     } else {
+#ifdef HAVE361
       GEOSSegmentIntersection_r(
         context,
         ax0[i], ay0[i],
@@ -38,6 +39,9 @@ List cpp_segment_intersection(NumericVector ax0, NumericVector ay0,
 
       xOut[i] = cx;
       yOut[i] = cy;
+#else
+      stop("GEOS >= 3.6.1 required for GEOSSegmentIntersection_r");
+#endif
     }
   }
   geos_finish(context);
