@@ -85,7 +85,9 @@ geo_get_ptype_df <- function(geo_coord) {
     xmin = double(),
     ymin = double(),
     xmax = double(),
-    ymax = double()
+    ymax = double(),
+    start = geo_xy(),
+    end = geo_xy()
   )
   ptype_default[names(vec_data(geo_coord))]
 }

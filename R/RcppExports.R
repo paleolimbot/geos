@@ -189,3 +189,7 @@ cpp_validate_provider <- function(data) {
     .Call(`_geom_cpp_validate_provider`, data)
 }
 
+cpp_segment_intersection <- function(ax0, ay0, ax1, ay1, bx0, by0, bx1, by1) {
+    .Call(`_geom_cpp_segment_intersection`, ax0, ay0, ax1, ay1, bx0, by0, bx1, by1)
+}
+

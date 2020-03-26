@@ -576,6 +576,24 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// cpp_segment_intersection
+List cpp_segment_intersection(NumericVector ax0, NumericVector ay0, NumericVector ax1, NumericVector ay1, NumericVector bx0, NumericVector by0, NumericVector bx1, NumericVector by1);
+RcppExport SEXP _geom_cpp_segment_intersection(SEXP ax0SEXP, SEXP ay0SEXP, SEXP ax1SEXP, SEXP ay1SEXP, SEXP bx0SEXP, SEXP by0SEXP, SEXP bx1SEXP, SEXP by1SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type ax0(ax0SEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type ay0(ay0SEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type ax1(ax1SEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type ay1(ay1SEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type bx0(bx0SEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type by0(by0SEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type bx1(bx1SEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type by1(by1SEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_segment_intersection(ax0, ay0, ax1, ay1, bx0, by0, bx1, by1));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_geom_cpp_convert", (DL_FUNC) &_geom_cpp_convert, 2},
@@ -625,6 +643,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_geom_cpp_has_z", (DL_FUNC) &_geom_cpp_has_z, 1},
     {"_geom_cpp_is_closed", (DL_FUNC) &_geom_cpp_is_closed, 1},
     {"_geom_cpp_validate_provider", (DL_FUNC) &_geom_cpp_validate_provider, 1},
+    {"_geom_cpp_segment_intersection", (DL_FUNC) &_geom_cpp_segment_intersection, 8},
     {NULL, NULL, 0}
 };
 
