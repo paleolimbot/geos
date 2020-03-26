@@ -4,12 +4,14 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 
-// ------  unexported details  ----------
+// ----- this is needed for some vector functions ------
 
 List geo_coord_reclass(List input, const char* tblClass) {
   input.attr("class") = CharacterVector::create(tblClass, "geo_coord", "vctrs_rcrd", "vctrs_vctr");
   return input;
 }
+
+// ------  unexported details  ----------
 
 List new_geo_coord(NumericVector x, NumericVector y, int feature) {
   List xy = List::create(_["x"] = x, _["y"] = y);

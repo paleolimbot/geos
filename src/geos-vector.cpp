@@ -18,13 +18,19 @@ List cpp_segment_intersection(NumericVector ax0, NumericVector ay0,
 
   GEOSContextHandle_t context = geos_init();
   for (size_t i=0; i < ax0.size(); i++) {
+    checkUserInterrupt();
+
     GEOSSegmentIntersection_r(
       context,
-      ax0[i], ay0[i], ax1[i], ay1[i],
-      bx0[i], by0[i], bx1[i], by1[i],
+      ax0[i], ay0[i],
+      ax1[i], ay1[i],
+      bx0[i], by0[i],
+      bx1[i], by1[i],
       &cx, &cy
     );
-    checkUserInterrupt();
+
+    xOut[i] = cx;
+    yOut[i] = cy;
   }
   geos_finish(context);
 
