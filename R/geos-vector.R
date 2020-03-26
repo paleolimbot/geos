@@ -12,10 +12,12 @@
 #' @export
 #'
 #' @examples
-#' geos_segment_intersection(
-#'   geo_segment(geo_xy(0, 0), geo_xy(10, 10)),
-#'   geo_segment(geo_xy(10, 0), geo_xy(0, 10))
-#' )
+#' if (geos_version() >= "3.6.1") {
+#'   geos_segment_intersection(
+#'     geo_segment(geo_xy(0, 0), geo_xy(10, 10)),
+#'     geo_segment(geo_xy(10, 0), geo_xy(0, 10))
+#'   )
+#' }
 #'
 #' geos_orientation_index(
 #'   geo_segment(geo_xy(0, 0), geo_xy(10, 10)),
