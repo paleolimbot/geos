@@ -2,6 +2,8 @@
 #include "geos-operator.h"
 using namespace Rcpp;
 
+// [[Rcpp::interfaces(r, cpp)]]
+
 class PointOnSurfaceOperator: public UnaryGeometryOperator {
 public:
   GEOSGeometry* operateNext(GEOSGeometry* geometry) {

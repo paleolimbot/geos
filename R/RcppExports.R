@@ -229,3 +229,7 @@ cpp_orientation_index <- function(ax, ay, bx, by, px, py) {
     .Call(`_geom_cpp_orientation_index`, ax, ay, bx, by, px, py)
 }
 
+# Register entry points for exported C++ functions
+methods::setLoadAction(function(ns) {
+    .Call('_geom_RcppExport_registerCCallable', PACKAGE = 'geom')
+})

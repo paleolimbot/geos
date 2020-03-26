@@ -2,6 +2,8 @@
 #include "geos-operator.h"
 using namespace Rcpp;
 
+// [[Rcpp::interfaces(r, cpp)]]
+
 class IntersectionOperator: public BinaryGeometryOperator {
 public:
   GEOSGeometry* operateNext(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight) {
