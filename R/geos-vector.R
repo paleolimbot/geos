@@ -1,7 +1,8 @@
 
-#' Calculate the intersection of two segments
+#' Segment operations
 #'
-#' @param x,y Two [geo_segment()]s
+#' @param x,y [geo_segment()]s
+#' @param point A [geo_xy()]
 #'
 #' @return A [geo_xy()]
 #' @export
@@ -12,6 +13,11 @@
 #'   geo_segment(geo_xy(10, 0), geo_xy(0, 10))
 #' )
 #'
+#' geos_orientation_index(
+#'   geo_segment(geo_xy(0, 0), geo_xy(10, 10)),
+#'   geo_xy(15, c(12, 15, 17))
+#'  )
+#'
 geos_segment_intersection <- function(x, y) {
   cpp_segment_intersection(
     field(field(x, "start"), "x"), field(field(x, "start"), "y"),
@@ -21,3 +27,14 @@ geos_segment_intersection <- function(x, y) {
   )
 }
 
+#' @rdname geos_segment_intersection
+#' @export
+geos_orientation_index <- function(x, point) {
+  recycled <- vec_recycle_common(x = x, point = point)
+
+  cpp_orientation_index(
+    field(field(recycled$x, "start"), "x"), field(field(recycled$x, "start"), "y"),
+    field(field(recycled$x, "end"), "x"), field(field(recycled$x, "end"), "y"),
+    field(recycled$point, "x"), field(recycled$point, "y")
+  )
+}

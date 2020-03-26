@@ -2,23 +2,33 @@
 % Please edit documentation in R/geos-vector.R
 \name{geos_segment_intersection}
 \alias{geos_segment_intersection}
-\title{Calculate the intersection of two segments}
+\alias{geos_orientation_index}
+\title{Segment operations}
 \usage{
 geos_segment_intersection(x, y)
+
+geos_orientation_index(x, point)
 }
 \arguments{
-\item{x, y}{Two \code{\link[=geo_segment]{geo_segment()}}s}
+\item{x, y}{\code{\link[=geo_segment]{geo_segment()}}s}
+
+\item{point}{A \code{\link[=geo_xy]{geo_xy()}}}
 }
 \value{
 A \code{\link[=geo_xy]{geo_xy()}}
 }
 \description{
-Calculate the intersection of two segments
+Segment operations
 }
 \examples{
 geos_segment_intersection(
   geo_segment(geo_xy(0, 0), geo_xy(10, 10)),
   geo_segment(geo_xy(10, 0), geo_xy(0, 10))
 )
+
+geos_orientation_index(
+  geo_segment(geo_xy(0, 0), geo_xy(10, 10)),
+  geo_xy(15, c(12, 15, 17))
+ )
 
 }

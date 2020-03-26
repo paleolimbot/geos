@@ -594,6 +594,22 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// cpp_orientation_index
+IntegerVector cpp_orientation_index(NumericVector ax, NumericVector ay, NumericVector bx, NumericVector by, NumericVector px, NumericVector py);
+RcppExport SEXP _geom_cpp_orientation_index(SEXP axSEXP, SEXP aySEXP, SEXP bxSEXP, SEXP bySEXP, SEXP pxSEXP, SEXP pySEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type ax(axSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type ay(aySEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type bx(bxSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type by(bySEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type px(pxSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type py(pySEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_orientation_index(ax, ay, bx, by, px, py));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_geom_cpp_convert", (DL_FUNC) &_geom_cpp_convert, 2},
@@ -644,6 +660,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_geom_cpp_is_closed", (DL_FUNC) &_geom_cpp_is_closed, 1},
     {"_geom_cpp_validate_provider", (DL_FUNC) &_geom_cpp_validate_provider, 1},
     {"_geom_cpp_segment_intersection", (DL_FUNC) &_geom_cpp_segment_intersection, 8},
+    {"_geom_cpp_orientation_index", (DL_FUNC) &_geom_cpp_orientation_index, 6},
     {NULL, NULL, 0}
 };
 

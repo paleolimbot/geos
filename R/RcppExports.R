@@ -193,3 +193,7 @@ cpp_segment_intersection <- function(ax0, ay0, ax1, ay1, bx0, by0, bx1, by1) {
     .Call(`_geom_cpp_segment_intersection`, ax0, ay0, ax1, ay1, bx0, by0, bx1, by1)
 }
 
+cpp_orientation_index <- function(ax, ay, bx, by, px, py) {
+    .Call(`_geom_cpp_orientation_index`, ax, ay, bx, by, px, py)
+}
+
