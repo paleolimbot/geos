@@ -2,8 +2,6 @@
 #include "geos-operator.h"
 using namespace Rcpp;
 
-// [[Rcpp::interfaces(r, cpp)]]
-
 class UnaryPredicateOperator: public UnaryVectorOperator<LogicalVector, bool> {
 public:
 

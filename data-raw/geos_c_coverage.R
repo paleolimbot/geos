@@ -9,16 +9,45 @@ pkg <- list.files("src", "\\.(h|cpp)$", full.names = TRUE) %>%
   str_remove("\\($") %>%
   unique()
 
+
+ignore <- c(
+  # deprecated
+  "GEOSGeomFromWKT_r",
+  "GEOSGeomToWKT_r",
+  "GEOS_getWKBOutputDims_r",
+  "GEOS_setWKBOutputDims_r",
+  "GEOS_getWKBByteOrder_r",
+  "GEOS_setWKBByteOrder_r",
+  "GEOSGeomFromWKB_buf_r",
+  "GEOSGeomToWKB_buf_r",
+  "GEOSGeomFromHEX_buf_r",
+  "GEOSGeomToHEX_buf_r",
+  "GEOSUnionCascaded_r",
+
+  # not in GEOS 3.8 (what I have)
+  "GEOSCoordSeq_setXY_r",
+  "GEOSCoordSeq_setXYZ_r",
+  "GEOSCoordSeq_getXY_r",
+  "GEOSCoordSeq_getXYZ_r",
+  "GEOSGeom_createPointFromXY_r",
+
+  # using other buffer interface
+  "GEOSBuffer_r",
+  "GEOSBufferWithStyle_r"
+)
+
+
 h <- read_lines("data-raw/geos_c.h")
 func_sum <- h %>%
-  str_extract("GEOS_DLL [0-9A-Za-z_]+_r") %>%
+  str_extract("GEOS_DLL\\s*\\*?\\s*[0-9A-Za-z_]+_r") %>%
   tibble(funcs = ., line = seq_along(.)) %>%
   filter(!is.na(funcs)) %>%
-  separate(funcs, c("dll", "fun"), " ") %>%
+  separate(funcs, c("dll", "fun"), "\\s+\\*?\\s*") %>%
   select(-dll) %>%
   mutate(
     used = fun %in% pkg,
-    bullet = if_else(used, "[x]", "[ ]"),
+    ignored = fun %in% ignore,
+    bullet = case_when(ignored ~ "(ignored)", used ~ "[x]", TRUE ~ "[ ]"),
     item = glue::glue("- {bullet} [{fun}](https://github.com/libgeos/geos/blob/master/capi/geos_c.h.in#L{line})")
   )
 

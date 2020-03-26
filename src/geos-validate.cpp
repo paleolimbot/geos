@@ -5,8 +5,6 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 
-// [[Rcpp::interfaces(r, cpp)]]
-
 // [[Rcpp::export]]
 LogicalVector cpp_validate_provider(SEXP data) {
   std::unique_ptr<GeometryProvider> provider = resolve_provider(data);

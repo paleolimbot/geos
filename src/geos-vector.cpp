@@ -4,8 +4,6 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 
-// [[Rcpp::interfaces(r, cpp)]]
-
 // [[Rcpp::export]]
 List cpp_segment_intersection(NumericVector ax0, NumericVector ay0,
                               NumericVector ax1, NumericVector ay1,

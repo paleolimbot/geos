@@ -2,8 +2,6 @@
 #include "geos-operator.h"
 using namespace Rcpp;
 
-// [[Rcpp::interfaces(r, cpp)]]
-
 class ProjectOperator: public BinaryVectorOperator<NumericVector, double> {
   double operateNext(GEOSGeometry* geometryLeft, GEOSGeometry* geometryRight) {
     return GEOSProject_r(this->context, geometryLeft, geometryRight);
