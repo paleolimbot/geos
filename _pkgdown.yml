@@ -11,12 +11,14 @@ reference:
   - geos_is_empty
   - geos_project
   - geos_area
+  - geos_segment_intersection
 
 - title: Geometry constructors
   desc: Create, convert, and plot geometry vectors
   contents:
   - geo_xy
   - geo_rect
+  - geo_segment
   - geo_wkb
   - geo_wkt
   - geo_coord_point

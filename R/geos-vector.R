@@ -4,7 +4,11 @@
 #' @param x,y [geo_segment()]s
 #' @param point A [geo_xy()]
 #'
-#' @return A [geo_xy()]
+#' @return [geos_segment_intersection()] returns a [geo_xy()];
+#'   [geos_orientation_index()] returns -1, 0 or 1, depending if
+#'   the `point` lies to the right of (-1), is colinear with (0) or
+#'   lies to the left of (1) the segment (as judged from the start
+#'   of the segment looking towards the end).
 #' @export
 #'
 #' @examples
@@ -16,7 +20,7 @@
 #' geos_orientation_index(
 #'   geo_segment(geo_xy(0, 0), geo_xy(10, 10)),
 #'   geo_xy(15, c(12, 15, 17))
-#'  )
+#' )
 #'
 geos_segment_intersection <- function(x, y) {
   cpp_segment_intersection(

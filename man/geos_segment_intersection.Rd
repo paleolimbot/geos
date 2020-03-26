@@ -15,7 +15,11 @@ geos_orientation_index(x, point)
 \item{point}{A \code{\link[=geo_xy]{geo_xy()}}}
 }
 \value{
-A \code{\link[=geo_xy]{geo_xy()}}
+\code{\link[=geos_segment_intersection]{geos_segment_intersection()}} returns a \code{\link[=geo_xy]{geo_xy()}};
+\code{\link[=geos_orientation_index]{geos_orientation_index()}} returns -1, 0 or 1, depending if
+the \code{point} lies to the right of (-1), is colinear with (0) or
+lies to the left of (1) the segment (as judged from the start
+of the segment looking towards the end).
 }
 \description{
 Segment operations
@@ -29,6 +33,6 @@ geos_segment_intersection(
 geos_orientation_index(
   geo_segment(geo_xy(0, 0), geo_xy(10, 10)),
   geo_xy(15, c(12, 15, 17))
- )
+)
 
 }
