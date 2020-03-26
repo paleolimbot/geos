@@ -1,5 +1,6 @@
 
 test_that("segment intersection works", {
+  skip_if_not(geos_version() >= "3.6.1")
   expect_identical(
     geos_segment_intersection(
       geo_segment(geo_xy(0, 0), geo_xy(10, 10)),
