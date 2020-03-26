@@ -89,6 +89,54 @@ cpp_buffer <- function(x, width, quadSegs, endCapStyle, joinStyle, mitreLimit, s
     .Call(`_geom_cpp_buffer`, x, width, quadSegs, endCapStyle, joinStyle, mitreLimit, singleSided, to)
 }
 
+cpp_is_empty <- function(data) {
+    .Call(`_geom_cpp_is_empty`, data)
+}
+
+cpp_is_simple <- function(data) {
+    .Call(`_geom_cpp_is_simple`, data)
+}
+
+cpp_has_z <- function(data) {
+    .Call(`_geom_cpp_has_z`, data)
+}
+
+cpp_is_closed <- function(data) {
+    .Call(`_geom_cpp_is_closed`, data)
+}
+
+cpp_geom_type_id <- function(x) {
+    .Call(`_geom_cpp_geom_type_id`, x)
+}
+
+cpp_get_srid <- function(x) {
+    .Call(`_geom_cpp_get_srid`, x)
+}
+
+cpp_n_geometries <- function(x) {
+    .Call(`_geom_cpp_n_geometries`, x)
+}
+
+cpp_n_coordinates <- function(x) {
+    .Call(`_geom_cpp_n_coordinates`, x)
+}
+
+cpp_n_points <- function(x) {
+    .Call(`_geom_cpp_n_points`, x)
+}
+
+cpp_n_interior_rings <- function(x) {
+    .Call(`_geom_cpp_n_interior_rings`, x)
+}
+
+cpp_n_dimensions <- function(x) {
+    .Call(`_geom_cpp_n_dimensions`, x)
+}
+
+cpp_n_coordinate_dimensions <- function(x) {
+    .Call(`_geom_cpp_n_coordinate_dimensions`, x)
+}
+
 cpp_project <- function(dataLeft, dataRight) {
     .Call(`_geom_cpp_project`, dataLeft, dataRight)
 }
@@ -167,22 +215,6 @@ cpp_minimum_clearance_line <- function(dataLeft, ptype) {
 
 cpp_minimum_clearance <- function(dataLeft) {
     .Call(`_geom_cpp_minimum_clearance`, dataLeft)
-}
-
-cpp_is_empty <- function(data) {
-    .Call(`_geom_cpp_is_empty`, data)
-}
-
-cpp_is_simple <- function(data) {
-    .Call(`_geom_cpp_is_simple`, data)
-}
-
-cpp_has_z <- function(data) {
-    .Call(`_geom_cpp_has_z`, data)
-}
-
-cpp_is_closed <- function(data) {
-    .Call(`_geom_cpp_is_closed`, data)
 }
 
 cpp_validate_provider <- function(data) {
