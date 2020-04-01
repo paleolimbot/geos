@@ -121,8 +121,8 @@
     <tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
+          <h2 id="section-geometry-operators" class="hasAnchor"><a href="#section-geometry-operators" class="anchor"></a>Geometry operators</h2>
+          <p class="section-desc"><p>Functions that operate on one or more geometry vectors</p></p>
         </th>
       </tr>
       
@@ -133,9 +133,94 @@
       <tr>
         
         <td>
-          <p><code><a href="geo_convert.html">geo_convert()</a></code> </p>
+          <p><code><a href="geos_intersection.html">geos_intersection()</a></code> <code><a href="geos_intersection.html">geos_difference()</a></code> <code><a href="geos_intersection.html">geos_sym_difference()</a></code> <code><a href="geos_intersection.html">geos_union()</a></code> <code><a href="geos_intersection.html">geos_unary_union()</a></code> <code><a href="geos_intersection.html">geos_coverage_union()</a></code> <code><a href="geos_intersection.html">geos_clip_by_rect()</a></code> </p>
         </td>
-        <td><p>Convert a geometry to a different data structure</p></td>
+        <td><p>Main geometry operators</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="geos_centroid.html">geos_centroid()</a></code> <code><a href="geos_centroid.html">geos_point_on_surface()</a></code> <code><a href="geos_centroid.html">geos_node()</a></code> <code><a href="geos_centroid.html">geos_boundary()</a></code> <code><a href="geos_centroid.html">geos_envelope()</a></code> <code><a href="geos_centroid.html">geos_convex_hull()</a></code> <code><a href="geos_centroid.html">geos_minimum_rotated_rectangle()</a></code> <code><a href="geos_centroid.html">geos_minimum_bounding_circle()</a></code> <code><a href="geos_centroid.html">geos_minimum_bounding_circle_radius()</a></code> <code><a href="geos_centroid.html">geos_minimum_bounding_circle_center()</a></code> <code><a href="geos_centroid.html">geos_minimum_width()</a></code> <code><a href="geos_centroid.html">geos_minimum_clearance_line()</a></code> <code><a href="geos_centroid.html">geos_minimum_clearance()</a></code> </p>
+        </td>
+        <td><p>Geometry topology operators</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="geos_buffer.html">geos_buffer()</a></code> <code><a href="geos_buffer.html">geos_offset_curve()</a></code> </p>
+        </td>
+        <td><p>Buffer a geometry</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="geos_is_disjoint.html">geos_is_disjoint()</a></code> <code><a href="geos_is_disjoint.html">geos_touches()</a></code> <code><a href="geos_is_disjoint.html">geos_intersects()</a></code> <code><a href="geos_is_disjoint.html">geos_crosses()</a></code> <code><a href="geos_is_disjoint.html">geos_is_within()</a></code> <code><a href="geos_is_disjoint.html">geos_contains()</a></code> <code><a href="geos_is_disjoint.html">geos_overlaps()</a></code> <code><a href="geos_is_disjoint.html">geos_equals()</a></code> <code><a href="geos_is_disjoint.html">geos_covers()</a></code> <code><a href="geos_is_disjoint.html">geos_is_covered_by()</a></code> </p>
+        </td>
+        <td><p>Binary predicate operators</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="geos_is_empty.html">geos_is_empty()</a></code> <code><a href="geos_is_empty.html">geos_is_simple()</a></code> <code><a href="geos_is_empty.html">geos_has_z()</a></code> <code><a href="geos_is_empty.html">geos_is_closed()</a></code> <code><a href="geos_is_empty.html">geos_geom_type_id()</a></code> <code><a href="geos_is_empty.html">geos_geom_type()</a></code> <code><a href="geos_is_empty.html">geos_get_srid()</a></code> <code><a href="geos_is_empty.html">geos_n_geometries()</a></code> <code><a href="geos_is_empty.html">geos_n_coordinates()</a></code> <code><a href="geos_is_empty.html">geos_n_points()</a></code> <code><a href="geos_is_empty.html">geos_n_interior_rings()</a></code> <code><a href="geos_is_empty.html">geos_n_dimensions()</a></code> <code><a href="geos_is_empty.html">geos_n_coordinate_dimensions()</a></code> </p>
+        </td>
+        <td><p>Geometry information</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="geos_project.html">geos_project()</a></code> <code><a href="geos_project.html">geos_project_normalized()</a></code> <code><a href="geos_project.html">geos_interpolate()</a></code> <code><a href="geos_project.html">geos_interpolate_normalized()</a></code> </p>
+        </td>
+        <td><p>Linear referencing</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="geos_area.html">geos_area()</a></code> <code><a href="geos_area.html">geos_length()</a></code> <code><a href="geos_area.html">geos_distance()</a></code> </p>
+        </td>
+        <td><p>Area, length, and distance</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="geos_segment_intersection.html">geos_segment_intersection()</a></code> <code><a href="geos_segment_intersection.html">geos_orientation_index()</a></code> </p>
+        </td>
+        <td><p>Segment operations</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-geometry-constructors" class="hasAnchor"><a href="#section-geometry-constructors" class="anchor"></a>Geometry constructors</h2>
+          <p class="section-desc"><p>Create, convert, and plot geometry vectors</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="geo_xy.html">geo_xy()</a></code> </p>
+        </td>
+        <td><p>Create a coordinate vector</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="geo_rect.html">geo_rect()</a></code> </p>
+        </td>
+        <td><p>Rectangles</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="geo_segment.html">geo_segment()</a></code> </p>
+        </td>
+        <td><p>Line segments</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="geo_wkb.html">geo_wkb()</a></code> </p>
+        </td>
+        <td><p>Create and validate well-known binary</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="geo_wkt.html">geo_wkt()</a></code> </p>
+        </td>
+        <td><p>Create and validate well-known text</p></td>
       </tr><tr>
         
         <td>
@@ -157,82 +242,42 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="geo_rect.html">geo_rect()</a></code> </p>
+          <p><code><a href="geo_convert.html">geo_convert()</a></code> </p>
         </td>
-        <td><p>Rectangles</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="geo_wkb.html">geo_wkb()</a></code> </p>
-        </td>
-        <td><p>Create and validate well-known binary</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="geo_wkt.html">geo_wkt()</a></code> </p>
-        </td>
-        <td><p>Create and validate well-known text</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="geo_xy.html">geo_xy()</a></code> </p>
-        </td>
-        <td><p>Create a coordinate vector</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="geos_area.html">geos_area()</a></code> <code><a href="geos_area.html">geos_length()</a></code> <code><a href="geos_area.html">geos_distance()</a></code> </p>
-        </td>
-        <td><p>Area, length, and distance</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="geos_buffer.html">geos_buffer()</a></code> <code><a href="geos_buffer.html">geos_offset_curve()</a></code> </p>
-        </td>
-        <td><p>Buffer a geometry</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="geos_centroid.html">geos_centroid()</a></code> <code><a href="geos_centroid.html">geos_point_on_surface()</a></code> <code><a href="geos_centroid.html">geos_node()</a></code> <code><a href="geos_centroid.html">geos_boundary()</a></code> <code><a href="geos_centroid.html">geos_envelope()</a></code> <code><a href="geos_centroid.html">geos_convex_hull()</a></code> <code><a href="geos_centroid.html">geos_minimum_rotated_rectangle()</a></code> <code><a href="geos_centroid.html">geos_minimum_bounding_circle()</a></code> <code><a href="geos_centroid.html">geos_minimum_bounding_circle_radius()</a></code> <code><a href="geos_centroid.html">geos_minimum_bounding_circle_center()</a></code> <code><a href="geos_centroid.html">geos_minimum_width()</a></code> <code><a href="geos_centroid.html">geos_minimum_clearance_line()</a></code> <code><a href="geos_centroid.html">geos_minimum_clearance()</a></code> </p>
-        </td>
-        <td><p>Geometry topology operators</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="geos_intersection.html">geos_intersection()</a></code> <code><a href="geos_intersection.html">geos_difference()</a></code> <code><a href="geos_intersection.html">geos_sym_difference()</a></code> <code><a href="geos_intersection.html">geos_union()</a></code> <code><a href="geos_intersection.html">geos_unary_union()</a></code> <code><a href="geos_intersection.html">geos_coverage_union()</a></code> <code><a href="geos_intersection.html">geos_clip_by_rect()</a></code> </p>
-        </td>
-        <td><p>Main geometry operators</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="geos_is_disjoint.html">geos_is_disjoint()</a></code> <code><a href="geos_is_disjoint.html">geos_touches()</a></code> <code><a href="geos_is_disjoint.html">geos_intersects()</a></code> <code><a href="geos_is_disjoint.html">geos_crosses()</a></code> <code><a href="geos_is_disjoint.html">geos_is_within()</a></code> <code><a href="geos_is_disjoint.html">geos_contains()</a></code> <code><a href="geos_is_disjoint.html">geos_overlaps()</a></code> <code><a href="geos_is_disjoint.html">geos_equals()</a></code> <code><a href="geos_is_disjoint.html">geos_covers()</a></code> <code><a href="geos_is_disjoint.html">geos_is_covered_by()</a></code> </p>
-        </td>
-        <td><p>Binary predicate operators</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="geos_is_empty.html">geos_is_empty()</a></code> <code><a href="geos_is_empty.html">geos_is_simple()</a></code> <code><a href="geos_is_empty.html">geos_has_z()</a></code> <code><a href="geos_is_empty.html">geos_is_closed()</a></code> </p>
-        </td>
-        <td><p>Unary geometry predicates</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="geos_project.html">geos_project()</a></code> <code><a href="geos_project.html">geos_project_normalized()</a></code> <code><a href="geos_project.html">geos_interpolate()</a></code> <code><a href="geos_project.html">geos_interpolate_normalized()</a></code> </p>
-        </td>
-        <td><p>Linear referencing</p></td>
-      </tr><tr>
+        <td><p>Convert a geometry to a different data structure</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-geos-information" class="hasAnchor"><a href="#section-geos-information" class="anchor"></a>GEOS Information</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
         
         <td>
           <p><code><a href="geos_version.html">geos_version()</a></code> <code><a href="geos_version.html">geos_capi_version()</a></code> </p>
         </td>
         <td><p>GEOS information</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="is_geo_coord.html">is_geo_coord()</a></code> <code><a href="is_geo_coord.html">geo_coord()</a></code> <code><a href="is_geo_coord.html">vec_ptype2(<i>&lt;geo_coord&gt;</i>)</a></code> <code><a href="is_geo_coord.html">vec_cast(<i>&lt;geo_coord&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Generics common to geo_coord_*() classes</p></td>
-      </tr><tr>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-s-details" class="hasAnchor"><a href="#section-s-details" class="anchor"></a>S3 Details</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
         
         <td>
           <p><code><a href="new_geo_coord_linestring.html">new_geo_coord_linestring()</a></code> <code><a href="new_geo_coord_linestring.html">new_geo_coord_multilinestring()</a></code> <code><a href="new_geo_coord_linestring.html">validate_geo_coord_linestring()</a></code> <code><a href="new_geo_coord_linestring.html">validate_geo_coord_multilinestring()</a></code> <code><a href="new_geo_coord_linestring.html">is_geo_coord_linestring()</a></code> <code><a href="new_geo_coord_linestring.html">is_geo_coord_multilinestring()</a></code> <code><a href="new_geo_coord_linestring.html">format(<i>&lt;geo_coord_linestring&gt;</i>)</a></code> <code><a href="new_geo_coord_linestring.html">print(<i>&lt;geo_coord_linestring&gt;</i>)</a></code> <code><a href="new_geo_coord_linestring.html">format(<i>&lt;geo_coord_multilinestring&gt;</i>)</a></code> <code><a href="new_geo_coord_linestring.html">print(<i>&lt;geo_coord_multilinestring&gt;</i>)</a></code> <code><a href="new_geo_coord_linestring.html">vec_ptype_abbr(<i>&lt;geo_coord_linestring&gt;</i>)</a></code> <code><a href="new_geo_coord_linestring.html">vec_ptype_abbr(<i>&lt;geo_coord_multilinestring&gt;</i>)</a></code> <code><a href="new_geo_coord_linestring.html">as_geo_coord_linestring()</a></code> <code><a href="new_geo_coord_linestring.html">as_geo_coord_multilinestring()</a></code> </p>
@@ -259,6 +304,12 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="new_geo_segment.html">new_geo_segment()</a></code> <code><a href="new_geo_segment.html">is_geo_segment()</a></code> <code><a href="new_geo_segment.html">validate_geo_segment()</a></code> <code><a href="new_geo_segment.html">vec_ptype_abbr(<i>&lt;geo_segment&gt;</i>)</a></code> <code><a href="new_geo_segment.html">format(<i>&lt;geo_segment&gt;</i>)</a></code> <code><a href="new_geo_segment.html">as_geo_segment()</a></code> <code><a href="new_geo_segment.html">geo_size(<i>&lt;geo_segment&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>S3 details for geo_segment</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="new_geo_wkb.html">new_geo_wkb()</a></code> <code><a href="new_geo_wkb.html">is_geo_wkb()</a></code> <code><a href="new_geo_wkb.html">validate_geo_wkb()</a></code> <code><a href="new_geo_wkb.html">vec_ptype_abbr(<i>&lt;geo_wkb&gt;</i>)</a></code> <code><a href="new_geo_wkb.html">format(<i>&lt;geo_wkb&gt;</i>)</a></code> <code><a href="new_geo_wkb.html">print(<i>&lt;geo_wkb&gt;</i>)</a></code> <code><a href="new_geo_wkb.html">as_geo_wkb()</a></code> <code><a href="new_geo_wkb.html">vec_cast(<i>&lt;geo_wkb&gt;</i>)</a></code> <code><a href="new_geo_wkb.html">vec_cast.geo_wkb(<i>&lt;default&gt;</i>)</a></code> <code><a href="new_geo_wkb.html">vec_cast.geo_wkb(<i>&lt;geo_wkb&gt;</i>)</a></code> <code><a href="new_geo_wkb.html">vec_cast.geo_wkb(<i>&lt;list&gt;</i>)</a></code> <code><a href="new_geo_wkb.html">vec_cast.geo_wkb(<i>&lt;geo_wkt&gt;</i>)</a></code> </p>
         </td>
         <td><p>S3 details for geo_wkb</p></td>
@@ -274,6 +325,12 @@
           <p><code><a href="new_geo_xy.html">new_geo_xy()</a></code> <code><a href="new_geo_xy.html">is_geo_xy()</a></code> <code><a href="new_geo_xy.html">validate_geo_xy()</a></code> <code><a href="new_geo_xy.html">vec_ptype_abbr(<i>&lt;geo_xy&gt;</i>)</a></code> <code><a href="new_geo_xy.html">format(<i>&lt;geo_xy&gt;</i>)</a></code> <code><a href="new_geo_xy.html">as_geo_xy()</a></code> <code><a href="new_geo_xy.html">as.matrix(<i>&lt;geo_xy&gt;</i>)</a></code> </p>
         </td>
         <td><p>S3 details for geo_xy</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="is_geo_coord.html">is_geo_coord()</a></code> <code><a href="is_geo_coord.html">geo_coord()</a></code> <code><a href="is_geo_coord.html">vec_ptype2(<i>&lt;geo_coord&gt;</i>)</a></code> <code><a href="is_geo_coord.html">vec_cast(<i>&lt;geo_coord&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Generics common to geo_coord_*() classes</p></td>
       </tr>
     </tbody>
     </table>

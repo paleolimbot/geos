@@ -72,7 +72,7 @@
 <a href="#geom" class="anchor"></a>geom</h1></div>
 <!-- badges: start -->
 
-<p>The goal of geom is to provide <a href="https://geos.osgeo.org/doxygen/geos__c_8h_source.html">low-level access to the GEOS library</a>, supporting several common input/output formats to facilitate geoprocessing in R.</p>
+<p>The goal of geom is to provide <a href="https://geos.osgeo.org/doxygen/geos__c_8h_source.html">low-level access to the GEOS library</a>, supporting several common input/output formats to facilitate geoprocessing in R. This package tries to solve the “hard” problems associated with wrapping a C/C++ library, exposing an R API and a C++ API that can be used in dependency packages.</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
@@ -85,43 +85,10 @@
 <div id="example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example" class="anchor"></a>Example</h2>
-<p>Right now the package doesn’t do much except convert between a few useful input/output formats:</p>
-<div class="sourceCode" id="cb3"><pre class="r"><span class="fu"><a href="reference/geo_convert.html">geo_convert</a></span>(<span class="fu"><a href="reference/geo_wkt.html">geo_wkt</a></span>(<span class="st">"POINT (20 10)"</span>), <span class="fu"><a href="reference/geo_wkb.html">geo_wkb</a></span>())
-<span class="co">#&gt; &lt;geo_wkb [1]&gt;</span>
-<span class="co">#&gt; &lt;raw [21]&gt;</span>
-<span class="kw pkg">tibble</span><span class="kw ns">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span>(<span class="fu"><a href="reference/geo_convert.html">geo_convert</a></span>(<span class="fu"><a href="reference/geo_wkt.html">geo_wkt</a></span>(<span class="st">"POINT (20 10)"</span>), <span class="fu"><a href="reference/is_geo_coord.html">geo_coord</a></span>()))
-<span class="co">#&gt; # A tibble: 1 x 2</span>
-<span class="co">#&gt;        xy feature</span>
-<span class="co">#&gt;      &lt;xy&gt;   &lt;int&gt;</span>
-<span class="co">#&gt; 1 (20 10)       1</span></pre></div>
-<p>The package can do operations from the GEOS library, returing the results in any of the supported output formats:</p>
-<div class="sourceCode" id="cb4"><pre class="r"><span class="fu"><a href="reference/geos_buffer.html">geos_buffer</a></span>(
-  <span class="fu"><a href="reference/geo_wkt.html">geo_wkt</a></span>(<span class="st">"POINT (0 0)"</span>),
-  <span class="kw">width</span> <span class="kw">=</span> <span class="fl">0.5</span>, <span class="kw">quad_segs</span> <span class="kw">=</span> <span class="fl">4</span>,
-  <span class="kw">to</span> <span class="kw">=</span> <span class="fu"><a href="reference/is_geo_coord.html">geo_coord</a></span>()
-)
-<span class="co">#&gt; &lt;geo_coord_polygon [17 coords, 1 features]&gt;</span>
-<span class="co">#&gt;  [1] &lt;feat `1` (5.000000e-01 0.000000e+00)&gt;  </span>
-<span class="co">#&gt;  [2] &lt;feat `1` (4.619398e-01 -1.913417e-01)&gt; </span>
-<span class="co">#&gt;  [3] &lt;feat `1` (3.535534e-01 -3.535534e-01)&gt; </span>
-<span class="co">#&gt;  [4] &lt;feat `1` (1.913417e-01 -4.619398e-01)&gt; </span>
-<span class="co">#&gt;  [5] &lt;feat `1` (8.077723e-16 -5.000000e-01)&gt; </span>
-<span class="co">#&gt;  [6] &lt;feat `1` (-1.913417e-01 -4.619398e-01)&gt;</span>
-<span class="co">#&gt;  [7] &lt;feat `1` (-3.535534e-01 -3.535534e-01)&gt;</span>
-<span class="co">#&gt;  [8] &lt;feat `1` (-4.619398e-01 -1.913417e-01)&gt;</span>
-<span class="co">#&gt;  [9] &lt;feat `1` (-5.000000e-01 -1.615545e-15)&gt;</span>
-<span class="co">#&gt; [10] &lt;feat `1` (-4.619398e-01 1.913417e-01)&gt; </span>
-<span class="co">#&gt; [11] &lt;feat `1` (-3.535534e-01 3.535534e-01)&gt; </span>
-<span class="co">#&gt; [12] &lt;feat `1` (-1.913417e-01 4.619398e-01)&gt; </span>
-<span class="co">#&gt; [13] &lt;feat `1` (-2.312295e-15 5.000000e-01)&gt; </span>
-<span class="co">#&gt; [14] &lt;feat `1` (1.913417e-01 4.619398e-01)&gt;  </span>
-<span class="co">#&gt; [15] &lt;feat `1` (3.535534e-01 3.535534e-01)&gt;  </span>
-<span class="co">#&gt; [16] &lt;feat `1` (4.619398e-01 1.913417e-01)&gt;  </span>
-<span class="co">#&gt; [17] &lt;feat `1` (5.000000e-01 0.000000e+00)&gt;</span></pre></div>
-<p>Also, the results can be plotted!</p>
-<div class="sourceCode" id="cb5"><pre class="r"><span class="no">point</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/geo_wkt.html">geo_wkt</a></span>(<span class="st">"POINT (0 0)"</span>)
-<span class="fu"><a href="reference/geo_plot.html">geo_plot</a></span>(<span class="fu"><a href="reference/geos_buffer.html">geos_buffer</a></span>(<span class="no">point</span>, <span class="kw">width</span> <span class="kw">=</span> <span class="fl">0.5</span>))
-<span class="fu"><a href="reference/geo_plot.html">geo_plot_add</a></span>(<span class="no">point</span>)</pre></div>
+<p>Create a line, buffer it, and plot!</p>
+<div class="sourceCode" id="cb3"><pre class="r"><span class="no">line</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/geo_wkt.html">geo_wkt</a></span>(<span class="st">"LINESTRING (30 10, 10 30, 40 40)"</span>)
+<span class="fu"><a href="reference/geo_plot.html">geo_plot</a></span>(<span class="fu"><a href="reference/geos_buffer.html">geos_buffer</a></span>(<span class="no">line</span>, <span class="kw">width</span> <span class="kw">=</span> <span class="fl">4</span>), <span class="kw">col</span> <span class="kw">=</span> <span class="st">"grey90"</span>)
+<span class="fu"><a href="reference/geo_plot.html">geo_plot_add</a></span>(<span class="no">line</span>)</pre></div>
 <p><img src="reference/figures/README-ex-plot-1.png" width="100%"></p>
 </div>
 <div id="philosophy" class="section level2">
@@ -165,6 +132,7 @@
 <h2>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://www.tidyverse.org/lifecycle/#experimental"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
+<li><a href="https://codecov.io/gh/paleolimbot/geom?branch=master"><img src="https://codecov.io/gh/paleolimbot/geom/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
 </ul>
 </div>
 </div>
