@@ -13,24 +13,6 @@ reference:
   - geos_area
   - geos_segment_intersection
 
-- title: Geometry constructors
-  desc: Create, convert, and plot geometry vectors
-  contents:
-  - geo_xy
-  - geo_rect
-  - geo_segment
-  - geo_wkb
-  - geo_wkt
-  - geo_coord_point
-  - geo_plot
-  - geo_ptype
-  - geo_convert
-
 - title: GEOS Information
   contents:
   - geos_version
-
-- title: S3 Details
-  contents:
-  - starts_with("new_")
-  - is_geo_coord

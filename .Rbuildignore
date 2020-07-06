@@ -1,6 +1,5 @@
-^geom\.Rproj$
+^geos\.Rproj$
 ^\.Rproj\.user$
-^src/Makevars$
 ^windows$
 ^inst$
 ^\.github$
