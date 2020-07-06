@@ -2,18 +2,25 @@
 % Please edit documentation in R/geos-version.R
 \name{geos_version}
 \alias{geos_version}
-\alias{geos_capi_version}
-\title{GEOS information}
+\title{GEOS version information}
 \usage{
-geos_version()
-
-geos_capi_version()
+geos_version(runtime = TRUE)
+}
+\arguments{
+\item{runtime}{Use FALSE to return the build-time
+GEOS version, which may be different than the runtime
+version if a different version of the
+\link[libgeos:libgeos_version]{libgeos package} was used to build
+this package.}
 }
 \description{
-GEOS information
+GEOS version information
 }
 \examples{
 geos_version()
-geos_capi_version()
+geos_version(runtime = FALSE)
+
+# check for a minimum version of GEOS
+geos_version() >= "3.8.1"
 
 }
