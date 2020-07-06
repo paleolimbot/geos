@@ -1,5 +1,6 @@
 
 #include "libgeos.h"
+#include "geos-common.h"
 #include "Rinternals.h"
 
 SEXP geos_c_segment_intersection(SEXP Sax0, SEXP Say0, SEXP Sax1, SEXP Say1,
@@ -8,7 +9,7 @@ SEXP geos_c_segment_intersection(SEXP Sax0, SEXP Say0, SEXP Sax1, SEXP Say1,
   SEXP resultX = PROTECT(Rf_allocVector(REALSXP, size));
   SEXP resultY = PROTECT(Rf_allocVector(REALSXP, size));
 
-  GEOSContextHandle_t handle = GEOS_init_r();
+  GEOS_INIT();
   int resultCode;
 
   double* ax0 = REAL(Sax0);
@@ -45,7 +46,7 @@ SEXP geos_c_segment_intersection(SEXP Sax0, SEXP Say0, SEXP Sax1, SEXP Say1,
         REAL(resultX)[i] = NAN;
         REAL(resultY)[i] = NAN;
       } else {
-        Rf_error("Can't compute segment intersection [i=%d]", i);
+        GEOS_ERROR("Can't compute segment intersection [i=%d]", i);
       }
 
     } else {
@@ -54,7 +55,7 @@ SEXP geos_c_segment_intersection(SEXP Sax0, SEXP Say0, SEXP Sax1, SEXP Say1,
     }
   }
 
-  GEOS_finish_r(handle);
+  GEOS_FINISH();
 
   // transfer protection responsibility to result
   UNPROTECT(2);
@@ -70,7 +71,7 @@ SEXP geos_c_orientation_index(SEXP SAx, SEXP SAy, SEXP SBx, SEXP SBy, SEXP SPx, 
   R_xlen_t size = Rf_xlength(SAx);
   SEXP result = PROTECT(Rf_allocVector(INTSXP, size));
 
-  GEOSContextHandle_t handle = GEOS_init_r();
+  GEOS_INIT();
 
   double* Ax = REAL(SAx);
   double* Ay = REAL(SAy);
@@ -91,7 +92,7 @@ SEXP geos_c_orientation_index(SEXP SAx, SEXP SAy, SEXP SBx, SEXP SBy, SEXP SPx, 
 
       // returns 2 on error
       if (resultCode == 2) {
-        Rf_error("Can't compute orientation index [i=%d]", i);
+        GEOS_ERROR("Can't compute orientation index [i=%d]", i);
       }
 
       INTEGER(result)[i] = resultCode;
@@ -100,7 +101,7 @@ SEXP geos_c_orientation_index(SEXP SAx, SEXP SAy, SEXP SBx, SEXP SBy, SEXP SPx, 
     }
   }
 
-  GEOS_finish_r(handle);
+  GEOS_FINISH();
   UNPROTECT(1);
   return result;
 }
