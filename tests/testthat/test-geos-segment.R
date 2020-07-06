@@ -15,6 +15,14 @@ test_that("segment intersection works", {
     ),
     list(x = NA_real_, y = NA_real_)
   )
+
+  expect_identical(
+    geos_segment_intersection(
+      list(0, 0, 10, 10),
+      list(0, 1, 10, 11)
+    ),
+    list(x = NaN, y = NaN)
+  )
 })
 
 test_that("orientation index works", {
