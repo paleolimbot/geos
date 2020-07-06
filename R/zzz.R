@@ -5,6 +5,6 @@
   requireNamespace("libgeos", quietly = TRUE)
 
   # Initialize geos C globals
-  .Call(c_geos_init)
+  .Call(geos_c_init)
 }
 # nocov end

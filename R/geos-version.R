@@ -22,9 +22,9 @@ geos_version <- function(runtime = TRUE) {
 }
 
 geos_version_base_runtime <- function() {
-  .Call(c_geos_version_runtime)
+  .Call(geos_c_version_runtime)
 }
 
 geos_version_base_build <- function() {
-  .Call(c_geos_version_runtime)
+  .Call(geos_c_version_runtime)
 }
