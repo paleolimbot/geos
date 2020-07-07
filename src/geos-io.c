@@ -23,7 +23,7 @@ SEXP geos_c_read_wkt(SEXP input) {
     if (geometry == NULL) {
       UNPROTECT(1);
       GEOSWKTReader_destroy_r(handle, reader);
-      GEOS_ERROR("GEOS Error [i=%d]: ", i);
+      GEOS_ERROR("[i=%d] ", i);
     } else {
       SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometry));
     }
@@ -41,6 +41,8 @@ SEXP geos_c_write_wkt(SEXP input) {
 
   GEOS_INIT();
   GEOSWKTWriter* writer = GEOSWKTWriter_create_r(handle);
+  GEOSWKTWriter_setTrim_r(handle, writer, 1);
+  GEOSWKTWriter_setOutputDimension_r(handle, writer, 3);
 
   SEXP item;
   GEOSGeometry* geometry;

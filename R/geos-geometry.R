@@ -7,6 +7,9 @@
 #' @return A geos geometry vector
 #' @export
 #'
+#' @examples
+#' as_geos_geometry("LINESTRING (0 1, 3 9)")
+#'
 as_geos_geometry <- function(x, ...) {
   UseMethod("as_geos_geometry")
 }

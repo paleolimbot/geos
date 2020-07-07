@@ -5,13 +5,12 @@
 void geos_common_handle_error(const char *message, void* userdata) {
   char* errorMessage = (char*) userdata;
   unsigned long messageChars = strlen(message);
-  if (messageChars >= BUFSIZ) {
-    strncpy(errorMessage, message, BUFSIZ);
-    errorMessage[BUFSIZ - 1] = '\0';
-
+  if (messageChars >= (GEOS_ERROR_MESSAGE_BUFFER_SIZE - 1)) {
+    strncpy(errorMessage, message, GEOS_ERROR_MESSAGE_BUFFER_SIZE - 1);
+    errorMessage[GEOS_ERROR_MESSAGE_BUFFER_SIZE - 1] = '\0';
   } else {
     strncpy(errorMessage, message, messageChars);
-    errorMessage[messageChars - 1] = '\0';
+    errorMessage[messageChars] = '\0';
   }
 }
 
