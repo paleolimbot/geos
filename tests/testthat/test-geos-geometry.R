@@ -3,6 +3,7 @@ test_that("geos_geometry class works", {
   expect_s3_class(new_geos_geometry(list()), "geos_geometry")
   expect_s3_class(new_geos_geometry(list(NULL)), "geos_geometry")
   expect_error(new_geos_geometry(NULL), "must be a bare list")
+  expect_true(is.na(new_geos_geometry(list(NULL))))
 })
 
 test_that("geos_geometry can be created from well-known text", {

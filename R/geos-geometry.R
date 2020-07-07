@@ -45,6 +45,11 @@ validate_geos_geometry <- function(x) {
 }
 
 #' @export
+is.na.geos_geometry <- function(x) {
+  vapply(unclass(x), is.null, logical(1))
+}
+
+#' @export
 `[.geos_geometry` <- function(x, i) {
   new_geos_geometry(NextMethod(), class(x))
 }
