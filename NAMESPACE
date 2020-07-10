@@ -2,8 +2,12 @@
 
 S3method("[",geos_geometry)
 S3method("[[",geos_geometry)
+S3method(as_geos_geometry,WKB)
+S3method(as_geos_geometry,blob)
 S3method(as_geos_geometry,character)
 S3method(as_geos_geometry,geos_geometry)
+S3method(as_geos_geometry,wk_wkb)
+S3method(as_geos_geometry,wk_wkt)
 S3method(c,geos_geometry)
 S3method(format,geos_geometry)
 S3method(is.na,geos_geometry)

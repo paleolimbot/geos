@@ -26,6 +26,43 @@ as_geos_geometry.character <- function(x, ...) {
   geos_read_wkt(x)
 }
 
+#' @rdname as_geos_geometry
+#' @export
+as_geos_geometry.wk_wkt <- function(x, ...) {
+  geos_read_wkt(x)
+}
+
+#' @rdname as_geos_geometry
+#' @export
+as_geos_geometry.blob <- function(x, ...) {
+  geos_read_wkb(x)
+}
+
+#' @rdname as_geos_geometry
+#' @export
+as_geos_geometry.WKB <- function(x, ...) {
+  geos_read_wkb(x)
+}
+
+#' @rdname as_geos_geometry
+#' @export
+as_geos_geometry.wk_wkb <- function(x, ...) {
+  geos_read_wkb(x)
+}
+
+# dynamically registered in zzz.R
+as_wkt.geos_geometry <- function(x, ..., include_z = TRUE, precision = 16, trim = TRUE) {
+  wk::new_wk_wkt(
+    geos_write_wkt(x, include_z = include_z, precision = precision, trim = trim)
+  )
+}
+as_wkb.geos_geometry <- function(x, ..., include_z = TRUE, include_srid = FALSE, endian = 1) {
+  wk::new_wk_wkb(
+    unclass(geos_write_wkb(x, include_z = include_z, include_srid = include_srid, endian = endian))
+  )
+
+}
+
 #' Create vectors of GEOS geometry objects
 #'
 #' @param x A bare `list()` of external pointers

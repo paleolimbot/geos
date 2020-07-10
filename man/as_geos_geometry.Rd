@@ -4,6 +4,10 @@
 \alias{as_geos_geometry}
 \alias{as_geos_geometry.geos_geometry}
 \alias{as_geos_geometry.character}
+\alias{as_geos_geometry.wk_wkt}
+\alias{as_geos_geometry.blob}
+\alias{as_geos_geometry.WKB}
+\alias{as_geos_geometry.wk_wkb}
 \title{Create GEOS Geometry Vectors}
 \usage{
 as_geos_geometry(x, ...)
@@ -11,6 +15,14 @@ as_geos_geometry(x, ...)
 \method{as_geos_geometry}{geos_geometry}(x, ...)
 
 \method{as_geos_geometry}{character}(x, ...)
+
+\method{as_geos_geometry}{wk_wkt}(x, ...)
+
+\method{as_geos_geometry}{blob}(x, ...)
+
+\method{as_geos_geometry}{WKB}(x, ...)
+
+\method{as_geos_geometry}{wk_wkb}(x, ...)
 }
 \arguments{
 \item{x}{An object to be coerced to a geometry vector}
