@@ -44,4 +44,5 @@ geos_write_wkt(line)
 #> [1] "LINESTRING (30 10, 10 30, 40 40)"
 ```
 
-Operators are a work in progress…
+Operators are a work in progress. ([browse the last commit before the
+rewrite](https://github.com/paleolimbot/geos/tree/bf3ef50a0f01851e2b55b0060d38754495697815)).

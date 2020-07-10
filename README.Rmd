@@ -48,4 +48,4 @@ Create and export a line!
 geos_write_wkt(line)
 ```
 
-Operators are a work in progress...
+Operators are a work in progress. ([browse the last commit before the rewrite](https://github.com/paleolimbot/geos/tree/bf3ef50a0f01851e2b55b0060d38754495697815)).
