@@ -1,6 +1,11 @@
 destination: docs
 
 reference:
+- title: Create and Export GEOS Geometry Vectors
+  desc: Functions that read and write GEOS geometry to common formats.
+  contents:
+  - geos_read_wkt
+  - as_geos_geometry
 - title: Geometry operators
   desc: Functions that operate on one or more geometry vectors
   contents:

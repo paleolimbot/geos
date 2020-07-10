@@ -9,3 +9,4 @@
 ^pkgdown$
 ^data-raw$
 ^LICENSE\.md$
+^vignettes/articles$

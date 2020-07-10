@@ -1,0 +1,113 @@
+---
+title: "Using the GEOS C API"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+To run these examples, you will need to install [libgeos](https://paleolimbot.github.io/libgeos) and [Rcpp](https://cran.r-project.org/package=Rcpp).
+
+## `GEOSversion()` and `GEOS_CAPI_VERSION`
+
+[`GEOSversion()`](https://github.com/libgeos/geos/blob/3.8.1/capi/geos_c.h.in#L215) returns the runtime version of GEOS, which is the value of [`GEOS_CAPI_VERSION`](https://github.com/libgeos/geos/blob/3.8.1/capi/geos_c.h.in#L73) in the the linked binary. A difference between these two values indicates that the headers used to compile your code might be out of sync with the version actually being used. See `geos_version()` to access this function from R.
+
+```{Rcpp}
+// [[Rcpp::depends(libgeos)]]
+#include <Rcpp.h>
+#include "libgeos.h"
+#include "libgeos.c"
+
+// [[Rcpp::export]]
+void test_version() {
+  libgeos_init_api();
+  Rcpp::Rcout << "Runtime version: " << GEOSversion() << "\n" << 
+    "Build version: " << GEOS_CAPI_VERSION << "\n";
+}
+```
+
+```{r}
+test_version()
+```
+
+
+## `GEOSSegmentIntersection_r()`
+
+[`GEOSSegmentIntersection_r()`](https://github.com/libgeos/geos/blob/3.8.1/capi/geos_c.h.in#L749-L772) calculates the (potential) intersection of two segments, returning `0` on error or `-1` if the segments do not intersect. Passing a non-finite value as an input coordinate will result in an error code. See `geos_segment_intersection()` to access this function from R.
+
+```{Rcpp}
+// [[Rcpp::depends(libgeos)]]
+#include <Rcpp.h>
+#include "libgeos.h"
+#include "libgeos.c"
+
+// [[Rcpp::export]]
+void test_intersection() {
+  libgeos_init_api();
+  GEOSContextHandle_t handle = GEOS_init_r();
+  double outX, outY;
+  int result = GEOSSegmentIntersection_r(
+    handle,
+    0, 0, 1, 1, // segment 1 (x, y, x, y)
+    1, 0, 0, 1, // segment 2 (x, y, x, y)
+    &outX, &outY // pointers to output
+  );
+  
+  if (result == 1) {
+    Rcpp::Rcout << "Segments intersect at " << outX << ", " << outY << "\n";
+  } else if (result == -1) {
+    Rcpp::Rcout << "Segments do not intersect\n";
+  } else {
+    Rcpp::Rcout << "Error calculating segment intersection\n";
+  }
+  
+  
+  GEOS_finish_r(handle);
+}
+```
+
+```{r}
+test_intersection()
+```
+
+## `GEOSOrientationIndex_r()`
+
+[`GEOSOrientationIndex_r()`](https://github.com/libgeos/geos/blob/3.8.1/capi/geos_c.h.in#L1208-L1217) calculates whether or not a point is to the right (`-1`) or the left (`1`) of a segment (returns `0` if point is colinear and `2` on error). Passing a non-finite value as an input coordinate will result in an error code. See `geos_orientation_index()` to access this function from R.
+
+```{Rcpp}
+// [[Rcpp::depends(libgeos)]]
+#include <Rcpp.h>
+#include "libgeos.h"
+#include "libgeos.c"
+
+// [[Rcpp::export]]
+void test_orientation() {
+  libgeos_init_api();
+  GEOSContextHandle_t handle = GEOS_init_r();
+  
+  int result = GEOSOrientationIndex_r(
+    handle,
+    0, 0, 1, 0, // segment (x, y, x, y)
+    0.5, 0.5 // point (x, y)
+  );
+  
+  if (result == 1) {
+    Rcpp::Rcout << "Point is to the left of segment\n";
+  } else if (result == -1) {
+    Rcpp::Rcout << "Point is to the right of segment\n";
+  } else if (result == 0) {
+    Rcpp::Rcout << "Point is colinear with segment\n";
+  } else {
+    Rcpp::Rcout << "Error calculating orientation\n";
+  }
+  
+  GEOS_finish_r(handle);
+}
+```
+
+```{r}
+test_orientation()
+```

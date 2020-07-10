@@ -6,7 +6,6 @@
 #'   version if a different version of the
 #'   [libgeos package][libgeos::libgeos_version] was used to build
 #'   this package.
-#'
 #' @export
 #'
 #' @examples
