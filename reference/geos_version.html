@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>GEOS information — geos_version • geom</title>
+<title>GEOS version information — geos_version • geos</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="GEOS information — geos_version" />
-<meta property="og:description" content="GEOS information" />
+<meta property="og:title" content="GEOS version information — geos_version" />
+<meta property="og:description" content="GEOS version information" />
 
 
 
@@ -71,7 +71,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">geom</a>
+        <a class="navbar-link" href="../index.html">geos</a>
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
       </span>
     </div>
@@ -87,10 +87,22 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/articles/geos-c-api.html">Using the GEOS C API</a>
+    </li>
+  </ul>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/paleolimbot/geom/">
+  <a href="https://github.com/paleolimbot/geos/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -108,24 +120,35 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>GEOS information</h1>
-    <small class="dont-index">Source: <a href='https://github.com/paleolimbot/geom/blob/master/R/geos-version.R'><code>R/geos-version.R</code></a></small>
+    <h1>GEOS version information</h1>
+    <small class="dont-index">Source: <a href='https://github.com/paleolimbot/geos/blob/master/R/geos-version.R'><code>R/geos-version.R</code></a></small>
     <div class="hidden name"><code>geos_version.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>GEOS information</p>
+    <p>GEOS version information</p>
     </div>
 
-    <pre class="usage"><span class='fu'>geos_version</span>()
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_version.html'>geos_version</a></span>(runtime = <span class='fl'>TRUE</span>)</pre>
 
-<span class='fu'>geos_capi_version</span>()</pre>
-
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>runtime</th>
+      <td><p>Use FALSE to return the build-time
+GEOS version, which may be different than the runtime
+version if a different version of the
+<a href='https://rdrr.io/pkg/libgeos/man/libgeos_version.html'>libgeos package</a> was used to build
+this package.</p></td>
+    </tr>
+    </table>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>geos_version</span>()</div><div class='output co'>#&gt; [1] ‘3.8.1’</div><div class='input'><span class='fu'>geos_capi_version</span>()</div><div class='output co'>#&gt; [1] ‘1.13.3’</div><div class='input'>
-</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_version.html'>geos_version</a></span>()</div><div class='output co'>#&gt; [1] ‘3.8.1’</div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_version.html'>geos_version</a></span>(runtime = <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; [1] ‘3.8.1’</div><div class='input'>
+<span class='co'># check for a minimum version of GEOS</span>
+<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_version.html'>geos_version</a></span>() <span class='op'>&gt;=</span> <span class='st'>"3.8.1"</span></div><div class='output co'>#&gt; [1] TRUE</div><div class='input'></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -141,7 +164,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>
