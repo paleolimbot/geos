@@ -1,7 +1,13 @@
 
 library(tidyverse)
 
-pkg <- list.files("src", "\\.(h|cpp)$", full.names = TRUE) %>%
+# download geoc_c.h for 3.8.1
+curl::curl_download(
+  "https://raw.githubusercontent.com/libgeos/geos/3.8.1/capi/geos_c.h.in",
+  "data-raw/geos_c.h.in"
+)
+
+pkg <- list.files("src", "\\.(h|c)$", full.names = TRUE) %>%
   lapply(read_file) %>%
   unlist() %>%
   str_extract_all("[0-9A-Za-z_]+_r\\(") %>%
@@ -11,9 +17,22 @@ pkg <- list.files("src", "\\.(h|cpp)$", full.names = TRUE) %>%
 
 
 ignore <- c(
+  # not used for handling
+  "GEOSContext_setErrorHandler_r",
+  "GEOSContext_setNoticeHandler_r",
+
+  # not needed
+  "GEOSWKTWriter_getOutputDimension_r",
+  "GEOSWKBWriter_getOutputDimension_r",
+  "GEOSWKBWriter_getByteOrder_r",
+  "GEOSWKBWriter_getIncludeSRID_r",
+
   # deprecated
+  "initGEOS_r",
+  "finishGEOS_r",
   "GEOSGeomFromWKT_r",
   "GEOSGeomToWKT_r",
+  "GEOSWKTWriter_setOld3D_r",
   "GEOS_getWKBOutputDims_r",
   "GEOS_setWKBOutputDims_r",
   "GEOS_getWKBByteOrder_r",
@@ -24,22 +43,17 @@ ignore <- c(
   "GEOSGeomToHEX_buf_r",
   "GEOSUnionCascaded_r",
 
-  # not in GEOS 3.8 (what I have)
-  "GEOSCoordSeq_setXY_r",
-  "GEOSCoordSeq_setXYZ_r",
-  "GEOSCoordSeq_getXY_r",
-  "GEOSCoordSeq_getXYZ_r",
-  "GEOSGeom_createPointFromXY_r",
-
   # using other buffer interface
   "GEOSBuffer_r",
-  "GEOSBufferWithStyle_r"
+  "GEOSBufferWithStyle_r",
+  "GEOSSingleSidedBuffer_r"
 )
 
 
-h <- read_lines("data-raw/geos_c.h")
+h <- read_lines("data-raw/geos_c.h.in")
 func_sum <- h %>%
-  str_extract("GEOS_DLL\\s*\\*?\\s*[0-9A-Za-z_]+_r") %>%
+  str_extract("GEOS_DLL\\s*\\*?\\s*[0-9A-Za-z_]+_r\\(") %>%
+  str_remove("\\($") %>%
   tibble(funcs = ., line = seq_along(.)) %>%
   filter(!is.na(funcs)) %>%
   separate(funcs, c("dll", "fun"), "\\s+\\*?\\s*") %>%
@@ -48,7 +62,7 @@ func_sum <- h %>%
     used = fun %in% pkg,
     ignored = fun %in% ignore,
     bullet = case_when(ignored ~ "(ignored)", used ~ "[x]", TRUE ~ "[ ]"),
-    item = glue::glue("- {bullet} [{fun}](https://github.com/libgeos/geos/blob/master/capi/geos_c.h.in#L{line})")
+    item = glue::glue("- {bullet} [{fun}](https://github.com/libgeos/geos/blob/3.8.1/capi/geos_c.h.in#L{line})")
   )
 
 func_sum %>%
