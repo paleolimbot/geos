@@ -4,11 +4,11 @@
 \name{geos-package}
 \alias{geos}
 \alias{geos-package}
-\title{geos: Open Source Geometry Engine (GEOS) R API}
+\title{geos: Open Source Geometry Engine ('GEOS') R API}
 \description{
 Provides an R API to the Open Source Geometry Engine
-  (GEOS) library and a vector format with which to efficiently
-  store GEOS geometries.
+  ('GEOS') library and a vector format with which to efficiently
+  store 'GEOS' geometries.
 }
 \seealso{
 Useful links:

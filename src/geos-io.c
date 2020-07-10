@@ -62,7 +62,17 @@ SEXP geos_c_write_wkt(SEXP input, SEXP includeZ, SEXP precision, SEXP trim) {
 
     geometry = (GEOSGeometry*) R_ExternalPtrAddr(item);
     GEOS_CHECK_GEOMETRY(geometry, i);
-    SET_STRING_ELT(result, i, Rf_mkChar(GEOSWKTWriter_write_r(handle, writer, geometry)));
+
+    char* output = GEOSWKTWriter_write_r(handle, writer, geometry);
+    if (output == NULL) {
+      // don't know how to make this occur
+      UNPROTECT(1); // result # nocov
+      GEOSWKTWriter_destroy_r(handle, writer); // # nocov
+      GEOS_ERROR("[i=%d] ", i + 1); // # nocov
+    }
+
+    SET_STRING_ELT(result, i, Rf_mkChar(output));
+    GEOSFree_r(handle, output);
   }
 
   GEOSWKTWriter_destroy_r(handle, writer);
