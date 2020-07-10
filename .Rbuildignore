@@ -1,6 +1,5 @@
-^geom\.Rproj$
+^geos\.Rproj$
 ^\.Rproj\.user$
-^src/Makevars$
 ^windows$
 ^inst$
 ^\.github$
@@ -9,3 +8,5 @@
 ^docs$
 ^pkgdown$
 ^data-raw$
+^LICENSE\.md$
+^vignettes/articles$

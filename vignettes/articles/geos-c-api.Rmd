@@ -1,0 +1,281 @@
+---
+title: "Using the GEOS C API"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+To run these examples, you will need to install [libgeos](https://paleolimbot.github.io/libgeos) and [Rcpp](https://cran.r-project.org/package=Rcpp).
+
+## GEOS version information
+
+[`GEOSversion()`](https://github.com/libgeos/geos/blob/3.8.1/capi/geos_c.h.in#L215) returns the runtime version of GEOS, which is the value of [`GEOS_CAPI_VERSION`](https://github.com/libgeos/geos/blob/3.8.1/capi/geos_c.h.in#L73) in the the linked binary. A difference between these two values indicates that the headers used to compile your code might be out of sync with the version actually being used. See `geos_version()` to access this function from R.
+
+```{Rcpp}
+// [[Rcpp::depends(libgeos)]]
+#include <Rcpp.h>
+#include "libgeos.h"
+#include "libgeos.c"
+
+// [[Rcpp::export]]
+void test_version() {
+  libgeos_init_api();
+  Rcpp::Rcout << "Runtime version: " << GEOSversion() << "\n" << 
+    "Build version: " << GEOS_CAPI_VERSION << "\n";
+}
+```
+
+```{r}
+test_version()
+```
+
+## Non-geometry functions
+
+These functions operate on `double` coordinate values rather than `GEOSGeometry*` pointers.
+
+### `GEOSSegmentIntersection_r()`
+
+[`GEOSSegmentIntersection_r()`](https://github.com/libgeos/geos/blob/3.8.1/capi/geos_c.h.in#L749-L772) calculates the (potential) intersection of two segments, returning `0` on error or `-1` if the segments do not intersect. Passing a non-finite value as an input coordinate will result in an error code. See `geos_segment_intersection()` to access this function from R.
+
+```{Rcpp}
+// [[Rcpp::depends(libgeos)]]
+#include <Rcpp.h>
+#include "libgeos.h"
+#include "libgeos.c"
+
+// [[Rcpp::export]]
+void test_intersection() {
+  libgeos_init_api();
+  GEOSContextHandle_t handle = GEOS_init_r();
+  double outX, outY;
+  int result = GEOSSegmentIntersection_r(
+    handle,
+    0, 0, 1, 1, // segment 1 (x, y, x, y)
+    1, 0, 0, 1, // segment 2 (x, y, x, y)
+    &outX, &outY // pointers to output
+  );
+  
+  if (result == 1) {
+    Rcpp::Rcout << "Segments intersect at " << outX << ", " << outY << "\n";
+  } else if (result == -1) {
+    Rcpp::Rcout << "Segments do not intersect\n";
+  } else {
+    Rcpp::Rcout << "Error calculating segment intersection\n";
+  }
+  
+  
+  GEOS_finish_r(handle);
+}
+```
+
+```{r}
+test_intersection()
+```
+
+### `GEOSOrientationIndex_r()`
+
+[`GEOSOrientationIndex_r()`](https://github.com/libgeos/geos/blob/3.8.1/capi/geos_c.h.in#L1208-L1217) calculates whether or not a point is to the right (`-1`) or the left (`1`) of a segment (returns `0` if point is colinear and `2` on error). Passing a non-finite value as an input coordinate will result in an error code. See `geos_orientation_index()` to access this function from R.
+
+```{Rcpp}
+// [[Rcpp::depends(libgeos)]]
+#include <Rcpp.h>
+#include "libgeos.h"
+#include "libgeos.c"
+
+// [[Rcpp::export]]
+void test_orientation() {
+  libgeos_init_api();
+  GEOSContextHandle_t handle = GEOS_init_r();
+  
+  int result = GEOSOrientationIndex_r(
+    handle,
+    0, 0, 1, 0, // segment (x, y, x, y)
+    0.5, 0.5 // point (x, y)
+  );
+  
+  if (result == 1) {
+    Rcpp::Rcout << "Point is to the left of segment\n";
+  } else if (result == -1) {
+    Rcpp::Rcout << "Point is to the right of segment\n";
+  } else if (result == 0) {
+    Rcpp::Rcout << "Point is colinear with segment\n";
+  } else {
+    Rcpp::Rcout << "Error calculating orientation\n";
+  }
+  
+  GEOS_finish_r(handle);
+}
+```
+
+```{r}
+test_orientation()
+```
+
+## Creating and exporting geometries
+
+These functions are the primary method by which `GEOSGeometry*` pointers are created.
+
+### `WKTReader_*()` and `WKTWriter*()`
+
+The [`WKTReader`](https://github.com/libgeos/geos/blob/3.8.1/capi/geos_c.h.in#L1232-L1239) and [`WKTWriter`](https://github.com/libgeos/geos/blob/3.8.1/capi/geos_c.h.in#L1241-L1262) parse and export [well-known text](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry). Note that embedded SRIDs are not parsed by the WKT reader (you can use `wk::wkt_translate_wkb()` if you need to work with embedded SRID in well-known text). See `geos_read_wkt()` and `geos_write_wkt()` to access these functions from R.
+
+```{Rcpp}
+// [[Rcpp::depends(libgeos)]]
+#include <Rcpp.h>
+#include "libgeos.h"
+#include "libgeos.c"
+
+// [[Rcpp::export]]
+void test_wkt(Rcpp::CharacterVector input) {
+  libgeos_init_api();
+  GEOSContextHandle_t handle = GEOS_init_r();
+  
+  const char* inputString = Rcpp::as<const char*>(input[0]);
+  
+  GEOSWKTReader* reader = GEOSWKTReader_create_r(handle);
+  
+  GEOSWKTWriter* writer = GEOSWKTWriter_create_r(handle);
+  GEOSWKTWriter_setTrim_r(handle, writer, 0); // 1 for trim = true
+  GEOSWKTWriter_setRoundingPrecision_r(handle, writer, 16);
+  GEOSWKTWriter_setOutputDimension_r(handle, writer, 3); // use 2 to exclude Z values
+  
+  GEOSGeometry* geometry = GEOSWKTReader_read_r(handle, reader, inputString);
+  if (geometry == NULL) {
+    Rcpp::Rcout << "Error occurred reading well-known text\n";
+    GEOSWKTWriter_destroy_r(handle, writer);
+    GEOSWKTReader_destroy_r(handle, reader);
+    GEOS_finish_r(handle);
+    return;
+  } 
+  
+  char* output = GEOSWKTWriter_write_r(handle, writer, geometry);
+  if (output == NULL) {
+    Rcpp::Rcout << "Error occurred writing geometry\n";
+  } else {
+    Rcpp::Rcout << "Wrote geometry " << output << "\n";
+    GEOSFree_r(handle, output);
+  }
+  
+  GEOSGeom_destroy_r(handle, geometry);
+  GEOSWKTWriter_destroy_r(handle, writer);
+  GEOSWKTReader_destroy_r(handle, reader);
+  GEOS_finish_r(handle);
+}
+```
+
+```{r}
+test_wkt("POINT (30 10)")
+test_wkt("NOTWKT")
+```
+
+### `WKBReader_*()` and `WKBWriter*()`
+
+The [`WKBReader`](https://github.com/libgeos/geos/blob/3.8.1/capi/geos_c.h.in#L1264-L1277) and [`WKBWriter`](https://github.com/libgeos/geos/blob/3.8.1/capi/geos_c.h.in#L1279-L1295) parse and export [well-known binary](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry#Well-known_binary). This is very fast, and is the primary method by which the geos R package creates geometries. See `geos_read_wkb()` and `geos_write_wkb()` to access these functions from R. 
+
+Note that the GEOS WKB writer does not handle an empty point; however, GEOS functions (like the intersection operator) generally don't return an empty point. If you need to roundtrip points that may be empty, consider using [GEOSGeom_createPointFromXY_r()](https://github.com/libgeos/geos/blob/3.8.1/capi/geos_c.h.in#L496-L499) and [`GEOSGeomGet(X|Y|Z)_r()`](https://github.com/libgeos/geos/blob/3.8.1/capi/geos_c.h.in#L1098-L1100).
+
+```{Rcpp}
+// [[Rcpp::depends(libgeos)]]
+#include <Rcpp.h>
+#include "libgeos.h"
+#include "libgeos.c"
+
+// [[Rcpp::export]]
+void test_wkb(Rcpp::List input) {
+  libgeos_init_api();
+  GEOSContextHandle_t handle = GEOS_init_r();
+  
+  Rcpp::RawVector inputRaw = input[0];
+  
+  GEOSWKBReader* reader = GEOSWKBReader_create_r(handle);
+  
+  GEOSWKBWriter* writer = GEOSWKBWriter_create_r(handle);
+  GEOSWKBWriter_setOutputDimension_r(handle, writer, 3); // use 2 to exclude Z values
+  GEOSWKBWriter_setIncludeSRID_r(handle, writer, 1); // use 0 to exclude SRID
+
+  GEOSGeometry* geometry = GEOSWKBReader_read_r(handle, reader, &inputRaw[0], inputRaw.size());
+  if (geometry == NULL) {
+    Rcpp::Rcout << "Error occurred reading well-known binary\n";
+    GEOSWKBWriter_destroy_r(handle, writer);
+    GEOSWKBReader_destroy_r(handle, reader);
+    GEOS_finish_r(handle);
+    return;
+  } 
+  
+  size_t outputSize;
+  unsigned char* output = GEOSWKBWriter_write_r(handle, writer, geometry, &outputSize);
+  if (output == NULL) {
+    Rcpp::Rcout << "Error occurred writing geometry\n";
+  } else {
+    Rcpp::RawVector outputRaw(outputSize);
+    memcpy(&outputRaw[0], output, outputSize);
+    Rcpp::Rcout << "Wrote geometry! (length " << outputSize << " bytes)\n";
+    GEOSFree_r(handle, output);
+  }
+  
+  GEOSGeom_destroy_r(handle, geometry);
+  GEOSWKBWriter_destroy_r(handle, writer);
+  GEOSWKBReader_destroy_r(handle, reader);
+  GEOS_finish_r(handle);
+}
+```
+
+```{r}
+test_wkb(wk::wkt_translate_wkb("POINT (0 1)"))
+test_wkb(as.raw(0x00)) # incomplete input
+# GEOS  WKB writer won't handle an empty point
+test_wkb(wk::wkt_translate_wkb("POINT (nan nan)"))
+```
+
+### Creating and exporting point vectors
+
+WKB can be slow for vectors of points (and does not handle an empty point or POINT (nan nan). Instead, you can use [GEOSGeom_createPointFromXY_r()](https://github.com/libgeos/geos/blob/3.8.1/capi/geos_c.h.in#L496-L499) and [`GEOSGeomGet(X|Y|Z)_r()`](https://github.com/libgeos/geos/blob/3.8.1/capi/geos_c.h.in#L1098-L1100). To support a Z coordinate, you will need to use to create and export the geometry using a [coordinate sequence](https://github.com/libgeos/geos/blob/3.8.1/capi/geos_c.h.in#L264). Note that you must always check `GEOSisEmpty_r()` to check for POINT(nan nan) or POINT EMPTY, as the coordinate sequence representation of a point geometry has changed between GEOS versions.
+
+```{Rcpp}
+// [[Rcpp::depends(libgeos)]]
+#include <Rcpp.h>
+#include "libgeos.h"
+#include "libgeos.c"
+
+// [[Rcpp::export]]
+void test_xy(double x, double y) {
+  libgeos_init_api();
+  GEOSContextHandle_t handle = GEOS_init_r();
+  
+  GEOSGeometry* geometry = GEOSGeom_createPointFromXY_r(handle, x, y);
+  if (geometry == NULL) {
+    Rcpp::Rcout << "Error occurred reading XY\n";
+    GEOS_finish_r(handle);
+    return;
+  }
+  
+  double outX, outY;
+  int resultX = 1;
+  int resultY = 1;
+  
+  if (GEOSisEmpty_r(handle, geometry)) {
+    outX = NA_REAL;
+    outY = NA_REAL;
+  } else {
+    resultX = GEOSGeomGetX_r(handle, geometry, &outX);
+    resultY = GEOSGeomGetY_r(handle, geometry, &outY);
+  }
+  
+  if (resultX == 0 || resultY == 0) {
+    Rcpp::Rcout << "Error occurred writing XY";
+  } else {
+    Rcpp::Rcout << "Wrote point (" << outX << ", " << outY << ")\n";
+  }
+  
+  GEOS_finish_r(handle);
+}
+```
+
+```{r}
+test_xy(1, 2)
+test_xy(NA, NA)
+```

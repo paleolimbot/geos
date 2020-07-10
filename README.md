@@ -7,17 +7,14 @@
 
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
-![R-CMD-check](https://github.com/paleolimbot/geom/workflows/R-CMD-check/badge.svg)
+![R-CMD-check](https://github.com/paleolimbot/geos/workflows/R-CMD-check/badge.svg)
 [![Codecov test
-coverage](https://codecov.io/gh/paleolimbot/geom/branch/master/graph/badge.svg)](https://codecov.io/gh/paleolimbot/geom?branch=master)
+coverage](https://codecov.io/gh/paleolimbot/geos/branch/master/graph/badge.svg)](https://codecov.io/gh/paleolimbot/geom?branch=master)
 <!-- badges: end -->
 
-The goal of geom is to provide [low-level access to the GEOS
-library](https://geos.osgeo.org/doxygen/geos__c_8h_source.html),
-supporting several common input/output formats to facilitate
-geoprocessing in R. This package tries to solve the “hard” problems
-associated with wrapping a C/C++ library, exposing an R API and a C++
-API that can be used in dependency packages.
+The goal of geom is to provide [access to the GEOS C
+API](https://geos.osgeo.org/doxygen/geos__c_8h_source.html) by
+vectorizing the C functions for use in R.
 
 ## Installation
 
@@ -26,33 +23,26 @@ You can install the development version from
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("paleolimbot/geom")
+devtools::install_github("paleolimbot/geos")
 ```
 
 If you can load the package, you’re good to go\!
 
 ``` r
-library(geom)
+library(geos)
 ```
 
 ## Example
 
-Create a line, buffer it, and plot\!
+Create and export a line\!
 
 ``` r
-line <- geo_wkt("LINESTRING (30 10, 10 30, 40 40)")
-geo_plot(geos_buffer(line, width = 4), col = "grey90")
-geo_plot_add(line)
+(line <- geos_read_wkt("LINESTRING (30 10, 10 30, 40 40)"))
+#> <geos_geometry[1]>
+#> [1] LINESTRING (30 10, 10 30, 40 40)
+geos_write_wkt(line)
+#> [1] "LINESTRING (30 10, 10 30, 40 40)"
 ```
 
-<img src="man/figures/README-ex-plot-1.png" width="100%" />
-
-## Philosophy
-
-  - Minimize conversion between in-memory formats
-  - Operate one feature at a time
-  - Use [vctrs](https://vctrs.r-lib.org/) where possible to make sure
-    that geometry vectors can exist in a data frame.
-  - Clear size and type stability
-  - Don’t consider spatial constraints (That’s what
-    [sf](https://r-spatial.github.io/sf) is so good at\!)
+Operators are a work in progress. ([browse the last commit before the
+rewrite](https://github.com/paleolimbot/geos/tree/bf3ef50a0f01851e2b55b0060d38754495697815)).

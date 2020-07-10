@@ -1,5 +1,5 @@
-Package: geom
-Title: Geometry vectors
+Package: geos
+Title: Open Source Geometry Engine ('GEOS') R API
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "Dewey",
@@ -7,24 +7,22 @@ Authors@R:
            role = c("aut", "cre"),
            email = "dewey@fishandwhistle.net",
            comment = c(ORCID = "0000-0002-9415-4582"))
-Description: Provides data structures to convert various
-  representations of geometry.
-License: GPL-3
+Description: Provides an R API to the Open Source Geometry Engine
+  ('GEOS') library and a vector format with which to efficiently
+  store 'GEOS' geometries.
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.1
 Suggests: 
     testthat (>= 2.1.0),
-    tidyselect (>= 1.0.0),
-    vdiffr
+    wk
 Imports: 
-    rlang,
-    tibble,
-    vctrs,
+    libgeos (>= 3.8.1-0),
     Rcpp
-SystemRequirements: GEOS (>= 3.4.0)
-URL: https://paleolimbot.github.io/geom, https://github.com/paleolimbot/geom
-BugReports: https://github.com/paleolimbot/geom/issues
+Remotes: paleolimbot/libgeos
+URL: https://paleolimbot.github.io/geos, https://github.com/paleolimbot/geos
+BugReports: https://github.com/paleolimbot/geos/issues
 LinkingTo: 
-    Rcpp
+    libgeos
