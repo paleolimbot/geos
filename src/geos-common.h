@@ -41,5 +41,5 @@ SEXP geos_common_geometry_xptr(GEOSGeometry* geometry);
 // check geometry coming out of an externalptr
 #define GEOS_CHECK_GEOMETRY(geometry, i)  \
   if (geometry == NULL) {   \
-    Rf_error("External pointer is not valid [i=%d]", i);  \
+    Rf_error("External pointer is not valid [i=%d]", i + 1);  \
   }

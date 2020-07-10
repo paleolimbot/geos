@@ -46,8 +46,9 @@ SEXP geos_c_segment_intersection(SEXP Sax0, SEXP Say0, SEXP Sax1, SEXP Say1,
         REAL(resultX)[i] = NAN;
         REAL(resultY)[i] = NAN;
       } else {
-        UNPROTECT(2);
-        GEOS_ERROR("Can't compute segment intersection [i=%d]", i);
+        // this would fire if any value were NaN, which we have checked above
+        UNPROTECT(2); // # nocov
+        GEOS_ERROR("Can't compute segment intersection [i=%d]", i + 1); // # nocov
       }
 
     } else {
@@ -93,8 +94,9 @@ SEXP geos_c_orientation_index(SEXP SAx, SEXP SAy, SEXP SBx, SEXP SBy, SEXP SPx, 
 
       // returns 2 on error
       if (resultCode == 2) {
-        UNPROTECT(1);
-        GEOS_ERROR("Can't compute orientation index [i=%d]", i);
+        // this would fire if any value were NaN, which we have checked above
+        UNPROTECT(1); // # nocov
+        GEOS_ERROR("Can't compute orientation index [i=%d]", i + 1); // # nocov
       }
 
       INTEGER(result)[i] = resultCode;

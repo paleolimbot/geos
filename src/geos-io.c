@@ -23,7 +23,7 @@ SEXP geos_c_read_wkt(SEXP input) {
     if (geometry == NULL) {
       UNPROTECT(1); // result
       GEOSWKTReader_destroy_r(handle, reader);
-      GEOS_ERROR("[i=%d] ", i);
+      GEOS_ERROR("[i=%d] ", i + 1);
     } else {
       SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometry));
     }
@@ -96,7 +96,7 @@ SEXP geos_c_read_wkb(SEXP input) {
     if (geometry == NULL) {
       UNPROTECT(1);
       GEOSWKBReader_destroy_r(handle, reader);
-      GEOS_ERROR("[i=%d] ", i);
+      GEOS_ERROR("[i=%d] ", i + 1);
     } else {
       SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometry));
     }
@@ -146,7 +146,7 @@ SEXP geos_c_write_wkb(SEXP input, SEXP includeZ, SEXP includeSRID, SEXP endian) 
     // returns NULL on error (e.g., when trying to write an empty point)
     if (wkbPtr == NULL) {
       UNPROTECT(1);
-      GEOS_ERROR("[i=%d] ", i);
+      GEOS_ERROR("[i=%d] ", i + 1);
     }
 
     SEXP itemWKB = PROTECT(Rf_allocVector(RAWSXP, itemSize));

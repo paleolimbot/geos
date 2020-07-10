@@ -58,3 +58,8 @@ test_that("orientation index works", {
     NA_integer_
   )
 })
+
+test_that("invalid objects in input cause reasonable errors", {
+  expect_error(geos_segment_intersection(list(1, 2, 3), list(1, 2, 3, 4)), "list\\(\\) of 'numeric'")
+  expect_error(geos_orientation_index(list(1, 2, 3), list(1, 2)), "list\\(\\) of 'numeric'")
+})

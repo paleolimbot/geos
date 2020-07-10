@@ -26,5 +26,5 @@ geos_version_base_runtime <- function() {
 }
 
 geos_version_base_build <- function() {
-  .Call(geos_c_version_runtime)
+  .Call(geos_c_version_build)
 }

@@ -30,6 +30,11 @@ test_that("WKT reader works", {
 
   # error parse
   expect_error(geos_read_wkt("NOPE"), "ParseException")
+
+  # this specifically is firing an error longer than the buffer used to store the error (1024 chars)
+  # to make sure this doesn't crash R
+  really_long_bad_wkt <- strrep("A", 2048)
+  expect_error(geos_read_wkt(really_long_bad_wkt), "ParseException")
 })
 
 test_that("WKB reader works", {
@@ -84,4 +89,9 @@ test_that("WKB reader works", {
     geos_write_wkb(geos_read_wkt("POINT EMPTY")),
     "Empty Points cannot be represented"
   )
+
+  # attempt to read invalid WKB
+  wkb <- wk::wkt_translate_wkb("POINT (1 1)", endian = 1)
+  wkb[[1]][3] <- as.raw(0xff)
+  expect_error(geos_read_wkb(wkb), "Unknown WKB type")
 })
