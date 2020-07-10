@@ -181,18 +181,31 @@ SEXP geos_c_read_xy(SEXP x, SEXP y) {
   GEOS_INIT();
 
   GEOSGeometry* geometry;
+  GEOSCoordSequence* seq;
 
   for (R_xlen_t i = 0; i < size; i++) {
-    geometry = GEOSGeom_createPointFromXY_r(handle, px[i], py[i]);
+    seq = NULL;
+    if (ISNA(px[i]) && ISNA(py[i])) {
+      geometry = GEOSGeom_createEmptyPoint_r(handle);
+    } else {
+      seq = GEOSCoordSeq_create_r(handle, 1, 0);
+      GEOSCoordSeq_setXY_r(handle, seq, 0, px[i], py[i]);
+      geometry = GEOSGeom_createPoint_r(handle, seq);
+    }
 
-    // returns NULL on error
     if (geometry == NULL) {
       // don't know how to make this fire
-      UNPROTECT(1); // result # nocov
-      GEOS_ERROR("[i=%d] ", i + 1); // # nocov
-    } else {
-      SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometry));
+      // # nocov start
+      if (seq != NULL) {
+        GEOSCoordSeq_destroy_r(handle, seq);
+      }
+
+      UNPROTECT(1); // result
+      GEOS_ERROR("[i=%d] ", i + 1);
+      // # nocov end
     }
+
+    SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometry));
   }
 
   GEOS_FINISH();

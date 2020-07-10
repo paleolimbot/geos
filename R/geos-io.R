@@ -59,5 +59,5 @@ geos_read_xy <- function(point) {
 #' @rdname geos_read_wkt
 #' @export
 geos_write_xy <- function(geom) {
-  .Call(geos_c_write_xy, geom)
+  .Call(geos_c_write_xy, as_geos_geometry(geom))
 }
