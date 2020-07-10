@@ -59,13 +59,11 @@ SEXP geos_c_segment_intersection(SEXP Sax0, SEXP Say0, SEXP Sax1, SEXP Say1,
 
   GEOS_FINISH();
 
-  // transfer protection responsibility to result
-  UNPROTECT(2);
   const char* names[] = {"x", "y", ""};
   SEXP result = PROTECT(Rf_mkNamed(VECSXP, names));
   SET_VECTOR_ELT(result, 0, resultX);
   SET_VECTOR_ELT(result, 1, resultY);
-  UNPROTECT(1);
+  UNPROTECT(3); // resultX, resultY, result
   return result;
 }
 

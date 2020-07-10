@@ -171,3 +171,79 @@ SEXP geos_c_write_wkb(SEXP input, SEXP includeZ, SEXP includeSRID, SEXP endian) 
   UNPROTECT(1); // result
   return result;
 }
+
+SEXP geos_c_read_xy(SEXP x, SEXP y) {
+  R_xlen_t size = Rf_xlength(x);
+  double* px = REAL(x);
+  double* py = REAL(y);
+  SEXP result = PROTECT(Rf_allocVector(VECSXP, size));
+
+  GEOS_INIT();
+
+  GEOSGeometry* geometry;
+
+  for (R_xlen_t i = 0; i < size; i++) {
+    geometry = GEOSGeom_createPointFromXY_r(handle, px[i], py[i]);
+
+    // returns NULL on error
+    if (geometry == NULL) {
+      // don't know how to make this fire
+      UNPROTECT(1); // result # nocov
+      GEOS_ERROR("[i=%d] ", i + 1); // # nocov
+    } else {
+      SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometry));
+    }
+  }
+
+  GEOS_FINISH();
+  UNPROTECT(1); // result
+  return result;
+}
+
+SEXP geos_c_write_xy(SEXP input) {
+  R_xlen_t size = Rf_xlength(input);
+  SEXP resultX = PROTECT(Rf_allocVector(REALSXP, size));
+  SEXP resultY = PROTECT(Rf_allocVector(REALSXP, size));
+  double* px = REAL(resultX);
+  double* py = REAL(resultY);
+
+  GEOS_INIT();
+
+  SEXP item;
+  GEOSGeometry* geometry;
+  int codeX, codeY;
+  for (R_xlen_t i = 0; i < size; i++) {
+    item = VECTOR_ELT(input, i);
+
+    if (item == R_NilValue) {
+      px[i] = NA_REAL;
+      py[i] = NA_REAL;
+      continue;
+    }
+
+    geometry = (GEOSGeometry*) R_ExternalPtrAddr(item);
+    GEOS_CHECK_GEOMETRY(geometry, i);
+
+    if (GEOSisEmpty_r(handle, geometry)) {
+      px[i] = NA_REAL;
+      py[i] = NA_REAL;
+    } else {
+      codeX = GEOSGeomGetX_r(handle, geometry, &px[i]);
+      codeY = GEOSGeomGetY_r(handle, geometry, &py[i]);
+      if (codeX == 0 || codeY == 0) {
+        // e.g., geometry is not a point
+        UNPROTECT(2); // resultX, resultY
+        GEOS_ERROR("[i=%d] ", i + 1);
+      }
+    }
+  }
+
+  GEOS_FINISH();
+
+  const char* names[] = {"x", "y", ""};
+  SEXP result = PROTECT(Rf_mkNamed(VECSXP, names));
+  SET_VECTOR_ELT(result, 0, resultX);
+  SET_VECTOR_ELT(result, 1, resultY);
+  UNPROTECT(3); // resultX, resultY, result
+  return result;
+}

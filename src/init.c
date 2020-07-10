@@ -7,6 +7,8 @@ extern SEXP geos_c_read_wkt(SEXP input);
 extern SEXP geos_c_write_wkt(SEXP input, SEXP includeZ, SEXP precision, SEXP trim);
 extern SEXP geos_c_read_wkb(SEXP input);
 extern SEXP geos_c_write_wkb(SEXP input, SEXP includeZ, SEXP includeSRID, SEXP endian);
+extern SEXP geos_c_read_xy(SEXP x, SEXP y);
+extern SEXP geos_c_write_xy(SEXP input);
 extern SEXP geos_c_segment_intersection(SEXP Sax0, SEXP Say0, SEXP Sax1, SEXP Say1, SEXP Sbx0, SEXP Sby0, SEXP Sbx1, SEXP Sby1);
 extern SEXP geos_c_orientation_index(SEXP SAx, SEXP SAy, SEXP SBx, SEXP SBy, SEXP SPx, SEXP SPy);
 extern SEXP geos_c_init();
@@ -18,6 +20,8 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_write_wkt", (DL_FUNC) &geos_c_write_wkt, 4},
   {"geos_c_read_wkb", (DL_FUNC) &geos_c_read_wkb, 1},
   {"geos_c_write_wkb", (DL_FUNC) &geos_c_write_wkb, 4},
+  {"geos_c_read_xy", (DL_FUNC) &geos_c_read_xy, 2},
+  {"geos_c_write_xy", (DL_FUNC) &geos_c_write_xy, 1},
   {"geos_c_segment_intersection", (DL_FUNC) &geos_c_segment_intersection, 8},
   {"geos_c_orientation_index", (DL_FUNC) &geos_c_orientation_index, 6},
   {"geos_c_init", (DL_FUNC) &geos_c_init, 0},

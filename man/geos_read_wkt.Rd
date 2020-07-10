@@ -5,6 +5,8 @@
 \alias{geos_write_wkt}
 \alias{geos_read_wkb}
 \alias{geos_write_wkb}
+\alias{geos_read_xy}
+\alias{geos_write_xy}
 \title{Read and write well-known text}
 \usage{
 geos_read_wkt(wkt)
@@ -14,6 +16,10 @@ geos_write_wkt(geom, include_z = TRUE, precision = 16, trim = TRUE)
 geos_read_wkb(wkb)
 
 geos_write_wkb(geom, include_z = TRUE, include_srid = FALSE, endian = 1)
+
+geos_read_xy(point)
+
+geos_write_xy(geom)
 }
 \arguments{
 \item{wkt}{A character vector containing well-known text.}
@@ -42,6 +48,8 @@ is no value present in the original.}
 
 \item{endian}{For WKB writing, 0 for big endian, 1 for little endian.
 Defaults to \code{\link[wk:wkb_translate_wkt]{wk_platform_endian()}} (slightly faster).}
+
+\item{point}{A \code{list()} representing points in the form \code{list(x, y)}.}
 }
 \description{
 Read and write well-known text

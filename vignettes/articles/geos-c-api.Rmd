@@ -262,7 +262,7 @@ void test_xy(double x, double y) {
     outY = NA_REAL;
   } else {
     resultX = GEOSGeomGetX_r(handle, geometry, &outX);
-    resultY = GEOSGeomGetX_r(handle, geometry, &outY);
+    resultY = GEOSGeomGetY_r(handle, geometry, &outY);
   }
   
   if (resultX == 0 || resultY == 0) {

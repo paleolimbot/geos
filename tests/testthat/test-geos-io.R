@@ -95,3 +95,18 @@ test_that("WKB reader works", {
   wkb[[1]][3] <- as.raw(0xff)
   expect_error(geos_read_wkb(wkb), "Unknown WKB type")
 })
+
+test_that("xy reader/writer works", {
+  expect_identical(
+    geos_write_wkt(geos_read_xy(list(c(0, 0, 0, NA), c(1:3, NA)))),
+    c("POINT (0 1)", "POINT (0 2)", "POINT (0 3)", "POINT EMPTY")
+  )
+
+  expect_identical(
+    geos_write_xy(geos_read_wkt(c("POINT (0 1)", "POINT (0 2)", "POINT (0 3)", "POINT EMPTY"))),
+    list(x = c(0, 0, 0, NA), y = as.numeric(c(1:3, NA)))
+  )
+
+  expect_identical(geos_write_xy(new_geos_geometry(list(NULL))), list(x = NA_real_, y = NA_real_))
+  expect_error(geos_write_xy(geos_read_wkt("LINESTRING (0 0, 1 1)")), "Argument is not a Point")
+})
