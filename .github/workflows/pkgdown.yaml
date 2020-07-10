@@ -17,7 +17,7 @@ jobs:
           brew install geos
       - name: Install dependencies
         run: |
-          install.packages("remotes")
+          install.packages(c("remotes", "rmarkdown", "knitr", "Rcpp"))
           remotes::install_deps(dependencies = TRUE)
           remotes::install_dev("pkgdown")
         shell: Rscript {0}
