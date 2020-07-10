@@ -11,23 +11,38 @@
 #' geos_write_wkt(as_geos_geometry("POINT (30 10)"))
 #'
 geos_read_wkt <- function(wkt) {
-  new_geos_geometry(.Call(geos_c_read_wkt, wkt))
+  new_geos_geometry(.Call(geos_c_read_wkt, as.character(wkt)))
 }
 
 #' @rdname geos_read_wkt
 #' @export
-geos_write_wkt <- function(geom) {
-  .Call(geos_c_write_wkt, geom)
+geos_write_wkt <- function(geom, include_z = TRUE, precision = 16, trim = TRUE) {
+  .Call(
+    geos_c_write_wkt,
+    as_geos_geometry(geom),
+    as.logical(include_z),
+    as.integer(precision),
+    as.logical(trim)
+  )
 }
 
 #' @rdname geos_read_wkt
 #' @export
 geos_read_wkb <- function(wkb) {
-  new_geos_geometry(.Call(geos_c_read_wkb, wkb))
+  new_geos_geometry(.Call(geos_c_read_wkb, as.list(wkb)))
 }
 
 #' @rdname geos_read_wkt
 #' @export
-geos_write_wkb <- function(geom) {
-  structure(.Call(geos_c_write_wkb, geom), class = "blob")
+geos_write_wkb <- function(geom, include_z = TRUE, include_srid = FALSE, endian = 1) {
+  structure(
+    .Call(
+      geos_c_write_wkb,
+      as_geos_geometry(geom),
+      as.logical(include_z),
+      as.logical(include_srid),
+      as.integer(endian)
+    ),
+    class = "blob"
+  )
 }

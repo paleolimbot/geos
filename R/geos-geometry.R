@@ -16,8 +16,14 @@ as_geos_geometry <- function(x, ...) {
 
 #' @rdname as_geos_geometry
 #' @export
+as_geos_geometry.geos_geometry <- function(x, ...) {
+  x
+}
+
+#' @rdname as_geos_geometry
+#' @export
 as_geos_geometry.character <- function(x, ...) {
-  new_geos_geometry(.Call(geos_c_read_wkt, x))
+  geos_read_wkt(x)
 }
 
 #' Create vectors of GEOS geometry objects
@@ -89,8 +95,8 @@ rep_len.geos_geometry <- function(x, length.out) {
 }
 
 #' @export
-format.geos_geometry <- function(x, ...) {
-  .Call(geos_c_write_wkt, x)
+format.geos_geometry <- function(x, ..., precision = 5, trim = TRUE) {
+  geos_write_wkt(x, precision = precision, trim = trim)
 }
 
 #' @export

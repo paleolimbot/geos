@@ -2,10 +2,13 @@
 % Please edit documentation in R/geos-geometry.R
 \name{as_geos_geometry}
 \alias{as_geos_geometry}
+\alias{as_geos_geometry.geos_geometry}
 \alias{as_geos_geometry.character}
 \title{Create GEOS Geometry Vectors}
 \usage{
 as_geos_geometry(x, ...)
+
+\method{as_geos_geometry}{geos_geometry}(x, ...)
 
 \method{as_geos_geometry}{character}(x, ...)
 }

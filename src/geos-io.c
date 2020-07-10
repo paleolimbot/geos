@@ -35,14 +35,20 @@ SEXP geos_c_read_wkt(SEXP input) {
   return result;
 }
 
-SEXP geos_c_write_wkt(SEXP input) {
+SEXP geos_c_write_wkt(SEXP input, SEXP includeZ, SEXP precision, SEXP trim) {
   R_xlen_t size = Rf_xlength(input);
   SEXP result = PROTECT(Rf_allocVector(STRSXP, size));
 
   GEOS_INIT();
   GEOSWKTWriter* writer = GEOSWKTWriter_create_r(handle);
-  GEOSWKTWriter_setTrim_r(handle, writer, 1);
-  GEOSWKTWriter_setOutputDimension_r(handle, writer, 3);
+  GEOSWKTWriter_setTrim_r(handle, writer, LOGICAL(trim)[0]);
+  GEOSWKTWriter_setRoundingPrecision_r(handle, writer, INTEGER(precision)[0]);
+
+  if (LOGICAL(includeZ)[0]) {
+    GEOSWKTWriter_setOutputDimension_r(handle, writer, 3);
+  } else {
+    GEOSWKTWriter_setOutputDimension_r(handle, writer, 2);
+  }
 
   SEXP item;
   GEOSGeometry* geometry;
@@ -102,13 +108,25 @@ SEXP geos_c_read_wkb(SEXP input) {
   return result;
 }
 
-SEXP geos_c_write_wkb(SEXP input) {
+SEXP geos_c_write_wkb(SEXP input, SEXP includeZ, SEXP includeSRID, SEXP endian) {
   R_xlen_t size = Rf_xlength(input);
   SEXP result = PROTECT(Rf_allocVector(VECSXP, size));
 
   GEOS_INIT();
   GEOSWKBWriter* writer = GEOSWKBWriter_create_r(handle);
-  GEOSWKBWriter_setOutputDimension_r(handle, writer, 3);
+  GEOSWKBWriter_setByteOrder_r(handle, writer, INTEGER(endian)[0]);
+
+  if (LOGICAL(includeZ)[0]) {
+    GEOSWKBWriter_setOutputDimension_r(handle, writer, 3);
+  } else {
+    GEOSWKBWriter_setOutputDimension_r(handle, writer, 2);
+  }
+
+  if (LOGICAL(includeSRID)[0]) {
+    GEOSWKBWriter_setIncludeSRID_r(handle, writer, 1);
+  } else {
+    GEOSWKBWriter_setIncludeSRID_r(handle, writer, 0);
+  }
 
   SEXP item;
   GEOSGeometry* geometry;

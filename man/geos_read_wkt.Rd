@@ -9,19 +9,39 @@
 \usage{
 geos_read_wkt(wkt)
 
-geos_write_wkt(geom)
+geos_write_wkt(geom, include_z = TRUE, precision = 16, trim = TRUE)
 
 geos_read_wkb(wkb)
 
-geos_write_wkb(geom)
+geos_write_wkb(geom, include_z = TRUE, include_srid = FALSE, endian = 1)
 }
 \arguments{
 \item{wkt}{A character vector containing well-known text.}
 
 \item{geom}{A \link[=as_geos_geometry]{GEOS geometry vector}}
 
+\item{include_z}{Include the
+values of the Z and M coordinates and/or SRID
+in the output? Use \code{FALSE} to omit, \code{TRUE} to include, or \code{NA} to include
+only if present. Note that using \code{TRUE} may result in an error if there
+is no value present in the original.}
+
+\item{precision}{The rounding precision to use when writing
+(number of decimal places).}
+
+\item{trim}{Trim unnecessary zeroes in the output?}
+
 \item{wkb}{A \code{list()} of \code{\link[=raw]{raw()}} vectors, such as that
 returned by \code{\link[sf:st_as_binary]{sf::st_as_binary()}}.}
+
+\item{include_srid}{Include the
+values of the Z and M coordinates and/or SRID
+in the output? Use \code{FALSE} to omit, \code{TRUE} to include, or \code{NA} to include
+only if present. Note that using \code{TRUE} may result in an error if there
+is no value present in the original.}
+
+\item{endian}{For WKB writing, 0 for big endian, 1 for little endian.
+Defaults to \code{\link[wk:wkb_translate_wkt]{wk_platform_endian()}} (slightly faster).}
 }
 \description{
 Read and write well-known text
