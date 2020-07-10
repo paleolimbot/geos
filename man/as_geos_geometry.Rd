@@ -20,3 +20,7 @@ A geos geometry vector
 \description{
 Create GEOS Geometry Vectors
 }
+\examples{
+as_geos_geometry("LINESTRING (0 1, 3 9)")
+
+}

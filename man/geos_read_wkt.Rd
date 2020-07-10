@@ -3,16 +3,25 @@
 \name{geos_read_wkt}
 \alias{geos_read_wkt}
 \alias{geos_write_wkt}
+\alias{geos_read_wkb}
+\alias{geos_write_wkb}
 \title{Read and write well-known text}
 \usage{
 geos_read_wkt(wkt)
 
 geos_write_wkt(geom)
+
+geos_read_wkb(wkb)
+
+geos_write_wkb(geom)
 }
 \arguments{
-\item{wkt}{A vector of well-known text}
+\item{wkt}{A character vector containing well-known text.}
 
 \item{geom}{A \link[=as_geos_geometry]{GEOS geometry vector}}
+
+\item{wkb}{A \code{list()} of \code{\link[=raw]{raw()}} vectors, such as that
+returned by \code{\link[sf:st_as_binary]{sf::st_as_binary()}}.}
 }
 \description{
 Read and write well-known text

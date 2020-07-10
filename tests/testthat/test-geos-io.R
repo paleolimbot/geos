@@ -17,3 +17,31 @@ test_that("WKT reader works", {
   # error parse
   expect_error(geos_read_wkt("NOPE"), "ParseException")
 })
+
+test_that("WKB reader works", {
+  # regular read/write
+  expect_is(geos_read_wkb(wk::wkt_translate_wkb("POINT (30 10)")), "geos_geometry")
+  expect_identical(
+    geos_write_wkb(geos_read_wkt("POINT Z (30 10 2)")),
+    structure(wk::wkt_translate_wkb("POINT Z (30 10 2)"), class = "blob")
+  )
+
+  # NULL/NA read/write
+  expect_identical(
+    geos_write_wkb(new_geos_geometry(list(NULL))),
+    structure(list(NULL), class = "blob")
+  )
+  expect_identical(geos_read_wkb(list(NULL)), new_geos_geometry(list(NULL)))
+
+  # read/write when the internal pointer is NULL
+  temp_rds <- tempfile()
+  saveRDS(geos_read_wkt("POINT (0 0)"), temp_rds)
+  expect_error(geos_write_wkb(readRDS(temp_rds)), "External pointer is not valid")
+  unlink(temp_rds)
+
+  # attempt to write empty point
+  expect_error(
+    geos_write_wkb(geos_read_wkt("POINT EMPTY")),
+    "Empty Points cannot be represented"
+  )
+})
