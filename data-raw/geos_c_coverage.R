@@ -10,9 +10,8 @@ curl::curl_download(
 pkg <- list.files("src", "\\.(h|c)$", full.names = TRUE) %>%
   lapply(read_file) %>%
   unlist() %>%
-  str_extract_all("[0-9A-Za-z_]+_r\\(") %>%
+  str_extract_all("[0-9A-Za-z_]+_r") %>%
   unlist() %>%
-  str_remove("\\($") %>%
   unique()
 
 
@@ -26,6 +25,8 @@ ignore <- c(
   "GEOSWKBWriter_getOutputDimension_r",
   "GEOSWKBWriter_getByteOrder_r",
   "GEOSWKBWriter_getIncludeSRID_r",
+  "GEOSGeomType_r",
+  "GEOSGeomGetLength_r",
 
   # deprecated
   "initGEOS_r",
