@@ -11,6 +11,12 @@
 \alias{geos_xmax}
 \alias{geos_ymax}
 \alias{geos_minimum_clearance}
+\alias{geos_is_empty}
+\alias{geos_is_simple}
+\alias{geos_is_ring}
+\alias{geos_has_z}
+\alias{geos_is_closed}
+\alias{geos_is_valid}
 \title{Extract information from a GEOS geometry}
 \usage{
 geos_area(geom)
@@ -32,6 +38,18 @@ geos_xmax(geom)
 geos_ymax(geom)
 
 geos_minimum_clearance(geom)
+
+geos_is_empty(geom)
+
+geos_is_simple(geom)
+
+geos_is_ring(geom)
+
+geos_has_z(geom)
+
+geos_is_closed(geom)
+
+geos_is_valid(geom)
 }
 \arguments{
 \item{geom}{A \link[=as_geos_geometry]{GEOS geometry vector}}
@@ -54,5 +72,27 @@ geos_xmin("LINESTRING (0 1, 2 3)")
 geos_ymin("LINESTRING (0 1, 2 3)")
 geos_xmax("LINESTRING (0 1, 2 3)")
 geos_ymax("LINESTRING (0 1, 2 3)")
+geos_minimum_clearance("POLYGON ((0 0, 10 0, 10 10, 3 5, 0 10, 0 0))")
+
+geos_is_empty(c("POINT EMPTY", "POINT (0 1)"))
+geos_is_simple(c("LINESTRING (0 0, 1 1)", "LINESTRING (0 0, 1 1, 1 0, 0 1)"))
+geos_is_ring(
+  c(
+    "LINESTRING (0 0, 1 0, 1 1, 0 1, 0 0)",
+    "LINESTRING (0 0, 1 0, 1 1, 0 1)"
+   )
+)
+geos_is_closed(
+  c(
+    "LINESTRING (0 0, 1 0, 1 1, 0 1, 0 0)",
+    "LINESTRING (0 0, 1 0, 1 1, 0 1)"
+   )
+)
+geos_is_valid(
+  c(
+    "POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))",
+    "POLYGON ((0 0, 1 1, 1 0, 0 1, 0 0))"
+  )
+)
 
 }

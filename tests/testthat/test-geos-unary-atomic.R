@@ -25,3 +25,25 @@ test_that("atomic extractors work", {
     c(3, NA)
   )
 })
+
+test_that("atomic returners work", {
+  expect_identical(geos_is_empty(c("POINT EMPTY", "POINT (0 1)", NA)), c(TRUE, FALSE, NA))
+  expect_identical(
+    geos_is_simple(c("LINESTRING (0 0, 1 1)", "LINESTRING (0 0, 1 1, 1 0, 0 1)", NA)),
+    c(TRUE, FALSE, NA)
+  )
+  expect_identical(
+    geos_is_ring(c("LINESTRING (0 0, 1 0, 1 1, 0 1, 0 0)", "POINT (0 1)", NA)),
+    c(TRUE, FALSE, NA)
+  )
+  expect_identical(
+    geos_is_closed(c("LINESTRING (0 0, 1 0, 1 1, 0 1, 0 0)", "LINESTRING (0 0, 1 1)", NA)),
+    c(TRUE, FALSE, NA)
+  )
+  expect_error(geos_is_closed("POINT (0 1)"), "Argument is not a LineString")
+
+  expect_identical(
+    geos_is_valid(c("LINESTRING (0 0, 1 1)", "POLYGON ((0 0, 1 1, 1 0, 0 1, 0 0))", NA)),
+    c(TRUE, FALSE, NA)
+  )
+})

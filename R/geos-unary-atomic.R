@@ -22,6 +22,27 @@
 #' geos_ymax("LINESTRING (0 1, 2 3)")
 #' geos_minimum_clearance("POLYGON ((0 0, 10 0, 10 10, 3 5, 0 10, 0 0))")
 #'
+#' geos_is_empty(c("POINT EMPTY", "POINT (0 1)"))
+#' geos_is_simple(c("LINESTRING (0 0, 1 1)", "LINESTRING (0 0, 1 1, 1 0, 0 1)"))
+#' geos_is_ring(
+#'   c(
+#'     "LINESTRING (0 0, 1 0, 1 1, 0 1, 0 0)",
+#'     "LINESTRING (0 0, 1 0, 1 1, 0 1)"
+#'    )
+#' )
+#' geos_is_closed(
+#'   c(
+#'     "LINESTRING (0 0, 1 0, 1 1, 0 1, 0 0)",
+#'     "LINESTRING (0 0, 1 0, 1 1, 0 1)"
+#'    )
+#' )
+#' geos_is_valid(
+#'   c(
+#'     "POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))",
+#'     "POLYGON ((0 0, 1 1, 1 0, 0 1, 0 0))"
+#'   )
+#' )
+#'
 geos_area <- function(geom) {
   .Call(geos_c_area, as_geos_geometry(geom))
 }
@@ -78,4 +99,40 @@ geos_ymax <- function(geom) {
 #' @export
 geos_minimum_clearance <- function(geom) {
   .Call(geos_c_minimum_clearance, as_geos_geometry(geom))
+}
+
+#' @rdname geos_area
+#' @export
+geos_is_empty <- function(geom) {
+  .Call(geos_c_is_empty, as_geos_geometry(geom))
+}
+
+#' @rdname geos_area
+#' @export
+geos_is_simple <- function(geom) {
+  .Call(geos_c_is_simple, as_geos_geometry(geom))
+}
+
+#' @rdname geos_area
+#' @export
+geos_is_ring <- function(geom) {
+  .Call(geos_c_is_ring, as_geos_geometry(geom))
+}
+
+#' @rdname geos_area
+#' @export
+geos_has_z <- function(geom) {
+  .Call(geos_c_has_z, as_geos_geometry(geom))
+}
+
+#' @rdname geos_area
+#' @export
+geos_is_closed <- function(geom) {
+  .Call(geos_c_is_closed, as_geos_geometry(geom))
+}
+
+#' @rdname geos_area
+#' @export
+geos_is_valid <- function(geom) {
+  .Call(geos_c_is_valid, as_geos_geometry(geom))
 }
