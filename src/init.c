@@ -36,6 +36,21 @@ extern SEXP geos_c_num_interior_rings(SEXP geom);
 extern SEXP geos_c_dimension(SEXP geom);
 extern SEXP geos_c_coorinate_dimension(SEXP geom);
 extern SEXP geos_c_centroid(SEXP geom);
+extern SEXP geos_c_boundary(SEXP geom);
+extern SEXP geos_c_minimum_width(SEXP geom);
+extern SEXP geos_c_minimum_clearance_line(SEXP geom);
+extern SEXP geos_c_minimum_rotated_rectagle(SEXP geom);
+extern SEXP geos_c_unary_union(SEXP geom);
+extern SEXP geos_c_point_on_surface(SEXP geom);
+extern SEXP geos_c_node(SEXP geom);
+extern SEXP geos_c_make_valid(SEXP geom);
+extern SEXP geos_c_unique_points(SEXP geom);
+extern SEXP geos_c_reverse(SEXP geom);
+extern SEXP geos_c_merge_lines(SEXP geom);
+extern SEXP geos_c_build_area(SEXP geom);
+extern SEXP geos_c_envelope(SEXP geom);
+extern SEXP geos_c_convex_hull(SEXP geom);
+extern SEXP geos_c_clone(SEXP geom);
 extern SEXP geos_c_init();
 extern SEXP geos_c_version_runtime();
 extern SEXP geos_c_version_build();
@@ -74,6 +89,21 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_dimension", (DL_FUNC) &geos_c_dimension, 1},
   {"geos_c_coorinate_dimension", (DL_FUNC) &geos_c_coorinate_dimension, 1},
   {"geos_c_centroid", (DL_FUNC) &geos_c_centroid, 1},
+  {"geos_c_boundary", (DL_FUNC) &geos_c_boundary, 1},
+  {"geos_c_minimum_width", (DL_FUNC) &geos_c_minimum_width, 1},
+  {"geos_c_minimum_clearance_line", (DL_FUNC) &geos_c_minimum_clearance_line, 1},
+  {"geos_c_minimum_rotated_rectagle", (DL_FUNC) &geos_c_minimum_rotated_rectagle, 1},
+  {"geos_c_unary_union", (DL_FUNC) &geos_c_unary_union, 1},
+  {"geos_c_point_on_surface", (DL_FUNC) &geos_c_point_on_surface, 1},
+  {"geos_c_node", (DL_FUNC) &geos_c_node, 1},
+  {"geos_c_make_valid", (DL_FUNC) &geos_c_make_valid, 1},
+  {"geos_c_unique_points", (DL_FUNC) &geos_c_unique_points, 1},
+  {"geos_c_reverse", (DL_FUNC) &geos_c_reverse, 1},
+  {"geos_c_merge_lines", (DL_FUNC) &geos_c_merge_lines, 1},
+  {"geos_c_build_area", (DL_FUNC) &geos_c_build_area, 1},
+  {"geos_c_envelope", (DL_FUNC) &geos_c_envelope, 1},
+  {"geos_c_convex_hull", (DL_FUNC) &geos_c_convex_hull, 1},
+  {"geos_c_clone", (DL_FUNC) &geos_c_clone, 1},
   {"geos_c_init", (DL_FUNC) &geos_c_init, 0},
   {"geos_c_version_runtime", (DL_FUNC) &geos_c_version_runtime, 0},
   {"geos_c_version_build", (DL_FUNC) &geos_c_version_build, 0},

@@ -25,7 +25,7 @@
                                                                \
     geometryResult = _func(handle, geometry);                  \
                                                                \
-    if (geometry == NULL) {                                    \
+    if (geometryResult == NULL) {                              \
       UNPROTECT(1);                                            \
       GEOS_ERROR("[i=%d] ", i + 1);                            \
     } else {                                                   \
@@ -40,4 +40,64 @@
 
 SEXP geos_c_centroid(SEXP geom) {
   GEOS_UNARY_GEOMETRY(GEOSGetCentroid_r);
+}
+
+SEXP geos_c_boundary(SEXP geom) {
+  GEOS_UNARY_GEOMETRY(GEOSBoundary_r);
+}
+
+SEXP geos_c_minimum_width(SEXP geom) {
+  GEOS_UNARY_GEOMETRY(GEOSMinimumWidth_r);
+}
+
+SEXP geos_c_minimum_clearance_line(SEXP geom) {
+  GEOS_UNARY_GEOMETRY(GEOSMinimumClearanceLine_r);
+}
+
+SEXP geos_c_minimum_rotated_rectagle(SEXP geom) {
+  GEOS_UNARY_GEOMETRY(GEOSMinimumRotatedRectangle_r);
+}
+
+SEXP geos_c_unary_union(SEXP geom) {
+  GEOS_UNARY_GEOMETRY(GEOSUnaryUnion_r);
+}
+
+SEXP geos_c_point_on_surface(SEXP geom) {
+  GEOS_UNARY_GEOMETRY(GEOSPointOnSurface_r);
+}
+
+SEXP geos_c_node(SEXP geom) {
+  GEOS_UNARY_GEOMETRY(GEOSNode_r);
+}
+
+SEXP geos_c_make_valid(SEXP geom) {
+  GEOS_UNARY_GEOMETRY(GEOSMakeValid_r);
+}
+
+SEXP geos_c_unique_points(SEXP geom) {
+  GEOS_UNARY_GEOMETRY(GEOSGeom_extractUniquePoints_r);
+}
+
+SEXP geos_c_reverse(SEXP geom) {
+  GEOS_UNARY_GEOMETRY(GEOSReverse_r);
+}
+
+SEXP geos_c_merge_lines(SEXP geom) {
+  GEOS_UNARY_GEOMETRY(GEOSLineMerge_r);
+}
+
+SEXP geos_c_build_area(SEXP geom) {
+  GEOS_UNARY_GEOMETRY(GEOSBuildArea_r);
+}
+
+SEXP geos_c_envelope(SEXP geom) {
+  GEOS_UNARY_GEOMETRY(GEOSEnvelope_r);
+}
+
+SEXP geos_c_convex_hull(SEXP geom) {
+  GEOS_UNARY_GEOMETRY(GEOSConvexHull_r);
+}
+
+SEXP geos_c_clone(SEXP geom) {
+  GEOS_UNARY_GEOMETRY(GEOSGeom_clone_r);
 }
