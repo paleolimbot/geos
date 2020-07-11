@@ -27,6 +27,7 @@ ignore <- c(
   "GEOSWKBWriter_getIncludeSRID_r",
   "GEOSGeomType_r",
   "GEOSGeomGetLength_r",
+  "GEOSGeomGetNumPoints_r",
 
   # deprecated
   "initGEOS_r",

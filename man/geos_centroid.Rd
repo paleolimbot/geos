@@ -16,7 +16,14 @@
 \alias{geos_build_area}
 \alias{geos_envelope}
 \alias{geos_convex_hull}
+\alias{geos_point_start}
+\alias{geos_point_end}
 \alias{geos_clone}
+\alias{geos_point_n}
+\alias{geos_interpolate}
+\alias{geos_interpolate_normalized}
+\alias{geos_simplify}
+\alias{geos_simplify_preserve_topology}
 \title{Geometry transformers}
 \usage{
 geos_centroid(geom)
@@ -49,10 +56,34 @@ geos_envelope(geom)
 
 geos_convex_hull(geom)
 
+geos_point_start(geom)
+
+geos_point_end(geom)
+
 geos_clone(geom)
+
+geos_point_n(geom, index)
+
+geos_interpolate(geom, distance)
+
+geos_interpolate_normalized(geom, distance_normalized)
+
+geos_simplify(geom, tolerance)
+
+geos_simplify_preserve_topology(geom, tolerance)
 }
 \arguments{
 \item{geom}{A \link[=as_geos_geometry]{GEOS geometry vector}}
+
+\item{index}{The index of the point or geometry to extract.}
+
+\item{distance}{Distance along the linestring to interpolate}
+
+\item{distance_normalized}{Distance along the linestring to interpolate
+relative to the length of the linestring.}
+
+\item{tolerance}{A minimum distance to use for simplification. Use a higher
+value for more simplification.}
 }
 \value{
 A \link[=as_geos_geometry]{GEOS geometry vector} of length \code{geom}
@@ -78,5 +109,12 @@ geos_merge_lines(
 geos_build_area("LINESTRING (0 0, 1 0, 0 1, 0 0)")
 geos_envelope("LINESTRING (0 0, 1 2)")
 geos_convex_hull("MULTIPOINT (0 0, 1 0, 0 2, 0 0)")
+geos_point_start("LINESTRING (0 0, 1 1)")
+geos_point_end("LINESTRING (0 0, 1 1)")
+
+geos_interpolate("LINESTRING (0 0, 1 1)", 1)
+geos_interpolate_normalized("LINESTRING (0 0, 1 1)", 1)
+geos_simplify("LINESTRING (0 0, 0 1, 0 2)", 0.1)
+geos_simplify_preserve_topology("LINESTRING (0 0, 0 1, 0 2)", 0.1)
 
 }

@@ -23,9 +23,7 @@ void geos_common_release_geometry(SEXP externalPtr) {
   // this can occur if this object is saved and reloaded, in which
   // case this function quietly does nothing
   if (geometry != NULL) {
-    GEOSContextHandle_t handle = GEOS_init_r();
-    GEOSGeom_destroy_r(handle, geometry);
-    GEOS_finish_r(handle);
+    GEOSGeom_destroy_r(geos_gc_handle, geometry);
   }
 }
 

@@ -104,8 +104,69 @@ test_that("transformers work", {
 
   expect_identical(
     geos_write_wkt(
+      geos_point_start(c("LINESTRING (0 0, 1 2)", NA))
+    ),
+    c("POINT (0 0)", NA)
+  )
+
+  expect_identical(
+    geos_write_wkt(
+      geos_point_end(c("LINESTRING (0 0, 1 2)", NA))
+    ),
+    c("POINT (1 2)", NA)
+  )
+
+  expect_identical(
+    geos_write_wkt(
       geos_clone(c("MULTIPOINT (0 0, 1 0, 0 2, 0 0)", NA))
     ),
     c("MULTIPOINT (0 0, 1 0, 0 2, 0 0)", NA)
   )
 })
+
+test_that("transformers with atomic param work", {
+  expect_identical(
+    geos_write_wkt(geos_interpolate(c("LINESTRING (0 0, 0 10, 10 10)", NA), 11)),
+    c("POINT (1 10)", NA)
+  )
+  expect_error(geos_interpolate("POINT (0 1)", 1), "only supports lineal")
+
+  expect_identical(
+    geos_write_wkt(
+      geos_interpolate_normalized(c("LINESTRING (0 0, 0 10, 10 10)", NA), c(11 / 20))
+    ),
+    c("POINT (1 10)", NA)
+  )
+  expect_error(geos_interpolate_normalized("POINT (0 1)", 1), "only works with LineString")
+
+  expect_identical(
+    geos_write_wkt(
+      geos_point_n(c("LINESTRING (0 0, 1 2)", NA), 1)
+    ),
+    c("POINT (0 0)", NA)
+  )
+
+  expect_identical(
+    geos_write_wkt(
+      geos_point_n(c("LINESTRING (0 0, 1 2)", NA), 2)
+    ),
+    c("POINT (1 2)", NA)
+  )
+
+  expect_identical(
+    geos_write_wkt(
+      geos_simplify("MULTILINESTRING ((0 0, 0 1, 0 2), (0.1 0, 0.1 1, 0.1 2))", 0.5)
+    ),
+    "MULTILINESTRING ((0 0, 0 2), (0.1 0, 0.1 2))"
+  )
+
+  expect_identical(
+    geos_write_wkt(
+      geos_simplify_preserve_topology("MULTILINESTRING ((0 0, 0 1, 0 2), (0.1 0, 0.1 1, 0.1 2))", 0.5)
+    ),
+    "MULTILINESTRING ((0 0, 0 2), (0.1 0, 0.1 2))"
+  )
+
+
+})
+
