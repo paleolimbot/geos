@@ -56,6 +56,6 @@ Read and write well-known text
 }
 \examples{
 geos_read_wkt("POINT (30 10)")
-geos_write_wkt(as_geos_geometry("POINT (30 10)"))
+geos_write_wkt(geos_read_wkt("POINT (30 10)"))
 
 }

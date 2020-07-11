@@ -9,7 +9,7 @@
 #'
 #' @examples
 #' geos_read_wkt("POINT (30 10)")
-#' geos_write_wkt(as_geos_geometry("POINT (30 10)"))
+#' geos_write_wkt(geos_read_wkt("POINT (30 10)"))
 #'
 geos_read_wkt <- function(wkt) {
   new_geos_geometry(.Call(geos_c_read_wkt, as.character(wkt)))
