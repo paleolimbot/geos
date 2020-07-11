@@ -35,6 +35,7 @@ extern SEXP geos_c_num_geometries(SEXP geom);
 extern SEXP geos_c_num_interior_rings(SEXP geom);
 extern SEXP geos_c_dimension(SEXP geom);
 extern SEXP geos_c_coorinate_dimension(SEXP geom);
+extern SEXP geos_c_centroid(SEXP geom);
 extern SEXP geos_c_init();
 extern SEXP geos_c_version_runtime();
 extern SEXP geos_c_version_build();
@@ -72,6 +73,7 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_num_interior_rings", (DL_FUNC) &geos_c_num_interior_rings, 1},
   {"geos_c_dimension", (DL_FUNC) &geos_c_dimension, 1},
   {"geos_c_coorinate_dimension", (DL_FUNC) &geos_c_coorinate_dimension, 1},
+  {"geos_c_centroid", (DL_FUNC) &geos_c_centroid, 1},
   {"geos_c_init", (DL_FUNC) &geos_c_init, 0},
   {"geos_c_version_runtime", (DL_FUNC) &geos_c_version_runtime, 0},
   {"geos_c_version_build", (DL_FUNC) &geos_c_version_build, 0},
