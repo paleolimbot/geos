@@ -22,7 +22,7 @@ SEXP geos_common_geometry_xptr(GEOSGeometry* geometry);
 #define GEOS_INIT()  \
   GEOSContextHandle_t handle = GEOS_init_r();  \
   char lastGEOSErrorMessage[GEOS_ERROR_MESSAGE_BUFFER_SIZE];  \
-  strcpy(lastGEOSErrorMessage, "(there was no GEOS error)");  \
+  strcpy(lastGEOSErrorMessage, "Unknown error");  \
   GEOSContext_setErrorMessageHandler_r(handle, &geos_common_handle_error, lastGEOSErrorMessage)\
 
 // the error macro wraps Rf_error() but adds the error message at the end

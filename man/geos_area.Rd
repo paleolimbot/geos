@@ -37,5 +37,19 @@ geos_ymax(geom)
 A vector of length \code{geom}
 }
 \description{
-Extract information from a GEOS geometry
+Note that \code{\link[=geos_x]{geos_x()}}, \code{\link[=geos_y]{geos_y()}}, and \code{\link[=geos_z]{geos_z()}} do not handle
+empty points (use \code{\link[=geos_write_xy]{geos_write_xy()}} if you need to handle this case).
+Similarly, the min/max functions will error on empty geometries.
+}
+\examples{
+geos_area("POLYGON ((0 0, 10 0, 10 10, 0 10, 0 0))")
+geos_length("POLYGON ((0 0, 10 0, 10 10, 0 10, 0 0))")
+geos_x("POINT Z (1 2 3)")
+geos_y("POINT Z (1 2 3)")
+geos_z("POINT Z (1 2 3)")
+geos_xmin("LINESTRING (0 1, 2 3)")
+geos_ymin("LINESTRING (0 1, 2 3)")
+geos_xmax("LINESTRING (0 1, 2 3)")
+geos_ymax("LINESTRING (0 1, 2 3)")
+
 }

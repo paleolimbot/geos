@@ -3,12 +3,14 @@
 #include "geos-common.h"
 #include "Rinternals.h"
 
-// using macros to stamp out these functions with minimal
-// repetition
-#define GEOS_UNARY_ATOMIC(_func, _scalar_type, _vec_type, _vec_ptr, _na_value, _result_error) \
+// using macros to stamp out these functions with minimal repetition
+
+// These functions are in the form _func(handle, geometry, double*)
+// and return 0 on exception
+#define GEOS_UNARY_REAL(_func)                                 \
   R_xlen_t size = Rf_xlength(geom);                            \
-  SEXP result = PROTECT(Rf_allocVector(_vec_type, size));      \
-  _scalar_type* pResult = _vec_ptr(result);                    \
+  SEXP result = PROTECT(Rf_allocVector(REALSXP, size));        \
+  double* pResult = REAL(result);                              \
                                                                \
   GEOS_INIT();                                                 \
                                                                \
@@ -18,7 +20,7 @@
     item = VECTOR_ELT(geom, i);                                \
                                                                \
     if (item == R_NilValue) {                                  \
-      pResult[i] = _na_value;                                  \
+      pResult[i] = NA_REAL;                                    \
       continue;                                                \
     }                                                          \
                                                                \
@@ -27,7 +29,7 @@
                                                                \
     int resultCode = _func(handle, geometry, &pResult[i]);     \
                                                                \
-    if (resultCode == _result_error) {                         \
+    if (resultCode == 0) {                                     \
       UNPROTECT(1);                                            \
       GEOS_ERROR("[i=%d] ", i);                                \
     }                                                          \
@@ -37,7 +39,6 @@
   UNPROTECT(1);                                                \
   return result;
 
-#define GEOS_UNARY_REAL(_func) GEOS_UNARY_ATOMIC(_func, double, REALSXP, REAL, NA_REAL, 0)
 
 // extractors
 SEXP geos_c_area(SEXP geom) {
