@@ -60,3 +60,23 @@ A \link[=as_geos_geometry]{GEOS geometry vector} of length \code{geom}
 \description{
 Geometry transformers
 }
+\examples{
+geos_centroid(c("POINT (0 1)", "LINESTRING (0 0, 1 1)"))
+geos_boundary(c("POLYGON ((0 0, 1 0, 0 1, 0 0))", "LINESTRING (0 0, 1 1)"))
+geos_minimum_width("POLYGON ((0 0, 1 0, 0 1, 0 0))")
+geos_minimum_clearance_line("POLYGON ((0 0, 10 0, 10 10, 3 5, 0 10, 0 0))")
+geos_minimum_rotated_rectangle("POLYGON ((0 0, 1 0, 0.5 0.5, 0 0))")
+geos_unary_union("MULTIPOINT (0 1, 0 1)")
+geos_point_on_surface("LINESTRING (0 1, 0.2 3, 10 10)")
+geos_node("POLYGON ((0 0, 1 0, 0 1, 0 0))")
+geos_make_valid("POLYGON ((0 0, 1 1, 1 0, 0 1, 0 0))")
+geos_unique_points("POLYGON ((0 0, 1 0, 0 1, 0 0))")
+geos_reverse("LINESTRING (0 0, 1 1)")
+geos_merge_lines(
+  "MULTILINESTRING ((0 0, 0.5 0.5, 2 2), (0.5 0.5, 2 2))"
+)
+geos_build_area("LINESTRING (0 0, 1 0, 0 1, 0 0)")
+geos_envelope("LINESTRING (0 0, 1 2)")
+geos_convex_hull("MULTIPOINT (0 0, 1 0, 0 2, 0 0)")
+
+}
