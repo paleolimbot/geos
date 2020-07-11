@@ -136,3 +136,53 @@ geos_is_closed <- function(geom) {
 geos_is_valid <- function(geom) {
   .Call(geos_c_is_valid, as_geos_geometry(geom))
 }
+
+#' @rdname geos_area
+#' @export
+geos_type_id <- function(geom) {
+  # adding 1 here to align type IDs with wkutils::wk*_meta()
+  # and the type IDs in the WKB spec
+  .Call(geos_c_type_id, as_geos_geometry(geom)) + 1L
+}
+
+#' @rdname geos_area
+#' @export
+geos_precision <- function(geom) {
+  .Call(geos_c_precision, as_geos_geometry(geom))
+}
+
+#' @rdname geos_area
+#' @export
+geos_srid <- function(geom) {
+  .Call(geos_c_srid, as_geos_geometry(geom))
+}
+
+#' @rdname geos_area
+#' @export
+geos_num_coordinates <- function(geom) {
+  .Call(geos_c_num_coordinates, as_geos_geometry(geom))
+}
+
+#' @rdname geos_area
+#' @export
+geos_num_geometries <- function(geom) {
+  .Call(geos_c_num_geometries, as_geos_geometry(geom))
+}
+
+#' @rdname geos_area
+#' @export
+geos_num_interior_rings <- function(geom) {
+  .Call(geos_c_num_interior_rings, as_geos_geometry(geom))
+}
+
+#' @rdname geos_area
+#' @export
+geos_dimension <- function(geom) {
+  .Call(geos_c_dimension, as_geos_geometry(geom))
+}
+
+#' @rdname geos_area
+#' @export
+geos_coordinate_dimension <- function(geom) {
+  .Call(geos_c_coorinate_dimension, as_geos_geometry(geom))
+}

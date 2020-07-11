@@ -27,6 +27,14 @@ extern SEXP geos_c_is_ring(SEXP geom);
 extern SEXP geos_c_has_z(SEXP geom);
 extern SEXP geos_c_is_closed(SEXP geom);
 extern SEXP geos_c_is_valid(SEXP geom);
+extern SEXP geos_c_type_id(SEXP geom);
+extern SEXP geos_c_precision(SEXP geom);
+extern SEXP geos_c_srid(SEXP geom);
+extern SEXP geos_c_num_coordinates(SEXP geom);
+extern SEXP geos_c_num_geometries(SEXP geom);
+extern SEXP geos_c_num_interior_rings(SEXP geom);
+extern SEXP geos_c_dimension(SEXP geom);
+extern SEXP geos_c_coorinate_dimension(SEXP geom);
 extern SEXP geos_c_init();
 extern SEXP geos_c_version_runtime();
 extern SEXP geos_c_version_build();
@@ -56,6 +64,14 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_has_z", (DL_FUNC) &geos_c_has_z, 1},
   {"geos_c_is_closed", (DL_FUNC) &geos_c_is_closed, 1},
   {"geos_c_is_valid", (DL_FUNC) &geos_c_is_valid, 1},
+  {"geos_c_type_id", (DL_FUNC) &geos_c_type_id, 1},
+  {"geos_c_precision", (DL_FUNC) &geos_c_precision, 1},
+  {"geos_c_srid", (DL_FUNC) &geos_c_srid, 1},
+  {"geos_c_num_coordinates", (DL_FUNC) &geos_c_num_coordinates, 1},
+  {"geos_c_num_geometries", (DL_FUNC) &geos_c_num_geometries, 1},
+  {"geos_c_num_interior_rings", (DL_FUNC) &geos_c_num_interior_rings, 1},
+  {"geos_c_dimension", (DL_FUNC) &geos_c_dimension, 1},
+  {"geos_c_coorinate_dimension", (DL_FUNC) &geos_c_coorinate_dimension, 1},
   {"geos_c_init", (DL_FUNC) &geos_c_init, 0},
   {"geos_c_version_runtime", (DL_FUNC) &geos_c_version_runtime, 0},
   {"geos_c_version_build", (DL_FUNC) &geos_c_version_build, 0},

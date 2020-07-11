@@ -140,3 +140,39 @@ SEXP geos_c_is_closed(SEXP geom) {
 SEXP geos_c_is_valid(SEXP geom) {
   GEOS_UNARY_RETURN(GEOSisValid_r, int, LGLSXP, LOGICAL, NA_LOGICAL, 2);
 }
+
+SEXP geos_c_type_id(SEXP geom) {
+  GEOS_UNARY_RETURN(GEOSGeomTypeId_r, int, INTSXP, INTEGER, NA_INTEGER, -1);
+}
+
+SEXP geos_c_precision(SEXP geom) {
+  GEOS_UNARY_RETURN(GEOSGeom_getPrecision_r, double, REALSXP, REAL, NA_REAL, -1);
+}
+
+SEXP geos_c_srid(SEXP geom) {
+  // return 0 on exception, but this is also the SRID of 'unset'
+  GEOS_UNARY_RETURN(GEOSGetSRID_r, int, INTSXP, INTEGER, NA_INTEGER, -1);
+}
+
+SEXP geos_c_num_coordinates(SEXP geom) {
+  GEOS_UNARY_RETURN(GEOSGetNumCoordinates_r, int, INTSXP, INTEGER, NA_INTEGER, -1);
+}
+
+SEXP geos_c_num_geometries(SEXP geom) {
+  GEOS_UNARY_RETURN(GEOSGetNumGeometries_r, int, INTSXP, INTEGER, NA_INTEGER, -1);
+}
+
+SEXP geos_c_num_interior_rings(SEXP geom) {
+  GEOS_UNARY_RETURN(GEOSGetNumInteriorRings_r, int, INTSXP, INTEGER, NA_INTEGER, -1);
+}
+
+SEXP geos_c_dimension(SEXP geom) {
+  // docs say returns 0 on exception, but also for EMPTY
+  // but returns -1 for GEOMETRYCOLLECTION EMPTY
+  GEOS_UNARY_RETURN(GEOSGeom_getDimensions_r, int, INTSXP, INTEGER, NA_INTEGER, -1);
+}
+
+SEXP geos_c_coorinate_dimension(SEXP geom) {
+  // unclear what it would return on exception
+  GEOS_UNARY_RETURN(GEOSGeom_getCoordinateDimension_r, int, INTSXP, INTEGER, NA_INTEGER, 0);
+}

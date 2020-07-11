@@ -17,6 +17,14 @@
 \alias{geos_has_z}
 \alias{geos_is_closed}
 \alias{geos_is_valid}
+\alias{geos_type_id}
+\alias{geos_precision}
+\alias{geos_srid}
+\alias{geos_num_coordinates}
+\alias{geos_num_geometries}
+\alias{geos_num_interior_rings}
+\alias{geos_dimension}
+\alias{geos_coordinate_dimension}
 \title{Extract information from a GEOS geometry}
 \usage{
 geos_area(geom)
@@ -50,6 +58,22 @@ geos_has_z(geom)
 geos_is_closed(geom)
 
 geos_is_valid(geom)
+
+geos_type_id(geom)
+
+geos_precision(geom)
+
+geos_srid(geom)
+
+geos_num_coordinates(geom)
+
+geos_num_geometries(geom)
+
+geos_num_interior_rings(geom)
+
+geos_dimension(geom)
+
+geos_coordinate_dimension(geom)
 }
 \arguments{
 \item{geom}{A \link[=as_geos_geometry]{GEOS geometry vector}}

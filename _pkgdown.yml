@@ -6,15 +6,10 @@ reference:
   contents:
   - geos_read_wkt
   - as_geos_geometry
+
 - title: Geometry operators
   desc: Functions that operate on one or more geometry vectors
   contents:
-  - geos_intersection
-  - geos_centroid
-  - geos_buffer
-  - geos_is_disjoint
-  - geos_is_empty
-  - geos_project
   - geos_area
   - geos_segment_intersection
 
