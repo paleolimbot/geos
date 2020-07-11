@@ -3,6 +3,8 @@
 #include "geos-common.h"
 #include "Rinternals.h"
 
+// using macros to stamp out these functions with minimal
+// repetition
 #define GEOS_UNARY_ATOMIC(_func, _scalar_type, _vec_type, _vec_ptr, _na_value, _result_error) \
   R_xlen_t size = Rf_xlength(geom);                            \
   SEXP result = PROTECT(Rf_allocVector(_vec_type, size));      \
@@ -35,7 +37,41 @@
   UNPROTECT(1);                                                \
   return result;
 
+#define GEOS_UNARY_REAL(_func) GEOS_UNARY_ATOMIC(_func, double, REALSXP, REAL, NA_REAL, 0)
 
+// extractors
 SEXP geos_c_area(SEXP geom) {
-  GEOS_UNARY_ATOMIC(GEOSArea_r, double, REALSXP, REAL, NA_REAL, 0);
+  GEOS_UNARY_REAL(GEOSArea_r);
+}
+
+SEXP geos_c_length(SEXP geom) {
+  GEOS_UNARY_REAL(GEOSLength_r);
+}
+
+SEXP geos_c_x(SEXP geom) {
+  GEOS_UNARY_REAL(GEOSGeomGetX_r);
+}
+
+SEXP geos_c_y(SEXP geom) {
+  GEOS_UNARY_REAL(GEOSGeomGetY_r);
+}
+
+SEXP geos_c_z(SEXP geom) {
+  GEOS_UNARY_REAL(GEOSGeomGetZ_r);
+}
+
+SEXP geos_c_xmin(SEXP geom) {
+  GEOS_UNARY_REAL(GEOSGeom_getXMin_r);
+}
+
+SEXP geos_c_ymin(SEXP geom) {
+  GEOS_UNARY_REAL(GEOSGeom_getYMin_r);
+}
+
+SEXP geos_c_xmax(SEXP geom) {
+  GEOS_UNARY_REAL(GEOSGeom_getXMax_r);
+}
+
+SEXP geos_c_ymax(SEXP geom) {
+  GEOS_UNARY_REAL(GEOSGeom_getYMax_r);
 }

@@ -12,6 +12,14 @@ extern SEXP geos_c_write_xy(SEXP input);
 extern SEXP geos_c_segment_intersection(SEXP Sax0, SEXP Say0, SEXP Sax1, SEXP Say1, SEXP Sbx0, SEXP Sby0, SEXP Sbx1, SEXP Sby1);
 extern SEXP geos_c_orientation_index(SEXP SAx, SEXP SAy, SEXP SBx, SEXP SBy, SEXP SPx, SEXP SPy);
 extern SEXP geos_c_area(SEXP geom);
+extern SEXP geos_c_length(SEXP geom);
+extern SEXP geos_c_x(SEXP geom);
+extern SEXP geos_c_y(SEXP geom);
+extern SEXP geos_c_z(SEXP geom);
+extern SEXP geos_c_xmin(SEXP geom);
+extern SEXP geos_c_ymin(SEXP geom);
+extern SEXP geos_c_xmax(SEXP geom);
+extern SEXP geos_c_ymax(SEXP geom);
 extern SEXP geos_c_init();
 extern SEXP geos_c_version_runtime();
 extern SEXP geos_c_version_build();
@@ -26,6 +34,14 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_segment_intersection", (DL_FUNC) &geos_c_segment_intersection, 8},
   {"geos_c_orientation_index", (DL_FUNC) &geos_c_orientation_index, 6},
   {"geos_c_area", (DL_FUNC) &geos_c_area, 1},
+  {"geos_c_length", (DL_FUNC) &geos_c_length, 1},
+  {"geos_c_x", (DL_FUNC) &geos_c_x, 1},
+  {"geos_c_y", (DL_FUNC) &geos_c_y, 1},
+  {"geos_c_z", (DL_FUNC) &geos_c_z, 1},
+  {"geos_c_xmin", (DL_FUNC) &geos_c_xmin, 1},
+  {"geos_c_ymin", (DL_FUNC) &geos_c_ymin, 1},
+  {"geos_c_xmax", (DL_FUNC) &geos_c_xmax, 1},
+  {"geos_c_ymax", (DL_FUNC) &geos_c_ymax, 1},
   {"geos_c_init", (DL_FUNC) &geos_c_init, 0},
   {"geos_c_version_runtime", (DL_FUNC) &geos_c_version_runtime, 0},
   {"geos_c_version_build", (DL_FUNC) &geos_c_version_build, 0},

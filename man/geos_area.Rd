@@ -2,9 +2,33 @@
 % Please edit documentation in R/geos-unary-atomic.R
 \name{geos_area}
 \alias{geos_area}
+\alias{geos_length}
+\alias{geos_x}
+\alias{geos_y}
+\alias{geos_z}
+\alias{geos_xmin}
+\alias{geos_ymin}
+\alias{geos_xmax}
+\alias{geos_ymax}
 \title{Extract information from a GEOS geometry}
 \usage{
 geos_area(geom)
+
+geos_length(geom)
+
+geos_x(geom)
+
+geos_y(geom)
+
+geos_z(geom)
+
+geos_xmin(geom)
+
+geos_ymin(geom)
+
+geos_xmax(geom)
+
+geos_ymax(geom)
 }
 \arguments{
 \item{geom}{A \link[=as_geos_geometry]{GEOS geometry vector}}
