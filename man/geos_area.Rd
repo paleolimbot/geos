@@ -10,6 +10,7 @@
 \alias{geos_ymin}
 \alias{geos_xmax}
 \alias{geos_ymax}
+\alias{geos_minimum_clearance}
 \title{Extract information from a GEOS geometry}
 \usage{
 geos_area(geom)
@@ -29,6 +30,8 @@ geos_ymin(geom)
 geos_xmax(geom)
 
 geos_ymax(geom)
+
+geos_minimum_clearance(geom)
 }
 \arguments{
 \item{geom}{A \link[=as_geos_geometry]{GEOS geometry vector}}

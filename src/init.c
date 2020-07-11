@@ -20,6 +20,7 @@ extern SEXP geos_c_xmin(SEXP geom);
 extern SEXP geos_c_ymin(SEXP geom);
 extern SEXP geos_c_xmax(SEXP geom);
 extern SEXP geos_c_ymax(SEXP geom);
+extern SEXP geos_c_minimum_clearance(SEXP geom);
 extern SEXP geos_c_init();
 extern SEXP geos_c_version_runtime();
 extern SEXP geos_c_version_build();
@@ -42,6 +43,7 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_ymin", (DL_FUNC) &geos_c_ymin, 1},
   {"geos_c_xmax", (DL_FUNC) &geos_c_xmax, 1},
   {"geos_c_ymax", (DL_FUNC) &geos_c_ymax, 1},
+  {"geos_c_minimum_clearance", (DL_FUNC) &geos_c_minimum_clearance, 1},
   {"geos_c_init", (DL_FUNC) &geos_c_init, 0},
   {"geos_c_version_runtime", (DL_FUNC) &geos_c_version_runtime, 0},
   {"geos_c_version_build", (DL_FUNC) &geos_c_version_build, 0},

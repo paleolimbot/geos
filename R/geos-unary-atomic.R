@@ -20,6 +20,7 @@
 #' geos_ymin("LINESTRING (0 1, 2 3)")
 #' geos_xmax("LINESTRING (0 1, 2 3)")
 #' geos_ymax("LINESTRING (0 1, 2 3)")
+#' geos_minimum_clearance("POLYGON ((0 0, 10 0, 10 10, 3 5, 0 10, 0 0))")
 #'
 geos_area <- function(geom) {
   .Call(geos_c_area, as_geos_geometry(geom))
@@ -71,4 +72,10 @@ geos_xmax <- function(geom) {
 #' @export
 geos_ymax <- function(geom) {
   .Call(geos_c_ymax, as_geos_geometry(geom))
+}
+
+#' @rdname geos_area
+#' @export
+geos_minimum_clearance <- function(geom) {
+  .Call(geos_c_minimum_clearance, as_geos_geometry(geom))
 }

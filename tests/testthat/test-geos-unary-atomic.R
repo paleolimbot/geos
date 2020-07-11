@@ -19,4 +19,9 @@ test_that("atomic extractors work", {
   expect_identical(geos_ymin(c("LINESTRING (0 1, 2 3)", NA)), c(1, NA))
   expect_identical(geos_xmax(c("LINESTRING (0 1, 2 3)", NA)), c(2, NA))
   expect_identical(geos_ymax(c("LINESTRING (0 1, 2 3)", NA)), c(3, NA))
+
+  expect_identical(
+    geos_minimum_clearance(c("POLYGON ((0 0, 10 0, 10 10, 3 5, 0 10, 0 0))", NA)),
+    c(3, NA)
+  )
 })
