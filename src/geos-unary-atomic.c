@@ -30,7 +30,7 @@
                                                                \
     if (resultCode == _errorValue) {                           \
       UNPROTECT(1);                                            \
-      GEOS_ERROR("[i=%d] ", i);                                \
+      GEOS_ERROR("[i=%d] ", i + 1);                            \
     }                                                          \
   }                                                            \
                                                                \
@@ -106,7 +106,7 @@ SEXP geos_c_minimum_clearance(SEXP geom) {
                                                                   \
     if (resultCode == _errorValue) {                              \
       UNPROTECT(1);                                               \
-      GEOS_ERROR("[i=%d] ", i);                                   \
+      GEOS_ERROR("[i=%d] ", i + 1);                               \
     } else {                                                      \
       pResult[i] = resultCode;                                    \
     }                                                             \

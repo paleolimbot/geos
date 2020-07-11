@@ -42,6 +42,15 @@
 #'     "POLYGON ((0 0, 1 1, 1 0, 0 1, 0 0))"
 #'   )
 #' )
+#' geos_has_z(c("POINT Z (1 2 3)", "POINT (1 2)"))
+#'
+#' geos_type_id(c("POINT (0 0)", "LINESTRING (0 0, 1 1)"))
+#' geos_srid(wk::as_wkb(c("SRID=1234;POINT (0 0)", "POINT (0 0)")))
+#' geos_num_coordinates(c("POINT (0 0)", "MULTIPOINT (0 0, 1 1)"))
+#' geos_num_geometries(c("POINT (0 0)", "MULTIPOINT (0 0, 1 1)"))
+#' geos_num_interior_rings("POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))")
+#' geos_dimension(c("POINT (0 0)", "LINESTRING (0 0, 1 1)"))
+#' geos_coordinate_dimension(c("POINT (0 0)", "POINT Z (0 0 1)"))
 #'
 geos_area <- function(geom) {
   .Call(geos_c_area, as_geos_geometry(geom))
