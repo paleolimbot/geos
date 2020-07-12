@@ -26,7 +26,9 @@ geos_strtree_data(tree)
 
 \item{x}{An object to convert to a \code{\link[=geos_strtree]{geos_strtree()}}}
 
-\item{tree}{A \code{\link[=geos_str_tree]{geos_str_tree()}}}
+\item{...}{Unused}
+
+\item{tree}{A \code{\link[=geos_strtree]{geos_strtree()}}}
 }
 \value{
 A geos_str_tree object

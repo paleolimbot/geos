@@ -33,6 +33,7 @@ test_that("strtree objects can be created from well-known text", {
   )
 })
 
-test_that("strtree objects can be zero-length", {
-
+test_that("strtree objects have reasonable format() and print() methods", {
+  expect_identical(format(geos_strtree(character(0))), "<geos_strtree containing 0 items>")
+  expect_output(print(geos_strtree(character(0))), "<geos_strtree containing 0 items>")
 })

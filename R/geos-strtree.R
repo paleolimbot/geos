@@ -2,8 +2,9 @@
 #' Create a GEOS STRTree
 #'
 #' @inheritParams geos_read_wkt
-#' @param tree A [geos_str_tree()]
+#' @param tree A [geos_strtree()]
 #' @param x An object to convert to a [geos_strtree()]
+#' @param ... Unused
 #'
 #' @return A geos_str_tree object
 #' @export
@@ -44,3 +45,17 @@ geos_strtree_data <- function(tree) {
 
   .Call(geos_c_strtree_data, as_geos_strtree(tree))
 }
+
+#' @export
+format.geos_strtree <- function(x, ...) {
+  data <- geos_strtree_data(x)
+  n_items <- length(data)
+  sprintf("<geos_strtree containing %s item%s>", n_items, if(n_items == 1) "" else "s")
+}
+
+#' @export
+print.geos_strtree <- function(x, ...) {
+  cat(paste0(format(x), "\n"))
+  invisible(x)
+}
+
