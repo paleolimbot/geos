@@ -155,7 +155,7 @@ SEXP geos_c_interpolate_normalized(SEXP geom, SEXP param) {
 }
 
 SEXP geos_c_point_n(SEXP geom, SEXP param) {
-  GEOS_UNARY_GEOMETRY_PARAM(GEOSInterpolateNormalized_r, int, INTEGER);
+  GEOS_UNARY_GEOMETRY_PARAM(GEOSGeomGetPointN_r, int, INTEGER);
 }
 
 SEXP geos_c_simplify(SEXP geom, SEXP param) {
