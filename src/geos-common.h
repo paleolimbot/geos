@@ -16,11 +16,17 @@ void geos_common_handle_error(const char *message, void* userdata);
 // (possibly millions)
 GEOSContextHandle_t geos_gc_handle;
 
-// call GEOSGeom_destory_r(), finishing an externalptr
+// creates an externalptr with the appropriate finisher for a GEOSGeometry*
+// and calls GEOSGeom_destory_r(), finishing an externalptr
 void geos_common_release_geometry(SEXP externalPtr);
-
-// creates an externalptr with the appropriate finisher
 SEXP geos_common_geometry_xptr(GEOSGeometry* geometry);
+
+// creates an externalptr with the appropriate finish for a GEOSSTRTree*
+// making sure to also protect the list() of GEOSGeometry* XPtrs from which
+// the tree was created (which recursively protects the GEOSGeometry* objects
+// from garbage collection)
+void geos_common_release_tree(SEXP externalPtr);
+SEXP geos_common_tree_xptr(GEOSSTRtree* geometry, SEXP geom);
 
 // macros to set up and tear down the GEOS error handling code
 // hardcodes 'handle' as the GEOS handle type

@@ -32,3 +32,16 @@ SEXP geos_common_geometry_xptr(GEOSGeometry* geometry) {
   R_RegisterCFinalizerEx(externalPtr, geos_common_release_geometry, TRUE);
   return externalPtr;
 }
+
+void geos_common_release_tree(SEXP externalPtr) {
+  GEOSSTRtree* tree = (GEOSSTRtree*) R_ExternalPtrAddr(externalPtr);
+  if (tree != NULL) {
+    GEOSSTRtree_destroy_r(geos_gc_handle, tree);
+  }
+}
+
+SEXP geos_common_tree_xptr(GEOSSTRtree* tree, SEXP geom) {
+  SEXP externalPtr = R_MakeExternalPtr((void *) tree, R_NilValue, geom);
+  R_RegisterCFinalizerEx(externalPtr, geos_common_release_tree, TRUE);
+  return externalPtr;
+}
