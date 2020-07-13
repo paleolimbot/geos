@@ -117,6 +117,12 @@ geos_contains_matrix <- function(geom, tree) {
 
 #' @rdname geos_disjoint_matrix
 #' @export
+geos_contains_properly_matrix <- function(geom, tree) {
+  .Call(geos_c_contains_properly_matrix, as_geos_geometry(geom), as_geos_strtree(tree))
+}
+
+#' @rdname geos_disjoint_matrix
+#' @export
 geos_overlaps_matrix <- function(geom, tree) {
   .Call(geos_c_overlaps_matrix, as_geos_geometry(geom), as_geos_strtree(tree))
 }
@@ -181,6 +187,12 @@ geos_within_any <- function(geom, tree) {
 #' @export
 geos_contains_any <- function(geom, tree) {
   .Call(geos_c_predicate_any, geos_contains_matrix(geom, tree))
+}
+
+#' @rdname geos_disjoint_matrix
+#' @export
+geos_contains_properly_any <- function(geom, tree) {
+  .Call(geos_c_predicate_any, geos_contains_properly_matrix(geom, tree))
 }
 
 #' @rdname geos_disjoint_matrix

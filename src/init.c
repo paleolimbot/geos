@@ -35,6 +35,7 @@ extern SEXP geos_c_intersects_matrix(SEXP geom, SEXP treeExternalPtr);
 extern SEXP geos_c_crosses_matrix(SEXP geom, SEXP treeExternalPtr);
 extern SEXP geos_c_within_matrix(SEXP geom, SEXP treeExternalPtr);
 extern SEXP geos_c_contains_matrix(SEXP geom, SEXP treeExternalPtr);
+extern SEXP geos_c_contains_properly_matrix(SEXP geom, SEXP treeExternalPtr);
 extern SEXP geos_c_overlaps_matrix(SEXP geom, SEXP treeExternalPtr);
 extern SEXP geos_c_covers_matrix(SEXP geom, SEXP treeExternalPtr);
 extern SEXP geos_c_covered_by_matrix(SEXP geom, SEXP treeExternalPtr);
@@ -124,6 +125,7 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_crosses_matrix", (DL_FUNC) &geos_c_crosses_matrix, 2},
   {"geos_c_within_matrix", (DL_FUNC) &geos_c_within_matrix, 2},
   {"geos_c_contains_matrix", (DL_FUNC) &geos_c_contains_matrix, 2},
+  {"geos_c_contains_properly_matrix", (DL_FUNC) &geos_c_contains_properly_matrix, 2},
   {"geos_c_overlaps_matrix", (DL_FUNC) &geos_c_overlaps_matrix, 2},
   {"geos_c_covers_matrix", (DL_FUNC) &geos_c_covers_matrix, 2},
   {"geos_c_covered_by_matrix", (DL_FUNC) &geos_c_covered_by_matrix, 2},

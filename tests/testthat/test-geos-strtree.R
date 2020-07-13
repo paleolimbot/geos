@@ -129,6 +129,13 @@ test_that("matrix predicates work", {
   )
 
   expect_matrix_true(
+    geos_contains_properly_matrix(
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))",
+      "POINT (5 5)"
+    )
+  )
+
+  expect_matrix_true(
     geos_overlaps_matrix(
       "POLYGON ((1 1, 1 11, 11 11, 11 1, 1 1))",
       "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"
@@ -218,6 +225,13 @@ test_that("_any() predicates work", {
 
   expect_true(
     geos_contains_any(
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))",
+      "POINT (5 5)"
+    )
+  )
+
+  expect_true(
+    geos_contains_properly_any(
       "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))",
       "POINT (5 5)"
     )

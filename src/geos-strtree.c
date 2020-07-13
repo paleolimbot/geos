@@ -219,6 +219,13 @@ SEXP geos_c_contains_matrix(SEXP geom, SEXP treeExternalPtr) {
   return strtree_query_base(treeExternalPtr, geom, &strtree_callback_contains, 1, R_NilValue);
 }
 
+void strtree_callback_contains_properly(void* item, void* userdata) {
+  GEOS_STRTREE_CALLBACK(GEOSPreparedContainsProperly_r)
+}
+SEXP geos_c_contains_properly_matrix(SEXP geom, SEXP treeExternalPtr) {
+  return strtree_query_base(treeExternalPtr, geom, &strtree_callback_contains_properly, 1, R_NilValue);
+}
+
 void strtree_callback_overlaps(void* item, void* userdata) {
   GEOS_STRTREE_CALLBACK(GEOSPreparedOverlaps_r)
 }

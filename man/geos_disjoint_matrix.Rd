@@ -7,6 +7,7 @@
 \alias{geos_crosses_matrix}
 \alias{geos_within_matrix}
 \alias{geos_contains_matrix}
+\alias{geos_contains_properly_matrix}
 \alias{geos_overlaps_matrix}
 \alias{geos_equals_matrix}
 \alias{geos_equals_exact_matrix}
@@ -18,6 +19,7 @@
 \alias{geos_crosses_any}
 \alias{geos_within_any}
 \alias{geos_contains_any}
+\alias{geos_contains_properly_any}
 \alias{geos_overlaps_any}
 \alias{geos_equals_any}
 \alias{geos_equals_exact_any}
@@ -36,6 +38,8 @@ geos_crosses_matrix(geom, tree)
 geos_within_matrix(geom, tree)
 
 geos_contains_matrix(geom, tree)
+
+geos_contains_properly_matrix(geom, tree)
 
 geos_overlaps_matrix(geom, tree)
 
@@ -58,6 +62,8 @@ geos_crosses_any(geom, tree)
 geos_within_any(geom, tree)
 
 geos_contains_any(geom, tree)
+
+geos_contains_properly_any(geom, tree)
 
 geos_overlaps_any(geom, tree)
 
