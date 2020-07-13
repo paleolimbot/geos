@@ -40,8 +40,8 @@ void geos_common_release_tree(SEXP externalPtr) {
   }
 }
 
-SEXP geos_common_tree_xptr(GEOSSTRtree* tree, SEXP geom) {
-  SEXP externalPtr = R_MakeExternalPtr((void *) tree, R_NilValue, geom);
+SEXP geos_common_tree_xptr(GEOSSTRtree* tree, SEXP geom, SEXP indices) {
+  SEXP externalPtr = R_MakeExternalPtr((void *) tree, geom, indices);
   R_RegisterCFinalizerEx(externalPtr, geos_common_release_tree, TRUE);
   return externalPtr;
 }

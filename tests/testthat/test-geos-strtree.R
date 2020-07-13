@@ -37,3 +37,29 @@ test_that("strtree objects have reasonable format() and print() methods", {
   expect_identical(format(geos_strtree(character(0))), "<geos_strtree containing 0 items>")
   expect_output(print(geos_strtree(character(0))), "<geos_strtree containing 0 items>")
 })
+
+test_that("strtree objects that are invalid cannot be queried", {
+  tree <- geos_strtree(character())
+
+  temprds <- tempfile()
+  saveRDS(tree, temprds)
+  tree <- readRDS(temprds)
+  expect_error(geos_strtree_query(tree, character(0)), "External.*?is not valid")
+})
+
+test_that("strtree objects can be queried", {
+  tree <- geos_strtree(
+    c("POLYGON ((0 0, 10 0, 10 10, 0 10, 0 0))", "POLYGON ((0 0, 0 -10, -10 -10, -10 0, 0 0))")
+  )
+
+  expect_identical(
+    lapply(
+      geos_strtree_query(
+        tree,
+        c("POINT (-5 -5)", "POINT (5 5)", "MULTIPOINT (-5 -5, 5 5)", NA)
+      ),
+      sort
+    ),
+    list(2L, 1L, c(1L, 2L), NULL)
+  )
+})

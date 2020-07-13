@@ -15,6 +15,22 @@ geos_strtree <- function(geom) {
 
 #' @rdname geos_strtree
 #' @export
+geos_strtree_data <- function(tree) {
+  # doesn't make sense to coerce here because then the output == tree
+  stopifnot(inherits(tree, "geos_strtree"))
+
+  .Call(geos_c_strtree_data, as_geos_strtree(tree))
+}
+
+#' @rdname geos_strtree
+#' @export
+geos_strtree_query <- function(tree, geom) {
+  .Call(geos_c_strtree_query, as_geos_strtree(tree), as_geos_geometry(geom))
+}
+
+
+#' @rdname geos_strtree
+#' @export
 as_geos_strtree <- function(x, ...) {
   UseMethod("as_geos_strtree")
 }
@@ -35,15 +51,6 @@ as_geos_strtree.geos_strtree <- function(x, ...) {
 #' @export
 as_geos_strtree.geos_geometry <- function(x, ...) {
   geos_strtree(x)
-}
-
-#' @rdname geos_strtree
-#' @export
-geos_strtree_data <- function(tree) {
-  # doesn't make sense to coerce here because then the output == tree
-  stopifnot(inherits(tree, "geos_strtree"))
-
-  .Call(geos_c_strtree_data, as_geos_strtree(tree))
 }
 
 #' @export

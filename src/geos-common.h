@@ -24,9 +24,10 @@ SEXP geos_common_geometry_xptr(GEOSGeometry* geometry);
 // creates an externalptr with the appropriate finish for a GEOSSTRTree*
 // making sure to also protect the list() of GEOSGeometry* XPtrs from which
 // the tree was created (which recursively protects the GEOSGeometry* objects
-// from garbage collection)
+// from garbage collection), and a list of indices, whose memory is referenced
+// from the GEOSSTRTree itself
 void geos_common_release_tree(SEXP externalPtr);
-SEXP geos_common_tree_xptr(GEOSSTRtree* geometry, SEXP geom);
+SEXP geos_common_tree_xptr(GEOSSTRtree* geometry, SEXP geom, SEXP indices);
 
 // macros to set up and tear down the GEOS error handling code
 // hardcodes 'handle' as the GEOS handle type
