@@ -125,6 +125,8 @@ SEXP strtree_query_base(SEXP treeExternalPtr, SEXP geom, GEOSQueryCallback callb
 
     GEOSSTRtree_query_r(handle, tree, geometry, callback, &queryResult);
 
+    GEOSPreparedGeom_destroy_r(handle, prepared);
+
     // at this point, queryResult now holds the indices of potential intersectors to `geometry`
     // allocate a new vector with the appropriate length and copy the temporary result there
     itemResult = PROTECT(Rf_allocVector(INTSXP, queryResult.currentIndex));
