@@ -54,8 +54,8 @@ SEXP geos_c_strtree_data(SEXP treeExternalPtr) {
 // data structure and callback used for the generic query
 struct QueryResult {
   GEOSContextHandle_t handle;
-  GEOSGeometry* geometry;
-  SEXP indexGeom;
+  GEOSPreparedGeometry* prepared;
+  SEXP geom;
   int* indexList;
   R_xlen_t currentIndex;
 };
@@ -80,8 +80,8 @@ SEXP strtree_query_base(SEXP treeExternalPtr, SEXP geom, GEOSQueryCallback callb
 
   struct QueryResult queryResult = {
     .handle = handle,
-    .geometry = NULL,
-    .indexGeom = geos_c_strtree_data(treeExternalPtr),
+    .prepared = NULL,
+    .geom = geos_c_strtree_data(treeExternalPtr),
     .indexList = INTEGER(tempItemResult),
     .currentIndex = 0
   };
@@ -102,9 +102,13 @@ SEXP strtree_query_base(SEXP treeExternalPtr, SEXP geom, GEOSQueryCallback callb
     geometry = (GEOSGeometry*) R_ExternalPtrAddr(item);
     GEOS_CHECK_GEOMETRY(geometry, i);
 
-    // reset the result cache and set the geometry
+    // prepare geometry
+    const GEOSPreparedGeometry* prepared = GEOSPrepare_r(handle, geometry);
+
+    // reset the result cache and set the item geometry
+    // need to cast because GEOSPrepare_r() returns const
     queryResult.currentIndex = 0;
-    queryResult.geometry = geometry;
+    queryResult.prepared = (GEOSPreparedGeometry*) prepared;
     GEOSSTRtree_query_r(handle, tree, geometry, callback, &queryResult);
 
     // at this point, queryResult now holds the indices of potential intersectors to `geometry`
@@ -147,14 +151,14 @@ SEXP geos_c_strtree_query(SEXP treeExternalPtr, SEXP geom) {
 struct QueryResult* queryResult = (struct QueryResult*) userdata;            \
 int itemInt = *((int*) item);                                                \
                                                                              \
-SEXP itemGeomPtr = VECTOR_ELT(queryResult->indexGeom, itemInt - 1);          \
+SEXP itemGeomPtr = VECTOR_ELT(queryResult->geom, itemInt - 1);          \
 GEOSGeometry* geometryIndex = (GEOSGeometry*) R_ExternalPtrAddr(itemGeomPtr);\
 GEOS_CHECK_GEOMETRY(geometryIndex, itemInt - 1);                             \
                                                                              \
                                                                              \
 int resultCode = _func(                                                      \
   queryResult->handle,                                                       \
-  queryResult->geometry,                                                     \
+  queryResult->prepared,                                                     \
   geometryIndex                                                              \
 );                                                                           \
                                                                              \
@@ -164,63 +168,56 @@ if (resultCode) {                                                            \
 }
 
 void strtree_callback_touches(void* item, void* userdata) {
-  GEOS_STRTREE_CALLBACK(GEOSTouches_r)
+  GEOS_STRTREE_CALLBACK(GEOSPreparedTouches_r)
 }
 SEXP geos_c_touches_matrix(SEXP geom, SEXP treeExternalPtr) {
   return strtree_query_base(treeExternalPtr, geom, &strtree_callback_touches);
 }
 
 void strtree_callback_intersects(void* item, void* userdata) {
-  GEOS_STRTREE_CALLBACK(GEOSIntersects_r)
+  GEOS_STRTREE_CALLBACK(GEOSPreparedIntersects_r)
 }
 SEXP geos_c_intersects_matrix(SEXP geom, SEXP treeExternalPtr) {
   return strtree_query_base(treeExternalPtr, geom, &strtree_callback_intersects);
 }
 
 void strtree_callback_crosses(void* item, void* userdata) {
-  GEOS_STRTREE_CALLBACK(GEOSCrosses_r)
+  GEOS_STRTREE_CALLBACK(GEOSPreparedCrosses_r)
 }
 SEXP geos_c_crosses_matrix(SEXP geom, SEXP treeExternalPtr) {
   return strtree_query_base(treeExternalPtr, geom, &strtree_callback_crosses);
 }
 
 void strtree_callback_within(void* item, void* userdata) {
-  GEOS_STRTREE_CALLBACK(GEOSWithin_r)
+  GEOS_STRTREE_CALLBACK(GEOSPreparedWithin_r)
 }
 SEXP geos_c_within_matrix(SEXP geom, SEXP treeExternalPtr) {
   return strtree_query_base(treeExternalPtr, geom, &strtree_callback_within);
 }
 
 void strtree_callback_contains(void* item, void* userdata) {
-  GEOS_STRTREE_CALLBACK(GEOSContains_r)
+  GEOS_STRTREE_CALLBACK(GEOSPreparedContains_r)
 }
 SEXP geos_c_contains_matrix(SEXP geom, SEXP treeExternalPtr) {
   return strtree_query_base(treeExternalPtr, geom, &strtree_callback_contains);
 }
 
 void strtree_callback_overlaps(void* item, void* userdata) {
-  GEOS_STRTREE_CALLBACK(GEOSOverlaps_r)
+  GEOS_STRTREE_CALLBACK(GEOSPreparedOverlaps_r)
 }
 SEXP geos_c_overlaps_matrix(SEXP geom, SEXP treeExternalPtr) {
   return strtree_query_base(treeExternalPtr, geom, &strtree_callback_overlaps);
 }
 
-void strtree_callback_equals(void* item, void* userdata) {
-  GEOS_STRTREE_CALLBACK(GEOSEquals_r)
-}
-SEXP geos_c_equals_matrix(SEXP geom, SEXP treeExternalPtr) {
-  return strtree_query_base(treeExternalPtr, geom, &strtree_callback_equals);
-}
-
 void strtree_callback_covers(void* item, void* userdata) {
-  GEOS_STRTREE_CALLBACK(GEOSCovers_r)
+  GEOS_STRTREE_CALLBACK(GEOSPreparedCovers_r)
 }
 SEXP geos_c_covers_matrix(SEXP geom, SEXP treeExternalPtr) {
   return strtree_query_base(treeExternalPtr, geom, &strtree_callback_covers);
 }
 
 void strtree_callback_covered_by(void* item, void* userdata) {
-  GEOS_STRTREE_CALLBACK(GEOSCoveredBy_r)
+  GEOS_STRTREE_CALLBACK(GEOSPreparedCoveredBy_r)
 }
 SEXP geos_c_covered_by_matrix(SEXP geom, SEXP treeExternalPtr) {
   return strtree_query_base(treeExternalPtr, geom, &strtree_callback_covered_by);

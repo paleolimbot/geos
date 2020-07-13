@@ -135,12 +135,12 @@ test_that("matrix predicates work", {
     )
   )
 
-  expect_matrix_true(
-    geos_equals_matrix(
-      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))",
-      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"
-    )
-  )
+  # expect_matrix_true(
+  #   geos_equals_matrix(
+  #     "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))",
+  #     "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"
+  #   )
+  # )
 
   expect_matrix_true(
     geos_covers_matrix(
