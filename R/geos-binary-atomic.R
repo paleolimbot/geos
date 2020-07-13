@@ -178,12 +178,12 @@ geos_prepared_overlaps <- function(geom1, geom2) {
 #' @export
 geos_prepared_covers <- function(geom1, geom2) {
   recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
-  .Call(geos_c_covers, recycled[[1]], recycled[[2]])
+  .Call(geos_c_prepared_covers, recycled[[1]], recycled[[2]])
 }
 
 #' @rdname geos_disjoint
 #' @export
 geos_prepared_covered_by <- function(geom1, geom2) {
   recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
-  .Call(geos_c_covered_by, recycled[[1]], recycled[[2]])
+  .Call(geos_c_prepared_covered_by, recycled[[1]], recycled[[2]])
 }

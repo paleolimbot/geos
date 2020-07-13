@@ -188,6 +188,12 @@ test_that("matrix predicates work", {
 })
 
 test_that("_any() predicates work", {
+  # check NA
+  expect_identical(
+    geos_disjoint_any(NA_character_, "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"),
+    NA
+  )
+
   expect_false(
     geos_disjoint_any(
       "POINT (5 5)",
@@ -288,4 +294,3 @@ test_that("_any() predicates work", {
     )
   )
 })
-

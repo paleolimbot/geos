@@ -166,9 +166,10 @@ SEXP geos_c_equals_exact(SEXP geom1, SEXP geom2, SEXP tolerance) {
 
     int resultCode = GEOSEqualsExact_r(handle, geometry1, geometry2, pTolerance[i]);
 
+    // don't know how to make this fire
     if (resultCode == 2) {
-      UNPROTECT(1);
-      GEOS_ERROR("[i=%d] ", i + 1);
+      UNPROTECT(1); // # nocov
+      GEOS_ERROR("[i=%d] ", i + 1); // # nocov
     }
 
     pResult[i] = resultCode;

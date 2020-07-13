@@ -249,14 +249,17 @@ SEXP geos_c_covered_by_matrix(SEXP geom, SEXP treeExternalPtr) {
 }
 
 // the equals querier is slightly different because there is no prepared equals
+// quiet approach to errors because this is called accross a .so boundary
 void strtree_callback_equals(void* item, void* userdata) {
   struct QueryResult* queryResult = (struct QueryResult*) userdata;
   int itemInt = *((int*) item);
 
   SEXP itemGeomPtr = VECTOR_ELT(queryResult->geom, itemInt - 1);
   GEOSGeometry* geometryIndex = (GEOSGeometry*) R_ExternalPtrAddr(itemGeomPtr);
+  // don't know how this could happen, as the tree was already checked for
+  // NULL (which could happen on save/reload)
   if (geometryIndex == NULL) {
-    return;
+    return; // # nocov
   }
 
   int resultCode = GEOSEquals_r(
@@ -275,14 +278,17 @@ SEXP geos_c_equals_matrix(SEXP geom, SEXP treeExternalPtr) {
 }
 
 // the equals_exact querier is slightly different because there is a parameter (tolerance)
+// quiet approach to errors because this is called accross a .so boundary
 void strtree_callback_equals_exact(void* item, void* userdata) {
   struct QueryResult* queryResult = (struct QueryResult*) userdata;
   int itemInt = *((int*) item);
 
   SEXP itemGeomPtr = VECTOR_ELT(queryResult->geom, itemInt - 1);
   GEOSGeometry* geometryIndex = (GEOSGeometry*) R_ExternalPtrAddr(itemGeomPtr);
+  // don't know how this could happen, as the tree was already checked for
+  // NULL (which could happen on save/reload)
   if (geometryIndex == NULL) {
-    return;
+    return; // # nocov
   }
 
   double tolerance = REAL(queryResult->extra)[queryResult->i];

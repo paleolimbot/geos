@@ -92,6 +92,15 @@ test_that("binary predicates work", {
     )
   )
 
+  expect_identical(
+    geos_equals_exact(
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))",
+      "POLYGON ((0.1 0.1, 0 10, 10 10, 10 0, 0.1 0.1))",
+      tolerance = NA
+    ),
+    NA
+  )
+
   expect_true(
     geos_covers(
       "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))",
