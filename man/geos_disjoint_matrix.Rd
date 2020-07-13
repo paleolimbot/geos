@@ -13,25 +13,30 @@
 \alias{geos_covered_by_matrix}
 \title{Matrix predicates}
 \usage{
-geos_disjoint_matrix(geom1, geom2)
+geos_disjoint_matrix(geom, tree)
 
-geos_touches_matrix(geom1, geom2)
+geos_touches_matrix(geom, tree)
 
-geos_intersects_matrix(geom1, geom2)
+geos_intersects_matrix(geom, tree)
 
-geos_crosses_matrix(geom1, geom2)
+geos_crosses_matrix(geom, tree)
 
-geos_within_matrix(geom1, geom2)
+geos_within_matrix(geom, tree)
 
-geos_contains_matrix(geom1, geom2)
+geos_contains_matrix(geom, tree)
 
-geos_overlaps_matrix(geom1, geom2)
+geos_overlaps_matrix(geom, tree)
 
-geos_equals_matrix(geom1, geom2)
+geos_equals_matrix(geom, tree)
 
-geos_covers_matrix(geom1, geom2)
+geos_covers_matrix(geom, tree)
 
-geos_covered_by_matrix(geom1, geom2)
+geos_covered_by_matrix(geom, tree)
+}
+\arguments{
+\item{geom}{A \link[=as_geos_geometry]{GEOS geometry vector}}
+
+\item{tree}{A \code{\link[=geos_strtree]{geos_strtree()}}}
 }
 \value{
 A \code{list()} of integer vectors containing the indices of \code{tree}

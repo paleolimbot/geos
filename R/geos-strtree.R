@@ -75,7 +75,13 @@ print.geos_strtree <- function(x, ...) {
 #'   for which the predicate would return TRUE.
 #'
 geos_disjoint_matrix <- function(geom, tree) {
-  stop("Not implemented")
+  # disjoint is the odd one out, in that it requires a negation of intersects
+  # this is easier to maintain
+  # with setdiff() here (unless somebody complains that this is slow)
+  tree <- as_geos_strtree(tree)
+  tree_data <- geos_strtree_data(tree)
+  intersects_matrix <- geos_intersects_matrix(geom, tree)
+  Map(setdiff, list(seq_along(tree_data)), intersects_matrix)
 }
 
 #' @rdname geos_disjoint_matrix

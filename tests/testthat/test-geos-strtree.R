@@ -83,5 +83,77 @@ test_that("matrix predicates return the correct shape output", {
 
 test_that("matrix predicates work", {
 
+  expect_matrix_true <- function(x) expect_identical({{ x }}, list(1L))
+  expect_matrix_false <- function(x) expect_identical({{ x }}, list(integer()))
+
+  expect_matrix_false(
+    geos_disjoint_matrix(
+      "POINT (5 5)",
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"
+    )
+  )
+
+  expect_matrix_true(
+    geos_touches_matrix(
+      "POINT (10 10)",
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"
+    )
+  )
+
+  expect_matrix_true(
+    geos_intersects_matrix(
+      "POINT (5 5)",
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"
+    )
+  )
+
+  expect_matrix_true(
+    geos_crosses_matrix(
+      "LINESTRING (-1 -1, 6 6)",
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"
+    )
+  )
+
+  expect_matrix_true(
+    geos_within_matrix(
+      "POINT (5 5)",
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"
+    )
+  )
+
+  expect_matrix_true(
+    geos_contains_matrix(
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))",
+      "POINT (5 5)"
+    )
+  )
+
+  expect_matrix_true(
+    geos_overlaps_matrix(
+      "POLYGON ((1 1, 1 11, 11 11, 11 1, 1 1))",
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"
+    )
+  )
+
+  expect_matrix_true(
+    geos_equals_matrix(
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))",
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"
+    )
+  )
+
+  expect_matrix_true(
+    geos_covers_matrix(
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))",
+      "POINT (5 5)"
+    )
+  )
+
+  expect_matrix_true(
+    geos_covered_by_matrix(
+      "POINT (5 5)",
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"
+    )
+  )
 })
 
