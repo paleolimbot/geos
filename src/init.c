@@ -18,6 +18,7 @@ extern SEXP geos_c_overlaps(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_equals(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_covers(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_covered_by(SEXP geom1, SEXP geom2);
+extern SEXP geos_c_equals_exact(SEXP geom1, SEXP geom2, SEXP tolerance);
 extern SEXP geos_c_read_wkt(SEXP input);
 extern SEXP geos_c_write_wkt(SEXP input, SEXP includeZ, SEXP precision, SEXP trim);
 extern SEXP geos_c_read_wkb(SEXP input);
@@ -37,6 +38,8 @@ extern SEXP geos_c_contains_matrix(SEXP geom, SEXP treeExternalPtr);
 extern SEXP geos_c_overlaps_matrix(SEXP geom, SEXP treeExternalPtr);
 extern SEXP geos_c_covers_matrix(SEXP geom, SEXP treeExternalPtr);
 extern SEXP geos_c_covered_by_matrix(SEXP geom, SEXP treeExternalPtr);
+extern SEXP geos_c_equals_matrix(SEXP geom, SEXP treeExternalPtr);
+extern SEXP geos_c_equals_exact_matrix(SEXP geom, SEXP treeExternalPtr, SEXP tolerance);
 extern SEXP geos_c_predicate_any(SEXP matrixResult);
 extern SEXP geos_c_area(SEXP geom);
 extern SEXP geos_c_length(SEXP geom);
@@ -104,6 +107,7 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_equals", (DL_FUNC) &geos_c_equals, 2},
   {"geos_c_covers", (DL_FUNC) &geos_c_covers, 2},
   {"geos_c_covered_by", (DL_FUNC) &geos_c_covered_by, 2},
+  {"geos_c_equals_exact", (DL_FUNC) &geos_c_equals_exact, 3},
   {"geos_c_read_wkt", (DL_FUNC) &geos_c_read_wkt, 1},
   {"geos_c_write_wkt", (DL_FUNC) &geos_c_write_wkt, 4},
   {"geos_c_read_wkb", (DL_FUNC) &geos_c_read_wkb, 1},
@@ -123,6 +127,8 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_overlaps_matrix", (DL_FUNC) &geos_c_overlaps_matrix, 2},
   {"geos_c_covers_matrix", (DL_FUNC) &geos_c_covers_matrix, 2},
   {"geos_c_covered_by_matrix", (DL_FUNC) &geos_c_covered_by_matrix, 2},
+  {"geos_c_equals_matrix", (DL_FUNC) &geos_c_equals_matrix, 2},
+  {"geos_c_equals_exact_matrix", (DL_FUNC) &geos_c_equals_exact_matrix, 3},
   {"geos_c_predicate_any", (DL_FUNC) &geos_c_predicate_any, 1},
   {"geos_c_area", (DL_FUNC) &geos_c_area, 1},
   {"geos_c_length", (DL_FUNC) &geos_c_length, 1},

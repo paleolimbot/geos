@@ -9,6 +9,7 @@
 \alias{geos_contains}
 \alias{geos_overlaps}
 \alias{geos_equals}
+\alias{geos_equals_exact}
 \alias{geos_covers}
 \alias{geos_covered_by}
 \title{Binary predicates}
@@ -29,6 +30,8 @@ geos_overlaps(geom1, geom2)
 
 geos_equals(geom1, geom2)
 
+geos_equals_exact(geom1, geom2, tolerance = .Machine$double.eps^2)
+
 geos_covers(geom1, geom2)
 
 geos_covered_by(geom1, geom2)
@@ -39,6 +42,9 @@ recycled to a common length.}
 
 \item{geom2}{\link[=as_geos_geometry]{GEOS geometry vectors},
 recycled to a common length.}
+
+\item{tolerance}{The maximum separation of vertices that should
+be considered equal.}
 }
 \value{
 A logical vector along the recycled length of \code{geom1} and \code{geom2}

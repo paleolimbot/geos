@@ -136,3 +136,45 @@ SEXP geos_c_covers(SEXP geom1, SEXP geom2) {
 SEXP geos_c_covered_by(SEXP geom1, SEXP geom2) {
   GEOS_BINARY_PREDICATE(GEOSCoveredBy_r);
 }
+
+// equals exact is the odd one out here because it takes a single parameter
+SEXP geos_c_equals_exact(SEXP geom1, SEXP geom2, SEXP tolerance) {
+  R_xlen_t size = Rf_xlength(geom1);
+  SEXP result = PROTECT(Rf_allocVector(LGLSXP, size));
+  int* pResult = LOGICAL(result);
+  double* pTolerance = REAL(tolerance);
+
+  GEOS_INIT();
+
+  SEXP item1;
+  SEXP item2;
+  GEOSGeometry* geometry1;
+  GEOSGeometry* geometry2;
+  for (R_xlen_t i = 0; i < size; i++) {
+    item1 = VECTOR_ELT(geom1, i);
+    item2 = VECTOR_ELT(geom2, i);
+
+    if (item1 == R_NilValue || item2 == R_NilValue || ISNA(pTolerance[i])) {
+      pResult[i] = NA_REAL;
+      continue;
+    }
+
+    geometry1 = (GEOSGeometry*) R_ExternalPtrAddr(item1);
+    GEOS_CHECK_GEOMETRY(geometry1, i);
+    geometry2 = (GEOSGeometry*) R_ExternalPtrAddr(item2);
+    GEOS_CHECK_GEOMETRY(geometry2, i);
+
+    int resultCode = GEOSEqualsExact_r(handle, geometry1, geometry2, pTolerance[i]);
+
+    if (resultCode == 2) {
+      UNPROTECT(1);
+      GEOS_ERROR("[i=%d] ", i + 1);
+    }
+
+    pResult[i] = resultCode;
+  }
+
+  GEOS_FINISH();
+  UNPROTECT(1);
+  return result;
+}

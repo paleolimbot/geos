@@ -69,6 +69,7 @@ print.geos_strtree <- function(x, ...) {
 #' Matrix predicates
 #'
 #' @inheritParams geos_strtree
+#' @inheritParams geos_disjoint
 #' @export
 #'
 #' @return A `list()` of integer vectors containing the indices of `tree`
@@ -124,6 +125,13 @@ geos_overlaps_matrix <- function(geom, tree) {
 #' @export
 geos_equals_matrix <- function(geom, tree) {
   .Call(geos_c_equals_matrix, as_geos_geometry(geom), as_geos_strtree(tree))
+}
+
+#' @rdname geos_disjoint_matrix
+#' @export
+geos_equals_exact_matrix <- function(geom, tree, tolerance = .Machine$double.eps ^ 2) {
+  recycled <- recycle_common(list(as_geos_geometry(geom), as.numeric(tolerance)))
+  .Call(geos_c_equals_exact_matrix, recycled[[1]], as_geos_strtree(tree), recycled[[2]])
 }
 
 #' @rdname geos_disjoint_matrix
@@ -185,6 +193,12 @@ geos_overlaps_any <- function(geom, tree) {
 #' @export
 geos_equals_any <- function(geom, tree) {
   .Call(geos_c_predicate_any, geos_equals_matrix(geom, tree))
+}
+
+#' @rdname geos_disjoint_matrix
+#' @export
+geos_equals_exact_any <- function(geom, tree, tolerance = .Machine$double.eps ^ 2) {
+  .Call(geos_c_predicate_any, geos_equals_exact_matrix(geom, tree, tolerance = tolerance))
 }
 
 #' @rdname geos_disjoint_matrix

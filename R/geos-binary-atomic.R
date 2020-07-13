@@ -37,6 +37,8 @@ geos_distance_frechet <- function(geom1, geom2) {
 #' Binary predicates
 #'
 #' @inheritParams geos_distance
+#' @param tolerance The maximum separation of vertices that should
+#'   be considered equal.
 #'
 #' @return A logical vector along the recycled length of `geom1` and `geom2`
 #' @export
@@ -93,6 +95,13 @@ geos_overlaps <- function(geom1, geom2) {
 geos_equals <- function(geom1, geom2) {
   recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
   .Call(geos_c_equals, recycled[[1]], recycled[[2]])
+}
+
+#' @rdname geos_disjoint
+#' @export
+geos_equals_exact <- function(geom1, geom2, tolerance = .Machine$double.eps ^ 2) {
+  recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2), as.numeric(tolerance)))
+  .Call(geos_c_equals_exact, recycled[[1]], recycled[[2]], recycled[[3]])
 }
 
 #' @rdname geos_disjoint

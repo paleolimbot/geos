@@ -135,12 +135,35 @@ test_that("matrix predicates work", {
     )
   )
 
-  # expect_matrix_true(
-  #   geos_equals_matrix(
-  #     "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))",
-  #     "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"
-  #   )
-  # )
+  expect_matrix_true(
+    geos_equals_matrix(
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))",
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"
+    )
+  )
+
+  expect_matrix_true(
+    geos_equals_exact_matrix(
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))",
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"
+    )
+  )
+
+  expect_matrix_true(
+    geos_equals_exact_matrix(
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))",
+      "POLYGON ((0.1 0.1, 0 10, 10 10, 10 0, 0.1 0.1))",
+      tolerance = 0.2
+    )
+  )
+
+  expect_matrix_false(
+    geos_equals_exact_matrix(
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))",
+      "POLYGON ((0.1 0.1, 0 10, 10 10, 10 0, 0.1 0.1))",
+      tolerance = 0.05
+    )
+  )
 
   expect_matrix_true(
     geos_covers_matrix(
@@ -207,12 +230,35 @@ test_that("_any() predicates work", {
     )
   )
 
-  # expect_true(
-  #   geos_equals_any(
-  #     "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))",
-  #     "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"
-  #   )
-  # )
+  expect_true(
+    geos_equals_any(
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))",
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"
+    )
+  )
+
+  expect_true(
+    geos_equals_exact_any(
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))",
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"
+    )
+  )
+
+  expect_true(
+    geos_equals_exact_any(
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))",
+      "POLYGON ((0.1 0.1, 0 10, 10 10, 10 0, 0.1 0.1))",
+      tolerance = 0.2
+    )
+  )
+
+  expect_false(
+    geos_equals_exact_any(
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))",
+      "POLYGON ((0.1 0.1, 0 10, 10 10, 10 0, 0.1 0.1))",
+      tolerance = 0.05
+    )
+  )
 
   expect_true(
     geos_covers_any(

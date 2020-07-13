@@ -70,6 +70,29 @@ test_that("binary predicates work", {
   )
 
   expect_true(
+    geos_equals_exact(
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))",
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"
+    )
+  )
+
+  expect_true(
+    geos_equals_exact(
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))",
+      "POLYGON ((0.1 0.1, 0 10, 10 10, 10 0, 0.1 0.1))",
+      tolerance = 0.2
+    )
+  )
+
+  expect_false(
+    geos_equals_exact(
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))",
+      "POLYGON ((0.1 0.1, 0 10, 10 10, 10 0, 0.1 0.1))",
+      tolerance = 0.05
+    )
+  )
+
+  expect_true(
     geos_covers(
       "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))",
       "POINT (5 5)"
