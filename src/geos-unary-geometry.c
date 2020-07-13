@@ -163,5 +163,5 @@ SEXP geos_c_simplify(SEXP geom, SEXP param) {
 }
 
 SEXP geos_c_simplify_preserve_topology(SEXP geom, SEXP param) {
-  GEOS_UNARY_GEOMETRY_PARAM(GEOSSimplify_r, double, REAL);
+  GEOS_UNARY_GEOMETRY_PARAM(GEOSTopologyPreserveSimplify_r, double, REAL);
 }
