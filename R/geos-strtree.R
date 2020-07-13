@@ -137,3 +137,64 @@ geos_covers_matrix <- function(geom, tree) {
 geos_covered_by_matrix <- function(geom, tree) {
   .Call(geos_c_covered_by_matrix, as_geos_geometry(geom), as_geos_strtree(tree))
 }
+
+#' @rdname geos_disjoint_matrix
+#' @export
+geos_disjoint_any <- function(geom, tree) {
+  # disjoint is the odd one out, in that it requires a negation of intersects
+  !.Call(geos_c_predicate_any, geos_intersects_matrix(geom, tree))
+}
+
+#' @rdname geos_disjoint_matrix
+#' @export
+geos_touches_any <- function(geom, tree) {
+  .Call(geos_c_predicate_any, geos_touches_matrix(geom, tree))
+}
+
+#' @rdname geos_disjoint_matrix
+#' @export
+geos_intersects_any <- function(geom, tree) {
+  .Call(geos_c_predicate_any, geos_intersects_matrix(geom, tree))
+}
+
+#' @rdname geos_disjoint_matrix
+#' @export
+geos_crosses_any <- function(geom, tree) {
+  .Call(geos_c_predicate_any, geos_crosses_matrix(geom, tree))
+}
+
+#' @rdname geos_disjoint_matrix
+#' @export
+geos_within_any <- function(geom, tree) {
+  .Call(geos_c_predicate_any, geos_within_matrix(geom, tree))
+}
+
+#' @rdname geos_disjoint_matrix
+#' @export
+geos_contains_any <- function(geom, tree) {
+  .Call(geos_c_predicate_any, geos_contains_matrix(geom, tree))
+}
+
+#' @rdname geos_disjoint_matrix
+#' @export
+geos_overlaps_any <- function(geom, tree) {
+  .Call(geos_c_predicate_any, geos_overlaps_matrix(geom, tree))
+}
+
+#' @rdname geos_disjoint_matrix
+#' @export
+geos_equals_any <- function(geom, tree) {
+  .Call(geos_c_predicate_any, geos_equals_matrix(geom, tree))
+}
+
+#' @rdname geos_disjoint_matrix
+#' @export
+geos_covers_any <- function(geom, tree) {
+  .Call(geos_c_predicate_any, geos_covers_matrix(geom, tree))
+}
+
+#' @rdname geos_disjoint_matrix
+#' @export
+geos_covered_by_any <- function(geom, tree) {
+  .Call(geos_c_predicate_any, geos_covered_by_matrix(geom, tree))
+}

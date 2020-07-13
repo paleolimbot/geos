@@ -144,9 +144,8 @@ SEXP geos_c_strtree_query(SEXP treeExternalPtr, SEXP geom) {
 
 // predicate callbacks only make sense for predicates that only return true
 // if there's some kind of intersection (everything except disjoint)
-// not currently considering exceptions (e.g., non-finite
-// coordinates), because calling Rf_error() here will longjmp and we're
-// currently being called from C++ across a .so boundary
+// not currently considering exceptions, because calling Rf_error() here
+// will longjmp and we're being called from C++ across a .so boundary
 #define GEOS_STRTREE_CALLBACK(_func)                                         \
 struct QueryResult* queryResult = (struct QueryResult*) userdata;            \
 int itemInt = *((int*) item);                                                \
@@ -221,4 +220,27 @@ void strtree_callback_covered_by(void* item, void* userdata) {
 }
 SEXP geos_c_covered_by_matrix(SEXP geom, SEXP treeExternalPtr) {
   return strtree_query_base(treeExternalPtr, geom, &strtree_callback_covered_by);
+}
+
+// convenience function for testing *any* predicate relation in a tree
+// this could be made faster using a dedicated callback, but the indexed
+// predicates are so fast that it's unlikely this is ever practically
+// a problem
+SEXP geos_c_predicate_any(SEXP matrixResult) {
+  R_xlen_t size = Rf_length(matrixResult);
+  SEXP result = PROTECT(Rf_allocVector(LGLSXP, size));
+  int* pResult = LOGICAL(result);
+
+  SEXP item;
+  for (R_xlen_t i = 0; i < size; i++) {
+    item = VECTOR_ELT(matrixResult, i);
+    if (item == R_NilValue) {
+      pResult[i] = NA_LOGICAL;
+    } else {
+      pResult[i] = Rf_length(item) > 0;
+    }
+  }
+
+  UNPROTECT(1); // result
+  return result;
 }

@@ -37,6 +37,7 @@ extern SEXP geos_c_contains_matrix(SEXP geom, SEXP treeExternalPtr);
 extern SEXP geos_c_overlaps_matrix(SEXP geom, SEXP treeExternalPtr);
 extern SEXP geos_c_covers_matrix(SEXP geom, SEXP treeExternalPtr);
 extern SEXP geos_c_covered_by_matrix(SEXP geom, SEXP treeExternalPtr);
+extern SEXP geos_c_predicate_any(SEXP matrixResult);
 extern SEXP geos_c_area(SEXP geom);
 extern SEXP geos_c_length(SEXP geom);
 extern SEXP geos_c_x(SEXP geom);
@@ -122,6 +123,7 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_overlaps_matrix", (DL_FUNC) &geos_c_overlaps_matrix, 2},
   {"geos_c_covers_matrix", (DL_FUNC) &geos_c_covers_matrix, 2},
   {"geos_c_covered_by_matrix", (DL_FUNC) &geos_c_covered_by_matrix, 2},
+  {"geos_c_predicate_any", (DL_FUNC) &geos_c_predicate_any, 1},
   {"geos_c_area", (DL_FUNC) &geos_c_area, 1},
   {"geos_c_length", (DL_FUNC) &geos_c_length, 1},
   {"geos_c_x", (DL_FUNC) &geos_c_x, 1},

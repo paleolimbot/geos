@@ -157,3 +157,75 @@ test_that("matrix predicates work", {
   )
 })
 
+test_that("_any() predicates work", {
+  expect_false(
+    geos_disjoint_any(
+      "POINT (5 5)",
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"
+    )
+  )
+
+  expect_true(
+    geos_touches_any(
+      "POINT (10 10)",
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"
+    )
+  )
+
+  expect_true(
+    geos_intersects_any(
+      "POINT (5 5)",
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"
+    )
+  )
+
+  expect_true(
+    geos_crosses_any(
+      "LINESTRING (-1 -1, 6 6)",
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"
+    )
+  )
+
+  expect_true(
+    geos_within_any(
+      "POINT (5 5)",
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"
+    )
+  )
+
+  expect_true(
+    geos_contains_any(
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))",
+      "POINT (5 5)"
+    )
+  )
+
+  expect_true(
+    geos_overlaps_any(
+      "POLYGON ((1 1, 1 11, 11 11, 11 1, 1 1))",
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"
+    )
+  )
+
+  # expect_true(
+  #   geos_equals_any(
+  #     "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))",
+  #     "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"
+  #   )
+  # )
+
+  expect_true(
+    geos_covers_any(
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))",
+      "POINT (5 5)"
+    )
+  )
+
+  expect_true(
+    geos_covered_by_any(
+      "POINT (5 5)",
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"
+    )
+  )
+})
+

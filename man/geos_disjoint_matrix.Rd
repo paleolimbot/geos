@@ -11,6 +11,16 @@
 \alias{geos_equals_matrix}
 \alias{geos_covers_matrix}
 \alias{geos_covered_by_matrix}
+\alias{geos_disjoint_any}
+\alias{geos_touches_any}
+\alias{geos_intersects_any}
+\alias{geos_crosses_any}
+\alias{geos_within_any}
+\alias{geos_contains_any}
+\alias{geos_overlaps_any}
+\alias{geos_equals_any}
+\alias{geos_covers_any}
+\alias{geos_covered_by_any}
 \title{Matrix predicates}
 \usage{
 geos_disjoint_matrix(geom, tree)
@@ -32,6 +42,26 @@ geos_equals_matrix(geom, tree)
 geos_covers_matrix(geom, tree)
 
 geos_covered_by_matrix(geom, tree)
+
+geos_disjoint_any(geom, tree)
+
+geos_touches_any(geom, tree)
+
+geos_intersects_any(geom, tree)
+
+geos_crosses_any(geom, tree)
+
+geos_within_any(geom, tree)
+
+geos_contains_any(geom, tree)
+
+geos_overlaps_any(geom, tree)
+
+geos_equals_any(geom, tree)
+
+geos_covers_any(geom, tree)
+
+geos_covered_by_any(geom, tree)
 }
 \arguments{
 \item{geom}{A \link[=as_geos_geometry]{GEOS geometry vector}}
