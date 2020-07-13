@@ -7,6 +7,7 @@
 \alias{geos_minimum_clearance_line}
 \alias{geos_minimum_rotated_rectangle}
 \alias{geos_unary_union}
+\alias{geos_coverage_union}
 \alias{geos_point_on_surface}
 \alias{geos_node}
 \alias{geos_make_valid}
@@ -37,6 +38,8 @@ geos_minimum_clearance_line(geom)
 geos_minimum_rotated_rectangle(geom)
 
 geos_unary_union(geom)
+
+geos_coverage_union(geom)
 
 geos_point_on_surface(geom)
 

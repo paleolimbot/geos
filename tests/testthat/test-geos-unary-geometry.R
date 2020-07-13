@@ -41,6 +41,20 @@ test_that("transformers work", {
 
   expect_identical(
     geos_write_wkt(
+      geos_unary_union(c("POLYGON ((1 0, 0 0, 0.5 0.5, 1 0))", NA))
+    ),
+    c("POLYGON ((1 0, 0 0, 0.5 0.5, 1 0))", NA)
+  )
+
+  expect_error(
+    geos_write_wkt(
+      geos_coverage_union(c("MULTIPOLYGON (((0 0, 1 0, 0.5 0.5, 0 0)), ((0 0, 1 0, 0.5 0.5, 0 0)))", NA))
+    ),
+    "cannot process overlapping inputs"
+  )
+
+  expect_identical(
+    geos_write_wkt(
       geos_point_on_surface(c("POINT (0 1)", NA))
     ),
     c("POINT (0 1)", NA)

@@ -82,6 +82,7 @@ extern SEXP geos_c_minimum_width(SEXP geom);
 extern SEXP geos_c_minimum_clearance_line(SEXP geom);
 extern SEXP geos_c_minimum_rotated_rectagle(SEXP geom);
 extern SEXP geos_c_unary_union(SEXP geom);
+extern SEXP geos_c_coverage_union(SEXP geom);
 extern SEXP geos_c_point_on_surface(SEXP geom);
 extern SEXP geos_c_node(SEXP geom);
 extern SEXP geos_c_make_valid(SEXP geom);
@@ -182,6 +183,7 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_minimum_clearance_line", (DL_FUNC) &geos_c_minimum_clearance_line, 1},
   {"geos_c_minimum_rotated_rectagle", (DL_FUNC) &geos_c_minimum_rotated_rectagle, 1},
   {"geos_c_unary_union", (DL_FUNC) &geos_c_unary_union, 1},
+  {"geos_c_coverage_union", (DL_FUNC) &geos_c_coverage_union, 1},
   {"geos_c_point_on_surface", (DL_FUNC) &geos_c_point_on_surface, 1},
   {"geos_c_node", (DL_FUNC) &geos_c_node, 1},
   {"geos_c_make_valid", (DL_FUNC) &geos_c_make_valid, 1},

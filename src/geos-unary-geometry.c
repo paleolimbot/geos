@@ -62,6 +62,10 @@ SEXP geos_c_unary_union(SEXP geom) {
   GEOS_UNARY_GEOMETRY(GEOSUnaryUnion_r);
 }
 
+SEXP geos_c_coverage_union(SEXP geom) {
+  GEOS_UNARY_GEOMETRY(GEOSCoverageUnion_r);
+}
+
 SEXP geos_c_point_on_surface(SEXP geom) {
   GEOS_UNARY_GEOMETRY(GEOSPointOnSurface_r);
 }

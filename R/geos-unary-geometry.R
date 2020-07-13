@@ -74,6 +74,12 @@ geos_unary_union <- function(geom) {
 
 #' @rdname geos_centroid
 #' @export
+geos_coverage_union <- function(geom) {
+  new_geos_geometry(.Call(geos_c_coverage_union, as_geos_geometry(geom)))
+}
+
+#' @rdname geos_centroid
+#' @export
 geos_point_on_surface <- function(geom) {
   new_geos_geometry(.Call(geos_c_point_on_surface, as_geos_geometry(geom)))
 }
