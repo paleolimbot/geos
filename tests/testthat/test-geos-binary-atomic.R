@@ -106,3 +106,80 @@ test_that("binary predicates work", {
     )
   )
 })
+
+test_that("binary predicates work", {
+  # check NA handling
+  expect_identical(geos_prepared_disjoint(c("POINT EMPTY", NA), "POINT (0 0)"), c(TRUE, NA))
+
+  # don't know how to get any of these to throw an exception
+
+  expect_false(
+    geos_prepared_disjoint(
+      "POINT (5 5)",
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"
+    )
+  )
+
+  expect_true(
+    geos_prepared_touches(
+      "POINT (10 10)",
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"
+    )
+  )
+
+  expect_true(
+    geos_prepared_intersects(
+      "POINT (5 5)",
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"
+    )
+  )
+
+  expect_true(
+    geos_prepared_crosses(
+      "LINESTRING (-1 -1, 6 6)",
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"
+    )
+  )
+
+  expect_true(
+    geos_prepared_within(
+      "POINT (5 5)",
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"
+    )
+  )
+
+  expect_true(
+    geos_prepared_contains(
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))",
+      "POINT (5 5)"
+    )
+  )
+
+  expect_true(
+    geos_prepared_contains_properly(
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))",
+      "POINT (5 5)"
+    )
+  )
+
+  expect_true(
+    geos_prepared_overlaps(
+      "POLYGON ((1 1, 1 11, 11 11, 11 1, 1 1))",
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"
+    )
+  )
+
+  expect_true(
+    geos_prepared_covers(
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))",
+      "POINT (5 5)"
+    )
+  )
+
+  expect_true(
+    geos_prepared_covered_by(
+      "POINT (5 5)",
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"
+    )
+  )
+})

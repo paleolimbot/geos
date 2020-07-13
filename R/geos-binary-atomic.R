@@ -117,3 +117,73 @@ geos_covered_by <- function(geom1, geom2) {
   recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
   .Call(geos_c_covered_by, recycled[[1]], recycled[[2]])
 }
+
+#' @rdname geos_disjoint
+#' @export
+geos_prepared_disjoint <- function(geom1, geom2) {
+  recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  .Call(geos_c_prepared_disjoint, recycled[[1]], recycled[[2]])
+}
+
+#' @rdname geos_disjoint
+#' @export
+geos_prepared_touches <- function(geom1, geom2) {
+  recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  .Call(geos_c_prepared_touches, recycled[[1]], recycled[[2]])
+}
+
+#' @rdname geos_disjoint
+#' @export
+geos_prepared_intersects <- function(geom1, geom2) {
+  recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  .Call(geos_c_prepared_intersects, recycled[[1]], recycled[[2]])
+}
+
+#' @rdname geos_disjoint
+#' @export
+geos_prepared_crosses <- function(geom1, geom2) {
+  recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  .Call(geos_c_prepared_crosses, recycled[[1]], recycled[[2]])
+}
+
+#' @rdname geos_disjoint
+#' @export
+geos_prepared_within <- function(geom1, geom2) {
+  recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  .Call(geos_c_prepared_within, recycled[[1]], recycled[[2]])
+}
+
+#' @rdname geos_disjoint
+#' @export
+geos_prepared_contains <- function(geom1, geom2) {
+  recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  .Call(geos_c_prepared_contains, recycled[[1]], recycled[[2]])
+}
+
+#' @rdname geos_disjoint
+#' @export
+geos_prepared_contains_properly <- function(geom1, geom2) {
+  recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  .Call(geos_c_prepared_contains_properly, recycled[[1]], recycled[[2]])
+}
+
+#' @rdname geos_disjoint
+#' @export
+geos_prepared_overlaps <- function(geom1, geom2) {
+  recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  .Call(geos_c_prepared_overlaps, recycled[[1]], recycled[[2]])
+}
+
+#' @rdname geos_disjoint
+#' @export
+geos_prepared_covers <- function(geom1, geom2) {
+  recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  .Call(geos_c_covers, recycled[[1]], recycled[[2]])
+}
+
+#' @rdname geos_disjoint
+#' @export
+geos_prepared_covered_by <- function(geom1, geom2) {
+  recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  .Call(geos_c_covered_by, recycled[[1]], recycled[[2]])
+}

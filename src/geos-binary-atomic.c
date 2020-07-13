@@ -178,3 +178,85 @@ SEXP geos_c_equals_exact(SEXP geom1, SEXP geom2, SEXP tolerance) {
   UNPROTECT(1);
   return result;
 }
+
+
+#define GEOS_PREPARED_BINARY_PREDICATE(_func)                                        \
+R_xlen_t size = Rf_xlength(geom1);                                          \
+SEXP result = PROTECT(Rf_allocVector(LGLSXP, size));                        \
+int* pResult = INTEGER(result);                                             \
+                                                                            \
+GEOS_INIT();                                                                \
+                                                                            \
+SEXP item1;                                                                 \
+SEXP item2;                                                                 \
+GEOSGeometry* geometry1;                                                    \
+GEOSGeometry* geometry2;                                                    \
+for (R_xlen_t i = 0; i < size; i++) {                                       \
+  item1 = VECTOR_ELT(geom1, i);                                             \
+  item2 = VECTOR_ELT(geom2, i);                                             \
+                                                                            \
+  if (item1 == R_NilValue || item2 == R_NilValue) {                         \
+    pResult[i] = NA_LOGICAL;                                                \
+    continue;                                                               \
+  }                                                                         \
+                                                                            \
+  geometry1 = (GEOSGeometry*) R_ExternalPtrAddr(item1);                     \
+  GEOS_CHECK_GEOMETRY(geometry1, i);                                        \
+  geometry2 = (GEOSGeometry*) R_ExternalPtrAddr(item2);                     \
+  GEOS_CHECK_GEOMETRY(geometry2, i);                                        \
+                                                                            \
+  const GEOSPreparedGeometry* prepared = GEOSPrepare_r(handle, geometry1);  \
+  GEOS_CHECK_GEOMETRY(prepared, i);                                         \
+  int resultCode = _func(handle, prepared, geometry2);                      \
+  GEOSPreparedGeom_destroy_r(handle, prepared);                             \
+                                                                            \
+  if (resultCode == 2) {                                                    \
+    UNPROTECT(1);                                                           \
+    GEOS_ERROR("[i=%d] ", i + 1);                                           \
+  }                                                                         \
+  pResult[i] = resultCode;                                                  \
+}                                                                           \
+                                                                            \
+GEOS_FINISH();                                                              \
+UNPROTECT(1);                                                               \
+return result;
+
+SEXP geos_c_prepared_disjoint(SEXP geom1, SEXP geom2) {
+  GEOS_PREPARED_BINARY_PREDICATE(GEOSPreparedDisjoint_r);
+}
+
+SEXP geos_c_prepared_touches(SEXP geom1, SEXP geom2) {
+  GEOS_PREPARED_BINARY_PREDICATE(GEOSPreparedTouches_r);
+}
+
+SEXP geos_c_prepared_intersects(SEXP geom1, SEXP geom2) {
+  GEOS_PREPARED_BINARY_PREDICATE(GEOSPreparedIntersects_r);
+}
+
+SEXP geos_c_prepared_crosses(SEXP geom1, SEXP geom2) {
+  GEOS_PREPARED_BINARY_PREDICATE(GEOSPreparedCrosses_r);
+}
+
+SEXP geos_c_prepared_within(SEXP geom1, SEXP geom2) {
+  GEOS_PREPARED_BINARY_PREDICATE(GEOSPreparedWithin_r);
+}
+
+SEXP geos_c_prepared_contains(SEXP geom1, SEXP geom2) {
+  GEOS_PREPARED_BINARY_PREDICATE(GEOSPreparedContains_r);
+}
+
+SEXP geos_c_prepared_contains_properly(SEXP geom1, SEXP geom2) {
+  GEOS_PREPARED_BINARY_PREDICATE(GEOSPreparedContainsProperly_r);
+}
+
+SEXP geos_c_prepared_overlaps(SEXP geom1, SEXP geom2) {
+  GEOS_PREPARED_BINARY_PREDICATE(GEOSPreparedOverlaps_r);
+}
+
+SEXP geos_c_prepared_covers(SEXP geom1, SEXP geom2) {
+  GEOS_PREPARED_BINARY_PREDICATE(GEOSPreparedCovers_r);
+}
+
+SEXP geos_c_prepared_covered_by(SEXP geom1, SEXP geom2) {
+  GEOS_PREPARED_BINARY_PREDICATE(GEOSPreparedCoveredBy_r);
+}

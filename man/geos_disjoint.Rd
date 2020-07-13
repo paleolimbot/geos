@@ -12,6 +12,16 @@
 \alias{geos_equals_exact}
 \alias{geos_covers}
 \alias{geos_covered_by}
+\alias{geos_prepared_disjoint}
+\alias{geos_prepared_touches}
+\alias{geos_prepared_intersects}
+\alias{geos_prepared_crosses}
+\alias{geos_prepared_within}
+\alias{geos_prepared_contains}
+\alias{geos_prepared_contains_properly}
+\alias{geos_prepared_overlaps}
+\alias{geos_prepared_covers}
+\alias{geos_prepared_covered_by}
 \title{Binary predicates}
 \usage{
 geos_disjoint(geom1, geom2)
@@ -35,6 +45,26 @@ geos_equals_exact(geom1, geom2, tolerance = .Machine$double.eps^2)
 geos_covers(geom1, geom2)
 
 geos_covered_by(geom1, geom2)
+
+geos_prepared_disjoint(geom1, geom2)
+
+geos_prepared_touches(geom1, geom2)
+
+geos_prepared_intersects(geom1, geom2)
+
+geos_prepared_crosses(geom1, geom2)
+
+geos_prepared_within(geom1, geom2)
+
+geos_prepared_contains(geom1, geom2)
+
+geos_prepared_contains_properly(geom1, geom2)
+
+geos_prepared_overlaps(geom1, geom2)
+
+geos_prepared_covers(geom1, geom2)
+
+geos_prepared_covered_by(geom1, geom2)
 }
 \arguments{
 \item{geom1}{\link[=as_geos_geometry]{GEOS geometry vectors},

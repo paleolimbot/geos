@@ -19,6 +19,16 @@ extern SEXP geos_c_equals(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_covers(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_covered_by(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_equals_exact(SEXP geom1, SEXP geom2, SEXP tolerance);
+extern SEXP geos_c_prepared_disjoint(SEXP geom1, SEXP geom2);
+extern SEXP geos_c_prepared_touches(SEXP geom1, SEXP geom2);
+extern SEXP geos_c_prepared_intersects(SEXP geom1, SEXP geom2);
+extern SEXP geos_c_prepared_crosses(SEXP geom1, SEXP geom2);
+extern SEXP geos_c_prepared_within(SEXP geom1, SEXP geom2);
+extern SEXP geos_c_prepared_contains(SEXP geom1, SEXP geom2);
+extern SEXP geos_c_prepared_contains_properly(SEXP geom1, SEXP geom2);
+extern SEXP geos_c_prepared_overlaps(SEXP geom1, SEXP geom2);
+extern SEXP geos_c_prepared_covers(SEXP geom1, SEXP geom2);
+extern SEXP geos_c_prepared_covered_by(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_read_wkt(SEXP input);
 extern SEXP geos_c_write_wkt(SEXP input, SEXP includeZ, SEXP precision, SEXP trim);
 extern SEXP geos_c_read_wkb(SEXP input);
@@ -109,6 +119,16 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_covers", (DL_FUNC) &geos_c_covers, 2},
   {"geos_c_covered_by", (DL_FUNC) &geos_c_covered_by, 2},
   {"geos_c_equals_exact", (DL_FUNC) &geos_c_equals_exact, 3},
+  {"geos_c_prepared_disjoint", (DL_FUNC) &geos_c_prepared_disjoint, 2},
+  {"geos_c_prepared_touches", (DL_FUNC) &geos_c_prepared_touches, 2},
+  {"geos_c_prepared_intersects", (DL_FUNC) &geos_c_prepared_intersects, 2},
+  {"geos_c_prepared_crosses", (DL_FUNC) &geos_c_prepared_crosses, 2},
+  {"geos_c_prepared_within", (DL_FUNC) &geos_c_prepared_within, 2},
+  {"geos_c_prepared_contains", (DL_FUNC) &geos_c_prepared_contains, 2},
+  {"geos_c_prepared_contains_properly", (DL_FUNC) &geos_c_prepared_contains_properly, 2},
+  {"geos_c_prepared_overlaps", (DL_FUNC) &geos_c_prepared_overlaps, 2},
+  {"geos_c_prepared_covers", (DL_FUNC) &geos_c_prepared_covers, 2},
+  {"geos_c_prepared_covered_by", (DL_FUNC) &geos_c_prepared_covered_by, 2},
   {"geos_c_read_wkt", (DL_FUNC) &geos_c_read_wkt, 1},
   {"geos_c_write_wkt", (DL_FUNC) &geos_c_write_wkt, 4},
   {"geos_c_read_wkb", (DL_FUNC) &geos_c_read_wkb, 1},

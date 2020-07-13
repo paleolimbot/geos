@@ -112,6 +112,7 @@ SEXP strtree_query_base(SEXP treeExternalPtr, SEXP geom, GEOSQueryCallback callb
     const GEOSPreparedGeometry* prepared;
     if (prepare) {
       prepared = GEOSPrepare_r(handle, geometry);
+      GEOS_CHECK_GEOMETRY(prepared, i);
     } else {
       prepared = NULL;
     }
