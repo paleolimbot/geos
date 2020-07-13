@@ -15,19 +15,18 @@ geos_strtree <- function(geom) {
 
 #' @rdname geos_strtree
 #' @export
+geos_strtree_query <- function(tree, geom) {
+  .Call(geos_c_strtree_query, as_geos_strtree(tree), as_geos_geometry(geom))
+}
+
+#' @rdname geos_strtree
+#' @export
 geos_strtree_data <- function(tree) {
   # doesn't make sense to coerce here because then the output == tree
   stopifnot(inherits(tree, "geos_strtree"))
 
   .Call(geos_c_strtree_data, as_geos_strtree(tree))
 }
-
-#' @rdname geos_strtree
-#' @export
-geos_strtree_query <- function(tree, geom) {
-  .Call(geos_c_strtree_query, as_geos_strtree(tree), as_geos_geometry(geom))
-}
-
 
 #' @rdname geos_strtree
 #' @export
@@ -66,3 +65,69 @@ print.geos_strtree <- function(x, ...) {
   invisible(x)
 }
 
+
+#' Matrix predicates
+#'
+#' @inheritParams geos_strtree
+#' @export
+#'
+#' @return A `list()` of integer vectors containing the indices of `tree`
+#'   for which the predicate would return TRUE.
+#'
+geos_disjoint_matrix <- function(geom, tree) {
+  stop("Not implemented")
+}
+
+#' @rdname geos_disjoint_matrix
+#' @export
+geos_touches_matrix <- function(geom, tree) {
+  .Call(geos_c_touches_matrix, as_geos_geometry(geom), as_geos_strtree(tree))
+}
+
+#' @rdname geos_disjoint_matrix
+#' @export
+geos_intersects_matrix <- function(geom, tree) {
+  .Call(geos_c_intersects_matrix, as_geos_geometry(geom), as_geos_strtree(tree))
+}
+
+#' @rdname geos_disjoint_matrix
+#' @export
+geos_crosses_matrix <- function(geom, tree) {
+  .Call(geos_c_crosses_matrix, as_geos_geometry(geom), as_geos_strtree(tree))
+}
+
+#' @rdname geos_disjoint_matrix
+#' @export
+geos_within_matrix <- function(geom, tree) {
+  .Call(geos_c_within_matrix, as_geos_geometry(geom), as_geos_strtree(tree))
+}
+
+#' @rdname geos_disjoint_matrix
+#' @export
+geos_contains_matrix <- function(geom, tree) {
+  .Call(geos_c_contains_matrix, as_geos_geometry(geom), as_geos_strtree(tree))
+}
+
+#' @rdname geos_disjoint_matrix
+#' @export
+geos_overlaps_matrix <- function(geom, tree) {
+  .Call(geos_c_overlaps_matrix, as_geos_geometry(geom), as_geos_strtree(tree))
+}
+
+#' @rdname geos_disjoint_matrix
+#' @export
+geos_equals_matrix <- function(geom, tree) {
+  .Call(geos_c_equals_matrix, as_geos_geometry(geom), as_geos_strtree(tree))
+}
+
+#' @rdname geos_disjoint_matrix
+#' @export
+geos_covers_matrix <- function(geom, tree) {
+  .Call(geos_c_covers_matrix, as_geos_geometry(geom), as_geos_strtree(tree))
+}
+
+#' @rdname geos_disjoint_matrix
+#' @export
+geos_covered_by_matrix <- function(geom, tree) {
+  .Call(geos_c_covered_by_matrix, as_geos_geometry(geom), as_geos_strtree(tree))
+}

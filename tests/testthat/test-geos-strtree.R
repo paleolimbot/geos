@@ -63,3 +63,25 @@ test_that("strtree objects can be queried", {
     list(2L, 1L, c(1L, 2L), NULL)
   )
 })
+
+test_that("matrix predicates return the correct shape output", {
+  tree <- geos_strtree(
+    c("POLYGON ((0 0, 10 0, 0 10, 0 0))", "POLYGON ((0 0, 0 -10, -10 0, 0 0))")
+  )
+
+  expect_identical(
+    lapply(
+      geos_intersects_matrix(
+        c("POINT (-2 -2)", "MULTIPOINT (-2 -2, 2 2)", "POINT (6 6)", "POINT (11 11)", NA),
+        tree
+      ),
+      sort
+    ),
+    list(2L, c(1L, 2L), integer(), integer(), NULL)
+  )
+})
+
+test_that("matrix predicates work", {
+
+})
+

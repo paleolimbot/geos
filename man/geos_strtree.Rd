@@ -2,8 +2,8 @@
 % Please edit documentation in R/geos-strtree.R
 \name{geos_strtree}
 \alias{geos_strtree}
-\alias{geos_strtree_data}
 \alias{geos_strtree_query}
+\alias{geos_strtree_data}
 \alias{as_geos_strtree}
 \alias{as_geos_strtree.default}
 \alias{as_geos_strtree.geos_strtree}
@@ -12,9 +12,9 @@
 \usage{
 geos_strtree(geom)
 
-geos_strtree_data(tree)
-
 geos_strtree_query(tree, geom)
+
+geos_strtree_data(tree)
 
 as_geos_strtree(x, ...)
 

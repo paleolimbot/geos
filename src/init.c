@@ -29,6 +29,15 @@ extern SEXP geos_c_orientation_index(SEXP SAx, SEXP SAy, SEXP SBx, SEXP SBy, SEX
 extern SEXP geos_c_strtree_create(SEXP geom);
 extern SEXP geos_c_strtree_data(SEXP treeExternalPtr);
 extern SEXP geos_c_strtree_query(SEXP treeExternalPtr, SEXP geom);
+extern SEXP geos_c_touches_matrix(SEXP geom, SEXP treeExternalPtr);
+extern SEXP geos_c_intersects_matrix(SEXP geom, SEXP treeExternalPtr);
+extern SEXP geos_c_crosses_matrix(SEXP geom, SEXP treeExternalPtr);
+extern SEXP geos_c_within_matrix(SEXP geom, SEXP treeExternalPtr);
+extern SEXP geos_c_contains_matrix(SEXP geom, SEXP treeExternalPtr);
+extern SEXP geos_c_overlaps_matrix(SEXP geom, SEXP treeExternalPtr);
+extern SEXP geos_c_equals_matrix(SEXP geom, SEXP treeExternalPtr);
+extern SEXP geos_c_covers_matrix(SEXP geom, SEXP treeExternalPtr);
+extern SEXP geos_c_covered_by_matrix(SEXP geom, SEXP treeExternalPtr);
 extern SEXP geos_c_area(SEXP geom);
 extern SEXP geos_c_length(SEXP geom);
 extern SEXP geos_c_x(SEXP geom);
@@ -106,6 +115,15 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_strtree_create", (DL_FUNC) &geos_c_strtree_create, 1},
   {"geos_c_strtree_data", (DL_FUNC) &geos_c_strtree_data, 1},
   {"geos_c_strtree_query", (DL_FUNC) &geos_c_strtree_query, 2},
+  {"geos_c_touches_matrix", (DL_FUNC) &geos_c_touches_matrix, 2},
+  {"geos_c_intersects_matrix", (DL_FUNC) &geos_c_intersects_matrix, 2},
+  {"geos_c_crosses_matrix", (DL_FUNC) &geos_c_crosses_matrix, 2},
+  {"geos_c_within_matrix", (DL_FUNC) &geos_c_within_matrix, 2},
+  {"geos_c_contains_matrix", (DL_FUNC) &geos_c_contains_matrix, 2},
+  {"geos_c_overlaps_matrix", (DL_FUNC) &geos_c_overlaps_matrix, 2},
+  {"geos_c_equals_matrix", (DL_FUNC) &geos_c_equals_matrix, 2},
+  {"geos_c_covers_matrix", (DL_FUNC) &geos_c_covers_matrix, 2},
+  {"geos_c_covered_by_matrix", (DL_FUNC) &geos_c_covered_by_matrix, 2},
   {"geos_c_area", (DL_FUNC) &geos_c_area, 1},
   {"geos_c_length", (DL_FUNC) &geos_c_length, 1},
   {"geos_c_x", (DL_FUNC) &geos_c_x, 1},
