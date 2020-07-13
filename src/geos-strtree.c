@@ -51,23 +51,14 @@ SEXP geos_c_strtree_data(SEXP treeExternalPtr) {
   return R_ExternalPtrTag(treeExternalPtr);
 }
 
-// data structure and callback used for query
+// data structure and callback used for the generic query
 struct QueryResult {
+  SEXP indexGeom;
   int* indexList;
   R_xlen_t currentIndex;
 };
 
-void callback_add_item(void* item, void* userdata) {
-  struct QueryResult* queryResult = (struct QueryResult*) userdata;
-
-  // 'item' is what was added to the index in geos_c_strtree_create(),
-  // which was a pointer to an R 1-based integer
-  int* itemInt = (int*) item;
-  queryResult->indexList[queryResult->currentIndex] = *itemInt;
-  queryResult->currentIndex++;
-}
-
-SEXP geos_c_strtree_query(SEXP treeExternalPtr, SEXP geom) {
+SEXP strtree_query_base(SEXP treeExternalPtr, SEXP geom, GEOSQueryCallback callback) {
   GEOSSTRtree* tree = (GEOSSTRtree*) R_ExternalPtrAddr(treeExternalPtr);
   if (tree == NULL) {
     Rf_error("External pointer (geos_strtree) is not valid");
@@ -82,7 +73,11 @@ SEXP geos_c_strtree_query(SEXP treeExternalPtr, SEXP geom) {
   SEXP tempItemResult =  PROTECT(
     Rf_allocVector(INTSXP, Rf_length(R_ExternalPtrProtected(treeExternalPtr)))
   );
-  struct QueryResult queryResult = { .indexList = INTEGER(tempItemResult), .currentIndex = 0 };
+  struct QueryResult queryResult = {
+    .indexGeom = geos_c_strtree_data(treeExternalPtr),
+    .indexList = INTEGER(tempItemResult),
+    .currentIndex = 0
+  };
 
   GEOS_INIT();
 
@@ -102,7 +97,7 @@ SEXP geos_c_strtree_query(SEXP treeExternalPtr, SEXP geom) {
 
     // reset the result cache
     queryResult.currentIndex = 0;
-    GEOSSTRtree_query_r(handle, tree, geometry, &callback_add_item, &queryResult);
+    GEOSSTRtree_query_r(handle, tree, geometry, callback, &queryResult);
 
     // at this point, queryResult now holds the indices of potential intersectors to `geometry`
     // allocate a new vector with the appropriate length and copy the temporary result there
@@ -119,3 +114,18 @@ SEXP geos_c_strtree_query(SEXP treeExternalPtr, SEXP geom) {
   return result;
 }
 
+// for callbacks, 'item' is what was added to
+// the index in geos_c_strtree_create(),
+// which was a pointer to an R 1-based integer
+
+// the may_intersect querier says yes to everything
+void callback_may_intersect(void* item, void* userdata) {
+  struct QueryResult* queryResult = (struct QueryResult*) userdata;
+  int* itemInt = (int*) item;
+  queryResult->indexList[queryResult->currentIndex] = *itemInt;
+  queryResult->currentIndex++;
+}
+
+SEXP geos_c_strtree_query(SEXP treeExternalPtr, SEXP geom) {
+  return strtree_query_base(treeExternalPtr, geom, &callback_may_intersect);
+}
