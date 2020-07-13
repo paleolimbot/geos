@@ -145,6 +145,8 @@
 
 <span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_disjoint.html'>geos_equals</a></span>(<span class='kw'>geom1</span>, <span class='kw'>geom2</span>)
 
+<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_disjoint.html'>geos_equals_exact</a></span>(<span class='kw'>geom1</span>, <span class='kw'>geom2</span>, tolerance = <span class='kw'>.Machine</span><span class='op'>$</span><span class='kw'>double.eps</span><span class='op'>^</span><span class='fl'>2</span>)
+
 <span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_disjoint.html'>geos_covers</a></span>(<span class='kw'>geom1</span>, <span class='kw'>geom2</span>)
 
 <span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_disjoint.html'>geos_covered_by</a></span>(<span class='kw'>geom1</span>, <span class='kw'>geom2</span>)</pre>
@@ -161,6 +163,11 @@ recycled to a common length.</p></td>
       <th>geom2</th>
       <td><p><a href='https://rdrr.io/pkg/geos/man/as_geos_geometry.html'>GEOS geometry vectors</a>,
 recycled to a common length.</p></td>
+    </tr>
+    <tr>
+      <th>tolerance</th>
+      <td><p>The maximum separation of vertices that should
+be considered equal.</p></td>
     </tr>
     </table>
 

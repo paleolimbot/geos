@@ -145,9 +145,33 @@
 
 <span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_disjoint_matrix.html'>geos_equals_matrix</a></span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
 
+<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_disjoint_matrix.html'>geos_equals_exact_matrix</a></span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>, tolerance = <span class='kw'>.Machine</span><span class='op'>$</span><span class='kw'>double.eps</span><span class='op'>^</span><span class='fl'>2</span>)
+
 <span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_disjoint_matrix.html'>geos_covers_matrix</a></span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_disjoint_matrix.html'>geos_covered_by_matrix</a></span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)</pre>
+<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_disjoint_matrix.html'>geos_covered_by_matrix</a></span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
+
+<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_disjoint_matrix.html'>geos_disjoint_any</a></span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
+
+<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_disjoint_matrix.html'>geos_touches_any</a></span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
+
+<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_disjoint_matrix.html'>geos_intersects_any</a></span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
+
+<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_disjoint_matrix.html'>geos_crosses_any</a></span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
+
+<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_disjoint_matrix.html'>geos_within_any</a></span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
+
+<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_disjoint_matrix.html'>geos_contains_any</a></span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
+
+<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_disjoint_matrix.html'>geos_overlaps_any</a></span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
+
+<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_disjoint_matrix.html'>geos_equals_any</a></span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
+
+<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_disjoint_matrix.html'>geos_equals_exact_any</a></span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>, tolerance = <span class='kw'>.Machine</span><span class='op'>$</span><span class='kw'>double.eps</span><span class='op'>^</span><span class='fl'>2</span>)
+
+<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_disjoint_matrix.html'>geos_covers_any</a></span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
+
+<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_disjoint_matrix.html'>geos_covered_by_any</a></span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -159,6 +183,11 @@
     <tr>
       <th>tree</th>
       <td><p>A <code><a href='https://rdrr.io/pkg/geos/man/geos_strtree.html'>geos_strtree()</a></code></p></td>
+    </tr>
+    <tr>
+      <th>tolerance</th>
+      <td><p>The maximum separation of vertices that should
+be considered equal.</p></td>
     </tr>
     </table>
 
