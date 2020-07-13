@@ -28,6 +28,8 @@ ignore <- c(
   "GEOSGeomType_r",
   "GEOSGeomGetLength_r",
   "GEOSGeomGetNumPoints_r",
+  "GEOSSTRtree_remove_r",
+  "GEOSSTRtree_iterate_r",
 
   # deprecated
   "initGEOS_r",
