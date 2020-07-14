@@ -106,6 +106,7 @@ extern SEXP geos_c_point_n(SEXP geom, SEXP param);
 extern SEXP geos_c_simplify(SEXP geom, SEXP param);
 extern SEXP geos_c_simplify_preserve_topology(SEXP geom, SEXP param);
 extern SEXP geos_c_buffer(SEXP geom, SEXP distance, SEXP params);
+extern SEXP geos_c_offset_curve(SEXP geom, SEXP distance, SEXP params);
 extern SEXP geos_c_init();
 extern SEXP geos_c_version_runtime();
 extern SEXP geos_c_version_build();
@@ -213,6 +214,7 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_simplify", (DL_FUNC) &geos_c_simplify, 2},
   {"geos_c_simplify_preserve_topology", (DL_FUNC) &geos_c_simplify_preserve_topology, 2},
   {"geos_c_buffer", (DL_FUNC) &geos_c_buffer, 3},
+  {"geos_c_offset_curve", (DL_FUNC) &geos_c_offset_curve, 3},
   {"geos_c_init", (DL_FUNC) &geos_c_init, 0},
   {"geos_c_version_runtime", (DL_FUNC) &geos_c_version_runtime, 0},
   {"geos_c_version_build", (DL_FUNC) &geos_c_version_build, 0},

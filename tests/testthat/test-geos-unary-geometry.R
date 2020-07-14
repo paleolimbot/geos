@@ -183,6 +183,16 @@ test_that("transformers with atomic param work", {
 })
 
 test_that("geos_buffer works", {
+  expect_identical(geos_offset_curve(NA_character_, 1), geos_read_wkt(NA_character_))
+  expect_identical(geos_offset_curve("LINESTRING (1 0, 3 0)", NA), geos_read_wkt(NA_character_))
+
+  expect_equal(geos_xmin(geos_offset_curve("LINESTRING (1 0, 3 0)", 1)), 1)
+  expect_equal(geos_ymin(geos_offset_curve("LINESTRING (1 0, 3 0)", 1)), 1)
+  expect_equal(geos_xmax(geos_offset_curve("LINESTRING (1 0, 3 0)", 1)), 3)
+  expect_equal(geos_ymax(geos_offset_curve("LINESTRING (1 0, 3 0)", 1)), 1)
+})
+
+test_that("geos_offset_curve works", {
   expect_identical(geos_buffer(NA_character_, 1), geos_read_wkt(NA_character_))
   expect_identical(geos_buffer("POINT (0 0)", NA), geos_read_wkt(NA_character_))
 

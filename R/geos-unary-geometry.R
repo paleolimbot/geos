@@ -236,6 +236,8 @@ geos_offset_curve <- function(geom, distance, params = geos_buffer_params()) {
     recycled[[2]],
     params
   )
+
+  new_geos_geometry(result)
 }
 
 #' @rdname geos_buffer
