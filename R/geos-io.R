@@ -80,7 +80,7 @@ geos_write_xy <- function(geom) {
 #' geos_empty(1:7)
 #' geos_empty(geos_read_wkt(c("POINT (0 1)", "LINESTRING (0 0, 1 1)")))
 #'
-geos_empty <- function(type_id = "") {
+geos_empty <- function(type_id = "geometrycollection") {
   new_geos_geometry(.Call(geos_c_empty, as_geos_type_id(type_id)))
 }
 
