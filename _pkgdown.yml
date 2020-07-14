@@ -6,6 +6,7 @@ reference:
   contents:
   - geos_read_wkt
   - as_geos_geometry
+  - geos_empty
 
 - title: Geometry operators
   desc: Functions that operate on one or more geometry vectors
@@ -13,6 +14,11 @@ reference:
   - geos_area
   - geos_centroid
   - geos_segment_intersection
+  - geos_disjoint
+  - geos_disjoint_matrix
+  - geos_distance
+  - geos_project
+  - geos_strtree
 
 - title: GEOS Information
   contents:
