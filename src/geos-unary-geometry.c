@@ -171,124 +171,72 @@ SEXP geos_c_simplify_preserve_topology(SEXP geom, SEXP param) {
 }
 
 
-// buffer and offset curve
+// buffer and offset_curve
+
+#define GEOS_BUFFER(_call)                                     \
+  if (!Rf_inherits(params, "geos_buffer_params"))  {             \
+  Rf_error("`params` must be created using geos_buffer_params()");\
+  }                                                              \
+                                                                 \
+  double* pDistance = REAL(distance);                            \
+                                                                 \
+  int quadSegs = INTEGER(VECTOR_ELT(params, 0))[0];              \
+  int endCapStyle = INTEGER(VECTOR_ELT(params, 1))[0];           \
+  int joinStyle = INTEGER(VECTOR_ELT(params, 2))[0];             \
+  double mitreLimit = REAL(VECTOR_ELT(params, 3))[0];            \
+  int singleSided = LOGICAL(VECTOR_ELT(params, 4))[0];           \
+                                                                 \
+  GEOS_INIT();                                                   \
+  GEOSBufferParams* bufferParams = GEOSBufferParams_create_r(handle);\
+  if (GEOSBufferParams_setEndCapStyle_r(handle, bufferParams, endCapStyle) == 0) {\
+    GEOSBufferParams_destroy_r(handle, bufferParams);            \
+    GEOS_ERROR("%s: ", "end_cap_style");                         \
+  }                                                              \
+  if (GEOSBufferParams_setJoinStyle_r(handle, bufferParams, joinStyle) == 0) {\
+    GEOSBufferParams_destroy_r(handle, bufferParams);            \
+    GEOS_ERROR("%s: ", "join_style");                            \
+  }                                                              \
+                                                                 \
+  GEOSBufferParams_setQuadrantSegments_r(handle, bufferParams, quadSegs);\
+  GEOSBufferParams_setMitreLimit_r(handle, bufferParams, mitreLimit);\
+  GEOSBufferParams_setSingleSided_r(handle, bufferParams, singleSided);\
+                                                                 \
+  R_xlen_t size = Rf_xlength(geom);                              \
+  SEXP result = PROTECT(Rf_allocVector(VECSXP, size));           \
+                                                                 \
+  SEXP item;                                                     \
+  GEOSGeometry* geometry;                                        \
+  GEOSGeometry* geometryResult;                                  \
+  for (R_xlen_t i = 0; i < size; i++) {                          \
+    item = VECTOR_ELT(geom, i);                                  \
+                                                                 \
+    if (item == R_NilValue || ISNA(pDistance[i])) {              \
+      SET_VECTOR_ELT(result, i, R_NilValue);                     \
+      continue;                                                  \
+    }                                                            \
+                                                                 \
+    geometry = (GEOSGeometry*) R_ExternalPtrAddr(item);          \
+    GEOS_CHECK_GEOMETRY(geometry, i);                            \
+                                                                 \
+    geometryResult = _call;                                      \
+                                                                 \
+    if (geometryResult == NULL) {                                \
+      UNPROTECT(1);                                              \
+      GEOS_ERROR("[i=%d] ", i + 1);                              \
+    } else {                                                     \
+      SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometryResult));\
+    }                                                            \
+  }                                                              \
+                                                                 \
+  GEOS_FINISH();                                                 \
+  UNPROTECT(1);                                                  \
+  return result;
+
 
 SEXP geos_c_buffer(SEXP geom, SEXP distance, SEXP params) {
-  if (!Rf_inherits(params, "geos_buffer_params"))  {
-    Rf_error("`params` must be created using geos_buffer_params()");
-  }
-
-  double* pDistance = REAL(distance);
-
-  int quadSegs = INTEGER(VECTOR_ELT(params, 0))[0];
-  int endCapStyle = INTEGER(VECTOR_ELT(params, 1))[0];
-  int joinStyle = INTEGER(VECTOR_ELT(params, 2))[0];
-  double mitreLimit = REAL(VECTOR_ELT(params, 3))[0];
-  int singleSided = LOGICAL(VECTOR_ELT(params, 4))[0];
-
-  GEOS_INIT();
-  GEOSBufferParams* bufferParams = GEOSBufferParams_create_r(handle);
-  if (GEOSBufferParams_setEndCapStyle_r(handle, bufferParams, endCapStyle) == 0) {
-    GEOSBufferParams_destroy_r(handle, bufferParams);
-    GEOS_ERROR("%s: ", "end_cap_style");
-  }
-  if (GEOSBufferParams_setJoinStyle_r(handle, bufferParams, joinStyle) == 0) {
-    GEOSBufferParams_destroy_r(handle, bufferParams);
-    GEOS_ERROR("%s: ", "join_style");
-  }
-
-  GEOSBufferParams_setQuadrantSegments_r(handle, bufferParams, quadSegs);
-  GEOSBufferParams_setMitreLimit_r(handle, bufferParams, mitreLimit);
-  GEOSBufferParams_setSingleSided_r(handle, bufferParams, singleSided);
-
-  R_xlen_t size = Rf_xlength(geom);
-  SEXP result = PROTECT(Rf_allocVector(VECSXP, size));
-
-  SEXP item;
-  GEOSGeometry* geometry;
-  GEOSGeometry* geometryResult;
-  for (R_xlen_t i = 0; i < size; i++) {
-    item = VECTOR_ELT(geom, i);
-
-    if (item == R_NilValue || ISNA(pDistance[i])) {
-      SET_VECTOR_ELT(result, i, R_NilValue);
-      continue;
-    }
-
-    geometry = (GEOSGeometry*) R_ExternalPtrAddr(item);
-    GEOS_CHECK_GEOMETRY(geometry, i);
-
-    geometryResult = GEOSBufferWithParams_r(handle, geometry, bufferParams, pDistance[i]);
-
-    if (geometryResult == NULL) {
-      UNPROTECT(1);
-      GEOS_ERROR("[i=%d] ", i + 1);
-    } else {
-      SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometryResult));
-    }
-  }
-
-  GEOS_FINISH();
-  UNPROTECT(1);
-  return result;
+  GEOS_BUFFER(GEOSBufferWithParams_r(handle, geometry, bufferParams, pDistance[i]));
 }
 
 SEXP geos_c_offset_curve(SEXP geom, SEXP distance, SEXP params) {
-  if (!Rf_inherits(params, "geos_buffer_params"))  {
-    Rf_error("`params` must be created using geos_buffer_params()");
-  }
-
-  double* pDistance = REAL(distance);
-
-  int quadSegs = INTEGER(VECTOR_ELT(params, 0))[0];
-  int endCapStyle = INTEGER(VECTOR_ELT(params, 1))[0];
-  int joinStyle = INTEGER(VECTOR_ELT(params, 2))[0];
-  double mitreLimit = REAL(VECTOR_ELT(params, 3))[0];
-  int singleSided = LOGICAL(VECTOR_ELT(params, 4))[0];
-
-  GEOS_INIT();
-  GEOSBufferParams* bufferParams = GEOSBufferParams_create_r(handle);
-  if (GEOSBufferParams_setEndCapStyle_r(handle, bufferParams, endCapStyle) == 0) {
-    GEOSBufferParams_destroy_r(handle, bufferParams);
-    GEOS_ERROR("%s: ", "end_cap_style");
-  }
-  if (GEOSBufferParams_setJoinStyle_r(handle, bufferParams, joinStyle) == 0) {
-    GEOSBufferParams_destroy_r(handle, bufferParams);
-    GEOS_ERROR("%s: ", "join_style");
-  }
-
-  GEOSBufferParams_setQuadrantSegments_r(handle, bufferParams, quadSegs);
-  GEOSBufferParams_setMitreLimit_r(handle, bufferParams, mitreLimit);
-  GEOSBufferParams_setSingleSided_r(handle, bufferParams, singleSided);
-
-  R_xlen_t size = Rf_xlength(geom);
-  SEXP result = PROTECT(Rf_allocVector(VECSXP, size));
-
-  SEXP item;
-  GEOSGeometry* geometry;
-  GEOSGeometry* geometryResult;
-  for (R_xlen_t i = 0; i < size; i++) {
-    item = VECTOR_ELT(geom, i);
-
-    if (item == R_NilValue || ISNA(pDistance[i])) {
-      SET_VECTOR_ELT(result, i, R_NilValue);
-      continue;
-    }
-
-    geometry = (GEOSGeometry*) R_ExternalPtrAddr(item);
-    GEOS_CHECK_GEOMETRY(geometry, i);
-
-    geometryResult = GEOSOffsetCurve_r(handle, geometry, pDistance[i], quadSegs, joinStyle, mitreLimit);
-
-    if (geometryResult == NULL) {
-      UNPROTECT(1);
-      GEOS_ERROR("[i=%d] ", i + 1);
-    } else {
-      SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometryResult));
-    }
-  }
-
-  GEOS_FINISH();
-  UNPROTECT(1);
-  return result;
+  GEOS_BUFFER(GEOSOffsetCurve_r(handle, geometry, pDistance[i], quadSegs, joinStyle, mitreLimit));
 }
