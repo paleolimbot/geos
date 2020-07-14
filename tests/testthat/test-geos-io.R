@@ -112,6 +112,8 @@ test_that("xy reader/writer works", {
 })
 
 test_that("empty creator works", {
+  expect_error(geos_empty(8), "Unsupported type request")
+
   expect_identical(
     geos_write_wkt(
       geos_empty(
