@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Linear referencing — geos_project • geom</title>
+<title>Linear referencing — geos_project • geos</title>
 
 
 <!-- jquery -->
@@ -40,7 +40,18 @@
 
 
 <meta property="og:title" content="Linear referencing — geos_project" />
-<meta property="og:description" content="Vectorized along x and distance." />
+<meta property="og:description" content="
+
+geos_project() and geos_project_normalized() return
+the distance of point geom2 projected on geom1 from the origin
+of geom1, which must be a lineal geometry.
+geos_interpolate() performs an
+inverse operation, returning the point along geom representing
+the given distance from the origin along the geometry.
+_normalized() variants use a distance normalized to the
+geos_length() of the geometry.
+
+" />
 
 
 
@@ -71,7 +82,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">geom</a>
+        <a class="navbar-link" href="../index.html">geos</a>
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
       </span>
     </div>
@@ -87,10 +98,22 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/articles/geos-c-api.html">Using the GEOS C API</a>
+    </li>
+  </ul>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/paleolimbot/geom/">
+  <a href="https://github.com/paleolimbot/geos/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -109,70 +132,62 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Linear referencing</h1>
-    <small class="dont-index">Source: <a href='https://github.com/paleolimbot/geom/blob/master/R/geos-linear-referencing.R'><code>R/geos-linear-referencing.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/paleolimbot/geos/blob/master/R/geos-binary-atomic.R'><code>R/geos-binary-atomic.R</code></a>, <a href='https://github.com/paleolimbot/geos/blob/master/R/geos-unary-geometry.R'><code>R/geos-unary-geometry.R</code></a></small>
     <div class="hidden name"><code>geos_project.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Vectorized along <code>x</code> and <code>distance</code>.</p>
+    
+<ul>
+<li><p><code><a href='https://rdrr.io/pkg/geos/man/geos_project.html'>geos_project()</a></code> and <code><a href='https://rdrr.io/pkg/geos/man/geos_project.html'>geos_project_normalized()</a></code> return
+the distance of point <code>geom2</code> projected on <code>geom1</code> from the origin
+of <code>geom1</code>, which must be a lineal geometry.</p></li>
+<li><p><code><a href='https://rdrr.io/pkg/geos/man/geos_project.html'>geos_interpolate()</a></code> performs an
+inverse operation, returning the point along <code>geom</code> representing
+the given <code>distance</code> from the origin along the geometry.</p></li>
+<li><p><code>_normalized()</code> variants use a distance normalized to the
+<code><a href='https://rdrr.io/pkg/geos/man/geos_area.html'>geos_length()</a></code> of the geometry.</p></li>
+</ul>
+
     </div>
 
-    <pre class="usage"><span class='fu'>geos_project</span>(<span class='no'>x</span>, <span class='no'>point</span>)
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_project.html'>geos_project</a></span>(<span class='kw'>geom1</span>, <span class='kw'>geom2</span>)
 
-<span class='fu'>geos_project_normalized</span>(<span class='no'>x</span>, <span class='no'>point</span>)
+<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_project.html'>geos_project_normalized</a></span>(<span class='kw'>geom1</span>, <span class='kw'>geom2</span>)
 
-<span class='fu'>geos_interpolate</span>(<span class='no'>x</span>, <span class='no'>distance</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='fu'><a href='geo_ptype.html'>geo_ptype</a></span>(<span class='no'>x</span>))
+<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_project.html'>geos_interpolate</a></span>(<span class='kw'>geom</span>, <span class='kw'>distance</span>)
 
-<span class='fu'>geos_interpolate_normalized</span>(<span class='no'>x</span>, <span class='no'>distance</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='fu'><a href='geo_ptype.html'>geo_ptype</a></span>(<span class='no'>x</span>))</pre>
+<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_project.html'>geos_interpolate_normalized</a></span>(<span class='kw'>geom</span>, <span class='kw'>distance_normalized</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>A geometry-like (linestring) along which to interpolate
-(or on which to project).</p></td>
+      <th>geom1</th>
+      <td><p><a href='https://rdrr.io/pkg/geos/man/as_geos_geometry.html'>GEOS geometry vectors</a>,
+recycled to a common length.</p></td>
     </tr>
     <tr>
-      <th>point</th>
-      <td><p>A (point) geometry-like object</p></td>
+      <th>geom2</th>
+      <td><p><a href='https://rdrr.io/pkg/geos/man/as_geos_geometry.html'>GEOS geometry vectors</a>,
+recycled to a common length.</p></td>
+    </tr>
+    <tr>
+      <th>geom</th>
+      <td><p>A <a href='https://rdrr.io/pkg/geos/man/as_geos_geometry.html'>GEOS geometry vector</a></p></td>
     </tr>
     <tr>
       <th>distance</th>
-      <td><p>The distance along the geometry.</p></td>
+      <td><p>Distance along the linestring to interpolate</p></td>
     </tr>
     <tr>
-      <th>to</th>
-      <td><p>A prototype created by <code><a href='geo_ptype.html'>geo_ptype()</a></code></p></td>
+      <th>distance_normalized</th>
+      <td><p>Distance along the linestring to interpolate
+relative to the length of the linestring.</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>geos_project()</code> and <code>geos_project_normalized()</code> both return
-a numeric vector of distances; <code>geos_interpolate()</code> and
-<code>geos_interpolate_normalized()</code> both return a geometry-like point
-vector.</p>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>line</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='geo_wkt.html'>geo_wkt</a></span>(<span class='st'>"LINESTRING (0 0, 10 10)"</span>)
-
-<span class='co'># geos_interpolate() works in absolute distances</span>
-<span class='fu'><a href='geo_plot.html'>geo_plot</a></span>(<span class='no'>line</span>)</div><div class='input'><span class='fu'><a href='geo_plot.html'>geo_plot_add</a></span>(
-  <span class='fu'>geos_interpolate</span>(<span class='no'>line</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>5</span>, <span class='fl'>10</span>)),
-  <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>
-)</div><div class='img'><img src='geos_project-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># geos_interpolate() works in relative distances (from 0..1)</span>
-<span class='co'># this is useful for generating a number of equally-spaced points</span>
-<span class='co'># along a line</span>
-<span class='fu'><a href='geo_plot.html'>geo_plot</a></span>(<span class='no'>line</span>)</div><div class='input'><span class='fu'><a href='geo_plot.html'>geo_plot_add</a></span>(
-   <span class='fu'>geos_interpolate_normalized</span>(<span class='no'>line</span>, <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='kw'>length.out</span> <span class='kw'>=</span> <span class='fl'>5</span>)),
-  <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"blue"</span>
-)</div><div class='img'><img src='geos_project-2.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># geos_project() and geos_project_normalized() are the opposite</span>
-<span class='co'># of these operations</span>
-<span class='fu'>geos_project</span>(<span class='no'>line</span>, <span class='fu'><a href='geo_wkt.html'>geo_wkt</a></span>(<span class='st'>"POINT (5 5)"</span>))</div><div class='output co'>#&gt; [1] 7.071068</div><div class='input'><span class='fu'>geos_project_normalized</span>(<span class='no'>line</span>, <span class='fu'><a href='geo_wkt.html'>geo_wkt</a></span>(<span class='st'>"POINT (5 5)"</span>))</div><div class='output co'>#&gt; [1] 0.5</div><div class='input'>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -188,7 +203,7 @@ vector.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

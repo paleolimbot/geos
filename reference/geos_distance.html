@@ -133,9 +133,9 @@
 
 <span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_distance.html'>geos_distance_indexed</a></span>(<span class='kw'>geom1</span>, <span class='kw'>geom2</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_distance.html'>geos_distance_hausdorff</a></span>(<span class='kw'>geom1</span>, <span class='kw'>geom2</span>)
+<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_distance.html'>geos_distance_hausdorff</a></span>(<span class='kw'>geom1</span>, <span class='kw'>geom2</span>, densify = <span class='kw'>NULL</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_distance.html'>geos_distance_frechet</a></span>(<span class='kw'>geom1</span>, <span class='kw'>geom2</span>)</pre>
+<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_distance.html'>geos_distance_frechet</a></span>(<span class='kw'>geom1</span>, <span class='kw'>geom2</span>, densify = <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -144,6 +144,12 @@
       <th>geom1, geom2</th>
       <td><p><a href='https://rdrr.io/pkg/geos/man/as_geos_geometry.html'>GEOS geometry vectors</a>,
 recycled to a common length.</p></td>
+    </tr>
+    <tr>
+      <th>densify</th>
+      <td><p>A fraction between 0 and 1 denoting the degree to which
+edges should be subdivided (smaller value means more subdivisions).
+Use NULL to calculate the distance as-is.</p></td>
     </tr>
     </table>
 
