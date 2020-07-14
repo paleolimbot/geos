@@ -183,3 +183,79 @@ geos_interpolate_normalized <- function(geom, distance_normalized) {
   recycled <- recycle_common(list(as_geos_geometry(geom), as.numeric(distance_normalized)))
   new_geos_geometry(.Call(geos_c_interpolate_normalized, recycled[[1]], recycled[[2]]))
 }
+
+
+#' Buffer a geometry
+#'
+#' - [geos_buffer()] returns a polygon or multipolygon geometry.
+#' - [geos_offset_curve()] returns a linestring offset to the left by `distance`.
+#'
+#' @inheritParams geos_read_wkt
+#' @param params A [geos_buffer_params()]
+#' @param distance The buffer distance. Can be negative to buffer
+#'   or offset on the righthand side of the geometry.
+#' @param quad_segs The number of segments per quadrant. A higher number
+#'   here will increase the apparent resolution of the resulting polygon.
+#' @param end_cap_style One of "round", "flat", or "square".
+#' @param join_style One of "round", "mitre", or "bevel".
+#' @param mitre_limit If `join_style` is "mitre", the relative extent (from zero to one)
+#'   of the join.
+#' @param single_sided Use `TRUE` to buffer on only the right side
+#'   of the geometry. This does not apply to [geos_offset_curve()], which is always
+#'   one-sided.
+#'
+#' @return
+#'
+#' @export
+#'
+#' @examples
+#' geos_buffer("POINT (0 0)")
+#' geos_offset_curve("LINESTRING (0 0, 0 10, 10 0)")
+#'
+geos_buffer <- function(geom, distance, params = geos_buffer_params()) {
+  recycled <- recycle_common(list(as_geos_geometry(geom), as.numeric(distance)))
+
+  result <- .Call(
+    geos_c_buffer,
+    recycled[[1]],
+    recycled[[2]],
+    params
+  )
+
+  new_geos_geometry(result)
+}
+
+#' @rdname geos_buffer
+#' @export
+geos_offset_curve <- function(geom, distance, params = geos_buffer_params()) {
+  recycled <- recycle_common(list(as_geos_geometry(geom), as.numeric(distance)))
+
+  result <- .Call(
+    geos_c_offset_curve,
+    recycled[[1]],
+    recycled[[2]],
+    params
+  )
+}
+
+#' @rdname geos_buffer
+#' @export
+geos_buffer_params <- function(quad_segs = 30,
+                               end_cap_style = c("round", "flat", "square"),
+                               join_style = c("round", "mitre", "bevel"),
+                               mitre_limit = 1,
+                               single_sided = FALSE) {
+  end_cap_style <- match.arg(end_cap_style)
+  join_style <- match.arg(join_style)
+
+  structure(
+    list(
+      quad_segs = as.integer(quad_segs),
+      end_cap_style = match(end_cap_style, c("round", "flat", "square")),
+      join_style = match(join_style, c("round", "mitre", "bevel")),
+      mitre_limit = as.numeric(mitre_limit),
+      single_sided = as.logical(single_sided)
+    ),
+    class = "geos_buffer_params"
+  )
+}

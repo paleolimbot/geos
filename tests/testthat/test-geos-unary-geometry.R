@@ -180,7 +180,30 @@ test_that("transformers with atomic param work", {
     ),
     "MULTILINESTRING ((0 0, 0 2), (0.1 0, 0.1 2))"
   )
-
-
 })
 
+test_that("geos_buffer works", {
+  expect_identical(geos_buffer(NA_character_, 1), geos_read_wkt(NA_character_))
+  expect_identical(geos_buffer("POINT (0 0)", NA), geos_read_wkt(NA_character_))
+
+  expect_equal(geos_xmin(geos_buffer("POINT (0 0)", 1)), -1)
+  expect_equal(geos_ymin(geos_buffer("POINT (0 0)", 1)), -1)
+  expect_equal(geos_xmax(geos_buffer("POINT (0 0)", 1)), 1)
+  expect_equal(geos_ymax(geos_buffer("POINT (0 0)", 1)), 1)
+})
+
+test_that("geos_buffer errors with bad params", {
+  expect_error(geos_buffer("POINT (0 0)", 1, params = NULL), "must be created using")
+
+  good_params <- geos_buffer_params()
+
+  params <- good_params
+  params$end_cap_style = 10L
+  expect_error(geos_buffer("POINT (0 0)", 1, params = params), "Invalid buffer endCap")
+
+  params <- good_params
+  params$join_style = 10L
+  expect_error(geos_buffer("POINT (0 0)", 1, params = params), "Invalid buffer join")
+
+  expect_error(geos_buffer("POINT (0 0)", Inf), "encountered NaN/Inf")
+})
