@@ -11,13 +11,17 @@ geos_distance(geom1, geom2)
 
 geos_distance_indexed(geom1, geom2)
 
-geos_distance_hausdorff(geom1, geom2)
+geos_distance_hausdorff(geom1, geom2, densify = NULL)
 
-geos_distance_frechet(geom1, geom2)
+geos_distance_frechet(geom1, geom2, densify = NULL)
 }
 \arguments{
 \item{geom1, geom2}{\link[=as_geos_geometry]{GEOS geometry vectors},
 recycled to a common length.}
+
+\item{densify}{A fraction between 0 and 1 denoting the degree to which
+edges should be subdivided (smaller value means more subdivisions).
+Use NULL to calculate the distance as-is.}
 }
 \value{
 A numeric vector along the recycled length of \code{geom1} and \code{geom2}

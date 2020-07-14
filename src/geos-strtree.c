@@ -80,7 +80,7 @@ SEXP strtree_query_base(SEXP treeExternalPtr, SEXP geom, GEOSQueryCallback callb
   // allocate a temporary integer() along the length of the tree data
   // that will be used to contain the results while iterating
   SEXP tempItemResult =  PROTECT(
-    Rf_allocVector(INTSXP, Rf_length(R_ExternalPtrProtected(treeExternalPtr)))
+    Rf_allocVector(INTSXP, Rf_xlength(R_ExternalPtrProtected(treeExternalPtr)))
   );
 
   GEOS_INIT();
@@ -314,7 +314,7 @@ SEXP geos_c_equals_exact_matrix(SEXP geom, SEXP treeExternalPtr, SEXP tolerance)
 // predicates are so fast that it's unlikely this is ever practically
 // a problem
 SEXP geos_c_predicate_any(SEXP matrixResult) {
-  R_xlen_t size = Rf_length(matrixResult);
+  R_xlen_t size = Rf_xlength(matrixResult);
   SEXP result = PROTECT(Rf_allocVector(LGLSXP, size));
   int* pResult = LOGICAL(result);
 
@@ -324,7 +324,7 @@ SEXP geos_c_predicate_any(SEXP matrixResult) {
     if (item == R_NilValue) {
       pResult[i] = NA_LOGICAL;
     } else {
-      pResult[i] = Rf_length(item) > 0;
+      pResult[i] = Rf_xlength(item) > 0;
     }
   }
 

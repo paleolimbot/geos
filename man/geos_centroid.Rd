@@ -21,8 +21,6 @@
 \alias{geos_point_end}
 \alias{geos_clone}
 \alias{geos_point_n}
-\alias{geos_interpolate}
-\alias{geos_interpolate_normalized}
 \alias{geos_simplify}
 \alias{geos_simplify_preserve_topology}
 \title{Geometry transformers}
@@ -67,10 +65,6 @@ geos_clone(geom)
 
 geos_point_n(geom, index)
 
-geos_interpolate(geom, distance)
-
-geos_interpolate_normalized(geom, distance_normalized)
-
 geos_simplify(geom, tolerance)
 
 geos_simplify_preserve_topology(geom, tolerance)
@@ -79,11 +73,6 @@ geos_simplify_preserve_topology(geom, tolerance)
 \item{geom}{A \link[=as_geos_geometry]{GEOS geometry vector}}
 
 \item{index}{The index of the point or geometry to extract.}
-
-\item{distance}{Distance along the linestring to interpolate}
-
-\item{distance_normalized}{Distance along the linestring to interpolate
-relative to the length of the linestring.}
 
 \item{tolerance}{A minimum distance to use for simplification. Use a higher
 value for more simplification.}

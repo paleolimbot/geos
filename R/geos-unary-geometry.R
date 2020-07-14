@@ -2,9 +2,6 @@
 #' Geometry transformers
 #'
 #' @inheritParams geos_read_wkt
-#' @param distance Distance along the linestring to interpolate
-#' @param distance_normalized Distance along the linestring to interpolate
-#'   relative to the length of the linestring.
 #' @param tolerance A minimum distance to use for simplification. Use a higher
 #'   value for more simplification.
 #' @param index The index of the point or geometry to extract.
@@ -159,20 +156,6 @@ geos_point_n <- function(geom, index) {
 
 #' @rdname geos_centroid
 #' @export
-geos_interpolate <- function(geom, distance) {
-  recycled <- recycle_common(list(as_geos_geometry(geom), as.numeric(distance)))
-  new_geos_geometry(.Call(geos_c_interpolate, recycled[[1]], recycled[[2]]))
-}
-
-#' @rdname geos_centroid
-#' @export
-geos_interpolate_normalized <- function(geom, distance_normalized) {
-  recycled <- recycle_common(list(as_geos_geometry(geom), as.numeric(distance_normalized)))
-  new_geos_geometry(.Call(geos_c_interpolate_normalized, recycled[[1]], recycled[[2]]))
-}
-
-#' @rdname geos_centroid
-#' @export
 geos_simplify <- function(geom, tolerance) {
   recycled <- recycle_common(list(as_geos_geometry(geom), as.numeric(tolerance)))
   new_geos_geometry(.Call(geos_c_simplify, recycled[[1]], recycled[[2]]))
@@ -183,4 +166,20 @@ geos_simplify <- function(geom, tolerance) {
 geos_simplify_preserve_topology <- function(geom, tolerance) {
   recycled <- recycle_common(list(as_geos_geometry(geom), as.numeric(tolerance)))
   new_geos_geometry(.Call(geos_c_simplify_preserve_topology, recycled[[1]], recycled[[2]]))
+}
+
+# --- these are documented with geos_project ---
+
+#' @rdname geos_project
+#' @export
+geos_interpolate <- function(geom, distance) {
+  recycled <- recycle_common(list(as_geos_geometry(geom), as.numeric(distance)))
+  new_geos_geometry(.Call(geos_c_interpolate, recycled[[1]], recycled[[2]]))
+}
+
+#' @rdname geos_project
+#' @export
+geos_interpolate_normalized <- function(geom, distance_normalized) {
+  recycled <- recycle_common(list(as_geos_geometry(geom), as.numeric(distance_normalized)))
+  new_geos_geometry(.Call(geos_c_interpolate_normalized, recycled[[1]], recycled[[2]]))
 }

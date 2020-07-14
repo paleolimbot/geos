@@ -3,8 +3,33 @@ test_that("distance functions work", {
   expect_identical(geos_distance(c("POINT (0 0)", NA), "POINT (0 10)"), c(10, NA))
   expect_identical(geos_distance_indexed(c("POINT (0 0)", NA), "POINT (0 10)"), c(10, NA))
   expect_identical(geos_distance_hausdorff(c("POINT (0 0)", NA), "POINT (0 10)"), c(10, NA))
+  expect_identical(
+    geos_distance_hausdorff(c("POINT (0 0)", NA), "LINESTRING (0 10, 0 20)", densify = 0.1),
+    c(20, NA)
+  )
   expect_identical(geos_distance_frechet(c("POINT (0 0)", NA), "POINT (0 10)"), c(NaN, NA))
   expect_identical(geos_distance_frechet(c("POINT (0 0)", NA), "LINESTRING (0 10, 0 20)"), c(20, NA))
+  expect_identical(
+    geos_distance_frechet(c("POINT (0 0)", NA), "LINESTRING (0 10, 0 20)", densify = 0.1),
+    c(20, NA)
+  )
+})
+
+test_that("linear referencing works", {
+  expect_error(geos_project("POINT (0 0)", "POINT (0 0)"), "only supports lineal geometry")
+  expect_identical(
+    geos_project(c("LINESTRING (0 0, 0 10)", NA), "POINT (0 1)"),
+    c(1, NA)
+  )
+  expect_identical(
+    geos_project("LINESTRING (0 0, 0 10)", c("POINT (0 1)", NA)),
+    c(1, NA)
+  )
+
+  expect_identical(
+    geos_project_normalized("LINESTRING (0 0, 0 10)", c("POINT (0 1)", NA)),
+    c(0.1, NA)
+  )
 })
 
 test_that("binary predicates work", {

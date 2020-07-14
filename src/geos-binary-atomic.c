@@ -3,7 +3,7 @@
 #include "geos-common.h"
 #include "Rinternals.h"
 
-#define GEOS_BINARY_REAL(_func, _errorValue)                      \
+#define GEOS_BINARY_DISTANCE(_func)                      \
   R_xlen_t size = Rf_xlength(geom1);                              \
   SEXP result = PROTECT(Rf_allocVector(REALSXP, size));           \
   double* pResult = REAL(result);                                 \
@@ -30,7 +30,7 @@
                                                                   \
     int resultCode = _func(handle, geometry1, geometry2, &pResult[i]);        \
                                                                   \
-    if (resultCode == _errorValue) {                              \
+    if (resultCode == 0) {                                        \
       UNPROTECT(1);                                               \
       GEOS_ERROR("[i=%d] ", i + 1);                               \
     }                                                             \
@@ -42,19 +42,114 @@
 
 
 SEXP geos_c_distance(SEXP geom1, SEXP geom2) {
-  GEOS_BINARY_REAL(GEOSDistance_r, 0);
+  GEOS_BINARY_DISTANCE(GEOSDistance_r);
 }
 
 SEXP geos_c_distance_indexed(SEXP geom1, SEXP geom2) {
-  GEOS_BINARY_REAL(GEOSDistanceIndexed_r, 0);
+  GEOS_BINARY_DISTANCE(GEOSDistanceIndexed_r);
 }
 
 SEXP geos_c_distance_hausdorff(SEXP geom1, SEXP geom2) {
-  GEOS_BINARY_REAL(GEOSHausdorffDistance_r, 0);
+  GEOS_BINARY_DISTANCE(GEOSHausdorffDistance_r);
 }
 
 SEXP geos_c_distance_frechet(SEXP geom1, SEXP geom2) {
-  GEOS_BINARY_REAL(GEOSFrechetDistance_r, 0);
+  GEOS_BINARY_DISTANCE(GEOSFrechetDistance_r);
+}
+
+#define GEOS_DIST_DENSIFY(_func)                                \
+R_xlen_t size = Rf_xlength(geom1);                                          \
+SEXP result = PROTECT(Rf_allocVector(REALSXP, size));                       \
+double* pResult = REAL(result);                                             \
+double densifyFracDouble = REAL(densifyFrac)[0];                            \
+                                                                            \
+GEOS_INIT();                                                                \
+                                                                            \
+SEXP item1;                                                                 \
+SEXP item2;                                                                 \
+GEOSGeometry* geometry1;                                                    \
+GEOSGeometry* geometry2;                                                    \
+for (R_xlen_t i = 0; i < size; i++) {                                       \
+  item1 = VECTOR_ELT(geom1, i);                                             \
+  item2 = VECTOR_ELT(geom2, i);                                             \
+                                                                            \
+  if (item1 == R_NilValue || item2 == R_NilValue) {                         \
+    pResult[i] = NA_REAL;                                                   \
+    continue;                                                               \
+  }                                                                         \
+                                                                            \
+  geometry1 = (GEOSGeometry*) R_ExternalPtrAddr(item1);                     \
+  GEOS_CHECK_GEOMETRY(geometry1, i);                                        \
+  geometry2 = (GEOSGeometry*) R_ExternalPtrAddr(item2);                     \
+  GEOS_CHECK_GEOMETRY(geometry2, i);                                        \
+                                                                            \
+  int resultCode = _func(handle, geometry1, geometry2, densifyFracDouble, &pResult[i]);  \
+                                                                            \
+  if (resultCode == 0) {                                          \
+    UNPROTECT(1);                                                           \
+    GEOS_ERROR("[i=%d] ", i + 1);                                           \
+  }                                                                         \
+}                                                                           \
+                                                                            \
+GEOS_FINISH();                                                              \
+UNPROTECT(1);                                                               \
+return result;
+
+SEXP geos_c_distance_hausdorff_densify(SEXP geom1, SEXP geom2, SEXP densifyFrac) {
+  GEOS_DIST_DENSIFY(GEOSHausdorffDistanceDensify_r);
+}
+
+SEXP geos_c_distance_frechet_densify(SEXP geom1, SEXP geom2, SEXP densifyFrac) {
+  GEOS_DIST_DENSIFY(GEOSFrechetDistanceDensify_r);
+}
+
+// project and project _normalized both return their result rather than use a
+// pointer arg (-1 for error, but this is undocumented)
+#define GEOS_BINARY_REAL_RETURN(_func)                                        \
+  R_xlen_t size = Rf_xlength(geom1);                                          \
+  SEXP result = PROTECT(Rf_allocVector(REALSXP, size));                       \
+  double* pResult = REAL(result);                                             \
+                                                                              \
+  GEOS_INIT();                                                                \
+                                                                              \
+  SEXP item1;                                                                 \
+  SEXP item2;                                                                 \
+  GEOSGeometry* geometry1;                                                    \
+  GEOSGeometry* geometry2;                                                    \
+  double itemResult;                                                          \
+  for (R_xlen_t i = 0; i < size; i++) {                                       \
+    item1 = VECTOR_ELT(geom1, i);                                             \
+    item2 = VECTOR_ELT(geom2, i);                                             \
+                                                                              \
+    if (item1 == R_NilValue || item2 == R_NilValue) {                         \
+      pResult[i] = NA_REAL;                                                   \
+      continue;                                                               \
+    }                                                                         \
+                                                                              \
+    geometry1 = (GEOSGeometry*) R_ExternalPtrAddr(item1);                     \
+    GEOS_CHECK_GEOMETRY(geometry1, i);                                        \
+    geometry2 = (GEOSGeometry*) R_ExternalPtrAddr(item2);                     \
+    GEOS_CHECK_GEOMETRY(geometry2, i);                                        \
+                                                                              \
+    itemResult = _func(handle, geometry1, geometry2);                         \
+    if (itemResult == -1) {                                                   \
+      UNPROTECT(1);                                                           \
+      GEOS_ERROR("[i=%d] ", i + 1);                                           \
+    }                                                                         \
+                                                                              \
+    pResult[i] = itemResult;                                                  \
+  }                                                                           \
+                                                                              \
+  GEOS_FINISH();                                                              \
+  UNPROTECT(1);                                                               \
+  return result;
+
+SEXP geos_c_project(SEXP geom1, SEXP geom2) {
+  GEOS_BINARY_REAL_RETURN(GEOSProject_r);
+}
+
+SEXP geos_c_project_normalized(SEXP geom1, SEXP geom2) {
+  GEOS_BINARY_REAL_RETURN(GEOSProjectNormalized_r);
 }
 
 
