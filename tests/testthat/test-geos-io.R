@@ -110,3 +110,52 @@ test_that("xy reader/writer works", {
   expect_identical(geos_write_xy(new_geos_geometry(list(NULL))), list(x = NA_real_, y = NA_real_))
   expect_error(geos_write_xy(geos_read_wkt("LINESTRING (0 0, 1 1)")), "Argument is not a Point")
 })
+
+test_that("empty creator works", {
+  expect_identical(
+    geos_write_wkt(
+      geos_empty(
+        c(
+          "point", "linestring", "polygon",
+          "multipoint", "multilinestring", "multipolygon",
+          "geometrycollection", NA
+        )
+      )
+    ),
+    c(
+      "POINT EMPTY", "LINESTRING EMPTY", "POLYGON EMPTY",
+      "MULTIPOINT EMPTY", "MULTILINESTRING EMPTY", "MULTIPOLYGON EMPTY",
+      "GEOMETRYCOLLECTION EMPTY", NA
+    )
+  )
+
+  expect_identical(
+    geos_write_wkt(
+      geos_empty(c(1:7, NA))
+    ),
+    c(
+      "POINT EMPTY", "LINESTRING EMPTY", "POLYGON EMPTY",
+      "MULTIPOINT EMPTY", "MULTILINESTRING EMPTY", "MULTIPOLYGON EMPTY",
+      "GEOMETRYCOLLECTION EMPTY", NA
+    )
+  )
+
+  expect_identical(
+    geos_write_wkt(
+      geos_empty(
+        geos_read_wkt(
+          c(
+            "POINT EMPTY", "LINESTRING EMPTY", "POLYGON EMPTY",
+            "MULTIPOINT EMPTY", "MULTILINESTRING EMPTY", "MULTIPOLYGON EMPTY",
+            "GEOMETRYCOLLECTION EMPTY", NA
+          )
+        )
+      )
+    ),
+    c(
+      "POINT EMPTY", "LINESTRING EMPTY", "POLYGON EMPTY",
+      "MULTIPOINT EMPTY", "MULTILINESTRING EMPTY", "MULTIPOLYGON EMPTY",
+      "GEOMETRYCOLLECTION EMPTY", NA
+    )
+  )
+})

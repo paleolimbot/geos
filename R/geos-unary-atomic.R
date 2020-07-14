@@ -149,9 +149,19 @@ geos_is_valid <- function(geom) {
 #' @rdname geos_area
 #' @export
 geos_type_id <- function(geom) {
-  # adding 1 here to align type IDs with wkutils::wk*_meta()
-  # and the type IDs in the WKB spec
-  .Call(geos_c_type_id, as_geos_geometry(geom)) + 1L
+  # in a slight departure from GEOS, returning the WKB
+  # type IDs to avoid confusion (the problem is the LINEARRING)
+  match(.Call(geos_c_type_id, as_geos_geometry(geom)), c(0:1, 3:8))
+}
+
+#' @rdname geos_area
+#' @export
+geos_type <- function(geom) {
+  c(
+    "point", "linestring", "linearring", "polygon",
+    "multipoint", "multilinestring", "multipolygon",
+    "geometrycollection"
+  )[.Call(geos_c_type_id, as_geos_geometry(geom)) + 1]
 }
 
 #' @rdname geos_area

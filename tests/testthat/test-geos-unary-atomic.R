@@ -53,9 +53,31 @@ test_that("atomic returners work", {
   )
 
   expect_identical(
-    geos_type_id(c("POINT (0 0)", "LINESTRING (0 0, 1 1)", NA)),
-    c(1L, 2L, NA)
+    geos_type_id(
+      c(
+        "POINT EMPTY", "LINESTRING EMPTY", "POLYGON EMPTY",
+        "MULTIPOINT EMPTY", "MULTILINESTRING EMPTY", "MULTIPOLYGON EMPTY",
+        "GEOMETRYCOLLECTION EMPTY", NA
+      )
+    ),
+    c(1:7, NA)
   )
+
+  expect_identical(
+    geos_type(
+      c(
+        "POINT EMPTY", "LINESTRING EMPTY", "POLYGON EMPTY",
+        "MULTIPOINT EMPTY", "MULTILINESTRING EMPTY", "MULTIPOLYGON EMPTY",
+        "GEOMETRYCOLLECTION EMPTY", NA
+      )
+    ),
+    c(
+      "point", "linestring", "polygon",
+      "multipoint", "multilinestring", "multipolygon",
+      "geometrycollection", NA
+    )
+  )
+
 
   # haven't implemented set_precision yet
   expect_identical(geos_precision(c("POINT (0 0)", NA)), c(0, NA))

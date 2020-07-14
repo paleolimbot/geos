@@ -18,6 +18,7 @@
 \alias{geos_is_closed}
 \alias{geos_is_valid}
 \alias{geos_type_id}
+\alias{geos_type}
 \alias{geos_precision}
 \alias{geos_srid}
 \alias{geos_num_coordinates}
@@ -60,6 +61,8 @@ geos_is_closed(geom)
 geos_is_valid(geom)
 
 geos_type_id(geom)
+
+geos_type(geom)
 
 geos_precision(geom)
 

@@ -3,6 +3,49 @@
 #include "geos-common.h"
 #include "Rinternals.h"
 
+
+SEXP geos_c_empty(SEXP typeId) {
+  R_xlen_t size = Rf_xlength(typeId);
+  SEXP result = PROTECT(Rf_allocVector(VECSXP, size));
+  int* pTypeId = INTEGER(typeId);
+
+  GEOS_INIT();
+  GEOSGeometry* geometry;
+
+  for (R_xlen_t i = 0; i < size; i++) {
+    if (pTypeId[i] == NA_INTEGER) {
+      SET_VECTOR_ELT(result, i, R_NilValue);
+      continue;
+    }
+
+    switch (pTypeId[i]) {
+    case 1:
+      geometry = GEOSGeom_createEmptyPoint_r(handle);
+      break;
+    case 2:
+      geometry = GEOSGeom_createEmptyLineString_r(handle);
+      break;
+    case 3:
+      geometry = GEOSGeom_createEmptyPolygon_r(handle);
+      break;
+    default:
+      geometry = GEOSGeom_createEmptyCollection_r(handle, pTypeId[i]);
+      break;
+    }
+
+    if (geometry == NULL) {
+      UNPROTECT(1);
+      GEOS_ERROR("[i=%d] ", i);
+    }
+
+    SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometry));
+  }
+
+  GEOS_FINISH();
+  UNPROTECT(1);
+  return result;
+}
+
 SEXP geos_c_read_wkt(SEXP input) {
   R_xlen_t size = Rf_xlength(input);
   SEXP result = PROTECT(Rf_allocVector(VECSXP, size));
