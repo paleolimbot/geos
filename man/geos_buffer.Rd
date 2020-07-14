@@ -41,7 +41,8 @@ of the geometry. This does not apply to \code{\link[=geos_offset_curve]{geos_off
 one-sided.}
 }
 \value{
-
+A \link[=as_geos_geometry]{GEOS geometry vector} along the recycled
+length of \code{geom} and \code{distance}.
 }
 \description{
 \itemize{
@@ -50,7 +51,7 @@ one-sided.}
 }
 }
 \examples{
-geos_buffer("POINT (0 0)")
-geos_offset_curve("LINESTRING (0 0, 0 10, 10 0)")
+geos_buffer("POINT (0 0)", 1)
+geos_offset_curve("LINESTRING (0 0, 0 10, 10 0)", 1)
 
 }

@@ -204,13 +204,14 @@ geos_interpolate_normalized <- function(geom, distance_normalized) {
 #'   of the geometry. This does not apply to [geos_offset_curve()], which is always
 #'   one-sided.
 #'
-#' @return
+#' @return A [GEOS geometry vector][as_geos_geometry] along the recycled
+#'   length of `geom` and `distance`.
 #'
 #' @export
 #'
 #' @examples
-#' geos_buffer("POINT (0 0)")
-#' geos_offset_curve("LINESTRING (0 0, 0 10, 10 0)")
+#' geos_buffer("POINT (0 0)", 1)
+#' geos_offset_curve("LINESTRING (0 0, 0 10, 10 0)", 1)
 #'
 geos_buffer <- function(geom, distance, params = geos_buffer_params()) {
   recycled <- recycle_common(list(as_geos_geometry(geom), as.numeric(distance)))

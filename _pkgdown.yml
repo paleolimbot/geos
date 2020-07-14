@@ -19,6 +19,7 @@ reference:
   - geos_distance
   - geos_project
   - geos_strtree
+  - geos_buffer
 
 - title: GEOS Information
   contents:
