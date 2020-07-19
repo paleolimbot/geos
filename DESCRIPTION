@@ -19,8 +19,7 @@ Suggests:
     testthat (>= 2.1.0),
     wk
 Imports: 
-    libgeos (>= 3.8.1-0),
-    Rcpp
+    libgeos (>= 3.8.1-0)
 Remotes: paleolimbot/libgeos
 URL: https://paleolimbot.github.io/geos, https://github.com/paleolimbot/geos
 BugReports: https://github.com/paleolimbot/geos/issues
