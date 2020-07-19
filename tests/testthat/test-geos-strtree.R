@@ -39,12 +39,19 @@ test_that("strtree objects have reasonable format() and print() methods", {
 })
 
 test_that("strtree objects that are invalid cannot be queried", {
-  tree <- geos_strtree(character())
+  tree <- geos_strtree("POINT (30 10)")
 
   temprds <- tempfile()
   saveRDS(tree, temprds)
   tree <- readRDS(temprds)
-  expect_error(geos_strtree_query(tree, character(0)), "External.*?is not valid")
+  expect_error(geos_strtree_query(tree, "POINT (30 10)"), "External.*?is not valid")
+})
+
+test_that("empty trees can be queried", {
+  expect_identical(
+    geos_strtree_query(character(0), c("POINT (30 10)", "POINT (0 0)")),
+    list(integer(), integer())
+  )
 })
 
 test_that("strtree objects can be queried", {

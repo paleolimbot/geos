@@ -8,6 +8,14 @@
 SEXP geos_c_strtree_create(SEXP geom) {
   R_xlen_t size = Rf_xlength(geom);
 
+  // size == 0 will crash some GEOS builds, so we need a sentinel
+  if (size == 0) {
+    SEXP treeIndices = PROTECT(Rf_allocVector(INTSXP, 0));
+    SEXP treeExternalPtr = geos_common_tree_xptr(NULL, geom, treeIndices);
+    UNPROTECT(1);
+    return treeExternalPtr;
+  }
+
   GEOS_INIT();
 
   // create the tree object
@@ -69,7 +77,9 @@ struct QueryResult {
 SEXP strtree_query_base(SEXP treeExternalPtr, SEXP geom, GEOSQueryCallback callback,
                         int prepare, SEXP extra) {
   GEOSSTRtree* tree = (GEOSSTRtree*) R_ExternalPtrAddr(treeExternalPtr);
-  if (tree == NULL) {
+
+  if (tree == NULL && Rf_xlength(R_ExternalPtrTag(treeExternalPtr)) > 0) {
+    UNPROTECT(1);
     Rf_error("External pointer (geos_strtree) is not valid");
   }
 
@@ -124,7 +134,10 @@ SEXP strtree_query_base(SEXP treeExternalPtr, SEXP geom, GEOSQueryCallback callb
     queryResult.geometry = geometry;
     queryResult.prepared = (GEOSPreparedGeometry*) prepared;
 
-    GEOSSTRtree_query_r(handle, tree, geometry, callback, &queryResult);
+    // tree is only NULL here as an empty tree
+    if (tree != NULL) {
+      GEOSSTRtree_query_r(handle, tree, geometry, callback, &queryResult);
+    }
 
     GEOSPreparedGeom_destroy_r(handle, prepared);
 
@@ -156,7 +169,6 @@ void strtree_callback_may_intersect(void* item, void* userdata) {
 }
 
 SEXP geos_c_strtree_query(SEXP treeExternalPtr, SEXP geom) {
-  // don't prepare
   return strtree_query_base(treeExternalPtr, geom, &strtree_callback_may_intersect, 0, R_NilValue);
 }
 
