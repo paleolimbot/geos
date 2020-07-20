@@ -9,11 +9,11 @@ void geos_common_handle_error(const char *message, void* userdata) {
     // GEOS hands the error here with a max length of BUFSIZ, which is typically 1024
     // so this is unlikely to fire (was tested by reducing GEOS_ERROR_MESSAGE_BUFFER_SIZE
     // such that it is less than 1024)
-    strncpy(errorMessage, message, GEOS_ERROR_MESSAGE_BUFFER_SIZE - 1); // # nocov
+    memcpy(errorMessage, message, GEOS_ERROR_MESSAGE_BUFFER_SIZE - 1); // # nocov
     errorMessage[GEOS_ERROR_MESSAGE_BUFFER_SIZE - 1] = '\0'; // # nocov
   } else {
     // + 1 to include the null terminator
-    strncpy(errorMessage, message, messageChars + 1);
+    memcpy(errorMessage, message, messageChars);
     errorMessage[messageChars] = '\0';
   }
 }
