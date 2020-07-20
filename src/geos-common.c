@@ -12,7 +12,8 @@ void geos_common_handle_error(const char *message, void* userdata) {
     strncpy(errorMessage, message, GEOS_ERROR_MESSAGE_BUFFER_SIZE - 1); // # nocov
     errorMessage[GEOS_ERROR_MESSAGE_BUFFER_SIZE - 1] = '\0'; // # nocov
   } else {
-    strncpy(errorMessage, message, messageChars);
+    // + 1 to include the null terminator
+    strncpy(errorMessage, message, messageChars + 1);
     errorMessage[messageChars] = '\0';
   }
 }
