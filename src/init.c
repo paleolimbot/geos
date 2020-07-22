@@ -33,6 +33,11 @@ extern SEXP geos_c_prepared_contains_properly(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_prepared_overlaps(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_prepared_covers(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_prepared_covered_by(SEXP geom1, SEXP geom2);
+extern SEXP geos_c_intersection(SEXP geom1, SEXP geom2);
+extern SEXP geos_c_difference(SEXP geom1, SEXP geom2);
+extern SEXP geos_c_sym_difference(SEXP geom1, SEXP geom2);
+extern SEXP geos_c_union(SEXP geom1, SEXP geom2);
+extern SEXP geos_c_snap(SEXP geom1, SEXP geom2, SEXP tolerance);
 extern SEXP geos_c_empty(SEXP typeId);
 extern SEXP geos_c_read_wkt(SEXP input);
 extern SEXP geos_c_write_wkt(SEXP input, SEXP includeZ, SEXP precision, SEXP trim);
@@ -141,6 +146,11 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_prepared_overlaps", (DL_FUNC) &geos_c_prepared_overlaps, 2},
   {"geos_c_prepared_covers", (DL_FUNC) &geos_c_prepared_covers, 2},
   {"geos_c_prepared_covered_by", (DL_FUNC) &geos_c_prepared_covered_by, 2},
+  {"geos_c_intersection", (DL_FUNC) &geos_c_intersection, 2},
+  {"geos_c_difference", (DL_FUNC) &geos_c_difference, 2},
+  {"geos_c_sym_difference", (DL_FUNC) &geos_c_sym_difference, 2},
+  {"geos_c_union", (DL_FUNC) &geos_c_union, 2},
+  {"geos_c_snap", (DL_FUNC) &geos_c_snap, 3},
   {"geos_c_empty", (DL_FUNC) &geos_c_empty, 1},
   {"geos_c_read_wkt", (DL_FUNC) &geos_c_read_wkt, 1},
   {"geos_c_write_wkt", (DL_FUNC) &geos_c_write_wkt, 4},
