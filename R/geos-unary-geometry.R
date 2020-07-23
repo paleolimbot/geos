@@ -65,6 +65,12 @@ geos_minimum_rotated_rectangle <- function(geom) {
 
 #' @rdname geos_centroid
 #' @export
+geos_minimum_bounding_circle <- function(geom) {
+  new_geos_geometry(.Call(geos_c_minimum_bounding_circle, as_geos_geometry(geom)))
+}
+
+#' @rdname geos_centroid
+#' @export
 geos_unary_union <- function(geom) {
   new_geos_geometry(.Call(geos_c_unary_union, as_geos_geometry(geom)))
 }

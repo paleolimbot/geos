@@ -182,6 +182,16 @@ test_that("transformers with atomic param work", {
   )
 })
 
+test_that("bounding circle works", {
+  circle <- geos_minimum_bounding_circle(c(NA, "LINESTRING (-1 -1, 1 1)"))
+  expect_equal(geos_xmin(circle), c(NA, -sqrt(2)))
+  expect_equal(geos_ymin(circle), c(NA, -sqrt(2)))
+  expect_equal(geos_xmax(circle), c(NA, sqrt(2)))
+  expect_equal(geos_ymax(circle), c(NA, sqrt(2)))
+
+  expect_error(geos_minimum_bounding_circle("POINT (nan inf)"), "encountered NaN/Inf")
+})
+
 test_that("geos_buffer works", {
   expect_identical(geos_offset_curve(NA_character_, 1), geos_read_wkt(NA_character_))
   expect_identical(geos_offset_curve("LINESTRING (1 0, 3 0)", NA), geos_read_wkt(NA_character_))

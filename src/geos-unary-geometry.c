@@ -170,12 +170,59 @@ SEXP geos_c_simplify_preserve_topology(SEXP geom, SEXP param) {
   GEOS_UNARY_GEOMETRY_PARAM(GEOSTopologyPreserveSimplify_r, double, REAL);
 }
 
+// minimum bounding circle
+
+SEXP geos_c_minimum_bounding_circle(SEXP geom) {
+  R_xlen_t size = Rf_xlength(geom);
+  SEXP result = PROTECT(Rf_allocVector(VECSXP, size));
+
+  GEOS_INIT();
+
+  SEXP item;
+  GEOSGeometry* geometry;
+  GEOSGeometry* geometryResult;
+
+  // not using the centre or radius for now, but these are needed for
+  // call to GEOSMinimumBoundingCircle_r
+  GEOSGeometry* center = GEOSGeom_createPointFromXY_r(handle, NAN, NAN);
+  double radius;
+  if (center == NULL) {
+    GEOS_ERROR("Error allocating %s", "center point"); // # nocov
+  }
+
+  for (R_xlen_t i = 0; i < size; i++) {
+    item = VECTOR_ELT(geom, i);
+
+    if (item == R_NilValue) {
+      SET_VECTOR_ELT(result, i, R_NilValue);
+      continue;
+    }
+
+    geometry = (GEOSGeometry*) R_ExternalPtrAddr(item);
+    GEOS_CHECK_GEOMETRY(geometry, i);
+
+    geometryResult = GEOSMinimumBoundingCircle_r(handle, geometry, &radius, &center);
+
+    if (geometryResult == NULL) {
+      GEOSGeom_destroy_r(handle, center);
+      UNPROTECT(1);
+      GEOS_ERROR("[i=%d] ", i + 1);
+    } else {
+      SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometryResult));
+    }
+  }
+
+  GEOSGeom_destroy_r(handle, center);
+  GEOS_FINISH();
+  UNPROTECT(1);
+  return result;
+}
 
 // buffer and offset_curve
 
 #define GEOS_BUFFER(_call)                                     \
   if (!Rf_inherits(params, "geos_buffer_params"))  {             \
-  Rf_error("`params` must be created using geos_buffer_params()");\
+    Rf_error("`params` must be created using geos_buffer_params()");\
   }                                                              \
                                                                  \
   double* pDistance = REAL(distance);                            \
