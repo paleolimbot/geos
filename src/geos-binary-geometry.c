@@ -58,6 +58,10 @@ SEXP geos_c_union(SEXP geom1, SEXP geom2) {
   GEOS_BINARY(GEOSUnion_r);
 }
 
+SEXP geos_c_shared_paths(SEXP geom1, SEXP geom2) {
+  GEOS_BINARY(GEOSSharedPaths_r);
+}
+
 SEXP geos_c_snap(SEXP geom1, SEXP geom2, SEXP tolerance) {
   R_xlen_t size = Rf_xlength(geom1);
   SEXP result = PROTECT(Rf_allocVector(VECSXP, size));

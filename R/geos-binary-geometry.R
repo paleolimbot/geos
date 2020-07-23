@@ -9,6 +9,9 @@
 #'   common to `x` and `y`.
 #' - [geos_union()] returns the set of points contained by either `x`
 #'   or `y`.
+#' - [geos_shared_paths()] returns a GEOMETRYCOLLECTION containing two
+#'   MULTILINESTRINGS: the first containing paths in the same direction,
+#'   the second containing common paths in the opposite direction.
 #' - [geos_snap()] snaps the vertices of `x` within `tolerance` of `y`
 #'   to `y`.
 #'
@@ -29,6 +32,8 @@
 #'
 #' line <- "LINESTRING (11 0, 11 10)"
 #' geos_snap(poly1, line, tolerance = 2)
+#'
+#' geos_shared_paths("LINESTRING (0 0, 1 1, 2 2)", "LINESTRING (3 3, 2 2, 1 1)")
 #'
 geos_intersection <- function(geom1, geom2) {
   recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
@@ -54,6 +59,13 @@ geos_sym_difference <- function(geom1, geom2) {
 geos_union <- function(geom1, geom2) {
   recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
   new_geos_geometry(.Call(geos_c_union, recycled[[1]], recycled[[2]]))
+}
+
+#' @rdname geos_intersection
+#' @export
+geos_shared_paths <- function(geom1, geom2) {
+  recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  new_geos_geometry(.Call(geos_c_shared_paths, recycled[[1]], recycled[[2]]))
 }
 
 #' @rdname geos_intersection

@@ -5,6 +5,7 @@
 \alias{geos_difference}
 \alias{geos_sym_difference}
 \alias{geos_union}
+\alias{geos_shared_paths}
 \alias{geos_snap}
 \title{Binary geometry operators}
 \usage{
@@ -15,6 +16,8 @@ geos_difference(geom1, geom2)
 geos_sym_difference(geom1, geom2)
 
 geos_union(geom1, geom2)
+
+geos_shared_paths(geom1, geom2)
 
 geos_snap(geom1, geom2, tolerance = .Machine$double.eps^2)
 }
@@ -42,6 +45,9 @@ not contained by \code{y}.
 common to \code{x} and \code{y}.
 \item \code{\link[=geos_union]{geos_union()}} returns the set of points contained by either \code{x}
 or \code{y}.
+\item \code{\link[=geos_shared_paths]{geos_shared_paths()}} returns a GEOMETRYCOLLECTION containing two
+MULTILINESTRINGS: the first containing paths in the same direction,
+the second containing common paths in the opposite direction.
 \item \code{\link[=geos_snap]{geos_snap()}} snaps the vertices of \code{x} within \code{tolerance} of \code{y}
 to \code{y}.
 }
@@ -57,5 +63,7 @@ geos_union(poly1, poly2)
 
 line <- "LINESTRING (11 0, 11 10)"
 geos_snap(poly1, line, tolerance = 2)
+
+geos_shared_paths("LINESTRING (0 0, 1 1, 2 2)", "LINESTRING (3 3, 2 2, 1 1)")
 
 }

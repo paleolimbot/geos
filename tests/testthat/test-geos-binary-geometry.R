@@ -39,6 +39,24 @@ test_that("binary operators work", {
   )
 })
 
+test_that("shared paths works", {
+  expect_identical(
+    geos_write_wkt(
+      geos_shared_paths("LINESTRING (0 0, 1 1, 2 2)", c(NA, "LINESTRING (1 1, 2 2, 3 3)"))
+    ),
+    c(NA, "GEOMETRYCOLLECTION (MULTILINESTRING ((1 1, 2 2)), MULTILINESTRING EMPTY)")
+  )
+
+  expect_identical(
+    geos_write_wkt(
+      geos_shared_paths("LINESTRING (0 0, 1 1, 2 2)", c(NA, "LINESTRING (3 3, 2 2, 1 1)"))
+    ),
+    c(NA, "GEOMETRYCOLLECTION (MULTILINESTRING EMPTY, MULTILINESTRING ((1 1, 2 2)))")
+  )
+
+  expect_error(geos_shared_paths("POINT (0 0)", "LINESTRING EMPTY"), "Geometry is not lineal")
+})
+
 test_that("snap works", {
   poly1 <- "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"
   line <- c(NA, "LINESTRING (11 0, 11 10)")

@@ -37,6 +37,7 @@ extern SEXP geos_c_intersection(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_difference(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_sym_difference(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_union(SEXP geom1, SEXP geom2);
+extern SEXP geos_c_shared_paths(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_snap(SEXP geom1, SEXP geom2, SEXP tolerance);
 extern SEXP geos_c_empty(SEXP typeId);
 extern SEXP geos_c_read_wkt(SEXP input);
@@ -152,6 +153,7 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_difference", (DL_FUNC) &geos_c_difference, 2},
   {"geos_c_sym_difference", (DL_FUNC) &geos_c_sym_difference, 2},
   {"geos_c_union", (DL_FUNC) &geos_c_union, 2},
+  {"geos_c_shared_paths", (DL_FUNC) &geos_c_shared_paths, 2},
   {"geos_c_snap", (DL_FUNC) &geos_c_snap, 3},
   {"geos_c_empty", (DL_FUNC) &geos_c_empty, 1},
   {"geos_c_read_wkt", (DL_FUNC) &geos_c_read_wkt, 1},
