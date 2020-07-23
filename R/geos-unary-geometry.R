@@ -286,3 +286,59 @@ geos_buffer_params <- function(quad_segs = 30,
     class = "geos_buffer_params"
   )
 }
+
+
+#' Delaunay triagulations and Voronoi diagrams
+#'
+#' These functions return one triangulation/diagram per feature as a
+#' multi geometry. These functions are not vectorized along their parameters.
+#'
+#' @param geom A [GEOS geometry vector][as_geos_geometry] whose nodes will be used
+#'   as input.
+#' @param tolerance A snapping tolerance or 0 to disable snapping
+#' @param env A boundary for the diagram, or `NULL` to construct one
+#'   based on the input
+#'
+#' @return A [GEOS geometry vector][as_geos_geometry] of length `geom`
+#' @export
+#'
+#' @examples
+#' geos_delaunay_triangles("MULTIPOINT (0 0, 1 0, 0 1)")
+#' geos_delaunay_edges("MULTIPOINT (0 0, 1 0, 0 1)")
+#'
+#' geos_voronoi_polygons("MULTIPOINT (0 0, 1 0, 0 1)")
+#' geos_voronoi_edges("MULTIPOINT (0 0, 1 0, 0 1)")
+#'
+geos_delaunay_triangles <- function(geom, tolerance = 0) {
+  new_geos_geometry(.Call(geos_c_delaunay_triangulation, as_geos_geometry(geom), tolerance, FALSE))
+}
+
+#' @rdname geos_delaunay_triangles
+#' @export
+geos_delaunay_edges <- function(geom, tolerance = 0) {
+  new_geos_geometry(.Call(geos_c_delaunay_triangulation, as_geos_geometry(geom), tolerance, TRUE))
+}
+
+#' @rdname geos_delaunay_triangles
+#' @export
+geos_voronoi_polygons <- function(geom, env = NULL, tolerance = 0) {
+  env <- get_env_xptr(env)
+  new_geos_geometry(.Call(geos_c_voronoi_diagram, as_geos_geometry(geom), env, tolerance, FALSE))
+}
+
+#' @rdname geos_delaunay_triangles
+#' @export
+geos_voronoi_edges <- function(geom, env = NULL, tolerance = 0) {
+  env <- get_env_xptr(env)
+  new_geos_geometry(.Call(geos_c_voronoi_diagram, as_geos_geometry(geom), env, tolerance, TRUE))
+}
+
+get_env_xptr <- function(env) {
+  if (!is.null(env)) {
+    env <- as_geos_geometry(env)
+    stopifnot(length(env) == 1)
+    unclass(env)[[1]]
+  } else {
+    env
+  }
+}

@@ -259,3 +259,61 @@ test_that("geos_buffer errors with bad params", {
 
   expect_error(geos_buffer("POINT (0 0)", Inf), "encountered NaN/Inf")
 })
+
+test_that("triangulation works", {
+  expect_true(
+    geos_equals(
+      geos_delaunay_triangles("MULTIPOINT (0 0, 1 0, 0 1)"),
+      "POLYGON ((0 0, 1 0, 0 1, 0 0))"
+    )
+  )
+
+  expect_true(
+    geos_equals(
+      geos_delaunay_edges("MULTIPOINT (0 0, 1 0, 0 1)"),
+      "MULTILINESTRING ((0 1, 1 0), (0 0, 0 1), (0 0, 1 0))"
+    )
+  )
+
+  expect_error(geos_delaunay_triangles("POINT (nan inf)"), "Unknown error")
+  expect_error(geos_delaunay_edges("POINT (nan inf)"), "Unknown error")
+  expect_identical(geos_delaunay_triangles(NA_character_), geos_read_wkt(NA_character_))
+  expect_identical(geos_delaunay_edges(NA_character_), geos_read_wkt(NA_character_))
+})
+
+test_that("voronoi diagrams work", {
+  expect_true(
+    geos_equals(
+      geos_voronoi_polygons("MULTIPOINT (0 0, 1 0, 0 1)"),
+      geos_voronoi_polygons(
+        "MULTIPOINT (0 0, 1 0, 0 1)",
+        # this is the default env
+        env = "POLYGON ((-1 -1, 2 -1, 2 2, -1 2, -1 -1))"
+      )
+    )
+  )
+
+  expect_true(
+    geos_equals(
+      geos_voronoi_edges("MULTIPOINT (0 0, 1 0, 0 1)"),
+      geos_voronoi_edges(
+        "MULTIPOINT (0 0, 1 0, 0 1)",
+        # this is the default env
+        env = "POLYGON ((-1 -1, 2 -1, 2 2, -1 2, -1 -1))"
+      )
+    )
+  )
+
+  expect_error(geos_voronoi_polygons("POINT (nan inf)"), "Unknown error")
+  expect_error(geos_voronoi_edges("POINT (nan inf)"), "Unknown error")
+  expect_identical(geos_voronoi_polygons(NA_character_), geos_read_wkt(NA_character_))
+  expect_identical(geos_voronoi_edges(NA_character_), geos_read_wkt(NA_character_))
+
+  bad_env <- geos_read_wkt("POLYGON EMPTY")
+  tmp <- tempfile()
+  saveRDS(bad_env, tmp)
+  bad_env <- readRDS(tmp)
+  unlink(tmp)
+  expect_error(geos_voronoi_polygons("POINT EMPTY", env = bad_env), "not a valid external")
+  expect_error(geos_voronoi_edges("POINT EMPTY", env = bad_env), "not a valid external")
+})

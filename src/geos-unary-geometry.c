@@ -257,6 +257,92 @@ SEXP geos_c_clip_by_rect(SEXP geom, SEXP xmin, SEXP ymin, SEXP xmax, SEXP ymax) 
 }
 
 
+SEXP geos_c_delaunay_triangulation(SEXP geom, SEXP tolerace, SEXP edges) {
+  double dTolerance = REAL(tolerace)[0];
+  int iEdges = LOGICAL(edges)[0];
+
+  R_xlen_t size = Rf_xlength(geom);
+  SEXP result = PROTECT(Rf_allocVector(VECSXP, size));
+
+  GEOS_INIT();
+
+  SEXP item;
+  GEOSGeometry* geometry;
+  GEOSGeometry* geometryResult;
+  for (R_xlen_t i = 0; i < size; i++) {
+    item = VECTOR_ELT(geom, i);
+
+    if (item == R_NilValue) {
+      SET_VECTOR_ELT(result, i, R_NilValue);
+      continue;
+    }
+
+    geometry = (GEOSGeometry*) R_ExternalPtrAddr(item);
+    GEOS_CHECK_GEOMETRY(geometry, i);
+
+    geometryResult = GEOSDelaunayTriangulation_r(handle, geometry, dTolerance, iEdges);
+
+    if (geometryResult == NULL) {
+      UNPROTECT(1);
+      GEOS_ERROR("[i=%d] ", i + 1);
+    } else {
+      SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometryResult));
+    }
+  }
+
+  GEOS_FINISH();
+  UNPROTECT(1);
+  return result;
+}
+
+SEXP geos_c_voronoi_diagram(SEXP geom, SEXP env, SEXP tolerace, SEXP edges) {
+  double dTolerance = REAL(tolerace)[0];
+  int iEdges = LOGICAL(edges)[0];
+
+  GEOSGeometry* envGeometry = NULL;
+
+  if (env != R_NilValue) {
+    envGeometry = (GEOSGeometry*) R_ExternalPtrAddr(env);
+    if (envGeometry == NULL) {
+      Rf_error("`env` is not a valid external pointer");
+    }
+  }
+
+  R_xlen_t size = Rf_xlength(geom);
+  SEXP result = PROTECT(Rf_allocVector(VECSXP, size));
+
+  GEOS_INIT();
+
+  SEXP item;
+  GEOSGeometry* geometry;
+  GEOSGeometry* geometryResult;
+  for (R_xlen_t i = 0; i < size; i++) {
+    item = VECTOR_ELT(geom, i);
+
+    if (item == R_NilValue) {
+      SET_VECTOR_ELT(result, i, R_NilValue);
+      continue;
+    }
+
+    geometry = (GEOSGeometry*) R_ExternalPtrAddr(item);
+    GEOS_CHECK_GEOMETRY(geometry, i);
+
+    geometryResult = GEOSVoronoiDiagram_r(handle, geometry, envGeometry, dTolerance, iEdges);
+
+    if (geometryResult == NULL) {
+      UNPROTECT(1);
+      GEOS_ERROR("[i=%d] ", i + 1);
+    } else {
+      SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometryResult));
+    }
+  }
+
+  GEOS_FINISH();
+  UNPROTECT(1);
+  return result;
+}
+
+
 // buffer and offset_curve
 
 #define GEOS_BUFFER(_call)                                     \
