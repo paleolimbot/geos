@@ -86,9 +86,10 @@ SEXP geos_c_snap(SEXP geom1, SEXP geom2, SEXP tolerance) {
 
     geometryResult = GEOSSnap_r(handle, geometry1, geometry2, pTolerance[i]);
 
+    // don't know how to make this error
     if (geometryResult == NULL) {
-      UNPROTECT(1);
-      GEOS_ERROR("[i=%d] ", i + 1);
+      UNPROTECT(1); // # nocov
+      GEOS_ERROR("[i=%d] ", i + 1); // # nocov
     }
 
     SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometryResult));
