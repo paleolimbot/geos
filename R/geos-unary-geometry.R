@@ -5,6 +5,9 @@
 #' @param tolerance A minimum distance to use for simplification. Use a higher
 #'   value for more simplification.
 #' @param index The index of the point or geometry to extract.
+#' @param rect A `list()` representing rectangles in the form
+#'   `list(xmin, ymin, xmax, ymax)`. List items with length 1 will be
+#'    recycled to the length of the longest item.
 #'
 #' @return A [GEOS geometry vector][as_geos_geometry] of length `geom`
 #' @export
@@ -173,6 +176,20 @@ geos_simplify <- function(geom, tolerance) {
 geos_simplify_preserve_topology <- function(geom, tolerance) {
   recycled <- recycle_common(list(as_geos_geometry(geom), as.numeric(tolerance)))
   new_geos_geometry(.Call(geos_c_simplify_preserve_topology, recycled[[1]], recycled[[2]]))
+}
+
+#' @rdname geos_centroid
+#' @export
+geos_clip_by_rect <- function(geom, rect) {
+  rect <- geos_assert_list_of_numeric(rect, 4, "rect")
+  recycled <- recycle_common(c(list(as_geos_geometry(geom)), rect))
+  new_geos_geometry(
+    .Call(
+      geos_c_clip_by_rect,
+      recycled[[1]],
+      recycled[[2]], recycled[[3]], recycled[[4]], recycled[[5]]
+    )
+  )
 }
 
 # --- these are documented with geos_project ---

@@ -170,7 +170,6 @@ SEXP geos_c_simplify_preserve_topology(SEXP geom, SEXP param) {
   GEOS_UNARY_GEOMETRY_PARAM(GEOSTopologyPreserveSimplify_r, double, REAL);
 }
 
-// minimum bounding circle
 
 SEXP geos_c_minimum_bounding_circle(SEXP geom) {
   R_xlen_t size = Rf_xlength(geom);
@@ -217,6 +216,46 @@ SEXP geos_c_minimum_bounding_circle(SEXP geom) {
   UNPROTECT(1);
   return result;
 }
+
+SEXP geos_c_clip_by_rect(SEXP geom, SEXP xmin, SEXP ymin, SEXP xmax, SEXP ymax) {
+  R_xlen_t size = Rf_xlength(geom);
+  SEXP result = PROTECT(Rf_allocVector(VECSXP, size));
+  double* pXmin = REAL(xmin);
+  double* pYmin = REAL(ymin);
+  double* pXmax = REAL(xmax);
+  double* pYmax = REAL(ymax);
+
+  GEOS_INIT();
+
+  SEXP item;
+  GEOSGeometry* geometry;
+  GEOSGeometry* geometryResult;
+  for (R_xlen_t i = 0; i < size; i++) {
+    item = VECTOR_ELT(geom, i);
+
+    if (item == R_NilValue || ISNA(pXmin[i]) || ISNA(pYmin[i]) || ISNA(pXmax[i]) || ISNA(pYmax[i])) {
+      SET_VECTOR_ELT(result, i, R_NilValue);
+      continue;
+    }
+
+    geometry = (GEOSGeometry*) R_ExternalPtrAddr(item);
+    GEOS_CHECK_GEOMETRY(geometry, i);
+
+    geometryResult = GEOSClipByRect_r(handle, geometry, pXmin[i], pYmin[i], pXmax[i], pYmax[i]);
+
+    if (geometryResult == NULL) {
+      UNPROTECT(1);
+      GEOS_ERROR("[i=%d] ", i + 1);
+    } else {
+      SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometryResult));
+    }
+  }
+
+  GEOS_FINISH();
+  UNPROTECT(1);
+  return result;
+}
+
 
 // buffer and offset_curve
 

@@ -192,6 +192,38 @@ test_that("bounding circle works", {
   expect_error(geos_minimum_bounding_circle("POINT (nan inf)"), "encountered NaN/Inf")
 })
 
+test_that("clip by rect works", {
+  line <- "LINESTRING (-1 5, 11 5)"
+  expect_identical(
+    geos_write_wkt(geos_clip_by_rect(c(NA, line), list(0, 0, 10, 10))),
+    c(NA, "LINESTRING (0 5, 10 5)")
+  )
+  expect_identical(
+    geos_write_wkt(geos_clip_by_rect(line, list(c(NA, 0), 0, 10, 10))),
+    c(NA, "LINESTRING (0 5, 10 5)")
+  )
+  expect_identical(
+    geos_write_wkt(geos_clip_by_rect(line, list(0, c(NA, 0), 10, 10))),
+    c(NA, "LINESTRING (0 5, 10 5)")
+  )
+  expect_identical(
+    geos_write_wkt(geos_clip_by_rect(line, list(0, 0, c(NA, 10), 10))),
+    c(NA, "LINESTRING (0 5, 10 5)")
+  )
+  expect_identical(
+    geos_write_wkt(geos_clip_by_rect(line, list(0, 0, 10, c(NA, 10)))),
+    c(NA, "LINESTRING (0 5, 10 5)")
+  )
+  expect_identical(
+    geos_write_wkt(geos_clip_by_rect(line, list(-Inf, -Inf, Inf, Inf))),
+    line
+  )
+  expect_error(
+    geos_write_wkt(geos_clip_by_rect(line, list(Inf, Inf, -Inf, -Inf))),
+    "Clipping rectangle must be non-empty"
+  )
+})
+
 test_that("geos_buffer works", {
   expect_identical(geos_offset_curve(NA_character_, 1), geos_read_wkt(NA_character_))
   expect_identical(geos_offset_curve("LINESTRING (1 0, 3 0)", NA), geos_read_wkt(NA_character_))

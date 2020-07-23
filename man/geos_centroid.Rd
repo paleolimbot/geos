@@ -24,6 +24,7 @@
 \alias{geos_point_n}
 \alias{geos_simplify}
 \alias{geos_simplify_preserve_topology}
+\alias{geos_clip_by_rect}
 \title{Geometry transformers}
 \usage{
 geos_centroid(geom)
@@ -71,6 +72,8 @@ geos_point_n(geom, index)
 geos_simplify(geom, tolerance)
 
 geos_simplify_preserve_topology(geom, tolerance)
+
+geos_clip_by_rect(geom, rect)
 }
 \arguments{
 \item{geom}{A \link[=as_geos_geometry]{GEOS geometry vector}}
@@ -79,6 +82,10 @@ geos_simplify_preserve_topology(geom, tolerance)
 
 \item{tolerance}{A minimum distance to use for simplification. Use a higher
 value for more simplification.}
+
+\item{rect}{A \code{list()} representing rectangles in the form
+\code{list(xmin, ymin, xmax, ymax)}. List items with length 1 will be
+recycled to the length of the longest item.}
 }
 \value{
 A \link[=as_geos_geometry]{GEOS geometry vector} of length \code{geom}

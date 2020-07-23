@@ -111,6 +111,7 @@ extern SEXP geos_c_point_n(SEXP geom, SEXP param);
 extern SEXP geos_c_simplify(SEXP geom, SEXP param);
 extern SEXP geos_c_simplify_preserve_topology(SEXP geom, SEXP param);
 extern SEXP geos_c_minimum_bounding_circle(SEXP geom);
+extern SEXP geos_c_clip_by_rect(SEXP geom, SEXP xmin, SEXP ymin, SEXP xmax, SEXP ymax);
 extern SEXP geos_c_buffer(SEXP geom, SEXP distance, SEXP params);
 extern SEXP geos_c_offset_curve(SEXP geom, SEXP distance, SEXP params);
 extern SEXP geos_c_init();
@@ -225,6 +226,7 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_simplify", (DL_FUNC) &geos_c_simplify, 2},
   {"geos_c_simplify_preserve_topology", (DL_FUNC) &geos_c_simplify_preserve_topology, 2},
   {"geos_c_minimum_bounding_circle", (DL_FUNC) &geos_c_minimum_bounding_circle, 1},
+  {"geos_c_clip_by_rect", (DL_FUNC) &geos_c_clip_by_rect, 5},
   {"geos_c_buffer", (DL_FUNC) &geos_c_buffer, 3},
   {"geos_c_offset_curve", (DL_FUNC) &geos_c_offset_curve, 3},
   {"geos_c_init", (DL_FUNC) &geos_c_init, 0},
