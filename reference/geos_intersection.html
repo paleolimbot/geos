@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Main geometry operators — geos_intersection • geom</title>
+<title>Binary geometry operators — geos_intersection • geos</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="Main geometry operators — geos_intersection" />
+<meta property="og:title" content="Binary geometry operators — geos_intersection" />
 <meta property="og:description" content="
 
 geos_intersection() returns the set of points common to both x
@@ -50,13 +50,11 @@ geos_sym_difference() returns the set of points that are not
 common to x and y.
 geos_union() returns the set of points contained by either x
 or y.
-geos_unary_union() works like geos_union(), but only operates
-on one geometry (x). This is useful when x is a multi- or collection type
-that contains overlapping geometries.
-geos_coverage_union() is a fast union only for polygons that
-do not overlap.
-geos_clip_by_rect() is a fast intersection between a geometry
-and bounds defined by a geo_rect().
+geos_shared_paths() returns a GEOMETRYCOLLECTION containing two
+MULTILINESTRINGS: the first containing paths in the same direction,
+the second containing common paths in the opposite direction.
+geos_snap() snaps the vertices of x within tolerance of y
+to y.
 
 " />
 
@@ -89,7 +87,7 @@ and bounds defined by a geo_rect().
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">geom</a>
+        <a class="navbar-link" href="../index.html">geos</a>
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
       </span>
     </div>
@@ -105,10 +103,22 @@ and bounds defined by a geo_rect().
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/articles/geos-c-api.html">Using the GEOS C API</a>
+    </li>
+  </ul>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/paleolimbot/geom/">
+  <a href="https://github.com/paleolimbot/geos/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -126,8 +136,8 @@ and bounds defined by a geo_rect().
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Main geometry operators</h1>
-    <small class="dont-index">Source: <a href='https://github.com/paleolimbot/geom/blob/master/R/geos-binary-operators.R'><code>R/geos-binary-operators.R</code></a></small>
+    <h1>Binary geometry operators</h1>
+    <small class="dont-index">Source: <a href='https://github.com/paleolimbot/geos/blob/master/R/geos-binary-geometry.R'><code>R/geos-binary-geometry.R</code></a></small>
     <div class="hidden name"><code>geos_intersection.Rd</code></div>
     </div>
 
@@ -142,97 +152,66 @@ not contained by <code>y</code>.</p></li>
 common to <code>x</code> and <code>y</code>.</p></li>
 <li><p><code>geos_union()</code> returns the set of points contained by either <code>x</code>
 or <code>y</code>.</p></li>
-<li><p><code>geos_unary_union()</code> works like <code>geos_union()</code>, but only operates
-on one geometry (<code>x</code>). This is useful when <code>x</code> is a multi- or collection type
-that contains overlapping geometries.</p></li>
-<li><p><code>geos_coverage_union()</code> is a fast union only for polygons that
-do not overlap.</p></li>
-<li><p><code>geos_clip_by_rect()</code> is a fast intersection between a geometry
-and bounds defined by a <code><a href='geo_rect.html'>geo_rect()</a></code>.</p></li>
+<li><p><code>geos_shared_paths()</code> returns a GEOMETRYCOLLECTION containing two
+MULTILINESTRINGS: the first containing paths in the same direction,
+the second containing common paths in the opposite direction.</p></li>
+<li><p><code>geos_snap()</code> snaps the vertices of <code>x</code> within <code>tolerance</code> of <code>y</code>
+to <code>y</code>.</p></li>
 </ul>
 
     </div>
 
-    <pre class="usage"><span class='fu'>geos_intersection</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='fu'><a href='geo_ptype.html'>geo_ptype</a></span>(<span class='no'>x</span>))
+    <pre class="usage"><span class='fu'>geos_intersection</span>(<span class='kw'>geom1</span>, <span class='kw'>geom2</span>)
 
-<span class='fu'>geos_difference</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='fu'><a href='geo_ptype.html'>geo_ptype</a></span>(<span class='no'>x</span>))
+<span class='fu'>geos_difference</span>(<span class='kw'>geom1</span>, <span class='kw'>geom2</span>)
 
-<span class='fu'>geos_sym_difference</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='fu'><a href='geo_ptype.html'>geo_ptype</a></span>(<span class='no'>x</span>))
+<span class='fu'>geos_sym_difference</span>(<span class='kw'>geom1</span>, <span class='kw'>geom2</span>)
 
-<span class='fu'>geos_union</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='fu'><a href='geo_ptype.html'>geo_ptype</a></span>(<span class='no'>x</span>))
+<span class='fu'>geos_union</span>(<span class='kw'>geom1</span>, <span class='kw'>geom2</span>)
 
-<span class='fu'>geos_unary_union</span>(<span class='no'>x</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='fu'><a href='geo_ptype.html'>geo_ptype</a></span>(<span class='no'>x</span>))
+<span class='fu'>geos_shared_paths</span>(<span class='kw'>geom1</span>, <span class='kw'>geom2</span>)
 
-<span class='fu'>geos_coverage_union</span>(<span class='no'>x</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='fu'><a href='geo_ptype.html'>geo_ptype</a></span>(<span class='no'>x</span>))
-
-<span class='fu'>geos_clip_by_rect</span>(<span class='no'>x</span>, <span class='no'>rect</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='fu'><a href='geo_ptype.html'>geo_ptype</a></span>(<span class='no'>x</span>))</pre>
+<span class='fu'>geos_snap</span>(<span class='kw'>geom1</span>, <span class='kw'>geom2</span>, tolerance = <span class='kw'>.Machine</span><span class='op'>$</span><span class='kw'>double.eps</span><span class='op'>^</span><span class='fl'>2</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>A geometry-like object</p></td>
+      <th>geom1</th>
+      <td><p><a href='as_geos_geometry.html'>GEOS geometry vectors</a>,
+recycled to a common length.</p></td>
     </tr>
     <tr>
-      <th>y</th>
-      <td><p>A geometry-like object. <code>x</code> and <code>y</code> of length 1
-is recycled to the length of the other (like <code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble::tibble()</a></code>).</p></td>
+      <th>geom2</th>
+      <td><p><a href='as_geos_geometry.html'>GEOS geometry vectors</a>,
+recycled to a common length.</p></td>
     </tr>
     <tr>
-      <th>to</th>
-      <td><p>A prototype created by <code><a href='geo_ptype.html'>geo_ptype()</a></code></p></td>
-    </tr>
-    <tr>
-      <th>rect</th>
-      <td><p>A <code><a href='geo_rect.html'>geo_rect()</a></code> used for the non-robust clipping
-algorithm.</p></td>
+      <th>tolerance</th>
+      <td><p>The maximum separation of vertices that should
+be considered equal.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A geometry-like object, in the format defined by <code>to</code>.
-the geometry type is typically that of <code>x</code>, but may be
-promoted to a multi-type. These functions may return
-an empty geometry collection (e.g., for two geometries
-that do not intersect).</p>
+    <p>A <a href='as_geos_geometry.html'>GEOS geometry vector</a> along the recycled
+length of <code>geom1</code> and <code>geom2</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>poly1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='geo_wkt.html'>geo_wkt</a></span>(<span class='st'>"POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"</span>)
-<span class='no'>poly2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='geo_wkt.html'>geo_wkt</a></span>(<span class='st'>"POLYGON ((5 5, 5 15, 15 15, 15 5, 5 5))"</span>)
+    <pre class="examples"><div class='input'><span class='kw'>poly1</span> <span class='op'>&lt;-</span> <span class='st'>"POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"</span>
+<span class='kw'>poly2</span> <span class='op'>&lt;-</span> <span class='st'>"POLYGON ((5 5, 5 15, 15 15, 15 5, 5 5))"</span>
 
-<span class='co'># intersection</span>
-<span class='fu'><a href='geo_plot.html'>geo_plot</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='no'>poly1</span>, <span class='no'>poly2</span>))</div><div class='input'><span class='fu'><a href='geo_plot.html'>geo_plot_add</a></span>(<span class='fu'>geos_intersection</span>(<span class='no'>poly1</span>, <span class='no'>poly2</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"grey90"</span>)</div><div class='img'><img src='geos_intersection-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># difference</span>
-<span class='fu'><a href='geo_plot.html'>geo_plot</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='no'>poly1</span>, <span class='no'>poly2</span>))</div><div class='input'><span class='fu'><a href='geo_plot.html'>geo_plot_add</a></span>(<span class='fu'>geos_difference</span>(<span class='no'>poly1</span>, <span class='no'>poly2</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"grey90"</span>)</div><div class='img'><img src='geos_intersection-2.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># symmetric difference</span>
-<span class='fu'><a href='geo_plot.html'>geo_plot</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='no'>poly1</span>, <span class='no'>poly2</span>))</div><div class='input'><span class='fu'><a href='geo_plot.html'>geo_plot_add</a></span>(<span class='fu'>geos_sym_difference</span>(<span class='no'>poly1</span>, <span class='no'>poly2</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"grey90"</span>)</div><div class='img'><img src='geos_intersection-3.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># union</span>
-<span class='fu'><a href='geo_plot.html'>geo_plot</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='no'>poly1</span>, <span class='no'>poly2</span>))</div><div class='input'><span class='fu'><a href='geo_plot.html'>geo_plot_add</a></span>(<span class='fu'>geos_union</span>(<span class='no'>poly1</span>, <span class='no'>poly2</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"grey90"</span>)</div><div class='img'><img src='geos_intersection-4.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># unary union is useful if you have multi- or collection</span>
-<span class='co'># geometries that may overlap</span>
-<span class='no'>collection</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='geo_wkt.html'>geo_wkt</a></span>(<span class='st'>"
-  GEOMETRYCOLLECTION (
-    POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0)),
-    POLYGON ((5 5, 5 15, 15 15, 15 5, 5 5))
-  )
-"</span>)
-
-<span class='fu'><a href='geo_plot.html'>geo_plot</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='no'>poly1</span>, <span class='no'>poly2</span>))</div><div class='input'><span class='fu'><a href='geo_plot.html'>geo_plot_add</a></span>(<span class='fu'>geos_unary_union</span>(<span class='no'>collection</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"grey90"</span>)</div><div class='img'><img src='geos_intersection-5.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># coverage union is only for polygons, and does not dissolve</span>
-<span class='co'># boundaries (only on GEOS &gt;= 3.8.0)</span>
-<span class='kw'>if</span> (<span class='fu'><a href='geos_version.html'>geos_version</a></span>() <span class='kw'>&gt;=</span> <span class='st'>"3.8.0"</span>) {
-  <span class='fu'><a href='geo_plot.html'>geo_plot</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='no'>poly1</span>, <span class='no'>poly2</span>))
-  <span class='fu'><a href='geo_plot.html'>geo_plot_add</a></span>(<span class='fu'>geos_coverage_union</span>(<span class='no'>collection</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"grey90"</span>)
-}</div><div class='img'><img src='geos_intersection-6.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># clip by rect performs a fast intersection with a rectangle</span>
-<span class='co'># similar to an intersection</span>
-<span class='fu'><a href='geo_plot.html'>geo_plot</a></span>(<span class='no'>poly1</span>)</div><div class='input'><span class='fu'><a href='geo_plot.html'>geo_plot_add</a></span>(
-  <span class='fu'>geos_clip_by_rect</span>(<span class='no'>poly1</span>, <span class='fu'><a href='geo_rect.html'>geo_rect</a></span>(-<span class='fl'>1</span>, -<span class='fl'>1</span>, <span class='fl'>8</span>, <span class='fl'>8</span>)),
-  <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"grey90"</span>
-)</div><div class='img'><img src='geos_intersection-7.png' alt='' width='700' height='433' /></div><div class='input'>
-</div></pre>
+<span class='fu'>geos_intersection</span>(<span class='kw'>poly1</span>, <span class='kw'>poly2</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
+#&gt; [1] POLYGON ((5 10, 10 10, 10 5, 5 5, 5 10))</div><div class='input'><span class='fu'>geos_difference</span>(<span class='kw'>poly1</span>, <span class='kw'>poly2</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
+#&gt; [1] POLYGON ((0 0, 0 10, 5 10, 5 5, 10 5, 10 0, 0 0))</div><div class='input'><span class='fu'>geos_sym_difference</span>(<span class='kw'>poly1</span>, <span class='kw'>poly2</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
+#&gt; [1] MULTIPOLYGON (((0 0, 0 10, 5 10, 5 5, 10 5, 10 0, 0 0)), ((10 5, 10 10, 5 10, 5 15, 15 15, 15 5, 10 5)))</div><div class='input'><span class='fu'>geos_union</span>(<span class='kw'>poly1</span>, <span class='kw'>poly2</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
+#&gt; [1] POLYGON ((0 0, 0 10, 5 10, 5 15, 15 15, 15 5, 10 5, 10 0, 0 0))</div><div class='input'>
+<span class='kw'>line</span> <span class='op'>&lt;-</span> <span class='st'>"LINESTRING (11 0, 11 10)"</span>
+<span class='fu'>geos_snap</span>(<span class='kw'>poly1</span>, <span class='kw'>line</span>, tolerance = <span class='fl'>2</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
+#&gt; [1] POLYGON ((0 0, 0 10, 11 10, 11 0, 0 0))</div><div class='input'>
+<span class='fu'>geos_shared_paths</span>(<span class='st'>"LINESTRING (0 0, 1 1, 2 2)"</span>, <span class='st'>"LINESTRING (3 3, 2 2, 1 1)"</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
+#&gt; [1] GEOMETRYCOLLECTION (MULTILINESTRING EMPTY, MULTILINESTRING ((1 1, 2 2)))</div><div class='input'></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -248,7 +227,7 @@ that do not intersect).</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

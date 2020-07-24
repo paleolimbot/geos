@@ -129,9 +129,9 @@
     <p>Segment operations</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_segment_intersection.html'>geos_segment_intersection</a></span>(<span class='kw'>a</span>, <span class='kw'>b</span>)
+    <pre class="usage"><span class='fu'>geos_segment_intersection</span>(<span class='kw'>a</span>, <span class='kw'>b</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_segment_intersection.html'>geos_orientation_index</a></span>(<span class='kw'>a</span>, <span class='kw'>point</span>)</pre>
+<span class='fu'>geos_orientation_index</span>(<span class='kw'>a</span>, <span class='kw'>point</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -150,14 +150,14 @@ recycled to the length of the longest item.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code><a href='https://rdrr.io/pkg/geos/man/geos_segment_intersection.html'>geos_segment_intersection()</a></code> returns a <code><a href='https://rdrr.io/r/base/list.html'>list(x, y)</a></code>;
-<code><a href='https://rdrr.io/pkg/geos/man/geos_segment_intersection.html'>geos_orientation_index()</a></code> returns -1, 0 or 1, depending if
+    <p><code>geos_segment_intersection()</code> returns a <code><a href='https://rdrr.io/r/base/list.html'>list(x, y)</a></code>;
+<code>geos_orientation_index()</code> returns -1, 0 or 1, depending if
 the <code>point</code> lies to the right of (-1), is colinear with (0) or
 lies to the left of (1) the segment (as judged from the start
 of the segment looking towards the end).</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_segment_intersection.html'>geos_segment_intersection</a></span>(
+    <pre class="examples"><div class='input'><span class='fu'>geos_segment_intersection</span>(
   <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>10</span>, <span class='fl'>10</span>),
   <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fl'>10</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>10</span>)
 )</div><div class='output co'>#&gt; $x
@@ -166,7 +166,7 @@ of the segment looking towards the end).</p>
 #&gt; $y
 #&gt; [1] 5
 #&gt; </div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_segment_intersection.html'>geos_orientation_index</a></span>(
+<span class='fu'>geos_orientation_index</span>(
   <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>10</span>, <span class='fl'>10</span>),
   <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fl'>15</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>12</span>, <span class='fl'>15</span>, <span class='fl'>17</span>))
 )</div><div class='output co'>#&gt; [1] -1  0  1</div><div class='input'></div></pre>

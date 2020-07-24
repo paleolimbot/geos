@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Buffer a geometry — geos_buffer • geom</title>
+<title>Buffer a geometry — geos_buffer • geos</title>
 
 
 <!-- jquery -->
@@ -40,7 +40,12 @@
 
 
 <meta property="og:title" content="Buffer a geometry — geos_buffer" />
-<meta property="og:description" content="Vectorized along x and width." />
+<meta property="og:description" content="
+
+geos_buffer() returns a polygon or multipolygon geometry.
+geos_offset_curve() returns a linestring offset to the left by distance.
+
+" />
 
 
 
@@ -71,7 +76,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">geom</a>
+        <a class="navbar-link" href="../index.html">geos</a>
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
       </span>
     </div>
@@ -87,10 +92,22 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/articles/geos-c-api.html">Using the GEOS C API</a>
+    </li>
+  </ul>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/paleolimbot/geom/">
+  <a href="https://github.com/paleolimbot/geos/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -109,47 +126,46 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Buffer a geometry</h1>
-    <small class="dont-index">Source: <a href='https://github.com/paleolimbot/geom/blob/master/R/geos-buffer.R'><code>R/geos-buffer.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/paleolimbot/geos/blob/master/R/geos-unary-geometry.R'><code>R/geos-unary-geometry.R</code></a></small>
     <div class="hidden name"><code>geos_buffer.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Vectorized along <code>x</code> and <code>width</code>.</p>
+    
+<ul>
+<li><p><code>geos_buffer()</code> returns a polygon or multipolygon geometry.</p></li>
+<li><p><code>geos_offset_curve()</code> returns a linestring offset to the left by <code>distance</code>.</p></li>
+</ul>
+
     </div>
 
-    <pre class="usage"><span class='fu'>geos_buffer</span>(
-  <span class='no'>x</span>,
-  <span class='no'>width</span>,
-  <span class='kw'>quad_segs</span> <span class='kw'>=</span> <span class='fl'>30</span>,
-  <span class='kw'>end_cap_style</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"round"</span>, <span class='st'>"flat"</span>, <span class='st'>"square"</span>),
-  <span class='kw'>join_style</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"round"</span>, <span class='st'>"mitre"</span>, <span class='st'>"bevel"</span>),
-  <span class='kw'>mitre_limit</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>single_sided</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>to</span> <span class='kw'>=</span> <span class='fu'><a href='geo_ptype.html'>geo_ptype</a></span>(<span class='no'>x</span>)
-)
+    <pre class="usage"><span class='fu'>geos_buffer</span>(<span class='kw'>geom</span>, <span class='kw'>distance</span>, params = <span class='fu'>geos_buffer_params</span>())
 
-<span class='fu'>geos_offset_curve</span>(
-  <span class='no'>x</span>,
-  <span class='no'>width</span>,
-  <span class='kw'>quad_segs</span> <span class='kw'>=</span> <span class='fl'>30</span>,
-  <span class='kw'>end_cap_style</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"round"</span>, <span class='st'>"flat"</span>, <span class='st'>"square"</span>),
-  <span class='kw'>join_style</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"round"</span>, <span class='st'>"mitre"</span>, <span class='st'>"bevel"</span>),
-  <span class='kw'>mitre_limit</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>to</span> <span class='kw'>=</span> <span class='fu'><a href='geo_ptype.html'>geo_ptype</a></span>(<span class='no'>x</span>)
+<span class='fu'>geos_offset_curve</span>(<span class='kw'>geom</span>, <span class='kw'>distance</span>, params = <span class='fu'>geos_buffer_params</span>())
+
+<span class='fu'>geos_buffer_params</span>(
+  quad_segs = <span class='fl'>30</span>,
+  end_cap_style = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"round"</span>, <span class='st'>"flat"</span>, <span class='st'>"square"</span>),
+  join_style = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"round"</span>, <span class='st'>"mitre"</span>, <span class='st'>"bevel"</span>),
+  mitre_limit = <span class='fl'>1</span>,
+  single_sided = <span class='fl'>FALSE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>A geometry-like object</p></td>
+      <th>geom</th>
+      <td><p>A <a href='as_geos_geometry.html'>GEOS geometry vector</a></p></td>
     </tr>
     <tr>
-      <th>width</th>
-      <td><p>The buffer distance. "Width" is the GEOS term - it is more
-accurately thought of as "radius" or "half-width". Can be negative to buffer
-or offset on the other side of the geometry.</p></td>
+      <th>distance</th>
+      <td><p>The buffer distance. Can be negative to buffer
+or offset on the righthand side of the geometry.</p></td>
+    </tr>
+    <tr>
+      <th>params</th>
+      <td><p>A <code>geos_buffer_params()</code></p></td>
     </tr>
     <tr>
       <th>quad_segs</th>
@@ -172,29 +188,20 @@ of the join.</p></td>
     <tr>
       <th>single_sided</th>
       <td><p>Use <code>TRUE</code> to buffer on only the right side
-of the geometry.</p></td>
-    </tr>
-    <tr>
-      <th>to</th>
-      <td><p>A prototype created by <code><a href='geo_ptype.html'>geo_ptype()</a></code></p></td>
+of the geometry. This does not apply to <code>geos_offset_curve()</code>, which is always
+one-sided.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    
-<ul>
-<li><p><code>geos_buffer()</code> returns a geometry-like polygon or multipolygon.</p></li>
-<li><p><code>geos_offset_curve()</code> returns a linestring offset by <code>width</code>.</p></li>
-</ul>
-
+    <p>A <a href='as_geos_geometry.html'>GEOS geometry vector</a> along the recycled
+length of <code>geom</code> and <code>distance</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>point</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='geo_wkt.html'>geo_wkt</a></span>(<span class='st'>"POINT (0 0)"</span>)
-<span class='fu'><a href='geo_plot.html'>geo_plot</a></span>(<span class='fu'>geos_buffer</span>(<span class='no'>point</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>0.5</span>), <span class='kw'>border</span> <span class='kw'>=</span> <span class='st'>"red"</span>)</div><div class='input'><span class='fu'><a href='geo_plot.html'>geo_plot_add</a></span>(<span class='no'>point</span>)</div><div class='img'><img src='geos_buffer-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='no'>line</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='geo_wkt.html'>geo_wkt</a></span>(<span class='st'>"LINESTRING (0 0, 0 10, 10 0)"</span>)
-<span class='fu'><a href='geo_plot.html'>geo_plot</a></span>(<span class='fu'>geos_offset_curve</span>(<span class='no'>line</span>, <span class='fl'>1</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>)</div><div class='input'><span class='fu'><a href='geo_plot.html'>geo_plot_add</a></span>(<span class='no'>line</span>)</div><div class='img'><img src='geos_buffer-2.png' alt='' width='700' height='433' /></div><div class='input'>
-</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>geos_buffer</span>(<span class='st'>"POINT (0 0)"</span>, <span class='fl'>1</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
+#&gt; [1] POLYGON ((1 0, 0.99863 -0.052336, 0.99452 -0.10453, 0.98769 -0.15643, 0.97815 -0.20791, 0.96593 -0.25882, 0.95106 -0.30902, 0.93358 -0.35837, 0.91355 -0.40674, 0.89101 -0.45399, 0.86603 -0.5, 0.83867 -0.54464, 0.80902 -0.58779, 0.77715 -0.62932, 0.74314 -0.66913, 0.70711 -0.70711, 0.66913 -0.74314, 0.62932 -0.77715, 0.58779 -0.80902, 0.54464 -0.83867, 0.5 -0.86603, 0.45399 -0.89101, 0.40674 -0.91355, 0.35837 -0.93358, 0.30902 -0.95106, 0.25882 -0.96593, 0.20791 -0.97815, 0.15643 -0.98769, 0.10453 -0.99452, 0.052336 -0.99863, 2.5037e-15 -1, -0.052336 -0.99863, -0.10453 -0.99452, -0.15643 -0.98769, -0.20791 -0.97815, -0.25882 -0.96593, -0.30902 -0.95106, -0.35837 -0.93358, -0.40674 -0.91355, -0.45399 -0.89101, -0.5 -0.86603, -0.54464 -0.83867, -0.58779 -0.80902, -0.62932 -0.77715, -0.66913 -0.74314, -0.70711 -0.70711, -0.74314 -0.66913, -0.77715 -0.62932, -0.80902 -0.58779, -0.83867 -0.54464, -0.86603 -0.5, -0.89101 -0.45399, -0.91355 -0.40674, -0.93358 -0.35837, -0.95106 -0.30902, -0.96593 -0.25882, -0.97815 -0.20791, -0.98769 -0.15643, -0.99452 -0.10453, -0.99863 -0.052336, -1 -6.7838e-15, -0.99863 0.052336, -0.99452 0.10453, -0.98769 0.15643, -0.97815 0.20791, -0.96593 0.25882, -0.95106 0.30902, -0.93358 0.35837, -0.91355 0.40674, -0.89101 0.45399, -0.86603 0.5, -0.83867 0.54464, -0.80902 0.58779, -0.77715 0.62932, -0.74314 0.66913, -0.70711 0.70711, -0.66913 0.74314, -0.62932 0.77715, -0.58779 0.80902, -0.54464 0.83867, -0.5 0.86603, -0.45399 0.89101, -0.40674 0.91355, -0.35837 0.93358, -0.30902 0.95106, -0.25882 0.96593, -0.20791 0.97815, -0.15643 0.98769, -0.10453 0.99452, -0.052336 0.99863, -5.5128e-15 1, 0.052336 0.99863, 0.10453 0.99452, 0.15643 0.98769, 0.20791 0.97815, 0.25882 0.96593, 0.30902 0.95106, 0.35837 0.93358, 0.40674 0.91355, 0.45399 0.89101, 0.5 0.86603, 0.54464 0.83867, 0.58779 0.80902, 0.62932 0.77715, 0.66913 0.74314, 0.70711 0.70711, 0.74314 0.66913, 0.77715 0.62932, 0.80902 0.58779, 0.83867 0.54464, 0.86603 0.5, 0.89101 0.45399, 0.91355 0.40674, 0.93358 0.35837, 0.95106 0.30902, 0.96593 0.25882, 0.97815 0.20791, 0.98769 0.15643, 0.99452 0.10453, 0.99863 0.052336, 1 0))</div><div class='input'><span class='fu'>geos_offset_curve</span>(<span class='st'>"LINESTRING (0 0, 0 10, 10 0)"</span>, <span class='fl'>1</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
+#&gt; [1] LINESTRING (-1 0, -1 10, -0.99863 10.052, -0.99452 10.105, -0.98769 10.156, -0.97815 10.208, -0.96593 10.259, -0.95106 10.309, -0.93358 10.358, -0.91355 10.407, -0.89101 10.454, -0.86603 10.5, -0.83867 10.545, -0.80902 10.588, -0.77715 10.629, -0.74314 10.669, -0.70711 10.707, -0.66913 10.743, -0.62932 10.777, -0.58779 10.809, -0.54464 10.839, -0.5 10.866, -0.45399 10.891, -0.40674 10.914, -0.35837 10.934, -0.30902 10.951, -0.25882 10.966, -0.20791 10.978, -0.15643 10.988, -0.10453 10.995, -0.052336 10.999, 2.8328e-16 11, 0.052336 10.999, 0.10453 10.995, 0.15643 10.988, 0.20791 10.978, 0.25882 10.966, 0.30902 10.951, 0.35837 10.934, 0.40674 10.914, 0.45399 10.891, 0.5 10.866, 0.54464 10.839, 0.58779 10.809, 0.62932 10.777, 0.66913 10.743, 0.70711 10.707, 10.707 0.70711)</div><div class='input'></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -210,7 +217,7 @@ of the geometry.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

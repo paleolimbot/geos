@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Linear referencing — geos_project • geos</title>
+<title>Delaunay triagulations and Voronoi diagrams — geos_delaunay_triangles • geos</title>
 
 
 <!-- jquery -->
@@ -39,19 +39,9 @@
 
 
 
-<meta property="og:title" content="Linear referencing — geos_project" />
-<meta property="og:description" content="
-
-geos_project() and geos_project_normalized() return
-the distance of point geom2 projected on geom1 from the origin
-of geom1, which must be a lineal geometry.
-geos_interpolate() performs an
-inverse operation, returning the point along geom representing
-the given distance from the origin along the geometry.
-_normalized() variants use a distance normalized to the
-geos_length() of the geometry.
-
-" />
+<meta property="og:title" content="Delaunay triagulations and Voronoi diagrams — geos_delaunay_triangles" />
+<meta property="og:description" content="These functions return one triangulation/diagram per feature as a
+multi geometry. These functions are not vectorized along their parameters." />
 
 
 
@@ -131,63 +121,54 @@ geos_length() of the geometry.
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Linear referencing</h1>
-    <small class="dont-index">Source: <a href='https://github.com/paleolimbot/geos/blob/master/R/geos-binary-atomic.R'><code>R/geos-binary-atomic.R</code></a>, <a href='https://github.com/paleolimbot/geos/blob/master/R/geos-unary-geometry.R'><code>R/geos-unary-geometry.R</code></a></small>
-    <div class="hidden name"><code>geos_project.Rd</code></div>
+    <h1>Delaunay triagulations and Voronoi diagrams</h1>
+    <small class="dont-index">Source: <a href='https://github.com/paleolimbot/geos/blob/master/R/geos-unary-geometry.R'><code>R/geos-unary-geometry.R</code></a></small>
+    <div class="hidden name"><code>geos_delaunay_triangles.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
-<ul>
-<li><p><code>geos_project()</code> and <code>geos_project_normalized()</code> return
-the distance of point <code>geom2</code> projected on <code>geom1</code> from the origin
-of <code>geom1</code>, which must be a lineal geometry.</p></li>
-<li><p><code>geos_interpolate()</code> performs an
-inverse operation, returning the point along <code>geom</code> representing
-the given <code>distance</code> from the origin along the geometry.</p></li>
-<li><p><code>_normalized()</code> variants use a distance normalized to the
-<code><a href='geos_area.html'>geos_length()</a></code> of the geometry.</p></li>
-</ul>
-
+    <p>These functions return one triangulation/diagram per feature as a
+multi geometry. These functions are not vectorized along their parameters.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>geos_project</span>(<span class='kw'>geom1</span>, <span class='kw'>geom2</span>)
+    <pre class="usage"><span class='fu'>geos_delaunay_triangles</span>(<span class='kw'>geom</span>, tolerance = <span class='fl'>0</span>)
 
-<span class='fu'>geos_project_normalized</span>(<span class='kw'>geom1</span>, <span class='kw'>geom2</span>)
+<span class='fu'>geos_delaunay_edges</span>(<span class='kw'>geom</span>, tolerance = <span class='fl'>0</span>)
 
-<span class='fu'>geos_interpolate</span>(<span class='kw'>geom</span>, <span class='kw'>distance</span>)
+<span class='fu'>geos_voronoi_polygons</span>(<span class='kw'>geom</span>, env = <span class='kw'>NULL</span>, tolerance = <span class='fl'>0</span>)
 
-<span class='fu'>geos_interpolate_normalized</span>(<span class='kw'>geom</span>, <span class='kw'>distance_normalized</span>)</pre>
+<span class='fu'>geos_voronoi_edges</span>(<span class='kw'>geom</span>, env = <span class='kw'>NULL</span>, tolerance = <span class='fl'>0</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>geom1</th>
-      <td><p><a href='as_geos_geometry.html'>GEOS geometry vectors</a>,
-recycled to a common length.</p></td>
-    </tr>
-    <tr>
-      <th>geom2</th>
-      <td><p><a href='as_geos_geometry.html'>GEOS geometry vectors</a>,
-recycled to a common length.</p></td>
-    </tr>
-    <tr>
       <th>geom</th>
-      <td><p>A <a href='as_geos_geometry.html'>GEOS geometry vector</a></p></td>
+      <td><p>A <a href='as_geos_geometry.html'>GEOS geometry vector</a> whose nodes will be used
+as input.</p></td>
     </tr>
     <tr>
-      <th>distance</th>
-      <td><p>Distance along the linestring to interpolate</p></td>
+      <th>tolerance</th>
+      <td><p>A snapping tolerance or 0 to disable snapping</p></td>
     </tr>
     <tr>
-      <th>distance_normalized</th>
-      <td><p>Distance along the linestring to interpolate
-relative to the length of the linestring.</p></td>
+      <th>env</th>
+      <td><p>A boundary for the diagram, or <code>NULL</code> to construct one
+based on the input</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>A <a href='as_geos_geometry.html'>GEOS geometry vector</a> of length <code>geom</code></p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>geos_delaunay_triangles</span>(<span class='st'>"MULTIPOINT (0 0, 1 0, 0 1)"</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
+#&gt; [1] GEOMETRYCOLLECTION (POLYGON ((0 1, 0 0, 1 0, 0 1)))</div><div class='input'><span class='fu'>geos_delaunay_edges</span>(<span class='st'>"MULTIPOINT (0 0, 1 0, 0 1)"</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
+#&gt; [1] MULTILINESTRING ((0 1, 1 0), (0 0, 0 1), (0 0, 1 0))</div><div class='input'>
+<span class='fu'>geos_voronoi_polygons</span>(<span class='st'>"MULTIPOINT (0 0, 1 0, 0 1)"</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
+#&gt; [1] GEOMETRYCOLLECTION (POLYGON ((2 2, 2 -1, 0.5 -1, 0.5 0.5, 2 2)), POLYGON ((0.5 -1, -1 -1, -1 0.5, 0.5 0.5, 0.5 -1)), POLYGON ((-1 0.5, -1 2, 2 2, 2 2, 0.5 0.5, -1 0.5)))</div><div class='input'><span class='fu'>geos_voronoi_edges</span>(<span class='st'>"MULTIPOINT (0 0, 1 0, 0 1)"</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
+#&gt; [1] MULTILINESTRING ((0.5 -1, 0.5 0.5), (0.5 0.5, 2 2), (-1 0.5, 0.5 0.5))</div><div class='input'></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

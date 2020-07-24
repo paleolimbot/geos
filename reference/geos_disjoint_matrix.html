@@ -129,64 +129,64 @@
     <p>Matrix predicates</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_disjoint_matrix.html'>geos_disjoint_matrix</a></span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
+    <pre class="usage"><span class='fu'>geos_disjoint_matrix</span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_disjoint_matrix.html'>geos_touches_matrix</a></span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
+<span class='fu'>geos_touches_matrix</span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_disjoint_matrix.html'>geos_intersects_matrix</a></span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
+<span class='fu'>geos_intersects_matrix</span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_disjoint_matrix.html'>geos_crosses_matrix</a></span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
+<span class='fu'>geos_crosses_matrix</span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_disjoint_matrix.html'>geos_within_matrix</a></span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
+<span class='fu'>geos_within_matrix</span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_disjoint_matrix.html'>geos_contains_matrix</a></span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
+<span class='fu'>geos_contains_matrix</span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_disjoint_matrix.html'>geos_contains_properly_matrix</a></span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
+<span class='fu'>geos_contains_properly_matrix</span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_disjoint_matrix.html'>geos_overlaps_matrix</a></span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
+<span class='fu'>geos_overlaps_matrix</span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_disjoint_matrix.html'>geos_equals_matrix</a></span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
+<span class='fu'>geos_equals_matrix</span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_disjoint_matrix.html'>geos_equals_exact_matrix</a></span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>, tolerance = <span class='kw'>.Machine</span><span class='op'>$</span><span class='kw'>double.eps</span><span class='op'>^</span><span class='fl'>2</span>)
+<span class='fu'>geos_equals_exact_matrix</span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>, tolerance = <span class='kw'>.Machine</span><span class='op'>$</span><span class='kw'>double.eps</span><span class='op'>^</span><span class='fl'>2</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_disjoint_matrix.html'>geos_covers_matrix</a></span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
+<span class='fu'>geos_covers_matrix</span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_disjoint_matrix.html'>geos_covered_by_matrix</a></span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
+<span class='fu'>geos_covered_by_matrix</span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_disjoint_matrix.html'>geos_disjoint_any</a></span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
+<span class='fu'>geos_disjoint_any</span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_disjoint_matrix.html'>geos_touches_any</a></span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
+<span class='fu'>geos_touches_any</span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_disjoint_matrix.html'>geos_intersects_any</a></span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
+<span class='fu'>geos_intersects_any</span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_disjoint_matrix.html'>geos_crosses_any</a></span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
+<span class='fu'>geos_crosses_any</span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_disjoint_matrix.html'>geos_within_any</a></span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
+<span class='fu'>geos_within_any</span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_disjoint_matrix.html'>geos_contains_any</a></span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
+<span class='fu'>geos_contains_any</span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_disjoint_matrix.html'>geos_contains_properly_any</a></span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
+<span class='fu'>geos_contains_properly_any</span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_disjoint_matrix.html'>geos_overlaps_any</a></span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
+<span class='fu'>geos_overlaps_any</span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_disjoint_matrix.html'>geos_equals_any</a></span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
+<span class='fu'>geos_equals_any</span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_disjoint_matrix.html'>geos_equals_exact_any</a></span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>, tolerance = <span class='kw'>.Machine</span><span class='op'>$</span><span class='kw'>double.eps</span><span class='op'>^</span><span class='fl'>2</span>)
+<span class='fu'>geos_equals_exact_any</span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>, tolerance = <span class='kw'>.Machine</span><span class='op'>$</span><span class='kw'>double.eps</span><span class='op'>^</span><span class='fl'>2</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_disjoint_matrix.html'>geos_covers_any</a></span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
+<span class='fu'>geos_covers_any</span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/geos/man/geos_disjoint_matrix.html'>geos_covered_by_any</a></span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)</pre>
+<span class='fu'>geos_covered_by_any</span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>geom</th>
-      <td><p>A <a href='https://rdrr.io/pkg/geos/man/as_geos_geometry.html'>GEOS geometry vector</a></p></td>
+      <td><p>A <a href='as_geos_geometry.html'>GEOS geometry vector</a></p></td>
     </tr>
     <tr>
       <th>tree</th>
-      <td><p>A <code><a href='https://rdrr.io/pkg/geos/man/geos_strtree.html'>geos_strtree()</a></code></p></td>
+      <td><p>A <code><a href='geos_strtree.html'>geos_strtree()</a></code></p></td>
     </tr>
     <tr>
       <th>tolerance</th>
