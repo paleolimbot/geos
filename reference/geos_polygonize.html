@@ -129,7 +129,13 @@
     <p>Create polygons from noded edges</p>
     </div>
 
-    <pre class="usage"><span class='fu'>geos_polygonize</span>(<span class='kw'>collection</span>)</pre>
+    <pre class="usage"><span class='fu'>geos_polygonize</span>(<span class='kw'>collection</span>)
+
+<span class='fu'>geos_polygonize_valid</span>(<span class='kw'>collection</span>)
+
+<span class='fu'>geos_polygonize_cut_edges</span>(<span class='kw'>collection</span>)
+
+<span class='fu'>geos_polygonize_full</span>(<span class='kw'>collection</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -147,7 +153,9 @@ edges that meet at their endpoints.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>geos_polygonize</span>(<span class='st'>"MULTILINESTRING ((0 0, 0 1), (0 1, 1 0), (1 0, 0 0))"</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
-#&gt; [1] GEOMETRYCOLLECTION (POLYGON ((0 0, 0 1, 1 0, 0 0)))</div><div class='input'></div></pre>
+#&gt; [1] GEOMETRYCOLLECTION (POLYGON ((0 0, 0 1, 1 0, 0 0)))</div><div class='input'><span class='fu'>geos_polygonize_valid</span>(<span class='st'>"MULTILINESTRING ((0 0, 0 1), (0 1, 1 0), (1 0, 0 0))"</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
+#&gt; [1] POLYGON ((0 0, 0 1, 1 0, 0 0))</div><div class='input'><span class='fu'>geos_polygonize_cut_edges</span>(<span class='st'>"MULTILINESTRING ((0 0, 0 1), (0 1, 1 0), (1 0, 0 0))"</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
+#&gt; [1] GEOMETRYCOLLECTION EMPTY</div><div class='input'></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
