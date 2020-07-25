@@ -16,3 +16,23 @@ test_that("polygonize works", {
   unlink(tmp)
   expect_error(geos_polygonize(bad_ptr), "not a valid external pointer")
 })
+
+test_that("polygonize valid works", {
+  # don't have a good example of how these are different
+  expect_true(
+    geos_equals(
+      geos_polygonize("MULTILINESTRING ((0 0, 0 1), (0 1, 1 0), (1 0, 0 0))"),
+      geos_polygonize_valid("MULTILINESTRING ((0 0, 0 1), (0 1, 1 0), (1 0, 0 0))")
+    )
+  )
+})
+
+test_that("polygonize cut edges works", {
+  # don't have a good example of how to create a cut edge here
+  expect_true(
+    geos_equals(
+      geos_polygonize_cut_edges("MULTILINESTRING ((0 0, 0 1), (0 1, 1 0), (1 0, 0 0))"),
+      "GEOMETRYCOLLECTION EMPTY"
+    )
+  )
+})

@@ -2,9 +2,15 @@
 % Please edit documentation in R/geos-polygonize.R
 \name{geos_polygonize}
 \alias{geos_polygonize}
+\alias{geos_polygonize_valid}
+\alias{geos_polygonize_cut_edges}
 \title{Create polygons from noded edges}
 \usage{
 geos_polygonize(collection)
+
+geos_polygonize_valid(collection)
+
+geos_polygonize_cut_edges(collection)
 }
 \arguments{
 \item{collection}{A GEOMETRYCOLLECTION or MULTILINESTRING of
@@ -18,5 +24,7 @@ Create polygons from noded edges
 }
 \examples{
 geos_polygonize("MULTILINESTRING ((0 0, 0 1), (0 1, 1 0), (1 0, 0 0))")
+geos_polygonize_valid("MULTILINESTRING ((0 0, 0 1), (0 1, 1 0), (1 0, 0 0))")
+geos_polygonize_cut_edges("MULTILINESTRING ((0 0, 0 1), (0 1, 1 0), (1 0, 0 0))")
 
 }
