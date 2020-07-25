@@ -49,4 +49,15 @@ test_that("polygonize full works", {
   expect_true(geos_equals(poly_valid$cut_edges, geos_empty()))
   expect_true(geos_equals(poly_valid$dangles, geos_empty()))
   expect_true(geos_equals(poly_valid$invalid_rings, geos_empty()))
+
+  poly_null <- geos_polygonize_full(NA_character_)
+  expect_identical(names(poly_null), names(poly_valid))
+  expect_true(all(vapply(poly_null, identical, geos_read_wkt(NA_character_), FUN.VALUE = logical(1))))
+
+  bad_ptr <- geos_read_wkt("POINT (0 0)")
+  tmp <- tempfile()
+  saveRDS(bad_ptr, tmp)
+  bad_ptr <- readRDS(tmp)
+  unlink(tmp)
+  expect_error(geos_polygonize_full(bad_ptr), "not a valid external pointer")
 })

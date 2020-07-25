@@ -48,7 +48,14 @@ SEXP geos_c_polygonize_cut_edges(SEXP collection) {
 
 SEXP geos_c_polygonize_full(SEXP collection) {
   if (collection == R_NilValue) {
-    return R_NilValue;
+    SEXP result = PROTECT(Rf_allocVector(VECSXP, 4));
+    SET_VECTOR_ELT(result, 0, R_NilValue);
+    SET_VECTOR_ELT(result, 1, R_NilValue);
+    SET_VECTOR_ELT(result, 2, R_NilValue);
+    SET_VECTOR_ELT(result, 3, R_NilValue);
+
+    UNPROTECT(1); // result
+    return result;
   }
 
   GEOSGeometry* collectionGeometry = (GEOSGeometry*) R_ExternalPtrAddr(collection);
@@ -68,8 +75,9 @@ SEXP geos_c_polygonize_full(SEXP collection) {
   SEXP danglesPtr = geos_common_geometry_xptr(dangles);
   SEXP invalidRingsPtr = geos_common_geometry_xptr(invalidRings);
 
+  // don't know how to make the polygonizer fail
   if (resultGeometry == NULL) {
-    GEOS_ERROR("%s: ", "Error calling polygonize full");
+    GEOS_ERROR("%s: ", "Error calling polygonize full"); // # nocov
   }
 
   GEOS_FINISH();
