@@ -30,7 +30,8 @@ geos_distance_hausdorff <- function(geom1, geom2, densify = NULL) {
   if (is.null(densify)) {
     .Call(geos_c_distance_hausdorff, recycled[[1]], recycled[[2]])
   } else {
-    .Call(geos_c_distance_hausdorff_densify, recycled[[1]], recycled[[2]], as.numeric(densify))
+    densify <- as.numeric(densify)
+    .Call(geos_c_distance_hausdorff_densify, recycled[[1]], recycled[[2]], densify[1])
   }
 }
 
@@ -42,7 +43,8 @@ geos_distance_frechet <- function(geom1, geom2, densify = NULL) {
   if (is.null(densify)) {
     .Call(geos_c_distance_frechet, recycled[[1]], recycled[[2]])
   } else {
-    .Call(geos_c_distance_frechet_densify, recycled[[1]], recycled[[2]], as.numeric(densify))
+    desnify <- as.numeric(densify)
+    .Call(geos_c_distance_frechet_densify, recycled[[1]], recycled[[2]], densify[1])
   }
 }
 

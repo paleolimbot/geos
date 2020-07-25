@@ -310,4 +310,62 @@ test_that("nearest functions work", {
     ),
     c(NA, 2L, 1L)
   )
+
+  expect_identical(
+    geos_nearest_indexed(
+      c(NA, "POINT (0.9 0.9)", "POINT (0.1 0.1)"),
+      c("POINT (0 0)", "POINT (1 1)")
+    ),
+    c(NA, 2L, 1L)
+  )
+
+  expect_identical(
+    geos_nearest_hausdorff(
+      c(NA, "POINT (0.9 0.9)", "POINT (0.1 0.1)"),
+      c("POINT (0 0)", "POINT (1 1)")
+    ),
+    c(NA, 2L, 1L)
+  )
+
+  expect_identical(
+    geos_nearest_hausdorff(
+      c(NA, "POINT (0.9 0.9)", "POINT (0.1 0.1)"),
+      c("POINT (0 0)", "POINT (1 1)"),
+      densify = 0.5
+    ),
+    c(NA, 2L, 1L)
+  )
+
+  expect_identical(
+    geos_nearest_frechet(
+      c(NA, "POINT (0.9 0.9)", "POINT (0.1 0.1)"),
+      c("LINESTRING (0 0, -1 -1)", "LINESTRING (1 1, 2 2)"),
+    ),
+    c(NA, 2L, 1L)
+  )
+
+  expect_identical(
+    geos_nearest_frechet(
+      c(NA, "POINT (0.9 0.9)", "POINT (0.1 0.1)"),
+      c("LINESTRING (0 0, -1 -1)", "LINESTRING (1 1, 2 2)"),
+      densify = 0.5
+    ),
+    c(NA, 2L, 1L)
+  )
+
+  # empty tree
+  expect_identical(
+    geos_nearest(c(NA, "POINT (0.9 0.9)", "POINT (0.1 0.1)"), character()),
+    c(NA_integer_, NA_integer_, NA_integer_)
+  )
+
+  # invalid tree
+  bad_ptr <- geos_strtree("POINT (0 0)")
+  tmp <- tempfile()
+  saveRDS(bad_ptr, tmp)
+  bad_ptr <- readRDS(tmp)
+  expect_error(geos_nearest("POINT (0 0)", bad_ptr), "is not valid")
+
+  # internal error
+  expect_error(geos_nearest_error("POINT (0 0)", "POINT (0 0)"), "Failed to compute distance")
 })

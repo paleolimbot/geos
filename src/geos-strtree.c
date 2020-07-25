@@ -355,7 +355,8 @@ struct DistanceQueryInfo {
 };
 
 // distance functions
-SEXP geos_strtree_nearest_base(SEXP treeExternalPtr, SEXP geom, GEOSDistanceCallback callback) {
+SEXP geos_strtree_nearest_base(SEXP treeExternalPtr, SEXP geom,
+                               GEOSDistanceCallback callback, SEXP extra) {
   GEOSSTRtree* tree = (GEOSSTRtree*) R_ExternalPtrAddr(treeExternalPtr);
 
   if (tree == NULL && Rf_xlength(R_ExternalPtrTag(treeExternalPtr)) > 0) {
@@ -373,7 +374,7 @@ SEXP geos_strtree_nearest_base(SEXP treeExternalPtr, SEXP geom, GEOSDistanceCall
   struct DistanceQueryInfo distanceInfo = {
     .handle = handle,
     .treeData = geos_c_strtree_data(treeExternalPtr),
-    .extra = R_NilValue
+    .extra = extra
   };
 
   SEXP item;
@@ -413,16 +414,81 @@ SEXP geos_strtree_nearest_base(SEXP treeExternalPtr, SEXP geom, GEOSDistanceCall
   return result;
 }
 
-int callback_distance(const void *item1, const void* item2,
-                      double* distance, void* userdata) {
-  struct DistanceQueryInfo* info = (struct DistanceQueryInfo*) userdata;
-  SEXP treeGeomExternalPtr = VECTOR_ELT(info->treeData, (*((int*) item1)) - 1);
-  GEOSGeometry* treeGeometry = (GEOSGeometry*) R_ExternalPtrAddr(treeGeomExternalPtr);
-  GEOSGeometry* itemGeometry = (GEOSGeometry*) item2;
-
-  return GEOSDistance_r(info->handle, itemGeometry, treeGeometry, distance);
+int callback_distance_error(const void *item1, const void* item2,
+                            double* distance, void* userdata) {
+  return 0;
 }
 
-SEXP geos_c_strtree_nearest(SEXP geom, SEXP treeExternalPtr) {
-  return geos_strtree_nearest_base(treeExternalPtr, geom, &callback_distance);
+SEXP geos_c_nearest_error(SEXP geom, SEXP treeExternalPtr) {
+  return geos_strtree_nearest_base(
+    treeExternalPtr, geom,
+    &callback_distance_error, R_NilValue
+  );
+}
+
+#define GEOS_CALLBACK_DIST(_call)                              \
+  struct DistanceQueryInfo* info = (struct DistanceQueryInfo*) userdata;\
+  SEXP treeGeomExternalPtr = VECTOR_ELT(info->treeData, (*((int*) item1)) - 1); \
+  GEOSGeometry* treeGeometry = (GEOSGeometry*) R_ExternalPtrAddr(treeGeomExternalPtr); \
+  GEOSGeometry* itemGeometry = (GEOSGeometry*) item2;            \
+  return _call;
+
+int callback_distance(const void *item1, const void* item2, double* distance, void* userdata) {
+  GEOS_CALLBACK_DIST(GEOSDistance_r(info->handle, itemGeometry, treeGeometry, distance));
+}
+SEXP geos_c_nearest(SEXP geom, SEXP treeExternalPtr) {
+  return geos_strtree_nearest_base(
+    treeExternalPtr, geom,
+    &callback_distance, R_NilValue
+  );
+}
+
+int callback_distance_indexed(const void *item1, const void* item2, double* distance, void* userdata) {
+  GEOS_CALLBACK_DIST(GEOSDistanceIndexed_r(info->handle, itemGeometry, treeGeometry, distance));
+}
+SEXP geos_c_nearest_indexed(SEXP geom, SEXP treeExternalPtr) {
+  return geos_strtree_nearest_base(
+    treeExternalPtr, geom,
+    &callback_distance_indexed, R_NilValue
+  );
+}
+
+int callback_distance_hausdorff(const void *item1, const void* item2, double* distance, void* userdata) {
+  GEOS_CALLBACK_DIST(GEOSHausdorffDistance_r(info->handle, itemGeometry, treeGeometry, distance));
+}
+SEXP geos_c_nearest_hausdorff(SEXP geom, SEXP treeExternalPtr) {
+  return geos_strtree_nearest_base(
+    treeExternalPtr, geom,
+    &callback_distance_hausdorff, R_NilValue
+  );
+}
+
+int callback_distance_frechet(const void *item1, const void* item2, double* distance, void* userdata) {
+  GEOS_CALLBACK_DIST(GEOSFrechetDistance_r(info->handle, itemGeometry, treeGeometry, distance));
+}
+SEXP geos_c_nearest_frechet(SEXP geom, SEXP treeExternalPtr) {
+  return geos_strtree_nearest_base(
+    treeExternalPtr, geom,
+    &callback_distance_frechet, R_NilValue
+  );
+}
+
+int callback_distance_frechet_densify(const void *item1, const void* item2, double* distance, void* userdata) {
+  GEOS_CALLBACK_DIST(GEOSFrechetDistanceDensify_r(info->handle, itemGeometry, treeGeometry,  REAL(info->extra)[0], distance));
+}
+SEXP geos_c_nearest_frechet_densify(SEXP geom, SEXP treeExternalPtr, SEXP densify) {
+  return geos_strtree_nearest_base(
+    treeExternalPtr, geom,
+    &callback_distance_frechet_densify, densify
+  );
+}
+
+int callback_distance_hausdorff_densify(const void *item1, const void* item2, double* distance, void* userdata) {
+  GEOS_CALLBACK_DIST(GEOSHausdorffDistanceDensify_r(info->handle, itemGeometry, treeGeometry,  REAL(info->extra)[0], distance));
+}
+SEXP geos_c_nearest_hausdorff_densify(SEXP geom, SEXP treeExternalPtr, SEXP densify) {
+  return geos_strtree_nearest_base(
+    treeExternalPtr, geom,
+    &callback_distance_hausdorff_densify, densify
+  );
 }

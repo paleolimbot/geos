@@ -231,13 +231,45 @@ geos_covered_by_any <- function(geom, tree) {
 #' Finds the closest item index in `tree` to `geom`, vectorized along `geom`.
 #'
 #' @inheritParams geos_strtree
+#' @inheritParams geos_distance
 #'
 #' @return An integer vector of length `geom` containing the index
 #'   of `tree` that is closest to each feature in `geom`.
 #' @export
 #'
 geos_nearest <- function(geom, tree) {
-  .Call(geos_c_strtree_nearest, as_geos_geometry(geom), as_geos_strtree(tree))
+  .Call(geos_c_nearest, as_geos_geometry(geom), as_geos_strtree(tree))
 }
 
+#' @rdname geos_nearest
+#' @export
+geos_nearest_indexed <- function(geom, tree) {
+  .Call(geos_c_nearest_indexed, as_geos_geometry(geom), as_geos_strtree(tree))
+}
 
+#' @rdname geos_nearest
+#' @export
+geos_nearest_hausdorff <- function(geom, tree, densify = NULL) {
+  if (is.null(densify)) {
+    .Call(geos_c_nearest_hausdorff, as_geos_geometry(geom), as_geos_strtree(tree))
+  } else {
+    desnify <- as.numeric(densify)
+    .Call(geos_c_nearest_hausdorff_densify, as_geos_geometry(geom), as_geos_strtree(tree), densify[1])
+  }
+}
+
+#' @rdname geos_nearest
+#' @export
+geos_nearest_frechet <- function(geom, tree, densify = NULL) {
+  if (is.null(densify)) {
+    .Call(geos_c_nearest_frechet, as_geos_geometry(geom), as_geos_strtree(tree))
+  } else {
+    desnify <- as.numeric(densify)
+    .Call(geos_c_nearest_frechet_densify, as_geos_geometry(geom), as_geos_strtree(tree), densify[1])
+  }
+}
+
+# for testing...triggers an error that is hard to otherwise trigger
+geos_nearest_error <- function(geom, tree) {
+  .Call(geos_c_nearest_error, as_geos_geometry(geom), as_geos_strtree(tree))
+}
