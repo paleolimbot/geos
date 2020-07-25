@@ -20,6 +20,9 @@ ignore <- c(
   "GEOSContext_setErrorHandler_r",
   "GEOSContext_setNoticeHandler_r",
 
+  # would need a special define in libgeos to fire
+  "GEOSContext_setNoticeMessageHandler_r",
+
   # not needed
   "GEOSWKTWriter_getOutputDimension_r",
   "GEOSWKBWriter_getOutputDimension_r",
