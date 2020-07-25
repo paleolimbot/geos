@@ -4,6 +4,7 @@
 \alias{geos_polygonize}
 \alias{geos_polygonize_valid}
 \alias{geos_polygonize_cut_edges}
+\alias{geos_polygonize_full}
 \title{Create polygons from noded edges}
 \usage{
 geos_polygonize(collection)
@@ -11,6 +12,8 @@ geos_polygonize(collection)
 geos_polygonize_valid(collection)
 
 geos_polygonize_cut_edges(collection)
+
+geos_polygonize_full(collection)
 }
 \arguments{
 \item{collection}{A GEOMETRYCOLLECTION or MULTILINESTRING of

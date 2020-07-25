@@ -36,3 +36,17 @@ test_that("polygonize cut edges works", {
     )
   )
 })
+
+test_that("polygonize full works", {
+  poly_valid <- geos_polygonize_full("MULTILINESTRING ((0 0, 0 1), (0 1, 1 0), (1 0, 0 0))")
+  expect_true(
+    geos_equals(
+      poly_valid$result,
+      geos_polygonize("MULTILINESTRING ((0 0, 0 1), (0 1, 1 0), (1 0, 0 0))")
+    )
+  )
+
+  expect_true(geos_equals(poly_valid$cut_edges, geos_empty()))
+  expect_true(geos_equals(poly_valid$dangles, geos_empty()))
+  expect_true(geos_equals(poly_valid$invalid_rings, geos_empty()))
+})

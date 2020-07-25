@@ -36,3 +36,18 @@ geos_polygonize_cut_edges <- function(collection) {
 
   new_geos_geometry(list(.Call(geos_c_polygonize_cut_edges, unclass(collection)[[1]])))
 }
+
+#' @rdname geos_polygonize
+#' @export
+geos_polygonize_full <- function(collection) {
+  collection <- as_geos_geometry(collection)
+  stopifnot(length(collection) == 1)
+
+  result <- new_geos_geometry(.Call(geos_c_polygonize_full, unclass(collection)[[1]]))
+  list(
+    result = result[1],
+    cut_edges = result[2],
+    dangles = result[3],
+    invalid_rings = result[4]
+  )
+}
