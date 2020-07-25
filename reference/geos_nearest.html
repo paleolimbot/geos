@@ -129,7 +129,13 @@
     <p>Finds the closest item index in <code>tree</code> to <code>geom</code>, vectorized along <code>geom</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>geos_nearest</span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)</pre>
+    <pre class="usage"><span class='fu'>geos_nearest</span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
+
+<span class='fu'>geos_nearest_indexed</span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>)
+
+<span class='fu'>geos_nearest_hausdorff</span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>, densify = <span class='kw'>NULL</span>)
+
+<span class='fu'>geos_nearest_frechet</span>(<span class='kw'>geom</span>, <span class='kw'>tree</span>, densify = <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -141,6 +147,12 @@
     <tr>
       <th>tree</th>
       <td><p>A <code><a href='geos_strtree.html'>geos_strtree()</a></code></p></td>
+    </tr>
+    <tr>
+      <th>densify</th>
+      <td><p>A fraction between 0 and 1 denoting the degree to which
+edges should be subdivided (smaller value means more subdivisions).
+Use NULL to calculate the distance as-is.</p></td>
     </tr>
     </table>
 
