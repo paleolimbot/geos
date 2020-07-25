@@ -261,7 +261,7 @@ SEXP geos_c_covered_by_matrix(SEXP geom, SEXP treeExternalPtr) {
 }
 
 // the equals querier is slightly different because there is no prepared equals
-// quiet approach to errors because this is called accross a .so boundary
+// quiet approach to errors because this is called across a .so boundary
 void strtree_callback_equals(void* item, void* userdata) {
   struct QueryResult* queryResult = (struct QueryResult*) userdata;
   int itemInt = *((int*) item);
@@ -285,6 +285,7 @@ void strtree_callback_equals(void* item, void* userdata) {
     queryResult->currentIndex++;
   }
 }
+
 SEXP geos_c_equals_matrix(SEXP geom, SEXP treeExternalPtr) {
   return strtree_query_base(treeExternalPtr, geom, &strtree_callback_equals, 0, R_NilValue);
 }
@@ -317,6 +318,7 @@ void strtree_callback_equals_exact(void* item, void* userdata) {
     queryResult->currentIndex++;
   }
 }
+
 SEXP geos_c_equals_exact_matrix(SEXP geom, SEXP treeExternalPtr, SEXP tolerance) {
   return strtree_query_base(treeExternalPtr, geom, &strtree_callback_equals_exact, 0, tolerance);
 }
@@ -342,4 +344,85 @@ SEXP geos_c_predicate_any(SEXP matrixResult) {
 
   UNPROTECT(1); // result
   return result;
+}
+
+
+// data structure used for the distance query
+struct DistanceQueryInfo {
+  GEOSContextHandle_t handle;
+  SEXP treeData;
+  SEXP extra;
+};
+
+// distance functions
+SEXP geos_strtree_nearest_base(SEXP treeExternalPtr, SEXP geom, GEOSDistanceCallback callback) {
+  GEOSSTRtree* tree = (GEOSSTRtree*) R_ExternalPtrAddr(treeExternalPtr);
+
+  if (tree == NULL && Rf_xlength(R_ExternalPtrTag(treeExternalPtr)) > 0) {
+    UNPROTECT(1);
+    Rf_error("External pointer (geos_strtree) is not valid");
+  }
+
+  // allocate the list() result
+  R_xlen_t size = Rf_xlength(geom);
+  SEXP result = PROTECT(Rf_allocVector(INTSXP, size));
+  int* pResult = INTEGER(result);
+
+  GEOS_INIT();
+
+  struct DistanceQueryInfo distanceInfo = {
+    .handle = handle,
+    .treeData = geos_c_strtree_data(treeExternalPtr),
+    .extra = R_NilValue
+  };
+
+  SEXP item;
+  GEOSGeometry* geometry;
+  int* itemResult;
+  for (R_xlen_t i = 0; i < size; i++) {
+    item = VECTOR_ELT(geom, i);
+
+    if (item == R_NilValue) {
+      pResult[i] = NA_INTEGER;
+      continue;
+    }
+
+    geometry = (GEOSGeometry*) R_ExternalPtrAddr(item);
+    GEOS_CHECK_GEOMETRY(geometry, i);
+
+    // tree is only NULL here as an empty tree
+    if (tree != NULL) {
+      itemResult = (int*) GEOSSTRtree_nearest_generic_r(
+        handle, tree, geometry, geometry,
+        callback, &distanceInfo
+      );
+
+      if (itemResult == NULL) {
+        UNPROTECT(1); // result
+        GEOS_ERROR("[i=%d] ", i + 1);
+      }
+
+      pResult[i] = *itemResult;
+    } else {
+      pResult[i] = NA_INTEGER;
+    }
+  }
+
+  GEOS_FINISH();
+  UNPROTECT(1); // result
+  return result;
+}
+
+int callback_distance(const void *item1, const void* item2,
+                      double* distance, void* userdata) {
+  struct DistanceQueryInfo* info = (struct DistanceQueryInfo*) userdata;
+  SEXP treeGeomExternalPtr = VECTOR_ELT(info->treeData, (*((int*) item1)) - 1);
+  GEOSGeometry* treeGeometry = (GEOSGeometry*) R_ExternalPtrAddr(treeGeomExternalPtr);
+  GEOSGeometry* itemGeometry = (GEOSGeometry*) item2;
+
+  return GEOSDistance_r(info->handle, itemGeometry, treeGeometry, distance);
+}
+
+SEXP geos_c_strtree_nearest(SEXP geom, SEXP treeExternalPtr) {
+  return geos_strtree_nearest_base(treeExternalPtr, geom, &callback_distance);
 }

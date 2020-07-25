@@ -224,3 +224,20 @@ geos_covers_any <- function(geom, tree) {
 geos_covered_by_any <- function(geom, tree) {
   .Call(geos_c_predicate_any, geos_covered_by_matrix(geom, tree))
 }
+
+
+#' Find the closest feature
+#'
+#' Finds the closest item index in `tree` to `geom`, vectorized along `geom`.
+#'
+#' @inheritParams geos_strtree
+#'
+#' @return An integer vector of length `geom` containing the index
+#'   of `tree` that is closest to each feature in `geom`.
+#' @export
+#'
+geos_nearest <- function(geom, tree) {
+  .Call(geos_c_strtree_nearest, as_geos_geometry(geom), as_geos_strtree(tree))
+}
+
+

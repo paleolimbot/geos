@@ -67,6 +67,7 @@ extern SEXP geos_c_covered_by_matrix(SEXP geom, SEXP treeExternalPtr);
 extern SEXP geos_c_equals_matrix(SEXP geom, SEXP treeExternalPtr);
 extern SEXP geos_c_equals_exact_matrix(SEXP geom, SEXP treeExternalPtr, SEXP tolerance);
 extern SEXP geos_c_predicate_any(SEXP matrixResult);
+extern SEXP geos_c_strtree_nearest(SEXP treeExternalPtr, SEXP geom);
 extern SEXP geos_c_area(SEXP geom);
 extern SEXP geos_c_length(SEXP geom);
 extern SEXP geos_c_x(SEXP geom);
@@ -189,6 +190,7 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_equals_matrix", (DL_FUNC) &geos_c_equals_matrix, 2},
   {"geos_c_equals_exact_matrix", (DL_FUNC) &geos_c_equals_exact_matrix, 3},
   {"geos_c_predicate_any", (DL_FUNC) &geos_c_predicate_any, 1},
+  {"geos_c_strtree_nearest", (DL_FUNC) &geos_c_strtree_nearest, 2},
   {"geos_c_area", (DL_FUNC) &geos_c_area, 1},
   {"geos_c_length", (DL_FUNC) &geos_c_length, 1},
   {"geos_c_x", (DL_FUNC) &geos_c_x, 1},

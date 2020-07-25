@@ -301,3 +301,13 @@ test_that("_any() predicates work", {
     )
   )
 })
+
+test_that("nearest functions work", {
+  expect_identical(
+    geos_nearest(
+      c(NA, "POINT (0.9 0.9)", "POINT (0.1 0.1)"),
+      c("POINT (0 0)", "POINT (1 1)")
+    ),
+    c(NA, 2L, 1L)
+  )
+})
