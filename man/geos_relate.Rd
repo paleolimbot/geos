@@ -46,3 +46,10 @@ See the \href{https://en.wikipedia.org/wiki/DE-9IM}{Wikipedia entry on DE-9IM}
 for how to interpret \code{pattern}, \code{match}, and the result of \code{\link[=geos_relate]{geos_relate()}}
 and/or \code{\link[=geos_relate_pattern_create]{geos_relate_pattern_create()}}.
 }
+\examples{
+geos_relate_pattern_match("FF*FF1***", c(NA, "FF*FF****", "FF*FF***F"))
+geos_relate("POINT (0 0)", "POINT (0 0)")
+geos_relate_pattern("POINT (0 0)", "POINT (0 0)", "T********")
+geos_relate_pattern_create(II = "T")
+
+}

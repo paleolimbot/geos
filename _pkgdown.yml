@@ -20,6 +20,11 @@ reference:
   - geos_project
   - geos_strtree
   - geos_buffer
+  - geos_delaunay_triangles
+  - geos_intersection
+  - geos_nearest
+  - geos_polygonize
+  - geos_relate
 
 - title: GEOS Information
   contents:

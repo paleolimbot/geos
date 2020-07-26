@@ -250,6 +250,12 @@ geos_prepared_covered_by <- function(geom1, geom2) {
 #'
 #' @export
 #'
+#' @examples
+#' geos_relate_pattern_match("FF*FF1***", c(NA, "FF*FF****", "FF*FF***F"))
+#' geos_relate("POINT (0 0)", "POINT (0 0)")
+#' geos_relate_pattern("POINT (0 0)", "POINT (0 0)", "T********")
+#' geos_relate_pattern_create(II = "T")
+#'
 geos_relate <- function(geom1, geom2, boundary_node_rule = "mod2") {
   recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
   bnr_choices <- c("mod2", "endpoint", "multivalent_endpoint", "monovalent_endpoint")
