@@ -217,3 +217,22 @@ test_that("binary predicates work", {
     )
   )
 })
+
+test_that("DE9IM functions work", {
+  expect_identical(
+    geos_relate_pattern_match("FF*FF****", c(NA, "FF*FF****", "FF*FF***F")),
+    c(NA, TRUE, FALSE)
+  )
+  expect_error(geos_relate_pattern_match("fish", "fish"), "Unknown dimension symbol")
+
+  expect_identical(geos_relate("POINT (0 0)", c(NA, "POINT (0 0)")), c(NA, "0FFFFFFF2"))
+  expect_true(geos_relate_pattern("POINT (0 0)", "POINT (0 0)", "0FFFFFFF2"))
+})
+
+test_that("patttern maker works", {
+  expect_identical(geos_relate_pattern_create(), strrep("*", 9))
+  expect_identical(geos_relate_pattern_create(EE = 2), paste0(strrep("*", 8), 2))
+  expect_identical(geos_relate_pattern_create(EE = NA), NA_character_)
+  expect_identical(geos_relate_pattern_create(EE = character(0)), character(0))
+  expect_error(geos_relate_pattern_create(3), "All pattern characters must be one of")
+})

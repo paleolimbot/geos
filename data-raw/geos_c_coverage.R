@@ -35,6 +35,9 @@ ignore <- c(
   "GEOSSTRtree_iterate_r",
   "GEOSGeom_getUserData_r",
   "GEOSGeom_setUserData_r",
+  "GEOSRelatePattern_r",
+  "GEOSRelate_r",
+  "GEOSSTRtree_nearest_r",
 
   # deprecated
   "initGEOS_r",

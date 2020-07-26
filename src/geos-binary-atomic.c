@@ -356,3 +356,80 @@ SEXP geos_c_prepared_covers(SEXP geom1, SEXP geom2) {
 SEXP geos_c_prepared_covered_by(SEXP geom1, SEXP geom2) {
   GEOS_PREPARED_BINARY_PREDICATE(GEOSPreparedCoveredBy_r);
 }
+
+// DE9IM relationships
+
+SEXP geos_c_relate(SEXP geom1, SEXP geom2, SEXP boundaryNodeRule) {
+  R_xlen_t size = Rf_xlength(geom1);
+  SEXP result = PROTECT(Rf_allocVector(STRSXP, size));
+  int bnr = INTEGER(boundaryNodeRule)[0];
+
+  GEOS_INIT();
+
+  SEXP item1;
+  SEXP item2;
+  GEOSGeometry* geometry1;
+  GEOSGeometry* geometry2;
+  char* itemResult;
+  for (R_xlen_t i = 0; i < size; i++) {
+    item1 = VECTOR_ELT(geom1, i);
+    item2 = VECTOR_ELT(geom2, i);
+
+    if (item1 == R_NilValue || item2 == R_NilValue) {
+      SET_STRING_ELT(result, i, NA_STRING);
+      continue;
+    }
+
+    geometry1 = (GEOSGeometry*) R_ExternalPtrAddr(item1);
+    GEOS_CHECK_GEOMETRY(geometry1, i);
+    geometry2 = (GEOSGeometry*) R_ExternalPtrAddr(item2);
+    GEOS_CHECK_GEOMETRY(geometry2, i);
+
+    itemResult = GEOSRelateBoundaryNodeRule_r(handle, geometry1, geometry2, bnr);
+
+    // don't know how to make this fire
+    if (itemResult == NULL) {
+      UNPROTECT(1); // # nocov
+      GEOS_ERROR("[i=%d] ", i + 1); // # nocov
+    }
+
+    SET_STRING_ELT(result, i, Rf_mkChar(itemResult));
+    GEOSFree_r(handle, itemResult);
+  }
+
+  GEOS_FINISH();
+  UNPROTECT(1);
+  return result;
+}
+
+SEXP geos_c_relate_pattern_match(SEXP match, SEXP pattern) {
+  R_xlen_t size = Rf_xlength(match);
+  SEXP result =  PROTECT(Rf_allocVector(LGLSXP, size));
+  int* pResult = LOGICAL(result);
+
+  GEOS_INIT();
+
+  int itemResult;
+  SEXP itemMatch;
+  SEXP itemPattern;
+  for (R_xlen_t i = 0; i < size; i++) {
+    itemMatch = STRING_ELT(match, i);
+    itemPattern = STRING_ELT(pattern, i);
+    if (itemMatch == NA_STRING || itemPattern == NA_STRING) {
+      pResult[i] = NA_LOGICAL;
+      continue;
+    }
+
+    itemResult = GEOSRelatePatternMatch_r(handle, CHAR(itemMatch), CHAR(itemPattern));
+    if (itemResult == 2) {
+      UNPROTECT(1);
+      GEOS_ERROR("[i=%d] ", i);
+    }
+
+    pResult[i] = itemResult;
+  }
+
+  GEOS_FINISH();
+  UNPROTECT(1);
+  return result;
+}

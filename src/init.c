@@ -33,6 +33,8 @@ extern SEXP geos_c_prepared_contains_properly(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_prepared_overlaps(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_prepared_covers(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_prepared_covered_by(SEXP geom1, SEXP geom2);
+extern SEXP geos_c_relate(SEXP geom1, SEXP geom2, SEXP boundaryNodeRule);
+extern SEXP geos_c_relate_pattern_match(SEXP match, SEXP pattern);
 extern SEXP geos_c_intersection(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_difference(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_sym_difference(SEXP geom1, SEXP geom2);
@@ -162,6 +164,8 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_prepared_overlaps", (DL_FUNC) &geos_c_prepared_overlaps, 2},
   {"geos_c_prepared_covers", (DL_FUNC) &geos_c_prepared_covers, 2},
   {"geos_c_prepared_covered_by", (DL_FUNC) &geos_c_prepared_covered_by, 2},
+  {"geos_c_relate", (DL_FUNC) &geos_c_relate, 3},
+  {"geos_c_relate_pattern_match", (DL_FUNC) &geos_c_relate_pattern_match, 2},
   {"geos_c_intersection", (DL_FUNC) &geos_c_intersection, 2},
   {"geos_c_difference", (DL_FUNC) &geos_c_difference, 2},
   {"geos_c_sym_difference", (DL_FUNC) &geos_c_sym_difference, 2},

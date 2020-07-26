@@ -232,3 +232,66 @@ geos_prepared_covered_by <- function(geom1, geom2) {
   recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
   .Call(geos_c_prepared_covered_by, recycled[[1]], recycled[[2]])
 }
+
+
+#' Dimensionally extended 9 intersection model
+#'
+#' See the [Wikipedia entry on DE-9IM](https://en.wikipedia.org/wiki/DE-9IM)
+#' for how to interpret `pattern`, `match`, and the result of [geos_relate()]
+#' and/or [geos_relate_pattern_create()].
+#'
+#' @inheritParams geos_distance
+#' @param boundary_node_rule One of "mod2", "endpoint", "multivalent_endpoint",
+#'  or "monovalent_endpoint".
+#' @param pattern,match A character vector representing the match
+#' @param II,IB,IE,BI,BB,BE,EI,EB,EE One of "0", "1", "2", "T", "F", or "*"
+#'   describing the dimension of the intersection between the interior (I),
+#'   boundary (B), and exterior (E).
+#'
+#' @export
+#'
+geos_relate <- function(geom1, geom2, boundary_node_rule = "mod2") {
+  recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  bnr_choices <- c("mod2", "endpoint", "multivalent_endpoint", "monovalent_endpoint")
+  boundary_node_rule <- match.arg(boundary_node_rule, bnr_choices)
+
+  .Call(geos_c_relate, recycled[[1]], recycled[[2]], match(boundary_node_rule, bnr_choices))
+}
+
+#' @rdname geos_relate
+#' @export
+geos_relate_pattern <- function(geom1, geom2, pattern, boundary_node_rule = "mod2") {
+  geos_relate_pattern_match(
+    geos_relate(geom1, geom2, boundary_node_rule = boundary_node_rule),
+    pattern
+  )
+}
+
+#' @rdname geos_relate
+#' @export
+geos_relate_pattern_match <- function(match, pattern) {
+  recycled <- recycle_common(list(as.character(match), as.character(pattern)))
+  .Call(geos_c_relate_pattern_match, recycled[[1]], recycled[[2]])
+}
+
+#' @rdname geos_relate
+#' @export
+geos_relate_pattern_create <- function(II = "*", IB = "*", IE = "*",
+                                       BI = "*", BB = "*", BE = "*",
+                                       EI = "*", EB = "*", EE = "*") {
+  args <- list(II, IB, IE, BI, BB, BE, EI, EB, EE)
+  args <- lapply(args, geos_relate_pattern_check_item)
+  recycled <- recycle_common(args)
+  recycled_is_na <- Reduce("|", lapply(recycled, is.na))
+  result <- do.call(paste0, recycled)
+  result[recycled_is_na] <- NA_character_
+  result
+}
+
+geos_relate_pattern_check_item <- function(item) {
+  item <- as.character(item)
+  if (!all(item %in% c("0", "1", "2", "T", "F", "*", NA))) {
+    stop("All pattern characters must be one of '0', '1', '2', 'T', 'F', or '*'", call. = FALSE)
+  }
+  item
+}
