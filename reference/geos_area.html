@@ -151,8 +151,6 @@ Similarly, the min/max functions will error on empty geometries.</p>
 
 <span class='fu'>geos_is_closed</span>(<span class='kw'>geom</span>)
 
-<span class='fu'>geos_is_valid</span>(<span class='kw'>geom</span>)
-
 <span class='fu'>geos_type_id</span>(<span class='kw'>geom</span>)
 
 <span class='fu'>geos_type</span>(<span class='kw'>geom</span>)
@@ -196,11 +194,6 @@ Similarly, the min/max functions will error on empty geometries.</p>
     <span class='st'>"LINESTRING (0 0, 1 0, 1 1, 0 1, 0 0)"</span>,
     <span class='st'>"LINESTRING (0 0, 1 0, 1 1, 0 1)"</span>
    )
-)</div><div class='output co'>#&gt; [1]  TRUE FALSE</div><div class='input'><span class='fu'>geos_is_valid</span>(
-  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(
-    <span class='st'>"POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))"</span>,
-    <span class='st'>"POLYGON ((0 0, 1 1, 1 0, 0 1, 0 0))"</span>
-  )
 )</div><div class='output co'>#&gt; [1]  TRUE FALSE</div><div class='input'><span class='fu'>geos_has_z</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"POINT Z (1 2 3)"</span>, <span class='st'>"POINT (1 2)"</span>))</div><div class='output co'>#&gt; [1]  TRUE FALSE</div><div class='input'>
 <span class='fu'>geos_type_id</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"POINT (0 0)"</span>, <span class='st'>"LINESTRING (0 0, 1 1)"</span>))</div><div class='output co'>#&gt; [1] 1 2</div><div class='input'><span class='fu'>geos_srid</span>(<span class='kw'>wk</span>::<span class='fu'><a href='https://rdrr.io/pkg/wk/man/wkb.html'>as_wkb</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"SRID=1234;POINT (0 0)"</span>, <span class='st'>"POINT (0 0)"</span>)))</div><div class='output co'>#&gt; [1] 1234    0</div><div class='input'><span class='fu'>geos_num_coordinates</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"POINT (0 0)"</span>, <span class='st'>"MULTIPOINT (0 0, 1 1)"</span>))</div><div class='output co'>#&gt; [1] 1 2</div><div class='input'><span class='fu'>geos_num_geometries</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"POINT (0 0)"</span>, <span class='st'>"MULTIPOINT (0 0, 1 1)"</span>))</div><div class='output co'>#&gt; [1] 1 2</div><div class='input'><span class='fu'>geos_num_interior_rings</span>(<span class='st'>"POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))"</span>)</div><div class='output co'>#&gt; [1] 0</div><div class='input'><span class='fu'>geos_dimension</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"POINT (0 0)"</span>, <span class='st'>"LINESTRING (0 0, 1 1)"</span>))</div><div class='output co'>#&gt; [1] 0 1</div><div class='input'><span class='fu'>geos_coordinate_dimension</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"POINT (0 0)"</span>, <span class='st'>"POINT Z (0 0 1)"</span>))</div><div class='output co'>#&gt; [1] 2 3</div><div class='input'></div></pre>
   </div>
