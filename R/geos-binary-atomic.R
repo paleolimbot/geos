@@ -67,6 +67,13 @@ geos_distance_frechet <- function(geom1, geom2, densify = NULL) {
 #'
 #' @export
 #'
+#' @examples
+#' geos_interpolate("LINESTRING (0 0, 1 1)", 1)
+#' geos_interpolate_normalized("LINESTRING (0 0, 1 1)", 1)
+#'
+#' geos_project("LINESTRING (0 0, 10 10)", "POINT (5 5)")
+#' geos_project_normalized("LINESTRING (0 0, 10 10)", "POINT (5 5)")
+#'
 geos_project <- function(geom1, geom2) {
   recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
   .Call(geos_c_project, recycled[[1]], recycled[[2]])

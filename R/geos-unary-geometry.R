@@ -7,8 +7,14 @@
 #' @param index The index of the point or geometry to extract.
 #' @param rect A `list()` representing rectangles in the form
 #'   `list(xmin, ymin, xmax, ymax)`. List items with length 1 will be
-#'    recycled to the length of the longest item.
+#'   recycled to the length of the longest item.
 #' @param srid An integer spatial reference identifier.
+#' @param grid_size The size of the grid to which coordinates should be
+#'   rounded.
+#' @param preserve_topology Should topology internal to each feature
+#'   be preserved?
+#' @param keep_collapsed Should items that become EMPTY due to rounding
+#'   be kept in the output?
 #'
 #' @return A [GEOS geometry vector][as_geos_geometry] of length `geom`
 #' @export
@@ -35,8 +41,6 @@
 #' geos_point_start("LINESTRING (0 0, 1 1)")
 #' geos_point_end("LINESTRING (0 0, 1 1)")
 #'
-#' geos_interpolate("LINESTRING (0 0, 1 1)", 1)
-#' geos_interpolate_normalized("LINESTRING (0 0, 1 1)", 1)
 #' geos_simplify("LINESTRING (0 0, 0 1, 0 2)", 0.1)
 #' geos_simplify_preserve_topology("LINESTRING (0 0, 0 1, 0 2)", 0.1)
 #'
@@ -184,6 +188,21 @@ geos_simplify <- function(geom, tolerance) {
 geos_simplify_preserve_topology <- function(geom, tolerance) {
   recycled <- recycle_common(list(as_geos_geometry(geom), as.numeric(tolerance)))
   new_geos_geometry(.Call(geos_c_simplify_preserve_topology, recycled[[1]], recycled[[2]]))
+}
+
+#' @rdname geos_centroid
+#' @export
+geos_set_precision <- function(geom, grid_size, preserve_topology = TRUE, keep_collapsed = FALSE) {
+  recycled <- recycle_common(list(as_geos_geometry(geom), as.numeric(grid_size)))
+  new_geos_geometry(
+    .Call(
+      geos_c_normalize,
+      recycled[[1]],
+      recycled[[2]],
+      preserve_topology,
+      keep_collapsed
+    )
+  )
 }
 
 #' @rdname geos_centroid

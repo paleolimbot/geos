@@ -41,3 +41,11 @@ the given \code{distance} from the origin along the geometry.
 \code{\link[=geos_length]{geos_length()}} of the geometry.
 }
 }
+\examples{
+geos_interpolate("LINESTRING (0 0, 1 1)", 1)
+geos_interpolate_normalized("LINESTRING (0 0, 1 1)", 1)
+
+geos_project("LINESTRING (0 0, 10 10)", "POINT (5 5)")
+geos_project_normalized("LINESTRING (0 0, 10 10)", "POINT (5 5)")
+
+}

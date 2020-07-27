@@ -204,6 +204,39 @@ test_that("transformers with atomic param work", {
     geos_simplify_preserve_topology("LINESTRING (0 0, 1 1)", NA_real_),
     as_geos_geometry(NA_character_)
   )
+
+  expect_identical(
+    geos_write_wkt(
+      geos_set_precision(
+        c(NA, "POINT (0.1 1.1)", "POINT (0.1 1.1)", "POINT (0.1 1.1)"),
+        c(0, NA, 0, 1)
+      )
+    ),
+    c(NA, NA, "POINT (0.1 1.1)", "POINT (0 1)")
+  )
+
+  expect_error(geos_set_precision("POINT (0 0)", -1), "IllegalArgumentException")
+
+  odd_snap_poly <-
+    "POLYGON ((0 0, 0.9 0, 0 0.9, 0 0), (0.46 0.46, 0.3 0.46, 0.46 0.3, 0.46 0.46))"
+  expect_false(
+    geos_write_wkt(
+      geos_set_precision(odd_snap_poly, 0.1, preserve_topology = T)
+    ) ==
+    geos_write_wkt(
+      geos_set_precision(odd_snap_poly, 0.1, preserve_topology = F)
+    )
+  )
+
+  odd_snap_collection <- "GEOMETRYCOLLECTION (LINESTRING (0 0, 0.04 0.04), POINT (10 10))"
+  expect_equal(
+    geos_num_geometries(geos_set_precision(odd_snap_collection, 0.1, keep_collapsed = FALSE)),
+    1
+  )
+  expect_equal(
+    geos_num_geometries(geos_set_precision(odd_snap_collection, 0.1, keep_collapsed = TRUE)),
+    2
+  )
 })
 
 test_that("bounding circle works", {

@@ -125,6 +125,7 @@ extern SEXP geos_c_interpolate_normalized(SEXP geom, SEXP param);
 extern SEXP geos_c_point_n(SEXP geom, SEXP param);
 extern SEXP geos_c_simplify(SEXP geom, SEXP param);
 extern SEXP geos_c_simplify_preserve_topology(SEXP geom, SEXP param);
+extern SEXP geos_c_normalize(SEXP geom, SEXP param, SEXP preserveTopology, SEXP keepCollapsed);
 extern SEXP geos_c_set_srid(SEXP geom, SEXP srid);
 extern SEXP geos_c_minimum_bounding_circle(SEXP geom);
 extern SEXP geos_c_clip_by_rect(SEXP geom, SEXP xmin, SEXP ymin, SEXP xmax, SEXP ymax);
@@ -258,6 +259,7 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_point_n", (DL_FUNC) &geos_c_point_n, 2},
   {"geos_c_simplify", (DL_FUNC) &geos_c_simplify, 2},
   {"geos_c_simplify_preserve_topology", (DL_FUNC) &geos_c_simplify_preserve_topology, 2},
+  {"geos_c_normalize", (DL_FUNC) &geos_c_normalize, 4},
   {"geos_c_set_srid", (DL_FUNC) &geos_c_set_srid, 2},
   {"geos_c_minimum_bounding_circle", (DL_FUNC) &geos_c_minimum_bounding_circle, 1},
   {"geos_c_clip_by_rect", (DL_FUNC) &geos_c_clip_by_rect, 5},

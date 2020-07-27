@@ -115,7 +115,7 @@ SEXP geos_c_clone(SEXP geom) {
 }
 
 
-#define GEOS_UNARY_GEOMETRY_PARAM(_func, _param_scalar, _param_ptr, _na_check)        \
+#define GEOS_UNARY_GEOMETRY_PARAM(_call, _param_scalar, _param_ptr, _na_check)        \
   R_xlen_t size = Rf_xlength(geom);                                        \
   SEXP result = PROTECT(Rf_allocVector(VECSXP, size));                     \
   _param_scalar* paramPtr = _param_ptr(param);                             \
@@ -135,7 +135,7 @@ SEXP geos_c_clone(SEXP geom) {
     geometry = (GEOSGeometry*) R_ExternalPtrAddr(item);                    \
     GEOS_CHECK_GEOMETRY(geometry, i);                                      \
                                                                            \
-    geometryResult = _func(handle, geometry, paramPtr[i]);                 \
+    geometryResult = _call;                                                \
                                                                            \
     if (geometryResult == NULL) {                                          \
       UNPROTECT(1);                                                        \
@@ -151,23 +151,42 @@ SEXP geos_c_clone(SEXP geom) {
 
 
 SEXP geos_c_interpolate(SEXP geom, SEXP param) {
-  GEOS_UNARY_GEOMETRY_PARAM(GEOSInterpolate_r, double, REAL, ISNA(paramPtr[i]));
+  GEOS_UNARY_GEOMETRY_PARAM(GEOSInterpolate_r(handle, geometry, paramPtr[i]), double, REAL, ISNA(paramPtr[i]));
 }
 
 SEXP geos_c_interpolate_normalized(SEXP geom, SEXP param) {
-  GEOS_UNARY_GEOMETRY_PARAM(GEOSInterpolateNormalized_r, double, REAL, ISNA(paramPtr[i]));
+  GEOS_UNARY_GEOMETRY_PARAM(GEOSInterpolateNormalized_r(handle, geometry, paramPtr[i]), double, REAL, ISNA(paramPtr[i]));
 }
 
 SEXP geos_c_point_n(SEXP geom, SEXP param) {
-  GEOS_UNARY_GEOMETRY_PARAM(GEOSGeomGetPointN_r, int, INTEGER, paramPtr[i] == NA_INTEGER);
+  GEOS_UNARY_GEOMETRY_PARAM(GEOSGeomGetPointN_r(handle, geometry, paramPtr[i]), int, INTEGER, paramPtr[i] == NA_INTEGER);
 }
 
 SEXP geos_c_simplify(SEXP geom, SEXP param) {
-  GEOS_UNARY_GEOMETRY_PARAM(GEOSSimplify_r, double, REAL, ISNA(paramPtr[i]));
+  GEOS_UNARY_GEOMETRY_PARAM(GEOSSimplify_r(handle, geometry, paramPtr[i]), double, REAL, ISNA(paramPtr[i]));
 }
 
 SEXP geos_c_simplify_preserve_topology(SEXP geom, SEXP param) {
-  GEOS_UNARY_GEOMETRY_PARAM(GEOSTopologyPreserveSimplify_r, double, REAL, ISNA(paramPtr[i]));
+  GEOS_UNARY_GEOMETRY_PARAM(GEOSTopologyPreserveSimplify_r(handle, geometry, paramPtr[i]), double, REAL, ISNA(paramPtr[i]));
+}
+
+// this should really be defined in libgeos.h and probably will be in future versions
+#ifndef GEOS_PREC_NO_TOPO
+#define GEOS_PREC_NO_TOPO         (1<<0)
+#define GEOS_PREC_KEEP_COLLAPSED  (1<<1)
+#endif
+
+SEXP geos_c_normalize(SEXP geom, SEXP param, SEXP preserveTopology, SEXP keepCollapsed) {
+  int flags = 0;
+  if (!LOGICAL(preserveTopology)[0]) {
+    flags = flags | GEOS_PREC_NO_TOPO;
+  }
+
+  if (LOGICAL(keepCollapsed)[0]) {
+    flags = flags | GEOS_PREC_KEEP_COLLAPSED;
+  }
+
+  GEOS_UNARY_GEOMETRY_PARAM(GEOSGeom_setPrecision_r(handle, geometry, paramPtr[i], flags), double, REAL, ISNA(paramPtr[i]));
 }
 
 // set SRID modifies the input, so we need to clone first

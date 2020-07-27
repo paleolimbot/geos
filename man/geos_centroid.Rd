@@ -25,6 +25,7 @@
 \alias{geos_point_n}
 \alias{geos_simplify}
 \alias{geos_simplify_preserve_topology}
+\alias{geos_set_precision}
 \alias{geos_clip_by_rect}
 \title{Geometry transformers}
 \usage{
@@ -76,6 +77,13 @@ geos_simplify(geom, tolerance)
 
 geos_simplify_preserve_topology(geom, tolerance)
 
+geos_set_precision(
+  geom,
+  grid_size,
+  preserve_topology = TRUE,
+  keep_collapsed = FALSE
+)
+
 geos_clip_by_rect(geom, rect)
 }
 \arguments{
@@ -87,6 +95,15 @@ geos_clip_by_rect(geom, rect)
 
 \item{tolerance}{A minimum distance to use for simplification. Use a higher
 value for more simplification.}
+
+\item{grid_size}{The size of the grid to which coordinates should be
+rounded.}
+
+\item{preserve_topology}{Should topology internal to each feature
+be preserved?}
+
+\item{keep_collapsed}{Should items that become EMPTY due to rounding
+be kept in the output?}
 
 \item{rect}{A \code{list()} representing rectangles in the form
 \code{list(xmin, ymin, xmax, ymax)}. List items with length 1 will be
@@ -120,8 +137,6 @@ geos_convex_hull("MULTIPOINT (0 0, 1 0, 0 2, 0 0)")
 geos_point_start("LINESTRING (0 0, 1 1)")
 geos_point_end("LINESTRING (0 0, 1 1)")
 
-geos_interpolate("LINESTRING (0 0, 1 1)", 1)
-geos_interpolate_normalized("LINESTRING (0 0, 1 1)", 1)
 geos_simplify("LINESTRING (0 0, 0 1, 0 2)", 0.1)
 geos_simplify_preserve_topology("LINESTRING (0 0, 0 1, 0 2)", 0.1)
 
