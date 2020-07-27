@@ -125,6 +125,10 @@
 
 <span class='fu'>geos_write_wkb</span>(<span class='kw'>geom</span>, include_z = <span class='fl'>TRUE</span>, include_srid = <span class='fl'>FALSE</span>, endian = <span class='fl'>1</span>)
 
+<span class='fu'>geos_read_hex</span>(<span class='kw'>hex</span>)
+
+<span class='fu'>geos_write_hex</span>(<span class='kw'>geom</span>, include_z = <span class='fl'>TRUE</span>, include_srid = <span class='fl'>FALSE</span>, endian = <span class='fl'>1</span>)
+
 <span class='fu'>geos_read_xy</span>(<span class='kw'>point</span>)
 
 <span class='fu'>geos_write_xy</span>(<span class='kw'>geom</span>)</pre>
@@ -174,6 +178,10 @@ is no value present in the original.</p></td>
       <th>endian</th>
       <td><p>For WKB writing, 0 for big endian, 1 for little endian.
 Defaults to <code><a href='https://rdrr.io/pkg/wk/man/wkb_translate_wkt.html'>wk_platform_endian()</a></code> (slightly faster).</p></td>
+    </tr>
+    <tr>
+      <th>hex</th>
+      <td><p>A hexidecimal representation of well-known binary</p></td>
     </tr>
     <tr>
       <th>point</th>
