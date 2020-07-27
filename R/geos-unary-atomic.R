@@ -36,12 +36,6 @@
 #'     "LINESTRING (0 0, 1 0, 1 1, 0 1)"
 #'    )
 #' )
-#' geos_is_valid(
-#'   c(
-#'     "POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))",
-#'     "POLYGON ((0 0, 1 1, 1 0, 0 1, 0 0))"
-#'   )
-#' )
 #' geos_has_z(c("POINT Z (1 2 3)", "POINT (1 2)"))
 #'
 #' geos_type_id(c("POINT (0 0)", "LINESTRING (0 0, 1 1)"))
@@ -142,12 +136,6 @@ geos_is_closed <- function(geom) {
 
 #' @rdname geos_area
 #' @export
-geos_is_valid <- function(geom) {
-  .Call(geos_c_is_valid, as_geos_geometry(geom))
-}
-
-#' @rdname geos_area
-#' @export
 geos_type_id <- function(geom) {
   # in a slight departure from GEOS, returning the WKB
   # type IDs to avoid confusion (the problem is the LINEARRING)
@@ -204,4 +192,50 @@ geos_dimension <- function(geom) {
 #' @export
 geos_coordinate_dimension <- function(geom) {
   .Call(geos_c_coorinate_dimension, as_geos_geometry(geom))
+}
+
+
+#' Geometry validity
+#'
+#' - [geos_is_valid()] returns a logical vector denoting if each feature
+#'   is a valid geometry.
+#' - [geos_is_valid_detail()] returns a data frame with columns `is_valid` (logical),
+#'   `reason` (character), and `location` ([geos_geometry][as_geos_geometry]).
+#'
+#' @inheritParams geos_read_wkt
+#' @param allow_self_touching_ring_forming_hole It's all in the name
+#'
+#' @export
+#'
+#' @examples
+#' geos_is_valid(
+#'   c(
+#'     "POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))",
+#'     "POLYGON ((0 0, 1 1, 1 0, 0 1, 0 0))"
+#'   )
+#' )
+#'
+#' geos_is_valid_detail(
+#'   c(
+#'     "POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))",
+#'     "POLYGON ((0 0, 1 1, 1 0, 0 1, 0 0))"
+#'   )
+#' )
+#'
+geos_is_valid <- function(geom) {
+  .Call(geos_c_is_valid, as_geos_geometry(geom))
+}
+
+#' @rdname geos_is_valid
+#' @export
+geos_is_valid_detail <- function(geom, allow_self_touching_ring_forming_hole = FALSE) {
+  result <- .Call(
+    geos_c_is_valid_detail,
+    as_geos_geometry(geom),
+    as.logical(allow_self_touching_ring_forming_hole)[1]
+  )
+
+  names(result) <- c("is_valid", "reason", "location")
+  result$location <- new_geos_geometry(result$location)
+  new_data_frame(result)
 }

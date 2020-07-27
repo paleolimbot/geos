@@ -137,10 +137,6 @@ SEXP geos_c_is_closed(SEXP geom) {
   GEOS_UNARY_RETURN(GEOSisClosed_r, int, LGLSXP, LOGICAL, NA_LOGICAL, 2);
 }
 
-SEXP geos_c_is_valid(SEXP geom) {
-  GEOS_UNARY_RETURN(GEOSisValid_r, int, LGLSXP, LOGICAL, NA_LOGICAL, 2);
-}
-
 SEXP geos_c_type_id(SEXP geom) {
   GEOS_UNARY_RETURN(GEOSGeomTypeId_r, int, INTSXP, INTEGER, NA_INTEGER, -1);
 }
@@ -175,4 +171,76 @@ SEXP geos_c_dimension(SEXP geom) {
 SEXP geos_c_coorinate_dimension(SEXP geom) {
   // unclear what it would return on exception
   GEOS_UNARY_RETURN(GEOSGeom_getCoordinateDimension_r, int, INTSXP, INTEGER, NA_INTEGER, 0);
+}
+
+// validity checking
+
+SEXP geos_c_is_valid(SEXP geom) {
+  GEOS_UNARY_RETURN(GEOSisValid_r, int, LGLSXP, LOGICAL, NA_LOGICAL, 2);
+}
+
+SEXP geos_c_is_valid_detail(SEXP geom, SEXP allowSelfTouchingRingFormingHole) {
+  int flags = LOGICAL(allowSelfTouchingRingFormingHole)[0];
+
+  R_xlen_t size = Rf_xlength(geom);
+  SEXP resultIsValid = PROTECT(Rf_allocVector(LGLSXP, size));
+  SEXP resultReason = PROTECT(Rf_allocVector(STRSXP, size));
+  SEXP resultLocation = PROTECT(Rf_allocVector(VECSXP, size));
+  int* pResultIsValid = LOGICAL(resultIsValid);
+
+  GEOS_INIT();
+
+  SEXP item;
+  GEOSGeometry* geometry;
+  GEOSGeometry* geometryResult;
+  char* reasonResult;
+  int validResult;
+
+  for (R_xlen_t i = 0; i < size; i++) {
+    item = VECTOR_ELT(geom, i);
+
+    if (item == R_NilValue) {
+      pResultIsValid[i] = NA_LOGICAL;
+      SET_STRING_ELT(resultReason, i, NA_STRING);
+      SET_VECTOR_ELT(resultLocation, i, R_NilValue);
+      continue;
+    }
+
+    geometry = (GEOSGeometry*) R_ExternalPtrAddr(item);
+    GEOS_CHECK_GEOMETRY(geometry, i);
+
+    validResult = GEOSisValidDetail_r(handle, geometry, flags, &reasonResult, &geometryResult);
+
+    // when valid or on  exception, both reasonResult and geometyResult are not set
+    // (and therefore will segfault if one tries to destroy them)
+    // returning GEOMETRYCOLLECTION EMPTY instead of NULL when there is no
+    // error
+    // (don't know how to trigger this error)
+    if (validResult == 2) {
+      UNPROTECT(3); // # nocov
+      GEOS_ERROR("[i=%d] ", i + 1); // # nocov
+    } else if (validResult == 1) {
+      pResultIsValid[i] = 1;
+      SET_STRING_ELT(resultReason, i, NA_STRING);
+      SET_VECTOR_ELT(
+        resultLocation,
+        i,
+        geos_common_geometry_xptr(GEOSGeom_createEmptyCollection_r(handle, GEOS_GEOMETRYCOLLECTION))
+      );
+    } else {
+      pResultIsValid[i] = 0;
+      SET_STRING_ELT(resultReason, i, Rf_mkChar(reasonResult));
+      GEOSFree_r(handle, reasonResult);
+      SET_VECTOR_ELT(resultLocation, i, geos_common_geometry_xptr(geometryResult));
+    }
+  }
+
+  GEOS_FINISH();
+
+  SEXP result = PROTECT(Rf_allocVector(VECSXP, 3));
+  SET_VECTOR_ELT(result, 0, resultIsValid);
+  SET_VECTOR_ELT(result, 1, resultReason);
+  SET_VECTOR_ELT(result, 2, resultLocation);
+  UNPROTECT(4);
+  return result;
 }

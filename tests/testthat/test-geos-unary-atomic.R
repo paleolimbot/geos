@@ -43,11 +43,6 @@ test_that("atomic returners work", {
   expect_error(geos_is_closed("POINT (0 1)"), "Argument is not a LineString")
 
   expect_identical(
-    geos_is_valid(c("LINESTRING (0 0, 1 1)", "POLYGON ((0 0, 1 1, 1 0, 0 1, 0 0))", NA)),
-    c(TRUE, FALSE, NA)
-  )
-
-  expect_identical(
     geos_has_z(c("POINT Z (1 2 3)", "POINT (1 2)", NA)),
     c(TRUE, FALSE, NA)
   )
@@ -122,4 +117,20 @@ test_that("atomic returners work", {
   )
 })
 
+test_that("validity checking works", {
+  expect_identical(
+    geos_is_valid(c("LINESTRING (0 0, 1 1)", "POLYGON ((0 0, 1 1, 1 0, 0 1, 0 0))", NA)),
+    c(TRUE, FALSE, NA)
+  )
 
+  detail <- geos_is_valid_detail(
+    c("LINESTRING (0 0, 1 1)", "POLYGON ((0 0, 1 1, 1 0, 0 1, 0 0))", NA)
+  )
+
+  expect_is(detail, "data.frame")
+  expect_named(detail, c("is_valid", "reason", "location"))
+  expect_is(detail$is_valid, "logical")
+  expect_is(detail$reason, "character")
+  expect_is(detail$location, "geos_geometry")
+  expect_identical(geos_is_empty(detail$location), detail$is_valid)
+})

@@ -16,7 +16,6 @@
 \alias{geos_is_ring}
 \alias{geos_has_z}
 \alias{geos_is_closed}
-\alias{geos_is_valid}
 \alias{geos_type_id}
 \alias{geos_type}
 \alias{geos_precision}
@@ -57,8 +56,6 @@ geos_is_ring(geom)
 geos_has_z(geom)
 
 geos_is_closed(geom)
-
-geos_is_valid(geom)
 
 geos_type_id(geom)
 
@@ -114,12 +111,6 @@ geos_is_closed(
     "LINESTRING (0 0, 1 0, 1 1, 0 1, 0 0)",
     "LINESTRING (0 0, 1 0, 1 1, 0 1)"
    )
-)
-geos_is_valid(
-  c(
-    "POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))",
-    "POLYGON ((0 0, 1 1, 1 0, 0 1, 0 0))"
-  )
 )
 geos_has_z(c("POINT Z (1 2 3)", "POINT (1 2)"))
 

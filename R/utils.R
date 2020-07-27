@@ -16,3 +16,7 @@ check_lengths <- function(dots) {
     stop(sprintf("Incompatible lengths: %s", lengths_label), call. = FALSE)
   }
 }
+
+new_data_frame <- function(x, nrow = length(x[[1]])) {
+  structure(x, class = "data.frame", row.names = seq_len(nrow))
+}
