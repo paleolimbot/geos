@@ -91,7 +91,6 @@ extern SEXP geos_c_is_simple(SEXP geom);
 extern SEXP geos_c_is_ring(SEXP geom);
 extern SEXP geos_c_has_z(SEXP geom);
 extern SEXP geos_c_is_closed(SEXP geom);
-extern SEXP geos_c_is_valid(SEXP geom);
 extern SEXP geos_c_type_id(SEXP geom);
 extern SEXP geos_c_precision(SEXP geom);
 extern SEXP geos_c_srid(SEXP geom);
@@ -100,6 +99,8 @@ extern SEXP geos_c_num_geometries(SEXP geom);
 extern SEXP geos_c_num_interior_rings(SEXP geom);
 extern SEXP geos_c_dimension(SEXP geom);
 extern SEXP geos_c_coorinate_dimension(SEXP geom);
+extern SEXP geos_c_is_valid(SEXP geom);
+extern SEXP geos_c_is_valid_detail(SEXP geom, SEXP allowSelfTouchingRingFormingHole);
 extern SEXP geos_c_centroid(SEXP geom);
 extern SEXP geos_c_boundary(SEXP geom);
 extern SEXP geos_c_minimum_width(SEXP geom);
@@ -124,13 +125,13 @@ extern SEXP geos_c_interpolate_normalized(SEXP geom, SEXP param);
 extern SEXP geos_c_point_n(SEXP geom, SEXP param);
 extern SEXP geos_c_simplify(SEXP geom, SEXP param);
 extern SEXP geos_c_simplify_preserve_topology(SEXP geom, SEXP param);
+extern SEXP geos_c_set_srid(SEXP geom, SEXP srid);
 extern SEXP geos_c_minimum_bounding_circle(SEXP geom);
 extern SEXP geos_c_clip_by_rect(SEXP geom, SEXP xmin, SEXP ymin, SEXP xmax, SEXP ymax);
 extern SEXP geos_c_delaunay_triangulation(SEXP geom, SEXP tolerace, SEXP edges);
 extern SEXP geos_c_voronoi_diagram(SEXP geom, SEXP env, SEXP tolerace, SEXP edges);
 extern SEXP geos_c_buffer(SEXP geom, SEXP distance, SEXP params);
 extern SEXP geos_c_offset_curve(SEXP geom, SEXP distance, SEXP params);
-extern SEXP geos_c_is_valid_detail(SEXP geom, SEXP allowSelfTouchingRingFormingHole);
 extern SEXP geos_c_init();
 extern SEXP geos_c_version_runtime();
 extern SEXP geos_c_version_build();
@@ -223,7 +224,6 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_is_ring", (DL_FUNC) &geos_c_is_ring, 1},
   {"geos_c_has_z", (DL_FUNC) &geos_c_has_z, 1},
   {"geos_c_is_closed", (DL_FUNC) &geos_c_is_closed, 1},
-  {"geos_c_is_valid", (DL_FUNC) &geos_c_is_valid, 1},
   {"geos_c_type_id", (DL_FUNC) &geos_c_type_id, 1},
   {"geos_c_precision", (DL_FUNC) &geos_c_precision, 1},
   {"geos_c_srid", (DL_FUNC) &geos_c_srid, 1},
@@ -232,6 +232,8 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_num_interior_rings", (DL_FUNC) &geos_c_num_interior_rings, 1},
   {"geos_c_dimension", (DL_FUNC) &geos_c_dimension, 1},
   {"geos_c_coorinate_dimension", (DL_FUNC) &geos_c_coorinate_dimension, 1},
+  {"geos_c_is_valid", (DL_FUNC) &geos_c_is_valid, 1},
+  {"geos_c_is_valid_detail", (DL_FUNC) &geos_c_is_valid_detail, 2},
   {"geos_c_centroid", (DL_FUNC) &geos_c_centroid, 1},
   {"geos_c_boundary", (DL_FUNC) &geos_c_boundary, 1},
   {"geos_c_minimum_width", (DL_FUNC) &geos_c_minimum_width, 1},
@@ -256,13 +258,13 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_point_n", (DL_FUNC) &geos_c_point_n, 2},
   {"geos_c_simplify", (DL_FUNC) &geos_c_simplify, 2},
   {"geos_c_simplify_preserve_topology", (DL_FUNC) &geos_c_simplify_preserve_topology, 2},
+  {"geos_c_set_srid", (DL_FUNC) &geos_c_set_srid, 2},
   {"geos_c_minimum_bounding_circle", (DL_FUNC) &geos_c_minimum_bounding_circle, 1},
   {"geos_c_clip_by_rect", (DL_FUNC) &geos_c_clip_by_rect, 5},
   {"geos_c_delaunay_triangulation", (DL_FUNC) &geos_c_delaunay_triangulation, 3},
   {"geos_c_voronoi_diagram", (DL_FUNC) &geos_c_voronoi_diagram, 4},
   {"geos_c_buffer", (DL_FUNC) &geos_c_buffer, 3},
   {"geos_c_offset_curve", (DL_FUNC) &geos_c_offset_curve, 3},
-  {"geos_c_is_valid_detail", (DL_FUNC) &geos_c_is_valid_detail, 2},
   {"geos_c_init", (DL_FUNC) &geos_c_init, 0},
   {"geos_c_version_runtime", (DL_FUNC) &geos_c_version_runtime, 0},
   {"geos_c_version_build", (DL_FUNC) &geos_c_version_build, 0},

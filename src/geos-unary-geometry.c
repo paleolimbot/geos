@@ -170,6 +170,46 @@ SEXP geos_c_simplify_preserve_topology(SEXP geom, SEXP param) {
   GEOS_UNARY_GEOMETRY_PARAM(GEOSTopologyPreserveSimplify_r, double, REAL);
 }
 
+// set SRID modifies the input, so we need to clone first
+SEXP geos_c_set_srid(SEXP geom, SEXP srid) {
+  R_xlen_t size = Rf_xlength(geom);
+  SEXP result = PROTECT(Rf_allocVector(VECSXP, size));
+  int* pSrid = INTEGER(srid);
+
+  GEOS_INIT();
+
+  SEXP item;
+  GEOSGeometry* geometry;
+  GEOSGeometry* geometryResult;
+  for (R_xlen_t i = 0; i < size; i++) {
+    item = VECTOR_ELT(geom, i);
+
+    if (item == R_NilValue || pSrid[i] == NA_INTEGER) {
+      SET_VECTOR_ELT(result, i, R_NilValue);
+      continue;
+    }
+
+    geometry = (GEOSGeometry*) R_ExternalPtrAddr(item);
+    GEOS_CHECK_GEOMETRY(geometry, i);
+
+    geometryResult = GEOSGeom_clone_r(handle, geometry);
+
+    // don't know how to trigger this
+    if (geometryResult == NULL) {
+      UNPROTECT(1); // # nocov
+      GEOS_ERROR("[i=%d] ", i + 1); // # nocov
+    }
+
+    // has no return code for exception
+    GEOSSetSRID_r(handle, geometryResult, pSrid[i]);
+
+    SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometryResult));
+  }
+
+  GEOS_FINISH();
+  UNPROTECT(1);
+  return result;
+}
 
 SEXP geos_c_minimum_bounding_circle(SEXP geom) {
   R_xlen_t size = Rf_xlength(geom);

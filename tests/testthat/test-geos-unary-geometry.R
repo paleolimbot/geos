@@ -136,6 +136,13 @@ test_that("transformers work", {
     ),
     c("MULTIPOINT (0 0, 1 0, 0 2, 0 0)", NA)
   )
+
+  expect_identical(
+    geos_srid(
+      geos_set_srid(c(NA, "POINT (30 10)", "POINT (30 10)", "POINT (30 10)"), c(12, NA, 0, 12))
+    ),
+    c(NA, NA, 0L, 12L)
+  )
 })
 
 test_that("transformers with atomic param work", {

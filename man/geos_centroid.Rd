@@ -21,6 +21,7 @@
 \alias{geos_point_start}
 \alias{geos_point_end}
 \alias{geos_clone}
+\alias{geos_set_srid}
 \alias{geos_point_n}
 \alias{geos_simplify}
 \alias{geos_simplify_preserve_topology}
@@ -67,6 +68,8 @@ geos_point_end(geom)
 
 geos_clone(geom)
 
+geos_set_srid(geom, srid)
+
 geos_point_n(geom, index)
 
 geos_simplify(geom, tolerance)
@@ -77,6 +80,8 @@ geos_clip_by_rect(geom, rect)
 }
 \arguments{
 \item{geom}{A \link[=as_geos_geometry]{GEOS geometry vector}}
+
+\item{srid}{An integer spatial reference identifier.}
 
 \item{index}{The index of the point or geometry to extract.}
 

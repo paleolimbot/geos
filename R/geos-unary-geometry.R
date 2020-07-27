@@ -8,6 +8,7 @@
 #' @param rect A `list()` representing rectangles in the form
 #'   `list(xmin, ymin, xmax, ymax)`. List items with length 1 will be
 #'    recycled to the length of the longest item.
+#' @param srid An integer spatial reference identifier.
 #'
 #' @return A [GEOS geometry vector][as_geos_geometry] of length `geom`
 #' @export
@@ -155,6 +156,13 @@ geos_point_end <- function(geom) {
 #' @export
 geos_clone <- function(geom) {
   new_geos_geometry(.Call(geos_c_clone, as_geos_geometry(geom)))
+}
+
+#' @rdname geos_centroid
+#' @export
+geos_set_srid <- function(geom, srid) {
+  recycled <- recycle_common(list(as_geos_geometry(geom), as.integer(srid)))
+  new_geos_geometry(.Call(geos_c_set_srid, recycled[[1]], recycled[[2]]))
 }
 
 #' @rdname geos_centroid
