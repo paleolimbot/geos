@@ -21,6 +21,12 @@ GEOSContextHandle_t geos_gc_handle;
 void geos_common_release_geometry(SEXP externalPtr);
 SEXP geos_common_geometry_xptr(GEOSGeometry* geometry);
 
+// when referencing child geometries, we can avoid cloning by protecting
+// the parent from garbage collection but not registering a finalizer
+// (these geometries must not be finalized, as they are owned by
+// the GEOSGeometry* that will be finalized by parent)
+SEXP geos_common_child_geometry_xptr(const GEOSGeometry* geometry, SEXP parent);
+
 // creates an externalptr with the appropriate finish for a GEOSSTRTree*
 // making sure to also protect the list() of GEOSGeometry* XPtrs from which
 // the tree was created (which recursively protects the GEOSGeometry* objects

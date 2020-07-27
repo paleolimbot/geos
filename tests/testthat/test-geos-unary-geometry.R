@@ -383,3 +383,23 @@ test_that("voronoi diagrams work", {
   expect_error(geos_voronoi_polygons("POINT EMPTY", env = bad_env), "not a valid external")
   expect_error(geos_voronoi_edges("POINT EMPTY", env = bad_env), "not a valid external")
 })
+
+test_that("child geometry works", {
+  expect_identical(
+    geos_write_wkt(
+      geos_geometry_n(
+        c(NA, "POINT (0 1)", "POINT (0 1)", "GEOMETRYCOLLECTION (POINT (0 1), POINT (1 2))"),
+        c(1L, NA, 1L, 1L)
+      )
+    ),
+    c(NA, NA, "POINT (0 1)", "POINT (0 1)")
+  )
+
+  # out-of-bounds checking
+  expect_identical(
+    geos_write_wkt(
+      geos_geometry_n("GEOMETRYCOLLECTION (POINT (0 1), POINT (1 2))", 0:3)
+    ),
+    c(NA, "POINT (0 1)", "POINT (1 2)", NA)
+  )
+})

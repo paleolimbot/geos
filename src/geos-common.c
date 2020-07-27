@@ -33,6 +33,10 @@ SEXP geos_common_geometry_xptr(GEOSGeometry* geometry) {
   return externalPtr;
 }
 
+SEXP geos_common_child_geometry_xptr(const GEOSGeometry* geometry, SEXP parent) {
+  return R_MakeExternalPtr((void *) geometry, parent, R_NilValue);
+}
+
 void geos_common_release_tree(SEXP externalPtr) {
   GEOSSTRtree* tree = (GEOSSTRtree*) R_ExternalPtrAddr(externalPtr);
   if (tree != NULL) {

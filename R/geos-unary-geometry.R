@@ -375,3 +375,17 @@ get_env_xptr <- function(env) {
     env
   }
 }
+
+#' Access child geometries
+#'
+#' @inheritParams geos_read_wkt
+#' @param n The (one-based) index of the child geometry
+#'
+#' @return A [GEOS geometry vector][as_geos_geometry] along the recycled
+#'   length of `geom` and `i`.
+#'
+geos_geometry_n <- function(geom, n) {
+  recycled <- recycle_common(list(as_geos_geometry(geom), as.integer(n) - 1L))
+  new_geos_geometry(.Call(geos_c_geometry_n, recycled[[1]], recycled[[2]]))
+}
+

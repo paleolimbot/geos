@@ -519,3 +519,53 @@ SEXP geos_c_buffer(SEXP geom, SEXP distance, SEXP params) {
 SEXP geos_c_offset_curve(SEXP geom, SEXP distance, SEXP params) {
   GEOS_BUFFER(GEOSOffsetCurve_r(handle, geometry, pDistance[i], quadSegs, joinStyle, mitreLimit));
 }
+
+
+// access child geometries of a parent
+SEXP geos_c_geometry_n(SEXP geom, SEXP n) {
+  int* pN = INTEGER(n);
+
+  R_xlen_t size = Rf_xlength(geom);
+  SEXP result = PROTECT(Rf_allocVector(VECSXP, size));
+
+  GEOS_INIT();
+
+  SEXP item;
+  GEOSGeometry* geometry;
+  const GEOSGeometry* geometryResult;
+  int nGeoms;
+
+  for (R_xlen_t i = 0; i < size; i++) {
+    item = VECTOR_ELT(geom, i);
+
+    if (item == R_NilValue || pN[i] == NA_INTEGER) {
+      SET_VECTOR_ELT(result, i, R_NilValue);
+      continue;
+    }
+
+    geometry = (GEOSGeometry*) R_ExternalPtrAddr(item);
+    GEOS_CHECK_GEOMETRY(geometry, i);
+
+    // extraction can result in segfault rather than exception here
+    // so check indexes manually (use R-style NA for out-of-bounds
+    // index)
+    nGeoms = GEOSGetNumGeometries_r(handle, geometry);
+    if (pN[i] < 0 || pN[i] >= nGeoms) {
+      SET_VECTOR_ELT(result, i, R_NilValue);
+      continue;
+    }
+
+    geometryResult = GEOSGetGeometryN_r(handle, geometry, pN[i]);
+
+    if (geometryResult == NULL) {
+      UNPROTECT(1); // # nocov
+      GEOS_ERROR("[i=%d] ", i + 1); // # nocov
+    }
+
+    SET_VECTOR_ELT(result, i, geos_common_child_geometry_xptr(geometryResult, item));
+  }
+
+  GEOS_FINISH();
+  UNPROTECT(1);
+  return result;
+}
