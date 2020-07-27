@@ -96,6 +96,50 @@ test_that("WKB reader works", {
   expect_error(geos_read_wkb(wkb), "Unknown WKB type")
 })
 
+test_that("hex reader/writer works", {
+  expect_identical(
+    geos_write_wkt(
+      geos_read_hex(c(NA, "01010000000000000000000000000000000000f03F"))
+    ),
+    c(NA, "POINT (0 1)")
+  )
+
+  expect_identical(
+    geos_write_hex(c(NA, "POINT (0 1)"), endian = 1),
+    c(NA, "01010000000000000000000000000000000000F03F")
+  )
+
+  # options
+  expect_match(geos_write_hex("POINT (0 1)", endian = 0), "^00")
+
+  expect_identical(
+    geos_write_hex(geos_set_srid("POINT (0 1)", 1), include_srid = FALSE),
+    geos_write_hex("POINT (0 1)")
+  )
+
+  expect_identical(
+    geos_srid(
+      geos_read_hex(
+        geos_write_hex(geos_set_srid("POINT (0 1)", 1), include_srid = TRUE)
+      )
+    ),
+    1L
+  )
+
+  expect_identical(
+    geos_write_hex("POINT Z (0 1 2)", include_z = FALSE),
+    geos_write_hex("POINT (0 1)")
+  )
+
+  expect_identical(
+    geos_write_wkt(geos_read_hex(geos_write_hex("POINT Z (0 1 2)", include_z = TRUE))),
+    "POINT Z (0 1 2)"
+  )
+
+  expect_error(geos_read_hex("not hex"), "ParseException")
+  expect_error(geos_write_hex("POINT EMPTY"), "IllegalArgumentException")
+})
+
 test_that("xy reader/writer works", {
   expect_identical(
     geos_write_wkt(geos_read_xy(list(c(0, 0, 0, NA), c(1:3, NA)))),

@@ -145,10 +145,12 @@ SEXP geos_c_clearance_line_between(SEXP geom1, SEXP geom2) {
     }
 
     geometryResult = GEOSGeom_createLineString_r(handle, sequenceResult);
+
+    // don't know how to make this fire
     if (geometryResult == NULL) {
-      UNPROTECT(1);
-      GEOSCoordSeq_destroy_r(handle, sequenceResult);
-      GEOS_ERROR("[i=%d] ", i + 1);
+      UNPROTECT(1); // # nocov
+      GEOSCoordSeq_destroy_r(handle, sequenceResult); // # nocov
+      GEOS_ERROR("[i=%d] ", i + 1); // # nocov
     }
 
     SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometryResult));

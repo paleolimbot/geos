@@ -215,6 +215,95 @@ SEXP geos_c_write_wkb(SEXP input, SEXP includeZ, SEXP includeSRID, SEXP endian) 
   return result;
 }
 
+SEXP geos_c_read_hex(SEXP input) {
+  R_xlen_t size = Rf_xlength(input);
+  SEXP result = PROTECT(Rf_allocVector(VECSXP, size));
+
+  GEOS_INIT();
+  GEOSWKBReader* reader = GEOSWKBReader_create_r(handle);
+
+  GEOSGeometry* geometry;
+  SEXP item;
+  char* itemChars;
+
+  for (R_xlen_t i = 0; i < size; i++) {
+    item = STRING_ELT(input, i);
+    if (item == NA_STRING) {
+      SET_VECTOR_ELT(result, i, R_NilValue);
+      continue;
+    }
+
+    itemChars = (char*) CHAR(item);
+    geometry = GEOSWKBReader_readHEX_r(handle, reader, (unsigned char*) itemChars, strlen(itemChars));
+
+    // returns NULL on error
+    if (geometry == NULL) {
+      UNPROTECT(1);
+      GEOSWKBReader_destroy_r(handle, reader);
+      GEOS_ERROR("[i=%d] ", i + 1);
+    } else {
+      SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometry));
+    }
+  }
+
+  GEOSWKBReader_destroy_r(handle, reader);
+  GEOS_FINISH();
+  UNPROTECT(1);
+  return result;
+}
+
+SEXP geos_c_write_hex(SEXP input, SEXP includeZ, SEXP includeSRID, SEXP endian) {
+  R_xlen_t size = Rf_xlength(input);
+  SEXP result = PROTECT(Rf_allocVector(STRSXP, size));
+
+  GEOS_INIT();
+  GEOSWKBWriter* writer = GEOSWKBWriter_create_r(handle);
+  GEOSWKBWriter_setByteOrder_r(handle, writer, INTEGER(endian)[0]);
+
+  if (LOGICAL(includeZ)[0]) {
+    GEOSWKBWriter_setOutputDimension_r(handle, writer, 3);
+  } else {
+    GEOSWKBWriter_setOutputDimension_r(handle, writer, 2);
+  }
+
+  if (LOGICAL(includeSRID)[0]) {
+    GEOSWKBWriter_setIncludeSRID_r(handle, writer, 1);
+  } else {
+    GEOSWKBWriter_setIncludeSRID_r(handle, writer, 0);
+  }
+
+  SEXP item;
+  GEOSGeometry* geometry;
+  size_t itemSize;
+  unsigned char* itemChars;
+  for (R_xlen_t i = 0; i < size; i++) {
+    item = VECTOR_ELT(input, i);
+
+    if (item == R_NilValue) {
+      SET_STRING_ELT(result, i, NA_STRING);
+      continue;
+    }
+
+    geometry = (GEOSGeometry*) R_ExternalPtrAddr(item);
+    GEOS_CHECK_GEOMETRY(geometry, i);
+
+    itemChars = GEOSWKBWriter_writeHEX_r(handle, writer, geometry, &itemSize);
+    // returns NULL on error (e.g., when trying to write an empty point)
+    if (itemChars == NULL) {
+      UNPROTECT(1);
+      GEOS_ERROR("[i=%d] ", i + 1);
+    }
+
+    SET_STRING_ELT(result, i, Rf_mkCharLen((const char*) itemChars, itemSize));
+    GEOSFree_r(handle, itemChars);
+  }
+
+  GEOSWKBWriter_destroy_r(handle, writer);
+  GEOS_FINISH();
+  UNPROTECT(1); // result
+  return result;
+}
+
 SEXP geos_c_read_xy(SEXP x, SEXP y) {
   R_xlen_t size = Rf_xlength(x);
   double* px = REAL(x);
