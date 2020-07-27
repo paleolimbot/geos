@@ -38,6 +38,7 @@ ignore <- c(
   "GEOSRelatePattern_r",
   "GEOSRelate_r",
   "GEOSSTRtree_nearest_r",
+  "GEOSisValidReason_r",
 
   # deprecated
   "initGEOS_r",
