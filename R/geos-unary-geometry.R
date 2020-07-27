@@ -196,13 +196,19 @@ geos_set_precision <- function(geom, grid_size, preserve_topology = TRUE, keep_c
   recycled <- recycle_common(list(as_geos_geometry(geom), as.numeric(grid_size)))
   new_geos_geometry(
     .Call(
-      geos_c_normalize,
+      geos_c_set_precision,
       recycled[[1]],
       recycled[[2]],
       preserve_topology,
       keep_collapsed
     )
   )
+}
+
+#' @rdname geos_centroid
+#' @export
+geos_normalize <- function(geom) {
+  new_geos_geometry(.Call(geos_c_normalize, as_geos_geometry(geom)))
 }
 
 #' @rdname geos_centroid

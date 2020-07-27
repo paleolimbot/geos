@@ -206,6 +206,15 @@ test_that("transformers with atomic param work", {
   )
 
   expect_identical(
+    geos_write_wkt(geos_normalize(c(NA, "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"))),
+    geos_write_wkt(geos_normalize(c(NA, "POLYGON ((0 0, 10 0, 10 10, 0 10, 0 0))")))
+  )
+
+  expect_identical(geos_normalize(NA_character_), geos_read_wkt(NA_character_))
+})
+
+test_that("set precision works", {
+  expect_identical(
     geos_write_wkt(
       geos_set_precision(
         c(NA, "POINT (0.1 1.1)", "POINT (0.1 1.1)", "POINT (0.1 1.1)"),
@@ -223,9 +232,9 @@ test_that("transformers with atomic param work", {
     geos_write_wkt(
       geos_set_precision(odd_snap_poly, 0.1, preserve_topology = T)
     ) ==
-    geos_write_wkt(
-      geos_set_precision(odd_snap_poly, 0.1, preserve_topology = F)
-    )
+      geos_write_wkt(
+        geos_set_precision(odd_snap_poly, 0.1, preserve_topology = F)
+      )
   )
 
   odd_snap_collection <- "GEOMETRYCOLLECTION (LINESTRING (0 0, 0.04 0.04), POINT (10 10))"

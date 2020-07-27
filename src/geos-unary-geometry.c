@@ -176,7 +176,7 @@ SEXP geos_c_simplify_preserve_topology(SEXP geom, SEXP param) {
 #define GEOS_PREC_KEEP_COLLAPSED  (1<<1)
 #endif
 
-SEXP geos_c_normalize(SEXP geom, SEXP param, SEXP preserveTopology, SEXP keepCollapsed) {
+SEXP geos_c_set_precision(SEXP geom, SEXP param, SEXP preserveTopology, SEXP keepCollapsed) {
   int flags = 0;
   if (!LOGICAL(preserveTopology)[0]) {
     flags = flags | GEOS_PREC_NO_TOPO;
@@ -229,6 +229,54 @@ SEXP geos_c_set_srid(SEXP geom, SEXP srid) {
   UNPROTECT(1);
   return result;
 }
+
+// Normalize modifies the input, so we need to clone first
+// (but also has a return code, so can't be grouped with set srid)
+SEXP geos_c_normalize(SEXP geom) {
+  R_xlen_t size = Rf_xlength(geom);
+  SEXP result = PROTECT(Rf_allocVector(VECSXP, size));
+
+  GEOS_INIT();
+
+  SEXP item;
+  GEOSGeometry* geometry;
+  GEOSGeometry* geometryResult;
+  int returnCode;
+
+  for (R_xlen_t i = 0; i < size; i++) {
+    item = VECTOR_ELT(geom, i);
+
+    if (item == R_NilValue) {
+      SET_VECTOR_ELT(result, i, R_NilValue);
+      continue;
+    }
+
+    geometry = (GEOSGeometry*) R_ExternalPtrAddr(item);
+    GEOS_CHECK_GEOMETRY(geometry, i);
+
+    geometryResult = GEOSGeom_clone_r(handle, geometry);
+
+    // don't know how to trigger this
+    if (geometryResult == NULL) {
+      UNPROTECT(1); // # nocov
+      GEOS_ERROR("[i=%d] ", i + 1); // # nocov
+    }
+
+    returnCode = GEOSNormalize_r(handle, geometryResult);
+
+    if (returnCode == -1) {
+      UNPROTECT(1); // # nocov
+      GEOS_ERROR("[i=%d] ", i + 1); // # nocov
+    }
+
+    SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometryResult));
+  }
+
+  GEOS_FINISH();
+  UNPROTECT(1);
+  return result;
+}
+
 
 SEXP geos_c_minimum_bounding_circle(SEXP geom) {
   R_xlen_t size = Rf_xlength(geom);

@@ -26,6 +26,7 @@
 \alias{geos_simplify}
 \alias{geos_simplify_preserve_topology}
 \alias{geos_set_precision}
+\alias{geos_normalize}
 \alias{geos_clip_by_rect}
 \title{Geometry transformers}
 \usage{
@@ -83,6 +84,8 @@ geos_set_precision(
   preserve_topology = TRUE,
   keep_collapsed = FALSE
 )
+
+geos_normalize(geom)
 
 geos_clip_by_rect(geom, rect)
 }
