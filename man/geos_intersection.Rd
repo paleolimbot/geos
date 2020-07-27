@@ -7,6 +7,7 @@
 \alias{geos_union}
 \alias{geos_shared_paths}
 \alias{geos_snap}
+\alias{geos_clearance_line_between}
 \title{Binary geometry operators}
 \usage{
 geos_intersection(geom1, geom2)
@@ -20,6 +21,8 @@ geos_union(geom1, geom2)
 geos_shared_paths(geom1, geom2)
 
 geos_snap(geom1, geom2, tolerance = .Machine$double.eps^2)
+
+geos_clearance_line_between(geom1, geom2)
 }
 \arguments{
 \item{geom1}{\link[=as_geos_geometry]{GEOS geometry vectors},

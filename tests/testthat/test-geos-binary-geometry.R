@@ -78,3 +78,26 @@ test_that("snap works", {
   )
 })
 
+
+test_that("clearance line between works", {
+  expect_identical(
+    geos_write_wkt(
+      geos_clearance_line_between(
+        "POINT (5 5)",
+        c(NA, "POINT (1 1)", "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))")
+      )
+    ),
+    c(NA, "LINESTRING (5 5, 1 1)", "LINESTRING (5 5, 5 5)")
+  )
+
+  expect_true(
+    geos_is_empty(
+      geos_clearance_line_between("POINT (0 0)", "POINT EMPTY")
+    )
+  )
+
+  expect_error(
+    geos_clearance_line_between("POINT (nan inf)", "POINT (0 0)"),
+    "Unknown error"
+  )
+})

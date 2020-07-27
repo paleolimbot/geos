@@ -103,3 +103,58 @@ SEXP geos_c_snap(SEXP geom1, SEXP geom2, SEXP tolerance) {
   UNPROTECT(1);
   return result;
 }
+
+SEXP geos_c_clearance_line_between(SEXP geom1, SEXP geom2) {
+  R_xlen_t size = Rf_xlength(geom1);
+  SEXP result = PROTECT(Rf_allocVector(VECSXP, size));
+
+  GEOS_INIT();
+
+  SEXP item1;
+  SEXP item2;
+  GEOSGeometry* geometry1;
+  GEOSGeometry* geometry2;
+  GEOSCoordSequence* sequenceResult;
+  GEOSGeometry* geometryResult;
+
+  for (R_xlen_t i = 0; i < size; i++) {
+    item1 = VECTOR_ELT(geom1, i);
+    item2 = VECTOR_ELT(geom2, i);
+
+    if (item1 == R_NilValue || item2 == R_NilValue) {
+      SET_VECTOR_ELT(result, i, R_NilValue);
+      continue;
+    }
+
+    geometry1 = (GEOSGeometry*) R_ExternalPtrAddr(item1);
+    GEOS_CHECK_GEOMETRY(geometry1, i);
+    geometry2 = (GEOSGeometry*) R_ExternalPtrAddr(item2);
+    GEOS_CHECK_GEOMETRY(geometry2, i);
+
+    // if either is EMPTY we return EMPTY here, because an unknown
+    // error occurs otherwise
+    if (GEOSisEmpty_r(handle, geometry1) || GEOSisEmpty_r(handle, geometry2)) {
+      SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(GEOSGeom_createEmptyLineString_r(handle)));
+      continue;
+    }
+
+    sequenceResult = GEOSNearestPoints_r(handle, geometry1, geometry2);
+    if (sequenceResult == NULL) {
+      UNPROTECT(1);
+      GEOS_ERROR("[i=%d] ", i + 1);
+    }
+
+    geometryResult = GEOSGeom_createLineString_r(handle, sequenceResult);
+    if (geometryResult == NULL) {
+      UNPROTECT(1);
+      GEOSCoordSeq_destroy_r(handle, sequenceResult);
+      GEOS_ERROR("[i=%d] ", i + 1);
+    }
+
+    SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometryResult));
+  }
+
+  GEOS_FINISH();
+  UNPROTECT(1);
+  return result;
+}

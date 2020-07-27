@@ -74,3 +74,10 @@ geos_snap <- function(geom1, geom2, tolerance = .Machine$double.eps ^ 2) {
   recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2), tolerance))
   new_geos_geometry(.Call(geos_c_snap, recycled[[1]], recycled[[2]], recycled[[3]]))
 }
+
+#' @rdname geos_intersection
+#' @export
+geos_clearance_line_between <- function(geom1, geom2) {
+  recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  new_geos_geometry(.Call(geos_c_clearance_line_between, recycled[[1]], recycled[[2]]))
+}
