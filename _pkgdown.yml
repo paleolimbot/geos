@@ -25,6 +25,7 @@ reference:
   - geos_nearest
   - geos_polygonize
   - geos_relate
+  - geos_is_valid
 
 - title: GEOS Information
   contents:
