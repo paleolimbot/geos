@@ -2,6 +2,8 @@
 #' Create geometries from vectors of coordinates
 #'
 #' @inheritParams wkutils::coords_point_translate_wkt
+#' @inheritParams geos_empty
+#' @inheritParams geos_write_wkt
 #'
 #' @return A [GEOS geometry vector][as_geos_geometry]
 #' @export
@@ -37,8 +39,20 @@ geos_make_polygon <- function(x, y, z = NA_real_, feature_id = 1L, ring_id = 1L)
 
 #' @rdname geos_make_point
 #' @export
-geos_make_collection <- function(geom, feature_id = 1L) {
+geos_make_collection <- function(geom, type_id = "geometrycollection", feature_id = 1L) {
+  type_id <- as_geos_type_id(type_id)
+  stopifnot(length(type_id) == 1)
+
   recycled <- recycle_common(list(as_geos_geometry(geom), as.integer(feature_id)))
+  lengths <- rle(recycled[[2]])$lengths
+
+  # it's unlikely that anybody wants zero-length output, which is
+  # otherwise what would happen if length(geom) == 0
+  if (length(lengths) == 0) {
+    return(geos_empty(type_id))
+  } else {
+    new_geos_geometry(.Call(geos_c_make_collection, recycled[[1]], type_id, lengths))
+  }
 }
 
 

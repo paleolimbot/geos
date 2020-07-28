@@ -122,7 +122,7 @@ is.na.geos_geometry <- function(x) {
 
 #' @export
 rep.geos_geometry <- function(x, ...) {
-  new_geos_geometry(NextMethod(), class(x))
+  new_geos_geometry(unclass(NextMethod()), class(x))
 }
 
 #' @method rep_len geos_geometry
