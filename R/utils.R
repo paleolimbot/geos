@@ -20,3 +20,7 @@ check_lengths <- function(dots) {
 new_data_frame <- function(x, nrow = length(x[[1]])) {
   structure(x, class = "data.frame", row.names = seq_len(nrow))
 }
+
+`%||%` <- function(x, y) {
+  if (is.null(x)) y else x
+}

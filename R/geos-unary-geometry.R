@@ -403,4 +403,3 @@ geos_ring_n <- function(geom, n) {
   recycled <- recycle_common(list(as_geos_geometry(geom), as.integer(n) - 1L))
   new_geos_geometry(.Call(geos_c_ring_n, recycled[[1]], recycled[[2]]))
 }
-
