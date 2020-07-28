@@ -597,15 +597,15 @@ SEXP geos_c_ring_n(SEXP geom, SEXP n) {
     GEOS_CHECK_GEOMETRY(geometry, i);
 
     // error for non-polygons
-    if (GEOSGeomTypeId_r(handle, geometry), GEOS_POLYGON) {
+    if (GEOSGeomTypeId_r(handle, geometry) != GEOS_POLYGON) {
       GEOS_FINISH();
-      Rf_error("[i=%d] Can't extract rings from a non-polygon");
+      Rf_error("[i=%d] Can't extract rings from a non-polygon", i);
     }
 
     // extraction can result in segfault rather than exception here
     // so check indexes manually (use R-style NA for out-of-bounds
     // index)
-    nGeoms = GEOSGetNumInteriorRings_r(handle, geometry) - 1;
+    nGeoms = GEOSGetNumInteriorRings_r(handle, geometry) + 1;
     if (pN[i] < 0 || pN[i] >= nGeoms) {
       SET_VECTOR_ELT(result, i, R_NilValue);
       continue;

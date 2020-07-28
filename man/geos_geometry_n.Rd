@@ -21,3 +21,11 @@ length of \code{geom} and \code{i}.
 \description{
 Access child geometries
 }
+\examples{
+multipoint <- "MULTIPOINT (0 0, 1 1, 2 2)"
+geos_geometry_n(multipoint, seq_len(geos_num_geometries(multipoint)))
+
+poly <- "POLYGON ((0 0, 0 1, 1 0, 0 0), (0.1 0.1, 0.1 0.2, 0.2 0.1, 0.1 0.1))"
+geos_ring_n(poly, seq_len(geos_num_rings(poly)))
+
+}

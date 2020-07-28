@@ -405,6 +405,20 @@ test_that("child geometry works", {
 })
 
 test_that("child rings works", {
-  skip("don't forget to test this")
+  poly <- "POLYGON ((0 0, 0 1, 1 0, 0 0), (0.1 0.1, 0.1 0.2, 0.2 0.1, 0.1 0.1))"
 
+  expect_identical(
+    geos_write_wkt(
+      geos_ring_n(c(NA, poly, poly), c(1, NA, 1))
+    ),
+    c(NA, NA, "LINEARRING (0 0, 0 1, 1 0, 0 0)")
+  )
+
+  expect_error(geos_ring_n("POINT (0 1)", 1), "Can't extract rings")
+
+  # out-of-bounds checking
+  expect_identical(
+    geos_write_wkt(geos_ring_n(poly, 0:3)),
+    c(NA, "LINEARRING (0 0, 0 1, 1 0, 0 0)", "LINEARRING (0.1 0.1, 0.1 0.2, 0.2 0.1, 0.1 0.1)", NA)
+  )
 })

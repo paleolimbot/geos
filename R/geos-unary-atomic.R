@@ -184,6 +184,12 @@ geos_num_interior_rings <- function(geom) {
 
 #' @rdname geos_area
 #' @export
+geos_num_rings <- function(geom) {
+  geos_num_interior_rings(geom) + 1L
+}
+
+#' @rdname geos_area
+#' @export
 geos_dimension <- function(geom) {
   .Call(geos_c_dimension, as_geos_geometry(geom))
 }

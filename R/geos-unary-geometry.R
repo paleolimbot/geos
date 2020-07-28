@@ -381,8 +381,16 @@ get_env_xptr <- function(env) {
 #' @inheritParams geos_read_wkt
 #' @param n The (one-based) index of the child geometry
 #'
+#' @export
 #' @return A [GEOS geometry vector][as_geos_geometry] along the recycled
 #'   length of `geom` and `i`.
+#'
+#' @examples
+#' multipoint <- "MULTIPOINT (0 0, 1 1, 2 2)"
+#' geos_geometry_n(multipoint, seq_len(geos_num_geometries(multipoint)))
+#'
+#' poly <- "POLYGON ((0 0, 0 1, 1 0, 0 0), (0.1 0.1, 0.1 0.2, 0.2 0.1, 0.1 0.1))"
+#' geos_ring_n(poly, seq_len(geos_num_rings(poly)))
 #'
 geos_geometry_n <- function(geom, n) {
   recycled <- recycle_common(list(as_geos_geometry(geom), as.integer(n) - 1L))
@@ -393,6 +401,6 @@ geos_geometry_n <- function(geom, n) {
 #' @export
 geos_ring_n <- function(geom, n) {
   recycled <- recycle_common(list(as_geos_geometry(geom), as.integer(n) - 1L))
-  new_geos_geometry(.Call(geos_c_geometry_n, recycled[[1]], recycled[[2]]))
+  new_geos_geometry(.Call(geos_c_ring_n, recycled[[1]], recycled[[2]]))
 }
 

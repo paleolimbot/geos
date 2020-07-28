@@ -105,6 +105,17 @@ test_that("atomic returners work", {
   expect_error(geos_num_interior_rings("POINT (0 1)"), "not a Polygon")
 
   expect_identical(
+    geos_num_rings(
+      c(
+        "POLYGON ((0 0, 1 0, 0 1, 0 0))",
+        "POLYGON ((0 0, 1 0, 0 1, 0 0), (0.1 0.1, 0.2 0.1, 0.1 0.2, 0.1 0.1))",
+        NA
+      )
+    ),
+    c(1L, 2L, NA)
+  )
+
+  expect_identical(
     geos_dimension(c("POINT (0 0)", "LINESTRING (0 0, 1 1)", NA)),
     c(0L, 1L, NA)
   )

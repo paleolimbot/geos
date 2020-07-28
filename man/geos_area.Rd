@@ -23,6 +23,7 @@
 \alias{geos_num_coordinates}
 \alias{geos_num_geometries}
 \alias{geos_num_interior_rings}
+\alias{geos_num_rings}
 \alias{geos_dimension}
 \alias{geos_coordinate_dimension}
 \title{Extract information from a GEOS geometry}
@@ -70,6 +71,8 @@ geos_num_coordinates(geom)
 geos_num_geometries(geom)
 
 geos_num_interior_rings(geom)
+
+geos_num_rings(geom)
 
 geos_dimension(geom)
 
