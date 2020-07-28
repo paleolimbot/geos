@@ -27,6 +27,7 @@ reference:
   - geos_relate
   - geos_is_valid
   - geos_geometry_n
+  - geos_unnest
 
 - title: GEOS Information
   contents:
