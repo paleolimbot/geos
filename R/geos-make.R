@@ -1,8 +1,18 @@
 
+#' Create geometries from vectors of coordinates
+#'
+#' @inheritParams wkutils::coords_point_translate_wkt
+#'
+#' @return A [GEOS geometry vector][as_geos_geometry]
+#' @export
+#'
 geos_make_point <- function(x, y, z = NA_real_) {
-
+  point <- recycle_common(list(as.numeric(x), as.numeric(y), as.numeric(z)))
+  new_geos_geometry(.Call(geos_c_make_point, point[[1]], point[[2]], point[[3]]))
 }
 
+#' @rdname geos_make_point
+#' @export
 geos_make_linestring <- function(x, y, z = NA_real_, feature_id = 1L) {
   recycled <- recycle_common(
     list(
@@ -10,8 +20,11 @@ geos_make_linestring <- function(x, y, z = NA_real_, feature_id = 1L) {
       as.integer(feature_id)
     )
   )
+  stop("not implemented")
 }
 
+#' @rdname geos_make_point
+#' @export
 geos_make_polygon <- function(x, y, z = NA_real_, feature_id = 1L, ring_id = 1L) {
   recycled <- recycle_common(
     list(
@@ -19,9 +32,11 @@ geos_make_polygon <- function(x, y, z = NA_real_, feature_id = 1L, ring_id = 1L)
       as.integer(feature_id), as.integer(ring_id)
     )
   )
-
+  stop("not implemented")
 }
 
+#' @rdname geos_make_point
+#' @export
 geos_make_collection <- function(geom, feature_id = 1L) {
   recycled <- recycle_common(list(as_geos_geometry(geom), as.integer(feature_id)))
 }

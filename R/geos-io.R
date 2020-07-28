@@ -71,8 +71,7 @@ geos_write_hex <- function(geom, include_z = TRUE, include_srid = FALSE, endian 
 #' @export
 geos_read_xy <- function(point) {
   point <- geos_assert_list_of_numeric(point, 2, "point")
-  point <- recycle_common(point)
-  new_geos_geometry(.Call(geos_c_read_xy, point[[1]], point[[2]]))
+  geos_make_point(point[[1]], point[[2]])
 }
 
 #' @rdname geos_read_wkt

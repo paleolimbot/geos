@@ -42,15 +42,15 @@ extern SEXP geos_c_union(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_shared_paths(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_snap(SEXP geom1, SEXP geom2, SEXP tolerance);
 extern SEXP geos_c_clearance_line_between(SEXP geom1, SEXP geom2);
-extern SEXP geos_c_empty(SEXP typeId);
 extern SEXP geos_c_read_wkt(SEXP input);
 extern SEXP geos_c_write_wkt(SEXP input, SEXP includeZ, SEXP precision, SEXP trim);
 extern SEXP geos_c_read_wkb(SEXP input);
 extern SEXP geos_c_write_wkb(SEXP input, SEXP includeZ, SEXP includeSRID, SEXP endian);
 extern SEXP geos_c_read_hex(SEXP input);
 extern SEXP geos_c_write_hex(SEXP input, SEXP includeZ, SEXP includeSRID, SEXP endian);
-extern SEXP geos_c_read_xy(SEXP x, SEXP y);
 extern SEXP geos_c_write_xy(SEXP input);
+extern SEXP geos_c_make_point(SEXP x, SEXP y, SEXP z);
+extern SEXP geos_c_empty(SEXP typeId);
 extern SEXP geos_c_polygonize(SEXP collection);
 extern SEXP geos_c_polygonize_valid(SEXP collection);
 extern SEXP geos_c_polygonize_cut_edges(SEXP collection);
@@ -182,15 +182,15 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_shared_paths", (DL_FUNC) &geos_c_shared_paths, 2},
   {"geos_c_snap", (DL_FUNC) &geos_c_snap, 3},
   {"geos_c_clearance_line_between", (DL_FUNC) &geos_c_clearance_line_between, 2},
-  {"geos_c_empty", (DL_FUNC) &geos_c_empty, 1},
   {"geos_c_read_wkt", (DL_FUNC) &geos_c_read_wkt, 1},
   {"geos_c_write_wkt", (DL_FUNC) &geos_c_write_wkt, 4},
   {"geos_c_read_wkb", (DL_FUNC) &geos_c_read_wkb, 1},
   {"geos_c_write_wkb", (DL_FUNC) &geos_c_write_wkb, 4},
   {"geos_c_read_hex", (DL_FUNC) &geos_c_read_hex, 1},
   {"geos_c_write_hex", (DL_FUNC) &geos_c_write_hex, 4},
-  {"geos_c_read_xy", (DL_FUNC) &geos_c_read_xy, 2},
   {"geos_c_write_xy", (DL_FUNC) &geos_c_write_xy, 1},
+  {"geos_c_make_point", (DL_FUNC) &geos_c_make_point, 3},
+  {"geos_c_empty", (DL_FUNC) &geos_c_empty, 1},
   {"geos_c_polygonize", (DL_FUNC) &geos_c_polygonize, 1},
   {"geos_c_polygonize_valid", (DL_FUNC) &geos_c_polygonize_valid, 1},
   {"geos_c_polygonize_cut_edges", (DL_FUNC) &geos_c_polygonize_cut_edges, 1},

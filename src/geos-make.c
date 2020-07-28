@@ -3,10 +3,11 @@
 #include "geos-common.h"
 #include "Rinternals.h"
 
-SEXP geos_c_read_xy(SEXP x, SEXP y) {
+SEXP geos_c_make_point(SEXP x, SEXP y, SEXP z) {
   R_xlen_t size = Rf_xlength(x);
   double* px = REAL(x);
   double* py = REAL(y);
+  double* pz = REAL(z);
   SEXP result = PROTECT(Rf_allocVector(VECSXP, size));
 
   GEOS_INIT();
@@ -16,11 +17,15 @@ SEXP geos_c_read_xy(SEXP x, SEXP y) {
 
   for (R_xlen_t i = 0; i < size; i++) {
     seq = NULL;
-    if (ISNA(px[i]) && ISNA(py[i])) {
+    if (ISNA(px[i]) && ISNA(py[i]) && ISNA(pz[i])) {
       geometry = GEOSGeom_createEmptyPoint_r(handle);
-    } else {
-      seq = GEOSCoordSeq_create_r(handle, 1, 0);
+    } else if (ISNA(pz[i])) {
+      seq = GEOSCoordSeq_create_r(handle, 1, 2);
       GEOSCoordSeq_setXY_r(handle, seq, 0, px[i], py[i]);
+      geometry = GEOSGeom_createPoint_r(handle, seq);
+    } else {
+      seq = GEOSCoordSeq_create_r(handle, 1, 3);
+      GEOSCoordSeq_setXYZ_r(handle, seq, 0, px[i], py[i], pz[i]);
       geometry = GEOSGeom_createPoint_r(handle, seq);
     }
 
