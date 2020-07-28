@@ -7,6 +7,7 @@ reference:
   - geos_read_wkt
   - as_geos_geometry
   - geos_empty
+  - geos_make_point
 
 - title: Geometry operators
   desc: Functions that operate on one or more geometry vectors
