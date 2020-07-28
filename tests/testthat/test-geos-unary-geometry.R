@@ -403,3 +403,8 @@ test_that("child geometry works", {
     c(NA, "POINT (0 1)", "POINT (1 2)", NA)
   )
 })
+
+test_that("child rings works", {
+  skip("don't forget to test this")
+
+})

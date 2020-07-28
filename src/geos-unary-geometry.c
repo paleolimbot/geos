@@ -557,6 +557,7 @@ SEXP geos_c_geometry_n(SEXP geom, SEXP n) {
 
     geometryResult = GEOSGetGeometryN_r(handle, geometry, pN[i]);
 
+    // don't know how to make this occur
     if (geometryResult == NULL) {
       UNPROTECT(1); // # nocov
       GEOS_ERROR("[i=%d] ", i + 1); // # nocov
@@ -569,3 +570,66 @@ SEXP geos_c_geometry_n(SEXP geom, SEXP n) {
   UNPROTECT(1);
   return result;
 }
+
+// access child rings of a parent
+SEXP geos_c_ring_n(SEXP geom, SEXP n) {
+  int* pN = INTEGER(n);
+
+  R_xlen_t size = Rf_xlength(geom);
+  SEXP result = PROTECT(Rf_allocVector(VECSXP, size));
+
+  GEOS_INIT();
+
+  SEXP item;
+  GEOSGeometry* geometry;
+  const GEOSGeometry* geometryResult;
+  int nGeoms;
+
+  for (R_xlen_t i = 0; i < size; i++) {
+    item = VECTOR_ELT(geom, i);
+
+    if (item == R_NilValue || pN[i] == NA_INTEGER) {
+      SET_VECTOR_ELT(result, i, R_NilValue);
+      continue;
+    }
+
+    geometry = (GEOSGeometry*) R_ExternalPtrAddr(item);
+    GEOS_CHECK_GEOMETRY(geometry, i);
+
+    // error for non-polygons
+    if (GEOSGeomTypeId_r(handle, geometry), GEOS_POLYGON) {
+      GEOS_FINISH();
+      Rf_error("[i=%d] Can't extract rings from a non-polygon");
+    }
+
+    // extraction can result in segfault rather than exception here
+    // so check indexes manually (use R-style NA for out-of-bounds
+    // index)
+    nGeoms = GEOSGetNumInteriorRings_r(handle, geometry) - 1;
+    if (pN[i] < 0 || pN[i] >= nGeoms) {
+      SET_VECTOR_ELT(result, i, R_NilValue);
+      continue;
+    }
+
+    // do a slightly modified interpretation of ring "n" such that
+    // the outer ring is always the 0th ring
+    if (pN[i] == 0) {
+      geometryResult = GEOSGetExteriorRing_r(handle, geometry);
+    } else {
+      geometryResult = GEOSGetInteriorRingN_r(handle, geometry, pN[i] - 1);
+    }
+
+    // don't know how to make this occur
+    if (geometryResult == NULL) {
+      UNPROTECT(1); // # nocov
+      GEOS_ERROR("[i=%d] ", i + 1); // # nocov
+    }
+
+    SET_VECTOR_ELT(result, i, geos_common_child_geometry_xptr(geometryResult, item));
+  }
+
+  GEOS_FINISH();
+  UNPROTECT(1);
+  return result;
+}
+

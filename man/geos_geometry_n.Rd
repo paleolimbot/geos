@@ -2,9 +2,12 @@
 % Please edit documentation in R/geos-unary-geometry.R
 \name{geos_geometry_n}
 \alias{geos_geometry_n}
+\alias{geos_ring_n}
 \title{Access child geometries}
 \usage{
 geos_geometry_n(geom, n)
+
+geos_ring_n(geom, n)
 }
 \arguments{
 \item{geom}{A \link[=as_geos_geometry]{GEOS geometry vector}}

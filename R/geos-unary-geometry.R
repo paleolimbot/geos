@@ -389,3 +389,10 @@ geos_geometry_n <- function(geom, n) {
   new_geos_geometry(.Call(geos_c_geometry_n, recycled[[1]], recycled[[2]]))
 }
 
+#' @rdname geos_geometry_n
+#' @export
+geos_ring_n <- function(geom, n) {
+  recycled <- recycle_common(list(as_geos_geometry(geom), as.integer(n) - 1L))
+  new_geos_geometry(.Call(geos_c_geometry_n, recycled[[1]], recycled[[2]]))
+}
+
