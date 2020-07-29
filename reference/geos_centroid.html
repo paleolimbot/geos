@@ -225,29 +225,29 @@ recycled to the length of the longest item.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>geos_centroid</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"POINT (0 1)"</span>, <span class='st'>"LINESTRING (0 0, 1 1)"</span>))</div><div class='output co'>#&gt; &lt;geos_geometry[2]&gt;
-#&gt; [1] POINT (0 1)     POINT (0.5 0.5)</div><div class='input'><span class='fu'>geos_boundary</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"POLYGON ((0 0, 1 0, 0 1, 0 0))"</span>, <span class='st'>"LINESTRING (0 0, 1 1)"</span>))</div><div class='output co'>#&gt; &lt;geos_geometry[2]&gt;
-#&gt; [1] LINESTRING (0 0, 1 0, 0 1, 0 0) MULTIPOINT (0 0, 1 1)          </div><div class='input'><span class='fu'>geos_minimum_width</span>(<span class='st'>"POLYGON ((0 0, 1 0, 0 1, 0 0))"</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
-#&gt; [1] LINESTRING (0.5 0.5, 0 0)</div><div class='input'><span class='fu'>geos_minimum_clearance_line</span>(<span class='st'>"POLYGON ((0 0, 10 0, 10 10, 3 5, 0 10, 0 0))"</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
-#&gt; [1] LINESTRING (3 5, 0 5)</div><div class='input'><span class='fu'>geos_minimum_rotated_rectangle</span>(<span class='st'>"POLYGON ((0 0, 1 0, 0.5 0.5, 0 0))"</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
-#&gt; [1] POLYGON ((1 0, 1 0.5, 0 0.5, 0 0, 1 0))</div><div class='input'><span class='fu'>geos_minimum_bounding_circle</span>(<span class='st'>"LINESTRING (-1 -1, 1 1)"</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
-#&gt; [1] POLYGON ((1.4142 0, 1.387 -0.2759, 1.3066 -0.5412, 1.1759 -0.78569, 1 -1, 0.78569 -1.1759, 0.5412 -1.3066, 0.2759 -1.387, 2.2847e-15 -1.4142, -0.2759 -1.387, -0.5412 -1.3066, -0.78569 -1.1759, -1 -1, -1.1759 -0.78569, -1.3066 -0.5412, -1.387 -0.2759, -1.4142 -4.5695e-15, -1.387 0.2759, -1.3066 0.5412, -1.1759 0.78569, -1 1, -0.78569 1.1759, -0.5412 1.3066, -0.2759 1.387, -5.2841e-15 1.4142, 0.2759 1.387, 0.5412 1.3066, 0.78569 1.1759, 1 1, 1.1759 0.78569, 1.3066 0.5412, 1.387 0.2759, 1.4142 0))</div><div class='input'><span class='fu'>geos_unary_union</span>(<span class='st'>"MULTIPOINT (0 1, 0 1)"</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
-#&gt; [1] POINT (0 1)</div><div class='input'><span class='fu'>geos_point_on_surface</span>(<span class='st'>"LINESTRING (0 1, 0.2 3, 10 10)"</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
-#&gt; [1] POINT (0.2 3)</div><div class='input'><span class='fu'>geos_node</span>(<span class='st'>"POLYGON ((0 0, 1 0, 0 1, 0 0))"</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
-#&gt; [1] MULTILINESTRING ((0 0, 1 0, 0 1, 0 0))</div><div class='input'><span class='fu'>geos_make_valid</span>(<span class='st'>"POLYGON ((0 0, 1 1, 1 0, 0 1, 0 0))"</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
-#&gt; [1] MULTIPOLYGON (((0.5 0.5, 0 0, 0 1, 0.5 0.5)), ((0.5 0.5, 1 1, 1 0, 0.5 0.5)))</div><div class='input'><span class='fu'>geos_unique_points</span>(<span class='st'>"POLYGON ((0 0, 1 0, 0 1, 0 0))"</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
-#&gt; [1] MULTIPOINT (0 0, 1 0, 0 1)</div><div class='input'><span class='fu'>geos_reverse</span>(<span class='st'>"LINESTRING (0 0, 1 1)"</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
-#&gt; [1] LINESTRING (1 1, 0 0)</div><div class='input'><span class='fu'>geos_merge_lines</span>(
+#&gt; [1] &lt;POINT (0 1)&gt;     &lt;POINT (0.5 0.5)&gt;</div><div class='input'><span class='fu'>geos_boundary</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"POLYGON ((0 0, 1 0, 0 1, 0 0))"</span>, <span class='st'>"LINESTRING (0 0, 1 1)"</span>))</div><div class='output co'>#&gt; &lt;geos_geometry[2]&gt;
+#&gt; [1] &lt;LINESTRING (0 0, 1 0, 0 1, 0 0)&gt; &lt;MULTIPOINT (0 0, 1 1)&gt;          </div><div class='input'><span class='fu'>geos_minimum_width</span>(<span class='st'>"POLYGON ((0 0, 1 0, 0 1, 0 0))"</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
+#&gt; [1] &lt;LINESTRING (0.5 0.5, 0 0)&gt;</div><div class='input'><span class='fu'>geos_minimum_clearance_line</span>(<span class='st'>"POLYGON ((0 0, 10 0, 10 10, 3 5, 0 10, 0 0))"</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
+#&gt; [1] &lt;LINESTRING (3 5, 0 5)&gt;</div><div class='input'><span class='fu'>geos_minimum_rotated_rectangle</span>(<span class='st'>"POLYGON ((0 0, 1 0, 0.5 0.5, 0 0))"</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
+#&gt; [1] &lt;POLYGON ((1 0, 1 0.5, 0 0.5, 0 0, 1 0))&gt;</div><div class='input'><span class='fu'>geos_minimum_bounding_circle</span>(<span class='st'>"LINESTRING (-1 -1, 1 1)"</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
+#&gt; [1] &lt;POLYGON [-1.4142 -1.4142...1.4142 1.4142]&gt;</div><div class='input'><span class='fu'>geos_unary_union</span>(<span class='st'>"MULTIPOINT (0 1, 0 1)"</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
+#&gt; [1] &lt;POINT (0 1)&gt;</div><div class='input'><span class='fu'>geos_point_on_surface</span>(<span class='st'>"LINESTRING (0 1, 0.2 3, 10 10)"</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
+#&gt; [1] &lt;POINT (0.2 3)&gt;</div><div class='input'><span class='fu'>geos_node</span>(<span class='st'>"POLYGON ((0 0, 1 0, 0 1, 0 0))"</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
+#&gt; [1] &lt;MULTILINESTRING ((0 0, 1 0, 0 1, 0 0))&gt;</div><div class='input'><span class='fu'>geos_make_valid</span>(<span class='st'>"POLYGON ((0 0, 1 1, 1 0, 0 1, 0 0))"</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
+#&gt; [1] &lt;MULTIPOLYGON [0 0...1 1]&gt;</div><div class='input'><span class='fu'>geos_unique_points</span>(<span class='st'>"POLYGON ((0 0, 1 0, 0 1, 0 0))"</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
+#&gt; [1] &lt;MULTIPOINT (0 0, 1 0, 0 1)&gt;</div><div class='input'><span class='fu'>geos_reverse</span>(<span class='st'>"LINESTRING (0 0, 1 1)"</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
+#&gt; [1] &lt;LINESTRING (1 1, 0 0)&gt;</div><div class='input'><span class='fu'>geos_merge_lines</span>(
   <span class='st'>"MULTILINESTRING ((0 0, 0.5 0.5, 2 2), (0.5 0.5, 2 2))"</span>
 )</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
-#&gt; [1] LINESTRING (0 0, 0.5 0.5, 2 2, 0.5 0.5)</div><div class='input'><span class='fu'>geos_build_area</span>(<span class='st'>"LINESTRING (0 0, 1 0, 0 1, 0 0)"</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
-#&gt; [1] POLYGON ((0 0, 0 1, 1 0, 0 0))</div><div class='input'><span class='fu'>geos_envelope</span>(<span class='st'>"LINESTRING (0 0, 1 2)"</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
-#&gt; [1] POLYGON ((0 0, 1 0, 1 2, 0 2, 0 0))</div><div class='input'><span class='fu'>geos_convex_hull</span>(<span class='st'>"MULTIPOINT (0 0, 1 0, 0 2, 0 0)"</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
-#&gt; [1] POLYGON ((0 0, 0 2, 1 0, 0 0))</div><div class='input'><span class='fu'>geos_point_start</span>(<span class='st'>"LINESTRING (0 0, 1 1)"</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
-#&gt; [1] POINT (0 0)</div><div class='input'><span class='fu'>geos_point_end</span>(<span class='st'>"LINESTRING (0 0, 1 1)"</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
-#&gt; [1] POINT (1 1)</div><div class='input'>
+#&gt; [1] &lt;LINESTRING (0 0, 0.5 0.5, 2 2, 0.5 0.5)&gt;</div><div class='input'><span class='fu'>geos_build_area</span>(<span class='st'>"LINESTRING (0 0, 1 0, 0 1, 0 0)"</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
+#&gt; [1] &lt;POLYGON ((0 0, 0 1, 1 0, 0 0))&gt;</div><div class='input'><span class='fu'>geos_envelope</span>(<span class='st'>"LINESTRING (0 0, 1 2)"</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
+#&gt; [1] &lt;POLYGON ((0 0, 1 0, 1 2, 0 2, 0 0))&gt;</div><div class='input'><span class='fu'>geos_convex_hull</span>(<span class='st'>"MULTIPOINT (0 0, 1 0, 0 2, 0 0)"</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
+#&gt; [1] &lt;POLYGON ((0 0, 0 2, 1 0, 0 0))&gt;</div><div class='input'><span class='fu'>geos_point_start</span>(<span class='st'>"LINESTRING (0 0, 1 1)"</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
+#&gt; [1] &lt;POINT (0 0)&gt;</div><div class='input'><span class='fu'>geos_point_end</span>(<span class='st'>"LINESTRING (0 0, 1 1)"</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
+#&gt; [1] &lt;POINT (1 1)&gt;</div><div class='input'>
 <span class='fu'>geos_simplify</span>(<span class='st'>"LINESTRING (0 0, 0 1, 0 2)"</span>, <span class='fl'>0.1</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
-#&gt; [1] LINESTRING (0 0, 0 2)</div><div class='input'><span class='fu'>geos_simplify_preserve_topology</span>(<span class='st'>"LINESTRING (0 0, 0 1, 0 2)"</span>, <span class='fl'>0.1</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
-#&gt; [1] LINESTRING (0 0, 0 2)</div><div class='input'></div></pre>
+#&gt; [1] &lt;LINESTRING (0 0, 0 2)&gt;</div><div class='input'><span class='fu'>geos_simplify_preserve_topology</span>(<span class='st'>"LINESTRING (0 0, 0 1, 0 2)"</span>, <span class='fl'>0.1</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
+#&gt; [1] &lt;LINESTRING (0 0, 0 2)&gt;</div><div class='input'></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

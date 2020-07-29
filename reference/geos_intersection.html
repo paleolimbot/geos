@@ -193,15 +193,15 @@ length of <code>geom1</code> and <code>geom2</code>.</p>
 <span class='kw'>poly2</span> <span class='op'>&lt;-</span> <span class='st'>"POLYGON ((5 5, 5 15, 15 15, 15 5, 5 5))"</span>
 
 <span class='fu'>geos_intersection</span>(<span class='kw'>poly1</span>, <span class='kw'>poly2</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
-#&gt; [1] POLYGON ((5 10, 10 10, 10 5, 5 5, 5 10))</div><div class='input'><span class='fu'>geos_difference</span>(<span class='kw'>poly1</span>, <span class='kw'>poly2</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
-#&gt; [1] POLYGON ((0 0, 0 10, 5 10, 5 5, 10 5, 10 0, 0 0))</div><div class='input'><span class='fu'>geos_sym_difference</span>(<span class='kw'>poly1</span>, <span class='kw'>poly2</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
-#&gt; [1] MULTIPOLYGON (((0 0, 0 10, 5 10, 5 5, 10 5, 10 0, 0 0)), ((10 5, 10 10, 5 10, 5 15, 15 15, 15 5, 10 5)))</div><div class='input'><span class='fu'>geos_union</span>(<span class='kw'>poly1</span>, <span class='kw'>poly2</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
-#&gt; [1] POLYGON ((0 0, 0 10, 5 10, 5 15, 15 15, 15 5, 10 5, 10 0, 0 0))</div><div class='input'>
+#&gt; [1] &lt;POLYGON ((5 10, 10 10, 10 5, 5 5, 5 10))&gt;</div><div class='input'><span class='fu'>geos_difference</span>(<span class='kw'>poly1</span>, <span class='kw'>poly2</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
+#&gt; [1] &lt;POLYGON [0 0...10 10]&gt;</div><div class='input'><span class='fu'>geos_sym_difference</span>(<span class='kw'>poly1</span>, <span class='kw'>poly2</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
+#&gt; [1] &lt;MULTIPOLYGON [0 0...15 15]&gt;</div><div class='input'><span class='fu'>geos_union</span>(<span class='kw'>poly1</span>, <span class='kw'>poly2</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
+#&gt; [1] &lt;POLYGON [0 0...15 15]&gt;</div><div class='input'>
 <span class='kw'>line</span> <span class='op'>&lt;-</span> <span class='st'>"LINESTRING (11 0, 11 10)"</span>
 <span class='fu'>geos_snap</span>(<span class='kw'>poly1</span>, <span class='kw'>line</span>, tolerance = <span class='fl'>2</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
-#&gt; [1] POLYGON ((0 0, 0 10, 11 10, 11 0, 0 0))</div><div class='input'>
+#&gt; [1] &lt;POLYGON ((0 0, 0 10, 11 10, 11 0, 0 0))&gt;</div><div class='input'>
 <span class='fu'>geos_shared_paths</span>(<span class='st'>"LINESTRING (0 0, 1 1, 2 2)"</span>, <span class='st'>"LINESTRING (3 3, 2 2, 1 1)"</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
-#&gt; [1] GEOMETRYCOLLECTION (MULTILINESTRING EMPTY, MULTILINESTRING ((1 1, 2 2)))</div><div class='input'></div></pre>
+#&gt; [1] &lt;GEOMETRYCOLLECTION (MULTILINESTRING EMPTY, MULTILINESTRING ((1 1, 2 2)))&gt;</div><div class='input'></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
