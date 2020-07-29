@@ -25,3 +25,7 @@ original item.
 \description{
 Unnest nested geometries
 }
+\examples{
+geos_unnest("GEOMETRYCOLLECTION (POINT (1 2), POINT (3 4))")
+
+}

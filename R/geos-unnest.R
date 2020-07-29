@@ -10,6 +10,9 @@
 #'   original item.
 #' @export
 #'
+#' @examples
+#' geos_unnest("GEOMETRYCOLLECTION (POINT (1 2), POINT (3 4))")
+#'
 geos_unnest <- function(geom, keep_empty = FALSE, keep_multi = TRUE, max_depth = 1) {
   # extract previous length information (if recursive call)
   lengths <- attr(geom, "lengths") %||% rep(1L, length(geom))

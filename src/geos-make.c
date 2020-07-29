@@ -16,7 +16,6 @@ SEXP geos_c_make_point(SEXP x, SEXP y, SEXP z) {
   GEOSCoordSequence* seq;
 
   for (R_xlen_t i = 0; i < size; i++) {
-    seq = NULL;
     if (ISNA(px[i]) && ISNA(py[i]) && ISNA(pz[i])) {
       geometry = GEOSGeom_createEmptyPoint_r(handle);
     } else if (ISNA(pz[i])) {
@@ -31,14 +30,10 @@ SEXP geos_c_make_point(SEXP x, SEXP y, SEXP z) {
 
     if (geometry == NULL) {
       // don't know how to make this fire
-      // # nocov start
-      if (seq != NULL) {
-        GEOSCoordSeq_destroy_r(handle, seq);
-      }
-
-      UNPROTECT(1); // result
-      GEOS_ERROR("[i=%d] ", i + 1);
-      // # nocov end
+      // if similar to linestring, destroying seq here
+      // will crash the session
+      UNPROTECT(1); // # nocov
+      GEOS_ERROR("[i=%d] ", i + 1); // # nocov
     }
 
     SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometry));
@@ -46,6 +41,70 @@ SEXP geos_c_make_point(SEXP x, SEXP y, SEXP z) {
 
   GEOS_FINISH();
   UNPROTECT(1); // result
+  return result;
+}
+
+SEXP geos_c_make_linestring(SEXP x, SEXP y, SEXP z, SEXP featureLengths) {
+  int* pLengths = INTEGER(featureLengths);
+  double* px = REAL(x);
+  double* py = REAL(y);
+  double* pz = REAL(z);
+
+  R_xlen_t size = Rf_xlength(featureLengths);
+  SEXP result = PROTECT(Rf_allocVector(VECSXP, size));
+
+  GEOS_INIT();
+
+  // the index in x, y, z
+  R_xlen_t iCoord = 0;
+
+  // looping over featureLengths
+  int featureLength;
+  GEOSGeometry* itemGeometry;
+  GEOSCoordSequence* seq;
+  int featureIs3D;
+
+  for (R_xlen_t i = 0; i < size; i++) {
+    featureLength = pLengths[i];
+    featureIs3D = !ISNA(pz[iCoord]);
+
+    if (featureIs3D) {
+      seq = GEOSCoordSeq_create_r(handle, featureLength, 3);
+      if (seq == NULL) {
+        UNPROTECT(1); // # nocov
+        GEOS_ERROR("[i=%d] ", iCoord); // # nocov
+      }
+
+      for (int j = 0; j < featureLength; j++) {
+        GEOSCoordSeq_setXYZ_r(handle, seq, j, px[iCoord], py[iCoord], pz[iCoord]);
+        iCoord++;
+      }
+    } else {
+      seq = GEOSCoordSeq_create_r(handle, featureLength, 2);
+      if (seq == NULL) {
+        UNPROTECT(1); // # nocov
+        GEOS_ERROR("[i=%d] ", iCoord); // # nocov
+      }
+
+      for (int j = 0; j < featureLength; j++) {
+        GEOSCoordSeq_setXY_r(handle, seq, j, px[iCoord], py[iCoord]);
+        iCoord++;
+      }
+    }
+
+    itemGeometry = GEOSGeom_createLineString_r(handle, seq);
+
+    // e.g., if coordseq is of length 1
+    // attempting to destroy seq here results in crashing the session
+    if (itemGeometry == NULL) {
+      UNPROTECT(1);
+      GEOS_ERROR("[i=%d] ", iCoord);
+    }
+
+    SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(itemGeometry));
+  }
+
+  UNPROTECT(1);
   return result;
 }
 

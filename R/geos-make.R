@@ -8,6 +8,12 @@
 #' @return A [GEOS geometry vector][as_geos_geometry]
 #' @export
 #'
+#' @examples
+#' geos_make_point(1:3, 1:3)
+#' geos_make_linestring(1:3, 1:3)
+#'
+#' geos_make_collection("POINT (1 1)")
+#'
 geos_make_point <- function(x, y, z = NA_real_) {
   point <- recycle_common(list(as.numeric(x), as.numeric(y), as.numeric(z)))
   new_geos_geometry(.Call(geos_c_make_point, point[[1]], point[[2]], point[[3]]))
@@ -22,12 +28,25 @@ geos_make_linestring <- function(x, y, z = NA_real_, feature_id = 1L) {
       as.integer(feature_id)
     )
   )
-  stop("not implemented")
+  lengths <- rle(recycled[[4]])$lengths
+
+  if (length(lengths) == 0) {
+    geos_empty("linestring")
+  } else {
+    new_geos_geometry(
+      .Call(
+        geos_c_make_linestring,
+        recycled[[1]], recycled[[2]], recycled[[3]],
+        lengths
+      )
+    )
+  }
 }
 
 #' @rdname geos_make_point
 #' @export
 geos_make_polygon <- function(x, y, z = NA_real_, feature_id = 1L, ring_id = 1L) {
+  # nocov start
   recycled <- recycle_common(
     list(
       as.numeric(x), as.numeric(y), as.numeric(z),
@@ -35,6 +54,7 @@ geos_make_polygon <- function(x, y, z = NA_real_, feature_id = 1L, ring_id = 1L)
     )
   )
   stop("not implemented")
+  # nocov end
 }
 
 #' @rdname geos_make_point
@@ -49,7 +69,7 @@ geos_make_collection <- function(geom, type_id = "geometrycollection", feature_i
   # it's unlikely that anybody wants zero-length output, which is
   # otherwise what would happen if length(geom) == 0
   if (length(lengths) == 0) {
-    return(geos_empty(type_id))
+    geos_empty(type_id)
   } else {
     new_geos_geometry(.Call(geos_c_make_collection, recycled[[1]], type_id, lengths))
   }

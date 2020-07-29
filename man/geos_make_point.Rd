@@ -45,3 +45,10 @@ A \link[=as_geos_geometry]{GEOS geometry vector}
 \description{
 Create geometries from vectors of coordinates
 }
+\examples{
+geos_make_point(1:3, 1:3)
+geos_make_linestring(1:3, 1:3)
+
+geos_make_collection("POINT (1 1)")
+
+}
