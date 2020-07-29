@@ -8,6 +8,7 @@ reference:
   - as_geos_geometry
   - geos_empty
   - geos_make_point
+  - plot.geos_geometry
 
 - title: Geometry operators
   desc: Functions that operate on one or more geometry vectors

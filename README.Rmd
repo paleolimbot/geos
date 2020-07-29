@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
 [![Codecov test coverage](https://codecov.io/gh/paleolimbot/geos/branch/master/graph/badge.svg)](https://codecov.io/gh/paleolimbot/geom?branch=master)
 <!-- badges: end -->
 
-The goal of geom is to provide [access to the GEOS C API](https://geos.osgeo.org/doxygen/geos__c_8h_source.html) by vectorizing the C functions for use in R.
+The goal of geom is to provide [access to the GEOS C API](https://geos.osgeo.org/doxygen/geos__c_8h_source.html) by vectorizing the C functions for use in R. See the [package function reference](https://paleolimbot.github.io/geos/reference/index.html) for which functions are implemented in the R API.
 
 ## Installation
 
@@ -41,11 +41,41 @@ library(geos)
 
 ## Example
 
-Create and export a line!
+Buffer a line and plot it!
 
 ```{r ex-plot}
-(line <- geos_read_wkt("LINESTRING (30 10, 10 30, 40 40)"))
-geos_write_wkt(line)
+line <- as_geos_geometry("LINESTRING (30 10, 10 30, 40 40)")
+plot(geos_buffer(line, distance = 4), col = "grey90")
+plot(line, add = T)
 ```
 
-Operators are a work in progress. ([browse the last commit before the rewrite](https://github.com/paleolimbot/geos/tree/bf3ef50a0f01851e2b55b0060d38754495697815)).
+The geos package is designed to work with [dplyr](https://dplyr.tidyverse.org/) package, so you can work with geometry vectors as a data frame column:
+
+```{r}
+library(dplyr)
+
+# map data from the maps package via ggplot2
+states_df <- as_tibble(ggplot2::map_data("state"))
+states_df
+
+states_df %>% 
+  group_by(region, group) %>% 
+  summarise(geometry = geos_make_polygon(long, lat)) %>% 
+  summarise(geometry = geos_make_collection(geometry, "multipolygon"))
+```
+
+The easiest way to get data into and out of the package is using the [sf package](https://r-spatial.github.io/sf). Note that the conversion will drop the CRS (it is your responsibility to make sure the assumptions of planar geometry are appropriate for your use-case).
+
+```{r sf-plot}
+library(sf)
+nc <- read_sf(system.file("shape/nc.shp", package = "sf"))
+
+nc_geos <- as_geos_geometry(nc)
+
+nc_geos %>% 
+  geos_make_collection() %>% 
+  geos_unary_union() %>% 
+  st_as_sfc(nc_state)
+```
+
+
