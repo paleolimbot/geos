@@ -11,8 +11,6 @@ test_that("geos_geometry can be created from well-known text", {
   expect_is(as_geos_geometry(wk::wkt("POINT (30 10)")), "geos_geometry")
   expect_length(as_geos_geometry("POINT (30 10)"), 1)
   expect_length(as_geos_geometry(c(NA, "POINT (30 10)")), 2)
-  expect_match(format(as_geos_geometry("POINT (30 10)")), "^POINT")
-  expect_output(print(as_geos_geometry("POINT (30 10)")), "POINT")
 })
 
 test_that("geos_geometry can be created from well-known binary", {
@@ -42,7 +40,13 @@ test_that("geos_geometry subsetting and concatenation work", {
   expect_error(c(new_geos_geometry(list(NULL, NULL)), 1:5), "All items must inherit from")
 })
 
-test_that("geos_geometry default print method works", {
+test_that("geos_geometry default format/print methods work", {
+  expect_identical(
+    format(as_geos_geometry("POINT (10 10)")),
+    as.character(as_geos_geometry("POINT (10 10)"))
+  )
+  expect_match(format(geos_make_linestring(1:6, 1)), "<LINESTRING \\[")
+  expect_match(format(geos_make_linestring(1:5, 1)), "<LINESTRING \\(")
   expect_output(print(new_geos_geometry()), "geos_geometry")
   expect_output(print(new_geos_geometry(list(NULL))), "geos_geometry")
 })

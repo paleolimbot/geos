@@ -132,8 +132,35 @@ rep_len.geos_geometry <- function(x, length.out) {
 }
 
 #' @export
-format.geos_geometry <- function(x, ..., precision = 5, trim = TRUE) {
-  geos_write_wkt(x, precision = precision, trim = trim)
+format.geos_geometry <- function(x, ..., precision = 5, max_coords = 5) {
+  # by default, use bounds and type because this is fast even for huge
+  # geometries
+
+  # min/max functions do not work on EMPTY, so can't run geos_xmin/max()
+  # on these geometries
+  n_coords <- geos_num_coordinates(x)
+  use_wkt <- n_coords <= max_coords
+
+  formatted <- rep_len("", length(x))
+  formatted[use_wkt] <- geos_write_wkt(x[use_wkt], precision = precision)
+
+  formatted[!use_wkt] <- sprintf(
+    "%s [%s %s...%s %s]",
+    toupper(geos_type(x[!use_wkt])),
+    format(geos_xmin(x[!use_wkt]), trim = TRUE, digits = precision),
+    format(geos_ymin(x[!use_wkt]), trim = TRUE, digits = precision),
+    format(geos_xmax(x[!use_wkt]), trim = TRUE, digits = precision),
+    format(geos_ymax(x[!use_wkt]), trim = TRUE, digits = precision)
+  )
+
+  sprintf("<%s>", formatted)
+}
+
+# this is what shows up in the RStudio viewer, which should be
+# fast to calculate even for huge geometries
+#' @export
+as.character.geos_geometry <- function(x, ...) {
+  format(x, ...)
 }
 
 #' @export
