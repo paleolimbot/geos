@@ -18,7 +18,8 @@ RoxygenNote: 7.1.1
 Suggests: 
     testthat (>= 2.1.0),
     wk,
-    vctrs
+    vctrs,
+    sf
 Imports: 
     libgeos (>= 3.8.1-2)
 URL: https://paleolimbot.github.io/geos, https://github.com/paleolimbot/geos

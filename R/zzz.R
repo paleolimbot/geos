@@ -10,6 +10,9 @@
   # Register S3 methods for suggests
   s3_register("wk::as_wkb", "geos_geometry")
   s3_register("wk::as_wkt", "geos_geometry")
+  s3_register("wk::as_wksxp", "geos_geometry")
+  s3_register("sf::st_as_sfc", "geos_geometry")
+  s3_register("sf::st_as_sf", "geos_geometry")
   s3_register("vctrs::vec_proxy", "geos_geometry")
   s3_register("vctrs::vec_restore", "geos_geometry")
   s3_register("vctrs::vec_ptype_abbr", "geos_geometry")
