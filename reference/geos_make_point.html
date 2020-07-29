@@ -171,6 +171,12 @@ usefully a character vector with the geometry type
 
     <p>A <a href='as_geos_geometry.html'>GEOS geometry vector</a></p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>geos_make_point</span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[3]&gt;
+#&gt; [1] POINT (1 1) POINT (2 2) POINT (3 3)</div><div class='input'><span class='fu'>geos_make_linestring</span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
+#&gt; [1] LINESTRING (1 1, 2 2, 3 3)</div><div class='input'>
+<span class='fu'>geos_make_collection</span>(<span class='st'>"POINT (1 1)"</span>)</div><div class='output co'>#&gt; &lt;geos_geometry[1]&gt;
+#&gt; [1] GEOMETRYCOLLECTION (POINT (1 1))</div><div class='input'></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
