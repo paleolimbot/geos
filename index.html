@@ -73,7 +73,7 @@
 <a href="#geos" class="anchor"></a>geos</h1></div>
 <!-- badges: start -->
 
-<p>The goal of geom is to provide <a href="https://geos.osgeo.org/doxygen/geos__c_8h_source.html">access to the GEOS C API</a> by vectorizing the C functions for use in R.</p>
+<p>The goal of geom is to provide <a href="https://geos.osgeo.org/doxygen/geos__c_8h_source.html">access to the GEOS C API</a> by vectorizing the C functions for use in R. See the <a href="https://paleolimbot.github.io/geos/reference/index.html">package function reference</a> for which functions are implemented in the R API.</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
@@ -90,15 +90,83 @@
 <div id="example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example" class="anchor"></a>Example</h2>
-<p>Create and export a line!</p>
+<p>Buffer a line and plot it!</p>
 <div class="sourceCode" id="cb3"><pre class="downlit">
-(<span class="kw">line</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/geos_read_wkt.html">geos_read_wkt</a></span>(<span class="st">"LINESTRING (30 10, 10 30, 40 40)"</span>))
-<span class="co">#&gt; &lt;geos_geometry[1]&gt;</span>
-<span class="co">#&gt; [1] LINESTRING (30 10, 10 30, 40 40)</span>
-<span class="fu"><a href="reference/geos_read_wkt.html">geos_write_wkt</a></span>(<span class="kw">line</span>)
-<span class="co">#&gt; [1] "LINESTRING (30 10, 10 30, 40 40)"</span>
+<span class="kw">line</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/as_geos_geometry.html">as_geos_geometry</a></span>(<span class="st">"LINESTRING (30 10, 10 30, 40 40)"</span>)
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="fu"><a href="reference/geos_buffer.html">geos_buffer</a></span>(<span class="kw">line</span>, distance = <span class="fl">4</span>), col = <span class="st">"grey90"</span>)
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">line</span>, add = <span class="kw">T</span>)
 </pre></div>
-<p>Operators are a work in progress. (<a href="https://github.com/paleolimbot/geos/tree/bf3ef50a0f01851e2b55b0060d38754495697815">browse the last commit before the rewrite</a>).</p>
+<p><img src="reference/figures/README-ex-plot-1.png" width="100%"></p>
+<p>The geos package is designed to work with <a href="https://dplyr.tidyverse.org/">dplyr</a> package, so you can work with geometry vectors as a data frame column:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw">dplyr</span>)
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Attaching package: 'dplyr'</span>
+<span class="co">#&gt; The following objects are masked from 'package:stats':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     filter, lag</span>
+<span class="co">#&gt; The following objects are masked from 'package:base':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     intersect, setdiff, setequal, union</span>
+
+<span class="co"># map data from the maps package via ggplot2</span>
+<span class="kw">states_df</span> <span class="op">&lt;-</span> <span class="fu">as_tibble</span>(<span class="kw">ggplot2</span>::<span class="fu">map_data</span>(<span class="st">"state"</span>))
+<span class="kw">states_df</span>
+<span class="co">#&gt; # A tibble: 15,537 x 6</span>
+<span class="co">#&gt;     long   lat group order region  subregion</span>
+<span class="co">#&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;    </span>
+<span class="co">#&gt;  1 -87.5  30.4     1     1 alabama &lt;NA&gt;     </span>
+<span class="co">#&gt;  2 -87.5  30.4     1     2 alabama &lt;NA&gt;     </span>
+<span class="co">#&gt;  3 -87.5  30.4     1     3 alabama &lt;NA&gt;     </span>
+<span class="co">#&gt;  4 -87.5  30.3     1     4 alabama &lt;NA&gt;     </span>
+<span class="co">#&gt;  5 -87.6  30.3     1     5 alabama &lt;NA&gt;     </span>
+<span class="co">#&gt;  6 -87.6  30.3     1     6 alabama &lt;NA&gt;     </span>
+<span class="co">#&gt;  7 -87.6  30.3     1     7 alabama &lt;NA&gt;     </span>
+<span class="co">#&gt;  8 -87.6  30.3     1     8 alabama &lt;NA&gt;     </span>
+<span class="co">#&gt;  9 -87.7  30.3     1     9 alabama &lt;NA&gt;     </span>
+<span class="co">#&gt; 10 -87.8  30.3     1    10 alabama &lt;NA&gt;     </span>
+<span class="co">#&gt; # … with 15,527 more rows</span>
+
+<span class="kw">states_df</span> <span class="op">%&gt;%</span> 
+  <span class="fu">group_by</span>(<span class="kw">region</span>, <span class="kw">group</span>) <span class="op">%&gt;%</span> 
+  <span class="fu">summarise</span>(geometry = <span class="fu"><a href="reference/geos_make_point.html">geos_make_polygon</a></span>(<span class="kw">long</span>, <span class="kw">lat</span>)) <span class="op">%&gt;%</span> 
+  <span class="fu">summarise</span>(geometry = <span class="fu"><a href="reference/geos_make_point.html">geos_make_collection</a></span>(<span class="kw">geometry</span>, <span class="st">"multipolygon"</span>))
+<span class="co">#&gt; `summarise()` regrouping output by 'region' (override with `.groups` argument)</span>
+<span class="co">#&gt; `summarise()` ungrouping output (override with `.groups` argument)</span>
+<span class="co">#&gt; # A tibble: 49 x 2</span>
+<span class="co">#&gt;    region               geometry                                          </span>
+<span class="co">#&gt;    &lt;chr&gt;                &lt;geos_geom&gt;                                       </span>
+<span class="co">#&gt;  1 alabama              &lt;MULTIPOLYGON [-88.476 30.241...-84.901 35.013]&gt;  </span>
+<span class="co">#&gt;  2 arizona              &lt;MULTIPOLYGON [-114.809 31.347...-109.040 37.002]&gt;</span>
+<span class="co">#&gt;  3 arkansas             &lt;MULTIPOLYGON [-94.624 32.997...-89.651 36.509]&gt;  </span>
+<span class="co">#&gt;  4 california           &lt;MULTIPOLYGON [-124.383 32.538...-114.133 42.021]&gt;</span>
+<span class="co">#&gt;  5 colorado             &lt;MULTIPOLYGON [-109.063 36.984...-102.044 41.018]&gt;</span>
+<span class="co">#&gt;  6 connecticut          &lt;MULTIPOLYGON [-73.722 41.012...-71.780 42.049]&gt;  </span>
+<span class="co">#&gt;  7 delaware             &lt;MULTIPOLYGON [-75.802 38.457...-75.052 39.849]&gt;  </span>
+<span class="co">#&gt;  8 district of columbia &lt;MULTIPOLYGON [-77.137 38.806...-76.931 38.996]&gt;  </span>
+<span class="co">#&gt;  9 florida              &lt;MULTIPOLYGON [-87.640 25.130...-80.042 31.008]&gt;  </span>
+<span class="co">#&gt; 10 georgia              &lt;MULTIPOLYGON [-85.611 30.355...-80.844 34.996]&gt;  </span>
+<span class="co">#&gt; # … with 39 more rows</span>
+</pre></div>
+<p>The easiest way to get data into and out of the package is using the <a href="https://r-spatial.github.io/sf">sf package</a>. Note that the conversion will drop the CRS (it is your responsibility to make sure the assumptions of planar geometry are appropriate for your use-case).</p>
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://r-spatial.github.io/sf">sf</a></span>)
+<span class="co">#&gt; Linking to GEOS 3.8.0, GDAL 3.0.4, PROJ 6.3.1</span>
+<span class="kw">nc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_read.html">read_sf</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"shape/nc.shp"</span>, package = <span class="st">"sf"</span>))
+
+<span class="kw">nc_geos</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/as_geos_geometry.html">as_geos_geometry</a></span>(<span class="kw">nc</span>)
+
+<span class="kw">nc_geos</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="reference/geos_make_point.html">geos_make_collection</a></span>() <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="reference/geos_centroid.html">geos_unary_union</a></span>() <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_as_sfc.html">st_as_sfc</a></span>(<span class="kw">nc_state</span>)
+<span class="co">#&gt; Geometry set for 1 feature </span>
+<span class="co">#&gt; geometry type:  MULTIPOLYGON</span>
+<span class="co">#&gt; dimension:      XY</span>
+<span class="co">#&gt; bbox:           xmin: -84.32385 ymin: 33.88199 xmax: -75.45698 ymax: 36.58965</span>
+<span class="co">#&gt; CRS:            NA</span>
+<span class="co">#&gt; MULTIPOLYGON (((-77.96073 34.18924, -77.95853 3...</span>
+</pre></div>
 </div>
 </div>
   </div>
