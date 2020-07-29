@@ -11,7 +11,7 @@
 #' @examples
 #' geos_make_point(1:3, 1:3)
 #' geos_make_linestring(1:3, 1:3)
-#'
+#' geos_make_polygon(c(0, 1, 0), c(0, 0, 1))
 #' geos_make_collection("POINT (1 1)")
 #'
 geos_make_point <- function(x, y, z = NA_real_) {
@@ -46,15 +46,31 @@ geos_make_linestring <- function(x, y, z = NA_real_, feature_id = 1L) {
 #' @rdname geos_make_point
 #' @export
 geos_make_polygon <- function(x, y, z = NA_real_, feature_id = 1L, ring_id = 1L) {
-  # nocov start
   recycled <- recycle_common(
     list(
       as.numeric(x), as.numeric(y), as.numeric(z),
       as.integer(feature_id), as.integer(ring_id)
     )
   )
-  stop("not implemented")
-  # nocov end
+
+  if (length(recycled[[1]]) == 0) {
+    return(geos_empty("polygon"))
+  }
+
+  lengths <- rle(recycled[[4]])$lengths
+  feature_end <- cumsum(lengths)
+  feature_start <- feature_end - lengths + 1
+  feature_indices <- Map(":", feature_start, feature_end)
+  ring_ids_by_feature <- Map("[", list(recycled[[5]]), feature_indices)
+  ring_lengths_by_feature <- lapply(ring_ids_by_feature, function(x) rle(x)[[1]])
+
+  new_geos_geometry(
+    .Call(
+      geos_c_make_polygon,
+      recycled[[1]], recycled[[2]], recycled[[3]],
+      ring_lengths_by_feature
+    )
+  )
 }
 
 #' @rdname geos_make_point

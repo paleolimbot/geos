@@ -115,6 +115,118 @@ void cleanup_geoms(GEOSContextHandle_t handle, GEOSGeometry** geoms, int nGeoms)
   }
 }
 
+SEXP geos_c_make_polygon(SEXP x, SEXP y, SEXP z, SEXP ringLengthsByFeature) {
+  double* px = REAL(x);
+  double* py = REAL(y);
+  double* pz = REAL(z);
+
+  R_xlen_t size = Rf_xlength(ringLengthsByFeature);
+  SEXP result = PROTECT(Rf_allocVector(VECSXP, size));
+
+  GEOS_INIT();
+
+  // the index in x, y, z
+  R_xlen_t iCoord = 0;
+
+  // looping over ringLengthsByFeature
+  SEXP ringLengths;
+  int featureLength;
+  int ringLength;
+  int* pRingLength;
+  GEOSGeometry* itemGeometry;
+  GEOSCoordSequence* seq;
+  int featureIs3D;
+  int ringIsOpen;
+  R_xlen_t iCoordStartRing;
+  R_xlen_t iCoordEndRing;
+
+  for (R_xlen_t i = 0; i < size; i++) {
+    ringLengths = VECTOR_ELT(ringLengthsByFeature, i);
+    pRingLength = INTEGER(ringLengths);
+    featureLength = Rf_length(ringLengths);
+    featureIs3D = !ISNA(pz[iCoord]);
+
+    GEOSGeometry* rings[featureLength];
+
+    for (int j = 0; j < featureLength; j++) {
+      ringLength = pRingLength[j];
+
+      iCoordStartRing = iCoord;
+      iCoordEndRing = iCoordStartRing + ringLength - 1;
+
+      if (featureIs3D) {
+        ringIsOpen = (px[iCoordStartRing] != px[iCoordEndRing]) ||
+          (py[iCoordStartRing] != py[iCoordEndRing]) ||
+          (pz[iCoordStartRing] != pz[iCoordEndRing]);
+
+        seq = GEOSCoordSeq_create_r(handle, ringLength + ringIsOpen, 3);
+        if (seq == NULL) {
+          cleanup_geoms(handle, rings, j); // # nocov
+          UNPROTECT(1); // # nocov
+          GEOS_ERROR("[i=%d] ", iCoord); // # nocov
+        }
+
+        for (int k = 0; k < ringLength; k++) {
+          GEOSCoordSeq_setXYZ_r(handle, seq, k, px[iCoord], py[iCoord], pz[iCoord]);
+          iCoord++;
+        }
+
+        if (ringIsOpen) {
+          GEOSCoordSeq_setXYZ_r(handle, seq, ringLength, px[iCoordStartRing], py[iCoordStartRing], pz[iCoordStartRing]);
+        }
+
+      } else {
+        ringIsOpen = (px[iCoordStartRing] != px[iCoordEndRing]) ||
+          (py[iCoordStartRing] != py[iCoordEndRing]);
+
+        seq = GEOSCoordSeq_create_r(handle, ringLength + ringIsOpen, 2);
+        if (seq == NULL) {
+          cleanup_geoms(handle, rings, j); // # nocov
+          UNPROTECT(1); // # nocov
+          GEOS_ERROR("[i=%d] ", iCoord); // # nocov
+        }
+
+        for (int k = 0; k < ringLength; k++) {
+          GEOSCoordSeq_setXY_r(handle, seq, k, px[iCoord], py[iCoord]);
+          iCoord++;
+        }
+
+        if (ringIsOpen) {
+          GEOSCoordSeq_setXY_r(handle, seq, ringLength, px[iCoordStartRing], py[iCoordStartRing]);
+        }
+      }
+
+      rings[j] = GEOSGeom_createLinearRing_r(handle, seq);
+
+      // e.g., if coordseq is of length < 3
+      // attempting to destroy seq here may result in crashing the session
+      if (rings[j] == NULL) {
+        cleanup_geoms(handle, rings, j);
+        UNPROTECT(1);
+        GEOS_ERROR("[i=%d] ", iCoord);
+      }
+    }
+
+    if (featureLength > 1) {
+      itemGeometry = GEOSGeom_createPolygon_r(handle, rings[0], &(rings[1]), featureLength - 1);
+    } else {
+      itemGeometry = GEOSGeom_createPolygon_r(handle, rings[0], NULL, 0);
+    }
+
+    // not sure how to make this fire given constraints above
+    if (itemGeometry == NULL) {
+      // cleanup_geoms(handle, rings, featureLength); // # nocov
+      UNPROTECT(1); // # nocov
+      GEOS_ERROR("[i=%d] ", iCoord); // # nocov
+    }
+
+    SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(itemGeometry));
+  }
+
+  UNPROTECT(1);
+  return result;
+}
+
 SEXP geos_c_make_collection(SEXP geom, SEXP typeId, SEXP featureLengths) {
   int* pLengths = INTEGER(featureLengths);
   int intTypeId = INTEGER(typeId)[0];

@@ -48,7 +48,7 @@ Create geometries from vectors of coordinates
 \examples{
 geos_make_point(1:3, 1:3)
 geos_make_linestring(1:3, 1:3)
-
+geos_make_polygon(c(0, 1, 0), c(0, 0, 1))
 geos_make_collection("POINT (1 1)")
 
 }

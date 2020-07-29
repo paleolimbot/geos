@@ -18,6 +18,65 @@ test_that("make linestring works", {
   expect_error(geos_make_linestring(1, 1), "IllegalArgumentException")
 })
 
+test_that("make polygon works", {
+  expect_true(geos_is_empty(geos_make_polygon(double(), double(), double())))
+
+  # no hole
+  expect_identical(
+    geos_write_wkt(geos_make_polygon(c(0, 1, 0, 0), c(0, 0, 1, 0))),
+    "POLYGON ((0 0, 1 0, 0 1, 0 0))"
+  )
+
+  # with z
+  expect_identical(
+    geos_write_wkt(geos_make_polygon(c(0, 1, 0, 0), c(0, 0, 1, 0), 5)),
+    "POLYGON Z ((0 0 5, 1 0 5, 0 1 5, 0 0 5))"
+  )
+
+  # with hole
+  expect_identical(
+    geos_write_wkt(
+      geos_make_polygon(
+        c(0, 1, 0, 0, 0.1, 0.2, 0.1, 0.1),
+        c(0, 0, 1, 0, 0.1, 0.1, 0.2, 0.1),
+        ring_id = rep(1:2, each = 4)
+      )
+    ),
+    "POLYGON ((0 0, 1 0, 0 1, 0 0), (0.1 0.1, 0.2 0.1, 0.1 0.2, 0.1 0.1))"
+  )
+
+  # multiple features
+  expect_identical(
+    geos_write_wkt(
+      geos_make_polygon(
+        c(0, 1, 0, 0, 0.1, 0.2, 0.1, 0.1),
+        c(0, 0, 1, 0, 0.1, 0.1, 0.2, 0.1),
+        feature_id = rep(1:2, each = 4)
+      )
+    ),
+    c("POLYGON ((0 0, 1 0, 0 1, 0 0))", "POLYGON ((0.1 0.1, 0.2 0.1, 0.1 0.2, 0.1 0.1))")
+  )
+
+  # auto-closing hole (2D)
+  expect_identical(
+    geos_write_wkt(geos_make_polygon(c(0, 1, 0), c(0, 0, 1))),
+    "POLYGON ((0 0, 1 0, 0 1, 0 0))"
+  )
+
+  # auto-closing hole (3D)
+  expect_identical(
+    geos_write_wkt(geos_make_polygon(c(0, 1, 0), c(0, 0, 1), 5)),
+    "POLYGON Z ((0 0 5, 1 0 5, 0 1 5, 0 0 5))"
+  )
+
+  # bad ring (first and subsequent)
+  expect_error(geos_make_polygon(1, 1), "IllegalArgumentException")
+  expect_error(
+    geos_make_polygon(c(0, 1, 0, 0, 12), c(0, 0, 1, 0, 12), ring_id = c(rep(1, 4), 2)),
+    "IllegalArgumentException"
+  )
+})
+
 test_that("make collection works", {
   expect_identical(
     geos_write_wkt(
