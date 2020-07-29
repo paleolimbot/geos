@@ -173,6 +173,57 @@ SEXP geos_c_coorinate_dimension(SEXP geom) {
   GEOS_UNARY_RETURN(GEOSGeom_getCoordinateDimension_r, int, INTSXP, INTEGER, NA_INTEGER, 0);
 }
 
+// GEOSCoordSeq_isCCW() is useful but operates on coordinate sequence instead of geom
+SEXP geos_c_is_clockwise(SEXP geom) {
+  R_xlen_t size = Rf_xlength(geom);
+  SEXP result = PROTECT(Rf_allocVector(LGLSXP, size));
+  int* pResult = LOGICAL(result);
+
+  GEOS_INIT();
+
+  SEXP item;
+  GEOSGeometry* geometry;
+  const GEOSCoordSequence* seq;
+  char isCCW;
+  for (R_xlen_t i = 0; i < size; i++) {
+    item = VECTOR_ELT(geom, i);
+
+    if (item == R_NilValue) {
+      pResult[i] = NA_LOGICAL;
+      continue;
+    }
+
+    geometry = (GEOSGeometry*) R_ExternalPtrAddr(item);
+    GEOS_CHECK_GEOMETRY(geometry, i);
+
+    if (GEOSisEmpty_r(handle, geometry)) {
+      pResult[i] = NA_LOGICAL;
+      continue;
+    }
+
+    seq = GEOSGeom_getCoordSeq_r(handle, geometry);
+    // e.g., when not a point, linestring, or linearring
+    if (seq == NULL) {
+      UNPROTECT(1);
+      GEOS_ERROR("[i=%d] ", i + 1);
+    }
+
+    int resultCode = GEOSCoordSeq_isCCW_r(handle, seq, &isCCW);
+
+    // e.g., not enough points in ring
+    if (resultCode == 0) {
+      UNPROTECT(1);
+      GEOS_ERROR("[i=%d] ", i + 1);
+    }
+
+    pResult[i] = !isCCW;
+  }
+
+  GEOS_FINISH();
+  UNPROTECT(1);
+  return result;
+}
+
 // validity checking
 
 SEXP geos_c_is_valid(SEXP geom) {

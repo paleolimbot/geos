@@ -126,6 +126,16 @@ test_that("atomic returners work", {
     geos_coordinate_dimension(c("POINT (0 0)", "POINT Z (0 0 1)", NA)),
     c(2L, 3L, NA)
   )
+
+  expect_true(geos_is_clockwise("LINESTRING (0 0, 0 1, 1 0, 0 0)"))
+  expect_false(geos_is_clockwise("LINESTRING (0 0, 1 0, 0 1, 0 0)"))
+  expect_identical(
+    geos_is_clockwise(c("POINT EMPTY", NA)),
+    c(NA, NA)
+  )
+
+  expect_error(geos_is_clockwise("POINT (1 1)"), "IllegalArgumentException")
+  expect_error(geos_is_clockwise("POLYGON ((0 0, 0 1, 1 0, 0 0))"), "must be a")
 })
 
 test_that("validity checking works", {

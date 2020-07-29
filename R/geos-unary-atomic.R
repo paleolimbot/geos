@@ -200,6 +200,11 @@ geos_coordinate_dimension <- function(geom) {
   .Call(geos_c_coorinate_dimension, as_geos_geometry(geom))
 }
 
+#' @rdname geos_area
+#' @export
+geos_is_clockwise <- function(geom) {
+  .Call(geos_c_is_clockwise, as_geos_geometry(geom))
+}
 
 #' Geometry validity
 #'

@@ -26,6 +26,7 @@
 \alias{geos_num_rings}
 \alias{geos_dimension}
 \alias{geos_coordinate_dimension}
+\alias{geos_is_clockwise}
 \title{Extract information from a GEOS geometry}
 \usage{
 geos_area(geom)
@@ -77,6 +78,8 @@ geos_num_rings(geom)
 geos_dimension(geom)
 
 geos_coordinate_dimension(geom)
+
+geos_is_clockwise(geom)
 }
 \arguments{
 \item{geom}{A \link[=as_geos_geometry]{GEOS geometry vector}}

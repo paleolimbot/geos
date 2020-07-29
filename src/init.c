@@ -105,6 +105,7 @@ extern SEXP geos_c_num_geometries(SEXP geom);
 extern SEXP geos_c_num_interior_rings(SEXP geom);
 extern SEXP geos_c_dimension(SEXP geom);
 extern SEXP geos_c_coorinate_dimension(SEXP geom);
+extern SEXP geos_c_is_clockwise(SEXP geom);
 extern SEXP geos_c_is_valid(SEXP geom);
 extern SEXP geos_c_is_valid_detail(SEXP geom, SEXP allowSelfTouchingRingFormingHole);
 extern SEXP geos_c_centroid(SEXP geom);
@@ -248,6 +249,7 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_num_interior_rings", (DL_FUNC) &geos_c_num_interior_rings, 1},
   {"geos_c_dimension", (DL_FUNC) &geos_c_dimension, 1},
   {"geos_c_coorinate_dimension", (DL_FUNC) &geos_c_coorinate_dimension, 1},
+  {"geos_c_is_clockwise", (DL_FUNC) &geos_c_is_clockwise, 1},
   {"geos_c_is_valid", (DL_FUNC) &geos_c_is_valid, 1},
   {"geos_c_is_valid_detail", (DL_FUNC) &geos_c_is_valid_detail, 2},
   {"geos_c_centroid", (DL_FUNC) &geos_c_centroid, 1},
