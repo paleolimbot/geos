@@ -20,12 +20,18 @@ which functions are implemented in the R API.
 
 ## Installation
 
-You can install the development version from
-[GitHub](https://github.com/) with:
+You can install the released version of s2 from
+[CRAN](https://CRAN.R-project.org) with:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("paleolimbot/geos")
+install.packages("geos")
+```
+
+And the development version from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("remotes")
+remotes::install_github("paleolimbot/geos")
 ```
 
 If you can load the package, you’re good to go\!
@@ -108,7 +114,7 @@ planar geometry are appropriate for your use-case).
 
 ``` r
 library(sf)
-#> Linking to GEOS 3.8.0, GDAL 3.0.4, PROJ 6.3.1
+#> Linking to GEOS 3.7.2, GDAL 2.4.2, PROJ 5.2.0
 nc <- read_sf(system.file("shape/nc.shp", package = "sf"))
 
 nc_geos <- as_geos_geometry(nc)
