@@ -23,7 +23,6 @@ Suggests:
     wkutils
 Imports: 
     libgeos (>= 3.8.1-2)
-Remotes: paleolimbot/wkutils
 URL: https://paleolimbot.github.io/geos, https://github.com/paleolimbot/geos
 BugReports: https://github.com/paleolimbot/geos/issues
 LinkingTo: 
