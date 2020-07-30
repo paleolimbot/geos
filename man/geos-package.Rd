@@ -8,7 +8,10 @@
 \description{
 Provides an R API to the Open Source Geometry Engine
   ('GEOS') library and a vector format with which to efficiently
-  store 'GEOS' geometries.
+  store 'GEOS' geometries. High-performance vectorized functions 
+  to extract information from, calculate relationships between, and
+  transform geometries are provided. Finally, facilities to import 
+  and export geometry vectors to other spatial formats are provided.
 }
 \seealso{
 Useful links:
