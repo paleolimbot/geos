@@ -1,4 +1,7 @@
 
+#ifndef GEOS_COMMON_H
+#define GEOS_COMMON_H
+
 #include <string.h>
 #include "Rinternals.h"
 #include "libgeos.h"
@@ -61,3 +64,5 @@ SEXP geos_common_tree_xptr(GEOSSTRtree* geometry, SEXP geom, SEXP indices);
   if (geometry == NULL) {   \
     Rf_error("External pointer is not valid [i=%d]", i + 1);  \
   }
+
+#endif
