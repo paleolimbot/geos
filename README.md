@@ -9,7 +9,7 @@
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 ![R-CMD-check](https://github.com/paleolimbot/geos/workflows/R-CMD-check/badge.svg)
 [![Codecov test
-coverage](https://codecov.io/gh/paleolimbot/geos/branch/master/graph/badge.svg)](https://codecov.io/gh/paleolimbot/geom?branch=master)
+coverage](https://codecov.io/gh/paleolimbot/geos/branch/master/graph/badge.svg)](https://codecov.io/gh/paleolimbot/geos?branch=master)
 <!-- badges: end -->
 
 The goal of geom is to provide [access to the GEOS C
@@ -114,7 +114,7 @@ planar geometry are appropriate for your use-case).
 
 ``` r
 library(sf)
-#> Linking to GEOS 3.7.2, GDAL 2.4.2, PROJ 5.2.0
+#> Linking to GEOS 3.8.0, GDAL 3.0.4, PROJ 6.3.1
 nc <- read_sf(system.file("shape/nc.shp", package = "sf"))
 
 nc_geos <- as_geos_geometry(nc)
