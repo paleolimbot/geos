@@ -70,13 +70,16 @@ SEXP geos_c_polygonize_full(SEXP collection) {
   GEOSGeometry* invalidRings = NULL;
   GEOSGeometry* resultGeometry = GEOSPolygonize_full_r(handle, collectionGeometry, &cuts, &dangles, &invalidRings);
 
-  SEXP resultPtr = geos_common_geometry_xptr(resultGeometry);
-  SEXP cutsPtr = geos_common_geometry_xptr(cuts);
-  SEXP danglesPtr = geos_common_geometry_xptr(dangles);
-  SEXP invalidRingsPtr = geos_common_geometry_xptr(invalidRings);
+  // rchk gives an error about these variables being unprotected,
+  // possibly because of the Rf_allocVector() below
+  SEXP resultPtr = PROTECT(geos_common_geometry_xptr(resultGeometry));
+  SEXP cutsPtr = PROTECT(geos_common_geometry_xptr(cuts));
+  SEXP danglesPtr = PROTECT(geos_common_geometry_xptr(dangles));
+  SEXP invalidRingsPtr = PROTECT(geos_common_geometry_xptr(invalidRings));
 
   // don't know how to make the polygonizer fail
   if (resultGeometry == NULL) {
+    UNPROTECT(4);
     GEOS_ERROR("%s: ", "Error calling polygonize full"); // # nocov
   }
 
@@ -88,6 +91,6 @@ SEXP geos_c_polygonize_full(SEXP collection) {
   SET_VECTOR_ELT(result, 2, danglesPtr);
   SET_VECTOR_ELT(result, 3, invalidRingsPtr);
 
-  UNPROTECT(1); // result
+  UNPROTECT(5); // result + children
   return result;
 }
