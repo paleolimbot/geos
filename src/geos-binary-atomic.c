@@ -250,7 +250,7 @@ SEXP geos_c_equals_exact(SEXP geom1, SEXP geom2, SEXP tolerance) {
     item2 = VECTOR_ELT(geom2, i);
 
     if (item1 == R_NilValue || item2 == R_NilValue || ISNA(pTolerance[i])) {
-      pResult[i] = NA_REAL;
+      pResult[i] = NA_INTEGER;
       continue;
     }
 
