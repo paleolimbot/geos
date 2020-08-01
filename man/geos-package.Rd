@@ -8,7 +8,7 @@
 \description{
 Provides an R API to the Open Source Geometry Engine
   ('GEOS') library and a vector format with which to efficiently
-  store 'GEOS' geometries. High-performance vectorized functions 
+  store 'GEOS' geometries. High-performance functions 
   to extract information from, calculate relationships between, and
   transform geometries are provided. Finally, facilities to import 
   and export geometry vectors to other spatial formats are provided.
@@ -24,6 +24,11 @@ Useful links:
 }
 \author{
 \strong{Maintainer}: Dewey Dunnington \email{dewey@fishandwhistle.net} (\href{https://orcid.org/0000-0002-9415-4582}{ORCID})
+
+Authors:
+\itemize{
+  \item Edzer Pebesma \email{edzer.pebesma@uni-muenster.de} (\href{https://orcid.org/0000-0001-8049-7069}{ORCID})
+}
 
 }
 \keyword{internal}
