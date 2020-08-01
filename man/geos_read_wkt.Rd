@@ -44,7 +44,7 @@ is no value present in the original.}
 \item{trim}{Trim unnecessary zeroes in the output?}
 
 \item{wkb}{A \code{list()} of \code{\link[=raw]{raw()}} vectors, such as that
-returned by \code{\link[sf:st_as_binary]{sf::st_as_binary()}}.}
+returned by \code{sf::st_as_binary()}.}
 
 \item{include_srid}{Include the
 values of the Z and M coordinates and/or SRID
