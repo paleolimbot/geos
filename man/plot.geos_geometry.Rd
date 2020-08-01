@@ -43,7 +43,9 @@ The input, invisibly
 Plot GEOS geometries
 }
 \examples{
-plot(as_geos_geometry("LINESTRING (0 0, 1 1)"))
-plot(as_geos_geometry("POINT (0.5 0.4)"), add = TRUE)
+if (requireNamespace("wkutils")) {
+  plot(as_geos_geometry("LINESTRING (0 0, 1 1)"))
+  plot(as_geos_geometry("POINT (0.5 0.4)"), add = TRUE)
+}
 
 }
