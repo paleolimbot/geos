@@ -161,8 +161,9 @@
 <p>The easiest way to get data into and out of the package is using the <a href="https://r-spatial.github.io/sf">sf package</a>. Note that the conversion will drop the CRS (it is your responsibility to make sure the assumptions of planar geometry are appropriate for your use-case).</p>
 <div class="sourceCode" id="cb6"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://r-spatial.github.io/sf">sf</a></span>)
-<span class="co">#&gt; Linking to GEOS 3.8.0, GDAL 3.0.4, PROJ 6.3.1</span>
-<span class="kw">nc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_read.html">read_sf</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"shape/nc.shp"</span>, package = <span class="st">"sf"</span>))
+<span class="co">#&gt; Linking to GEOS 3.7.2, GDAL 2.4.2, PROJ 5.2.0</span>
+<span class="kw">nc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_read.html">read_sf</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"shape/nc.shp"</span>, package = <span class="st">"sf"</span>)) <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_transform.html">st_transform</a></span>(<span class="fl">32119</span>) <span class="co"># North Caroline state plane, m.</span>
 
 <span class="kw">nc_geos</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/as_geos_geometry.html">as_geos_geometry</a></span>(<span class="kw">nc</span>)
 
@@ -173,9 +174,9 @@
 <span class="co">#&gt; Geometry set for 1 feature </span>
 <span class="co">#&gt; geometry type:  MULTIPOLYGON</span>
 <span class="co">#&gt; dimension:      XY</span>
-<span class="co">#&gt; bbox:           xmin: -84.32385 ymin: 33.88199 xmax: -75.45698 ymax: 36.58965</span>
+<span class="co">#&gt; bbox:           xmin: 123821.3 ymin: 14725.47 xmax: 930486.5 ymax: 318247.1</span>
 <span class="co">#&gt; CRS:            NA</span>
-<span class="co">#&gt; MULTIPOLYGON (((-77.96073 34.18924, -77.95853 3...</span>
+<span class="co">#&gt; MULTIPOLYGON (((705402.7 49229.15, 705834.9 274...</span>
 </pre></div>
 </div>
 </div>
