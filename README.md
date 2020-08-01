@@ -114,8 +114,9 @@ planar geometry are appropriate for your use-case).
 
 ``` r
 library(sf)
-#> Linking to GEOS 3.8.0, GDAL 3.0.4, PROJ 6.3.1
-nc <- read_sf(system.file("shape/nc.shp", package = "sf"))
+#> Linking to GEOS 3.7.2, GDAL 2.4.2, PROJ 5.2.0
+nc <- read_sf(system.file("shape/nc.shp", package = "sf")) %>%
+  st_transform(32119) # North Caroline state plane, m.
 
 nc_geos <- as_geos_geometry(nc)
 
@@ -126,7 +127,7 @@ nc_geos %>%
 #> Geometry set for 1 feature 
 #> geometry type:  MULTIPOLYGON
 #> dimension:      XY
-#> bbox:           xmin: -84.32385 ymin: 33.88199 xmax: -75.45698 ymax: 36.58965
+#> bbox:           xmin: 123821.3 ymin: 14725.47 xmax: 930486.5 ymax: 318247.1
 #> CRS:            NA
-#> MULTIPOLYGON (((-77.96073 34.18924, -77.95853 3...
+#> MULTIPOLYGON (((705402.7 49229.15, 705834.9 274...
 ```
