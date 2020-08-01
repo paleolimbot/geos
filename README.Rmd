@@ -74,7 +74,8 @@ The easiest way to get data into and out of the package is using the [sf package
 
 ```{r sf-plot}
 library(sf)
-nc <- read_sf(system.file("shape/nc.shp", package = "sf"))
+nc <- read_sf(system.file("shape/nc.shp", package = "sf")) %>%
+  st_transform(32119) # North Caroline state plane, m.
 
 nc_geos <- as_geos_geometry(nc)
 
