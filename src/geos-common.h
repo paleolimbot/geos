@@ -17,7 +17,7 @@ void geos_common_handle_error(const char *message, void* userdata);
 // a handle, initialized on package load, for destroying geometries
 // much faster than creating a new handle for each geometry to be destroyed
 // (possibly millions)
-GEOSContextHandle_t geos_gc_handle;
+extern GEOSContextHandle_t geos_gc_handle;
 
 // creates an externalptr with the appropriate finisher for a GEOSGeometry*
 // and calls GEOSGeom_destory_r(), finishing an externalptr

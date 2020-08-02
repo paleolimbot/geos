@@ -17,6 +17,9 @@ void geos_common_handle_error(const char *message, void* userdata) {
   }
 }
 
+// initialize (actual value is set in R_init_geos())
+GEOSContextHandle_t geos_gc_handle = NULL;
+
 void geos_common_release_geometry(SEXP externalPtr) {
   GEOSGeometry* geometry = (GEOSGeometry*) R_ExternalPtrAddr(externalPtr);
   // geometry should not be NULL, but R will crash if NULL is passed here
