@@ -108,7 +108,7 @@ states_df %>%
 ```
 
 The easiest way to get data into and out of the package is using the [sf
-package](https://r-spatial.github.io/sf). Note that the conversion will
+package](https://r-spatial.github.io/sf/). Note that the conversion will
 drop the CRS (it is your responsibility to make sure the assumptions of
 planar geometry are appropriate for your use-case).
 

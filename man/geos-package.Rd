@@ -7,8 +7,8 @@
 \title{geos: Open Source Geometry Engine ('GEOS') R API}
 \description{
 Provides an R API to the Open Source Geometry Engine
-  ('GEOS') library and a vector format with which to efficiently
-  store 'GEOS' geometries. High-performance functions 
+  ('GEOS') library (<https://trac.osgeo.org/geos/>) and a vector format 
+  with which to efficiently store 'GEOS' geometries. High-performance functions 
   to extract information from, calculate relationships between, and
   transform geometries are provided. Finally, facilities to import 
   and export geometry vectors to other spatial formats are provided.
@@ -16,8 +16,8 @@ Provides an R API to the Open Source Geometry Engine
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://paleolimbot.github.io/geos}
-  \item \url{https://github.com/paleolimbot/geos}
+  \item \url{https://paleolimbot.github.io/geos/}
+  \item \url{https://github.com/paleolimbot/geos/}
   \item Report bugs at \url{https://github.com/paleolimbot/geos/issues}
 }
 
