@@ -1,6 +1,10 @@
+
+Maintenance release to support forthcoming updates to suggeested
+packages.
+
 ## Test environments
 
-* local R installation, R 4.0.1
+* local R installation, R 4.0.3
 * GitHub Actions: windows-latest (oldrel), windows-latest (release),
   macOS-latest (release), ubuntu-18.04 (release), ubuntu-18.04 (devel)
 * win-builder (devel)
