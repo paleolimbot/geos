@@ -1,4 +1,7 @@
-destination: docs
+
+development:
+  mode: auto
+
 
 reference:
 - title: Create and Export GEOS Geometry Vectors
