@@ -10,7 +10,6 @@
 \alias{as_geos_geometry.sf}
 \alias{as_geos_geometry.wk_wkb}
 \alias{as_geos_geometry.wk_wkt}
-\alias{as_geos_geometry.wk_wksxp}
 \title{Create GEOS Geometry Vectors}
 \usage{
 as_geos_geometry(x, ...)
@@ -30,8 +29,6 @@ as_geos_geometry(x, ...)
 \method{as_geos_geometry}{wk_wkb}(x, ...)
 
 \method{as_geos_geometry}{wk_wkt}(x, ...)
-
-\method{as_geos_geometry}{wk_wksxp}(x, ...)
 }
 \arguments{
 \item{x}{An object to be coerced to a geometry vector}
