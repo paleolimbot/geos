@@ -1,3 +1,5 @@
+# geos (development version)
+
 # geos 0.0.2
 
 * Dropped support for `wk::wksxp()`.
