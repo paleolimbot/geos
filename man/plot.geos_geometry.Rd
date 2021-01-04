@@ -25,7 +25,7 @@ and multipolygon geometries.}
 
 \item{asp}{Passed to \code{\link[graphics:plot.default]{graphics::plot()}}}
 
-\item{bbox}{The limits of the plot in the form returned by \code{\link[wkutils:wkb_ranges]{wksxp_ranges()}}.}
+\item{bbox}{The limits of the plot in the form returned by \code{\link[wkutils:wkb_ranges]{wkt_ranges()}}.}
 
 \item{xlab}{Passed to \code{\link[graphics:plot.default]{graphics::plot()}}}
 
