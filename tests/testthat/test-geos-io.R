@@ -84,11 +84,29 @@ test_that("WKB reader works", {
   expect_error(geos_write_wkb(readRDS(temp_rds)), "External pointer is not valid")
   unlink(temp_rds)
 
-  # attempt to write empty point
-  expect_error(
-    geos_write_wkb(geos_read_wkt("POINT EMPTY")),
-    "Empty Points cannot be represented"
-  )
+  if (geos_version() >= "3.9.0") {
+    expect_identical(
+      geos_write_wkb(geos_read_wkt("POINT EMPTY"), endian = 1),
+      structure(
+        list(
+          as.raw(
+            c(0x01,
+              0x01, 0x00, 0x00, 0x00,
+              0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf8, 0x7f,
+              0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf8, 0x7f
+            )
+          )
+        ),
+        class = "blob"
+      )
+    )
+  } else {
+    # errors for GEOS < 3.9
+    expect_error(
+      geos_write_wkb(geos_read_wkt("POINT EMPTY")),
+      "Empty Points cannot be represented"
+    )
+  }
 
   # attempt to read invalid WKB
   wkb <- wk::wkt_translate_wkb("POINT (1 1)", endian = 1)
@@ -137,7 +155,15 @@ test_that("hex reader/writer works", {
   )
 
   expect_error(geos_read_hex("not hex"), "ParseException")
-  expect_error(geos_write_hex("POINT EMPTY"), "IllegalArgumentException")
+
+  if (geos_version() >= "3.9.0") {
+    expect_identical(
+      geos_write_hex("POINT EMPTY"),
+      "0101000000000000000000F87F000000000000F87F"
+    )
+  } else {
+    expect_error(geos_write_hex("POINT EMPTY"), "IllegalArgumentException")
+  }
 })
 
 test_that("xy reader/writer works", {

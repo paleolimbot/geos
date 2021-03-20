@@ -33,10 +33,11 @@ test_that("transformers work", {
   )
 
   expect_identical(
-    geos_write_wkt(
-      geos_unary_union(c("MULTIPOLYGON (((0 0, 1 0, 0.5 0.5, 0 0)), ((0 0, 1 0, 0.5 0.5, 0 0)))", NA))
+    geos_equals(
+      geos_unary_union(c("MULTIPOLYGON (((0 0, 1 0, 0.5 0.5, 0 0)), ((0 0, 1 0, 0.5 0.5, 0 0)))", NA)),
+      c("POLYGON ((1 0, 0 0, 0.5 0.5, 1 0))", NA)
     ),
-    c("POLYGON ((1 0, 0 0, 0.5 0.5, 1 0))", NA)
+    c(TRUE, NA)
   )
 
   expect_identical(
@@ -215,16 +216,19 @@ test_that("transformers with atomic param work", {
 
 test_that("set precision works", {
   expect_identical(
-    geos_write_wkt(
+    geos_equals(
       geos_set_precision(
         c(NA, "POINT (0.1 1.1)", "POINT (0.1 1.1)", "POINT (0.1 1.1)"),
         c(0, NA, 0, 1)
-      )
+      ),
+      c(NA, NA, "POINT (0.1 1.1)", "POINT (0 1)")
     ),
-    c(NA, NA, "POINT (0.1 1.1)", "POINT (0 1)")
+    c(NA, NA, TRUE, TRUE)
   )
 
-  expect_error(geos_set_precision("POINT (0 0)", -1), "IllegalArgumentException")
+  if (geos_version() < "3.9.0") {
+    expect_error(geos_set_precision("POINT (0 0)", -1), "IllegalArgumentException")
+  }
 
   odd_snap_poly <-
     "POLYGON ((0 0, 0.9 0, 0 0.9, 0 0), (0.46 0.46, 0.3 0.46, 0.46 0.3, 0.46 0.46))"
@@ -341,8 +345,8 @@ test_that("triangulation works", {
     )
   )
 
-  expect_error(geos_delaunay_triangles("POINT (nan inf)"), "Unknown error")
-  expect_error(geos_delaunay_edges("POINT (nan inf)"), "Unknown error")
+  expect_error(geos_delaunay_triangles("POINT (nan inf)"), "Unknown error|LocateFailureException")
+  expect_error(geos_delaunay_edges("POINT (nan inf)"), "Unknown error|LocateFailureException")
   expect_identical(geos_delaunay_triangles(NA_character_), geos_read_wkt(NA_character_))
   expect_identical(geos_delaunay_edges(NA_character_), geos_read_wkt(NA_character_))
 })
@@ -370,8 +374,8 @@ test_that("voronoi diagrams work", {
     )
   )
 
-  expect_error(geos_voronoi_polygons("POINT (nan inf)"), "Unknown error")
-  expect_error(geos_voronoi_edges("POINT (nan inf)"), "Unknown error")
+  expect_error(geos_voronoi_polygons("POINT (nan inf)"), "Unknown error|LocateFailureException")
+  expect_error(geos_voronoi_edges("POINT (nan inf)"), "Unknown error|LocateFailureException")
   expect_identical(geos_voronoi_polygons(NA_character_), geos_read_wkt(NA_character_))
   expect_identical(geos_voronoi_edges(NA_character_), geos_read_wkt(NA_character_))
 
