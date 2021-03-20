@@ -215,7 +215,8 @@ SEXP geos_c_make_polygon(SEXP x, SEXP y, SEXP z, SEXP ringLengthsByFeature) {
 
     // not sure how to make this fire given constraints above
     if (itemGeometry == NULL) {
-      // cleanup_geoms(handle, rings, featureLength); // # nocov
+      // pointers that are managed by a successful call to to
+      // GEOSGeom_create* functions also destroy the pointed to objects on error
       UNPROTECT(1); // # nocov
       GEOS_ERROR("[i=%d] ", iCoord); // # nocov
     }
@@ -279,7 +280,8 @@ SEXP geos_c_make_collection(SEXP geom, SEXP typeId, SEXP featureLengths) {
 
     collection = GEOSGeom_createCollection_r(handle, intTypeId, geoms, featureLength);
     if (collection == NULL) {
-      cleanup_geoms(handle, geoms, featureLength);
+      // pointers that are managed by a successful call to to
+      // GEOSGeom_create* functions also destroy the pointed-to objects on error
       UNPROTECT(1);
       GEOS_ERROR("[i=%d] ", iGeom);
     }
