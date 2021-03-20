@@ -354,22 +354,22 @@ test_that("triangulation works", {
 test_that("voronoi diagrams work", {
   expect_true(
     geos_equals(
-      geos_voronoi_polygons("MULTIPOINT (0 0, 1 0, 0 1)"),
+      geos_voronoi_polygons("MULTIPOINT (0 0, 1 0, 0 3)"),
       geos_voronoi_polygons(
-        "MULTIPOINT (0 0, 1 0, 0 1)",
+        "MULTIPOINT (0 0, 1 0, 0 3)",
         # this is the default env
-        env = "POLYGON ((-1 -1, 2 -1, 2 2, -1 2, -1 -1))"
+        env = "POLYGON ((-1 -1, 2 -1, 2 4, -1 4, -1 -1))"
       )
     )
   )
 
   expect_true(
     geos_equals(
-      geos_voronoi_edges("MULTIPOINT (0 0, 1 0, 0 1)"),
+      geos_voronoi_edges("MULTIPOINT (0 0, 1 0, 0 3)"),
       geos_voronoi_edges(
-        "MULTIPOINT (0 0, 1 0, 0 1)",
+        "MULTIPOINT (0 0, 1 0, 0 3)",
         # this is the default env
-        env = "POLYGON ((-1 -1, 2 -1, 2 2, -1 2, -1 -1))"
+        env = "POLYGON ((-1 -1, 2 -1, 2 4, -1 4, -1 -1))"
       )
     )
   )
