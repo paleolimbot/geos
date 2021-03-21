@@ -282,6 +282,12 @@ SEXP geos_c_make_collection(SEXP geom, SEXP typeId, SEXP featureLengths) {
     if (collection == NULL) {
       // pointers that are managed by a successful call to to
       // GEOSGeom_create* functions also destroy the pointed-to objects on error
+      // This changed between GEOS 3.8.1 and 3.9.1, so clean up the geometries
+      // to avoid a memory leak when linking to libgeos 3.8.1-4
+      if (libgeos_version_int() <= LIBGEOS_VERSION_INT(3, 8, 1)) {
+        cleanup_geoms(handle, geoms, featureLength);
+      }
+
       UNPROTECT(1);
       GEOS_ERROR("[i=%d] ", iGeom);
     }
