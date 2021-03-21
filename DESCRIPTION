@@ -32,7 +32,7 @@ Suggests:
     sf,
     wkutils
 Imports: 
-    libgeos (>= 3.8.1-2)
+    libgeos (>= 3.8.1-4)
 URL: https://paleolimbot.github.io/geos/, https://github.com/paleolimbot/geos/
 BugReports: https://github.com/paleolimbot/geos/issues
 LinkingTo: 
