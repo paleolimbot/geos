@@ -171,22 +171,22 @@ test_that("geos_unary_union_prec() works", {
   }
 })
 
-test_that("geos_maximum_inscribed_circle() works", {
+test_that("geos_maximum_inscribed_circle_spec() works", {
   if ((geos_version(runtime = TRUE) >= "3.9.1") && (geos_version(runtime = FALSE) >= "3.9.1")) {
     expect_equal(
       geos_length(
-        geos_maximum_inscribed_circle("POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))", 0.01)
+        geos_maximum_inscribed_circle_spec("POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))", 0.01)
       ),
       0.5
     )
   } else if(geos_version(runtime = FALSE) >= "3.9.1") {
     expect_error(
-      geos_maximum_inscribed_circle("POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))", 0.01),
+      geos_maximum_inscribed_circle_spec("POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))", 0.01),
       "requires 'libgeos'"
     )
   } else {
     expect_error(
-      geos_maximum_inscribed_circle("POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))", 0.01),
+      geos_maximum_inscribed_circle_spec("POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))", 0.01),
       "built against 'libgeos'"
     )
   }

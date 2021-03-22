@@ -28,32 +28,25 @@ geos_read_xy(point)
 geos_write_xy(geom)
 }
 \arguments{
-\item{wkt}{A character vector containing well-known text.}
+\item{wkt}{a \code{character()} vector of well-known text}
 
 \item{geom}{A \link[=as_geos_geometry]{GEOS geometry vector}}
 
-\item{include_z}{Include the
-values of the Z and M coordinates and/or SRID
-in the output? Use \code{FALSE} to omit, \code{TRUE} to include, or \code{NA} to include
-only if present. Note that using \code{TRUE} may result in an error if there
-is no value present in the original.}
+\item{include_z, include_srid}{Include the values of the Z and M coordinates and/or
+SRID in the output?
+Use \code{FALSE} to omit, \code{TRUE} to include, or \code{NA} to
+include only if present. Note that using \code{TRUE} may result
+in an error if there is no value present in the original.}
 
-\item{precision}{The rounding precision to use when writing
-(number of decimal places).}
+\item{precision}{The number of significant digits to include iin WKT
+output.}
 
 \item{trim}{Trim unnecessary zeroes in the output?}
 
-\item{wkb}{A \code{list()} of \code{\link[=raw]{raw()}} vectors, such as that
-returned by \code{sf::st_as_binary()}.}
+\item{wkb}{A \code{list()} of \code{raw()} vectors (or \code{NULL} representing
+an \code{NA} value).}
 
-\item{include_srid}{Include the
-values of the Z and M coordinates and/or SRID
-in the output? Use \code{FALSE} to omit, \code{TRUE} to include, or \code{NA} to include
-only if present. Note that using \code{TRUE} may result in an error if there
-is no value present in the original.}
-
-\item{endian}{For WKB writing, 0 for big endian, 1 for little endian.
-Defaults to \code{\link[wk:wkb_translate_wkt]{wk_platform_endian()}} (slightly faster).}
+\item{endian}{0 for big endian or 1 for little endian.}
 
 \item{hex}{A hexidecimal representation of well-known binary}
 

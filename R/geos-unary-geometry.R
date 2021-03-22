@@ -82,7 +82,7 @@ geos_minimum_bounding_circle <- function(geom) {
 
 #' @rdname geos_centroid
 #' @export
-geos_maximum_inscribed_circle <- function(geom, tolerance) {
+geos_maximum_inscribed_circle_spec <- function(geom, tolerance) {
   recycled <- recycle_common(list(as_geos_geometry(geom), as.numeric(tolerance)))
   new_geos_geometry(.Call(geos_c_maximum_inscribed_circle, recycled[[1]], recycled[[2]]))
 }

@@ -2,7 +2,18 @@
 #' Read and write well-known text
 #'
 #' @param geom A [GEOS geometry vector][as_geos_geometry]
-#' @inheritParams wk::wkb_translate_wkt
+#' @param wkb A `list()` of `raw()` vectors (or `NULL` representing
+#'   an `NA` value).
+#' @param wkt a `character()` vector of well-known text
+#' @param include_z,include_srid Include the values of the Z and M coordinates and/or
+#'   SRID in the output?
+#'   Use `FALSE` to omit, `TRUE` to include, or `NA` to
+#'   include only if present. Note that using `TRUE` may result
+#'   in an error if there is no value present in the original.
+#' @param trim Trim unnecessary zeroes in the output?
+#' @param precision The number of significant digits to include iin WKT
+#'   output.
+#' @param endian 0 for big endian or 1 for little endian.
 #' @inheritParams geos_segment_intersection
 #' @param hex A hexidecimal representation of well-known binary
 #'
