@@ -40,7 +40,11 @@ extern SEXP geos_c_difference(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_sym_difference(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_union(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_shared_paths(SEXP geom1, SEXP geom2);
-extern SEXP geos_c_snap(SEXP geom1, SEXP geom2, SEXP tolerance);
+extern SEXP geos_c_snap(SEXP geom1, SEXP geom2, SEXP param);
+extern SEXP geos_c_intersection_prec(SEXP geom1, SEXP geom2, SEXP param);
+extern SEXP geos_c_difference_prec(SEXP geom1, SEXP geom2, SEXP param);
+extern SEXP geos_c_sym_difference_prec(SEXP geom1, SEXP geom2, SEXP param);
+extern SEXP geos_c_union_prec(SEXP geom1, SEXP geom2, SEXP param);
 extern SEXP geos_c_clearance_line_between(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_read_wkt(SEXP input);
 extern SEXP geos_c_write_wkt(SEXP input, SEXP includeZ, SEXP precision, SEXP trim);
@@ -132,6 +136,8 @@ extern SEXP geos_c_interpolate_normalized(SEXP geom, SEXP param);
 extern SEXP geos_c_point_n(SEXP geom, SEXP param);
 extern SEXP geos_c_simplify(SEXP geom, SEXP param);
 extern SEXP geos_c_simplify_preserve_topology(SEXP geom, SEXP param);
+extern SEXP geos_c_unary_union_prec(SEXP geom, SEXP param);
+extern SEXP geos_c_maximum_inscribed_circle(SEXP geom, SEXP param);
 extern SEXP geos_c_set_precision(SEXP geom, SEXP param, SEXP preserveTopology, SEXP keepCollapsed);
 extern SEXP geos_c_set_srid(SEXP geom, SEXP srid);
 extern SEXP geos_c_normalize(SEXP geom);
@@ -185,6 +191,10 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_union", (DL_FUNC) &geos_c_union, 2},
   {"geos_c_shared_paths", (DL_FUNC) &geos_c_shared_paths, 2},
   {"geos_c_snap", (DL_FUNC) &geos_c_snap, 3},
+  {"geos_c_intersection_prec", (DL_FUNC) &geos_c_intersection_prec, 3},
+  {"geos_c_difference_prec", (DL_FUNC) &geos_c_difference_prec, 3},
+  {"geos_c_sym_difference_prec", (DL_FUNC) &geos_c_sym_difference_prec, 3},
+  {"geos_c_union_prec", (DL_FUNC) &geos_c_union_prec, 3},
   {"geos_c_clearance_line_between", (DL_FUNC) &geos_c_clearance_line_between, 2},
   {"geos_c_read_wkt", (DL_FUNC) &geos_c_read_wkt, 1},
   {"geos_c_write_wkt", (DL_FUNC) &geos_c_write_wkt, 4},
@@ -276,6 +286,8 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_point_n", (DL_FUNC) &geos_c_point_n, 2},
   {"geos_c_simplify", (DL_FUNC) &geos_c_simplify, 2},
   {"geos_c_simplify_preserve_topology", (DL_FUNC) &geos_c_simplify_preserve_topology, 2},
+  {"geos_c_unary_union_prec", (DL_FUNC) &geos_c_unary_union_prec, 2},
+  {"geos_c_maximum_inscribed_circle", (DL_FUNC) &geos_c_maximum_inscribed_circle, 2},
   {"geos_c_set_precision", (DL_FUNC) &geos_c_set_precision, 4},
   {"geos_c_set_srid", (DL_FUNC) &geos_c_set_srid, 2},
   {"geos_c_normalize", (DL_FUNC) &geos_c_normalize, 1},

@@ -170,6 +170,31 @@ SEXP geos_c_simplify_preserve_topology(SEXP geom, SEXP param) {
   GEOS_UNARY_GEOMETRY_PARAM(GEOSTopologyPreserveSimplify_r(handle, geometry, paramPtr[i]), double, REAL, ISNA(paramPtr[i]));
 }
 
+SEXP geos_c_unary_union_prec(SEXP geom, SEXP param) {
+#if LIBGEOS_VERSION_COMPILE_INT >= LIBGEOS_VERSION_INT(3, 9, 1)
+  if (libgeos_version_int() < LIBGEOS_VERSION_INT(3, 9, 1)) {
+    ERROR_OLD_LIBGEOS("GEOSUnaryUnionPrec_r()", "3.9.1");
+  }
+
+  GEOS_UNARY_GEOMETRY_PARAM(GEOSUnaryUnionPrec_r(handle, geometry, paramPtr[i]), double, REAL, ISNA(paramPtr[i]));
+#else
+  ERROR_OLD_LIBGEOS_BUILD("GEOSUnaryUnionPrec_r()", "3.9.1");
+#endif
+}
+
+SEXP geos_c_maximum_inscribed_circle(SEXP geom, SEXP param) {
+#if LIBGEOS_VERSION_COMPILE_INT >= LIBGEOS_VERSION_INT(3, 9, 1)
+  if (libgeos_version_int() < LIBGEOS_VERSION_INT(3, 9, 1)) {
+    ERROR_OLD_LIBGEOS("GEOSMaximumInscribedCircle_r()", "3.9.1");
+  }
+
+  GEOS_UNARY_GEOMETRY_PARAM(GEOSMaximumInscribedCircle_r(handle, geometry, paramPtr[i]), double, REAL, ISNA(paramPtr[i]));
+#else
+  ERROR_OLD_LIBGEOS_BUILD("GEOSMaximumInscribedCircle_r()", "3.9.1");
+#endif
+}
+
+
 // this should really be defined in libgeos.h and probably will be in future versions
 #ifndef GEOS_PREC_NO_TOPO
 #define GEOS_PREC_NO_TOPO         (1<<0)

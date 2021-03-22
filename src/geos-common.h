@@ -65,4 +65,19 @@ SEXP geos_common_tree_xptr(GEOSSTRtree* geometry, SEXP geom, SEXP indices);
     Rf_error("External pointer is not valid [i=%d]", i + 1);  \
   }
 
+
+// shortcut for a better error message when building/linking against
+// an old version of libgeos
+#define ERROR_OLD_LIBGEOS_BUILD(capability, version) \
+  Rf_error( \
+    "%s requires that 'geos' be built against 'libgeos' >= %s.\nThis build of 'geos' was built against 'libgeos' %s.\nTo fix, run `install.packages(c(\"libgeos\", \"geos\"))`", \
+    capability, version, GEOS_CAPI_VERSION \
+  )
+
+#define ERROR_OLD_LIBGEOS(capability, version) \
+  Rf_error( \
+    "%s requires 'libgeos' >= %s (current version of libgeos is %s)\nTo fix, run `install.packages(\"libgeos\")`", \
+    capability, version, GEOSversion() \
+  )
+
 #endif

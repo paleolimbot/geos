@@ -5,6 +5,10 @@
 \alias{geos_difference}
 \alias{geos_sym_difference}
 \alias{geos_union}
+\alias{geos_intersection_prec}
+\alias{geos_difference_prec}
+\alias{geos_sym_difference_prec}
+\alias{geos_union_prec}
 \alias{geos_shared_paths}
 \alias{geos_snap}
 \alias{geos_clearance_line_between}
@@ -18,6 +22,14 @@ geos_sym_difference(geom1, geom2)
 
 geos_union(geom1, geom2)
 
+geos_intersection_prec(geom1, geom2, grid_size)
+
+geos_difference_prec(geom1, geom2, grid_size)
+
+geos_sym_difference_prec(geom1, geom2, grid_size)
+
+geos_union_prec(geom1, geom2, grid_size)
+
 geos_shared_paths(geom1, geom2)
 
 geos_snap(geom1, geom2, tolerance = .Machine$double.eps^2)
@@ -30,6 +42,9 @@ recycled to a common length.}
 
 \item{geom2}{\link[=as_geos_geometry]{GEOS geometry vectors},
 recycled to a common length.}
+
+\item{grid_size}{For \verb{_prec()} variants, the grid size such that all vertices of
+the resulting geometry will lie on the grid.}
 
 \item{tolerance}{The maximum separation of vertices that should
 be considered equal.}

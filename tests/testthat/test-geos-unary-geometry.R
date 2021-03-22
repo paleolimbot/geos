@@ -146,6 +146,52 @@ test_that("transformers work", {
   )
 })
 
+test_that("geos_unary_union_prec() works", {
+  if ((geos_version(runtime = TRUE) >= "3.9.1") && (geos_version(runtime = FALSE) >= "3.9.1")) {
+    expect_identical(
+      geos_equals(
+        geos_unary_union_prec(
+          c("MULTIPOLYGON (((0 0, 1 0, 0.5 0.5, 0 0)), ((0 0, 1 0, 0.5 0.5, 0 0)))", NA),
+          0.1
+        ),
+        c("POLYGON ((1 0, 0 0, 0.5 0.5, 1 0))", NA)
+      ),
+      c(TRUE, NA)
+    )
+  } else if(geos_version(runtime = FALSE) >= "3.9.1") {
+    expect_error(
+      geos_unary_union_prec("POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))", 0.01),
+      "requires 'libgeos'"
+    )
+  } else {
+    expect_error(
+      geos_unary_union_prec("POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))", 0.01),
+      "built against 'libgeos'"
+    )
+  }
+})
+
+test_that("geos_maximum_inscribed_circle() works", {
+  if ((geos_version(runtime = TRUE) >= "3.9.1") && (geos_version(runtime = FALSE) >= "3.9.1")) {
+    expect_equal(
+      geos_length(
+        geos_maximum_inscribed_circle("POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))", 0.01)
+      ),
+      0.5
+    )
+  } else if(geos_version(runtime = FALSE) >= "3.9.1") {
+    expect_error(
+      geos_maximum_inscribed_circle("POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))", 0.01),
+      "requires 'libgeos'"
+    )
+  } else {
+    expect_error(
+      geos_maximum_inscribed_circle("POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))", 0.01),
+      "built against 'libgeos'"
+    )
+  }
+})
+
 test_that("transformers with atomic param work", {
   expect_identical(
     geos_write_wkt(geos_interpolate(c("LINESTRING (0 0, 0 10, 10 10)", NA), 11)),

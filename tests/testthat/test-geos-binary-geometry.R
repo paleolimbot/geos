@@ -39,6 +39,58 @@ test_that("binary operators work", {
   )
 })
 
+test_that("binary_prec operators work", {
+  poly1 <- "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"
+  poly2 <- c(NA, "POLYGON ((5 5, 5 15, 15 15, 15 5, 5 5))")
+
+  if ((geos_version(runtime = TRUE) >= "3.9.1") && (geos_version(runtime = FALSE) >= "3.9.1")) {
+    expect_identical(
+      geos_area(geos_intersection(poly1, poly2)),
+      c(NA, 25)
+    )
+
+    expect_identical(
+      geos_area(geos_difference(poly1, poly2)),
+      c(NA, 100 - 25)
+    )
+
+    expect_identical(
+      geos_area(geos_sym_difference(poly1, poly2)),
+      c(NA, 100 * 2 - 50)
+    )
+
+    expect_identical(
+      geos_area(geos_union(poly1, poly2)),
+      c(NA, 100 * 2 - 25)
+    )
+
+    collection <- "
+      GEOMETRYCOLLECTION (
+        POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0)),
+        POLYGON ((5 5, 5 15, 15 15, 15 5, 5 5))
+      )
+    "
+
+    expect_identical(
+      geos_equals(
+        geos_unary_union(c(NA, collection)),
+        geos_union(poly1, poly2)
+      ),
+      c(NA, TRUE)
+    )
+  } else if (geos_version(runtime = FALSE) >= "3.9.1") {
+    expect_error(geos_intersection_prec(poly1, poly2, 1), "requires 'libgeos'")
+    expect_error(geos_difference_prec(poly1, poly2, 1), "requires 'libgeos'")
+    expect_error(geos_sym_difference_prec(poly1, poly2, 1), "requires 'libgeos'")
+    expect_error(geos_union_prec(poly1, poly2, 1), "requires 'libgeos'")
+  } else {
+    expect_error(geos_intersection_prec(poly1, poly2, 1), "built against 'libgeos'")
+    expect_error(geos_difference_prec(poly1, poly2, 1), "built against 'libgeos'")
+    expect_error(geos_sym_difference_prec(poly1, poly2, 1), "built against 'libgeos'")
+    expect_error(geos_union_prec(poly1, poly2, 1), "built against 'libgeos'")
+  }
+})
+
 test_that("shared paths works", {
   expect_identical(
     geos_write_wkt(

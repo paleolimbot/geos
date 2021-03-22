@@ -15,6 +15,8 @@
 #'   be preserved?
 #' @param keep_collapsed Should items that become EMPTY due to rounding
 #'   be kept in the output?
+#' @param grid_size For `_prec()` variants, the grid size such that all vertices of
+#'   the resulting geometry will lie on the grid.
 #'
 #' @return A [GEOS geometry vector][as_geos_geometry] of length `geom`
 #' @export
@@ -80,8 +82,22 @@ geos_minimum_bounding_circle <- function(geom) {
 
 #' @rdname geos_centroid
 #' @export
+geos_maximum_inscribed_circle <- function(geom, tolerance) {
+  recycled <- recycle_common(list(as_geos_geometry(geom), as.numeric(tolerance)))
+  new_geos_geometry(.Call(geos_c_maximum_inscribed_circle, recycled[[1]], recycled[[2]]))
+}
+
+#' @rdname geos_centroid
+#' @export
 geos_unary_union <- function(geom) {
   new_geos_geometry(.Call(geos_c_unary_union, as_geos_geometry(geom)))
+}
+
+#' @rdname geos_centroid
+#' @export
+geos_unary_union_prec <- function(geom, grid_size) {
+  recycled <- recycle_common(list(as_geos_geometry(geom), as.numeric(grid_size)))
+  new_geos_geometry(.Call(geos_c_unary_union_prec, recycled[[1]], recycled[[2]]))
 }
 
 #' @rdname geos_centroid

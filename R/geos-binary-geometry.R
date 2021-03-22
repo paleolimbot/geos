@@ -16,6 +16,8 @@
 #'   to `y`.
 #'
 #' @inheritParams geos_disjoint
+#' @param grid_size For `_prec()` variants, the grid size such that all vertices of
+#'   the resulting geometry will lie on the grid.
 #'
 #' @return A [GEOS geometry vector][as_geos_geometry] along the recycled
 #'   length of `geom1` and `geom2`.
@@ -59,6 +61,58 @@ geos_sym_difference <- function(geom1, geom2) {
 geos_union <- function(geom1, geom2) {
   recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
   new_geos_geometry(.Call(geos_c_union, recycled[[1]], recycled[[2]]))
+}
+
+#' @rdname geos_intersection
+#' @export
+geos_intersection_prec <- function(geom1, geom2, grid_size) {
+  recycled <- recycle_common(
+    list(
+      as_geos_geometry(geom1),
+      as_geos_geometry(geom2),
+      as.numeric(grid_size)
+    )
+  )
+  new_geos_geometry(.Call(geos_c_intersection_prec, recycled[[1]], recycled[[2]], recycled[[3]]))
+}
+
+#' @rdname geos_intersection
+#' @export
+geos_difference_prec <- function(geom1, geom2, grid_size) {
+  recycled <- recycle_common(
+    list(
+      as_geos_geometry(geom1),
+      as_geos_geometry(geom2),
+      as.numeric(grid_size)
+    )
+  )
+  new_geos_geometry(.Call(geos_c_difference_prec, recycled[[1]], recycled[[2]], recycled[[3]]))
+}
+
+#' @rdname geos_intersection
+#' @export
+geos_sym_difference_prec <- function(geom1, geom2, grid_size) {
+  recycled <- recycle_common(
+    list(
+      as_geos_geometry(geom1),
+      as_geos_geometry(geom2),
+      as.numeric(grid_size)
+    )
+  )
+  new_geos_geometry(.Call(geos_c_sym_difference_prec, recycled[[1]], recycled[[2]], recycled[[3]]))
+}
+
+#' @rdname geos_intersection
+#' @export
+geos_union_prec <- function(geom1, geom2, grid_size) {
+  recycled <- recycle_common(
+    list(
+      as_geos_geometry(geom1),
+      as_geos_geometry(geom2),
+      as.numeric(grid_size)
+    )
+  )
+  new_geos_geometry(.Call(geos_c_union_prec, recycled[[1]], recycled[[2]], recycled[[3]]))
 }
 
 #' @rdname geos_intersection
