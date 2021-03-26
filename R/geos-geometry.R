@@ -41,13 +41,12 @@ as_geos_geometry.WKB <- function(x, ...) {
 #' Create vectors of GEOS geometry objects
 #'
 #' @param x A bare `list()` of external pointers
-#' @param class A character vector subclass
 #' @param ... Unused
 #'
 #' @return An object of class geos_geometry
 #' @noRd
 #'
-new_geos_geometry <- function(x = list(), class = character()) {
+new_geos_geometry <- function(x = list()) {
   if (!is.list(x) || is.object(x)) {
     stop("x must be a bare list of 'externalptr' objects")
   }
@@ -72,7 +71,7 @@ is.na.geos_geometry <- function(x) {
 
 #' @export
 `[.geos_geometry` <- function(x, i) {
-  new_geos_geometry(NextMethod(), class(x))
+  new_geos_geometry(NextMethod())
 }
 
 # makes lapply() along these vectors possible
@@ -90,14 +89,14 @@ is.na.geos_geometry <- function(x) {
     stop(sprintf("All items must inherit from 'geos_geometry'"), call. = FALSE)
   }
 
-  geometry <- new_geos_geometry(NextMethod(), class(dots[[1]]))
+  geometry <- new_geos_geometry(NextMethod())
   validate_geos_geometry(geometry)
   geometry
 }
 
 #' @export
 rep.geos_geometry <- function(x, ...) {
-  new_geos_geometry(unclass(NextMethod()), class(x))
+  new_geos_geometry(unclass(NextMethod()))
 }
 
 #' @method rep_len geos_geometry
