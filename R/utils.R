@@ -17,8 +17,8 @@ check_lengths <- function(dots) {
   }
 }
 
-new_data_frame <- function(x, nrow = length(x[[1]])) {
-  structure(x, class = "data.frame", row.names = seq_len(nrow))
+new_data_frame <- function(x) {
+  structure(x, row.names = c(NA, length(x[[1]])), class = "data.frame")
 }
 
 `%||%` <- function(x, y) {
