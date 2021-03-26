@@ -114,7 +114,7 @@ format.geos_geometry <- function(x, ..., precision = 5, max_coords = 5) {
   # min/max functions do not work on EMPTY, so can't run geos_xmin/max()
   # on these geometries
   n_coords <- geos_num_coordinates(x)
-  use_wkt <- n_coords <= max_coords
+  use_wkt <- is.na(x) | (n_coords <= max_coords)
 
   formatted <- rep_len("", length(x))
   formatted[use_wkt] <- geos_write_wkt(x[use_wkt], precision = precision)
