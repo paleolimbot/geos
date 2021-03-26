@@ -34,6 +34,13 @@ test_that("geos_geometry subsetting and concatenation work", {
   expect_error(c(new_geos_geometry(list(NULL, NULL)), 1:5), "All items must inherit from")
 })
 
+test_that("geos_geometry can be put into a data.frame", {
+  expect_identical(
+    data.frame(geom = new_geos_geometry(list(NULL))),
+    new_data_frame(list(geom = new_geos_geometry(list(NULL))))
+  )
+})
+
 test_that("geos_geometry default format/print/str methods work", {
   expect_identical(
     format(as_geos_geometry("POINT (10 10)")),

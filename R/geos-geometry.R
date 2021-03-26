@@ -137,6 +137,16 @@ as.character.geos_geometry <- function(x, ...) {
   format(x, ...)
 }
 
+# data.frame() will call as.data.frame() with optional = TRUE
+#' @export
+as.data.frame.geos_geometry <- function(x, ..., optional = FALSE) {
+  if (!optional) {
+    NextMethod()
+  } else {
+    new_data_frame(list(x))
+  }
+}
+
 #' @export
 print.geos_geometry <- function(x, ...) {
   cat(sprintf("<%s[%s]>\n", class(x)[1], length(x)))
