@@ -34,7 +34,7 @@ test_that("geos_geometry subsetting and concatenation work", {
   expect_error(c(new_geos_geometry(list(NULL, NULL)), 1:5), "All items must inherit from")
 })
 
-test_that("geos_geometry default format/print methods work", {
+test_that("geos_geometry default format/print/str methods work", {
   expect_identical(
     format(as_geos_geometry("POINT (10 10)")),
     as.character(as_geos_geometry("POINT (10 10)"))
@@ -44,4 +44,7 @@ test_that("geos_geometry default format/print methods work", {
   expect_output(print(new_geos_geometry()), "geos_geometry")
   expect_output(print(new_geos_geometry(list(NULL))), "geos_geometry")
   expect_match(format(as_geos_geometry(c("POINT (0 1)", NA)))[2], "<NA>")
+
+  expect_output(str(as_geos_geometry(character())), "geos_geometry\\[0\\]")
+  expect_output(str(as_geos_geometry("POINT (10 10)")), "<POINT \\(10 10\\)>")
 })

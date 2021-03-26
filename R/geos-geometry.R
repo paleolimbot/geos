@@ -148,3 +148,29 @@ print.geos_geometry <- function(x, ...) {
   print(out, quote = FALSE)
   invisible(x)
 }
+
+# lifted from vctrs::obj_leaf()
+#' @export
+str.geos_geometry <- function(object, ..., indent.str = "", width = getOption("width")) {
+  if (length(object) == 0) {
+    cat(paste0(" ", class(object)[1], "[0]\n"))
+    return(invisible(object))
+  }
+
+  # estimate possible number of elements that could be displayed
+  # to avoid formatting too many
+  width <- width - nchar(indent.str) - 2
+  length <- min(length(object), ceiling(width / 5))
+  formatted <- format(object[seq_len(length)], trim = TRUE)
+
+  title <- paste0(" ", class(object)[1], "[1:", length(object), "]")
+  cat(
+    paste0(
+      title,
+      " ",
+      strtrim(paste0(formatted, collapse = ", "), width - nchar(title)),
+      "\n"
+    )
+  )
+  invisible(object)
+}
