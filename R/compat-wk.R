@@ -19,8 +19,22 @@ as_wkt.geos_geometry <- function(x, ..., include_z = TRUE, precision = 16, trim 
 }
 
 as_wkb.geos_geometry <- function(x, ..., include_z = TRUE, include_srid = FALSE, endian = 1) {
-  # the GEOS WKB writer errors on empty point, but wk_wkb uses POINT (nan nan)
-  is_empty_point <- (geos_type_id(x) == 1L) & geos_is_empty(x)
+  # GEOS 3.9 and up can handle the empty point natively
+  if (geos_version() >= "3.9.1") {
+    out <- unclass(
+      geos_write_wkb(
+        x,
+        include_z = include_z,
+        include_srid = include_srid,
+        endian = endian
+      )
+    )
+
+    return(wk::new_wk_wkb(out))
+  }
+
+  # otherwise, the GEOS WKB writer errors on empty point, but wk_wkb uses POINT (nan nan)
+  is_empty_point <- (geos_type_id(x) == 1L) & geos_is_empty(x) # nocov start
 
   if (any(is_empty_point)) {
     out <- rep_len(list(NULL), length(x))
@@ -44,5 +58,5 @@ as_wkb.geos_geometry <- function(x, ..., include_z = TRUE, include_srid = FALSE,
     )
   }
 
-  wk::new_wk_wkb(out)
+  wk::new_wk_wkb(out) # nocov end
 }
