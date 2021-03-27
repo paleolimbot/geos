@@ -27,12 +27,12 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Suggests: 
     testthat (>= 2.1.0),
-    wk,
     vctrs,
     sf,
     wkutils
 Imports: 
-    libgeos (>= 3.8.1-4)
+    libgeos (>= 3.8.1-4),
+    wk (>= 0.4.1)
 URL: https://paleolimbot.github.io/geos/, https://github.com/paleolimbot/geos/
 BugReports: https://github.com/paleolimbot/geos/issues
 LinkingTo: 

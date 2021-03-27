@@ -31,7 +31,7 @@ test_that("geos_geometry subsetting and concatenation work", {
   expect_identical(c(geometry, geometry), new_geos_geometry(list(NULL, NULL, NULL, NULL)))
   expect_identical(rep(geometry, 2), new_geos_geometry(list(NULL, NULL, NULL, NULL)))
   expect_identical(rep_len(geometry, 4), new_geos_geometry(list(NULL, NULL, NULL, NULL)))
-  expect_error(c(new_geos_geometry(list(NULL, NULL)), 1:5), "All items must inherit from")
+  expect_error(c(new_geos_geometry(list(NULL, NULL)), 1:5), "must inherit from")
 })
 
 test_that("geos_geometry can be put into a data.frame", {

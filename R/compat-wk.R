@@ -1,4 +1,17 @@
 
+#' @importFrom wk wk_crs
+#' @export
+wk_crs.geos_geometry <- function(x) {
+  attr(x, "crs", exact = TRUE)
+}
+
+#' @importFrom wk wk_set_crs
+#' @export
+wk_set_crs.geos_geometry <- function(x, crs) {
+  attr(x, "crs") <- crs
+  x
+}
+
 #' @rdname as_geos_geometry
 #' @export
 as_geos_geometry.wk_wkb <- function(x, ...) {
@@ -11,13 +24,16 @@ as_geos_geometry.wk_wkt <- function(x, ...) {
   geos_read_wkt(x)
 }
 
-# dynamically registered in zzz.R
+#' @importFrom wk as_wkt
+#' @export
 as_wkt.geos_geometry <- function(x, ..., include_z = TRUE, precision = 16, trim = TRUE) {
   wk::new_wk_wkt(
     geos_write_wkt(x, include_z = include_z, precision = precision, trim = trim)
   )
 }
 
+#' @importFrom wk as_wkb
+#' @export
 as_wkb.geos_geometry <- function(x, ..., include_z = TRUE, include_srid = FALSE, endian = 1) {
   # GEOS 3.9 and up can handle the empty point natively
   if (geos_version() >= "3.9.1") {

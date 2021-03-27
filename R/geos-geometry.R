@@ -38,20 +38,13 @@ as_geos_geometry.WKB <- function(x, ...) {
   geos_read_wkb(x)
 }
 
-#' Create vectors of GEOS geometry objects
-#'
-#' @param x A bare `list()` of external pointers
-#' @param ... Unused
-#'
-#' @return An object of class geos_geometry
-#' @noRd
-#'
-new_geos_geometry <- function(x = list()) {
+
+new_geos_geometry <- function(x = list(), crs = NULL) {
   if (!is.list(x) || is.object(x)) {
     stop("x must be a bare list of 'externalptr' objects")
   }
 
-  structure(x, class = "geos_geometry")
+  structure(x, class = "geos_geometry", crs = crs)
 }
 
 validate_geos_geometry <- function(x) {
@@ -71,7 +64,7 @@ is.na.geos_geometry <- function(x) {
 
 #' @export
 `[.geos_geometry` <- function(x, i) {
-  new_geos_geometry(NextMethod())
+  new_geos_geometry(NextMethod(), crs = attr(x, "crs", exact = TRUE))
 }
 
 # makes lapply() along these vectors possible
@@ -86,8 +79,11 @@ is.na.geos_geometry <- function(x) {
   dots <- list(...)
   inherits_first <- vapply(dots, inherits, "geos_geometry", FUN.VALUE = logical(1))
   if (!all(inherits_first)) {
-    stop(sprintf("All items must inherit from 'geos_geometry'"), call. = FALSE)
+    stop(sprintf("All items in c(...) must inherit from 'geos_geometry'"), call. = FALSE)
   }
+
+  # check CRS compatibility
+  Reduce(wk::wk_crs_output, dots)
 
   geometry <- new_geos_geometry(NextMethod())
   validate_geos_geometry(geometry)
@@ -96,7 +92,7 @@ is.na.geos_geometry <- function(x) {
 
 #' @export
 rep.geos_geometry <- function(x, ...) {
-  new_geos_geometry(unclass(NextMethod()))
+  new_geos_geometry(unclass(NextMethod()), crs = attr(x, "crs", exact = TRUE))
 }
 
 #' @method rep_len geos_geometry
