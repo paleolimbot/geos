@@ -15,20 +15,21 @@ wk_set_crs.geos_geometry <- function(x, crs) {
 #' @rdname as_geos_geometry
 #' @export
 as_geos_geometry.wk_wkb <- function(x, ...) {
-  geos_read_wkb(x)
+  geos_read_wkb(x, crs = attr(x, "crs", exact = TRUE))
 }
 
 #' @rdname as_geos_geometry
 #' @export
 as_geos_geometry.wk_wkt <- function(x, ...) {
-  geos_read_wkt(x)
+  geos_read_wkt(x, attr(x, "crs", exact = TRUE))
 }
 
 #' @importFrom wk as_wkt
 #' @export
 as_wkt.geos_geometry <- function(x, ..., include_z = TRUE, precision = 16, trim = TRUE) {
   wk::new_wk_wkt(
-    geos_write_wkt(x, include_z = include_z, precision = precision, trim = trim)
+    geos_write_wkt(x, include_z = include_z, precision = precision, trim = trim),
+    crs = attr(x, "crs", exact = TRUE)
   )
 }
 
@@ -46,7 +47,7 @@ as_wkb.geos_geometry <- function(x, ..., include_z = TRUE, include_srid = FALSE,
       )
     )
 
-    return(wk::new_wk_wkb(out))
+    return(wk::new_wk_wkb(out, crs = attr(x, "crs", exact = TRUE)))
   }
 
   # otherwise, the GEOS WKB writer errors on empty point, but wk_wkb uses POINT (nan nan)
@@ -74,5 +75,5 @@ as_wkb.geos_geometry <- function(x, ..., include_z = TRUE, include_srid = FALSE,
     )
   }
 
-  wk::new_wk_wkb(out) # nocov end
+  wk::new_wk_wkb(out, crs = attr(x, "crs", exact = TRUE)) # nocov end
 }

@@ -18,3 +18,15 @@ test_that("crs can be fetched and set", {
   geom <- wk_set_crs(geom, 1234)
   expect_identical(wk_crs(geom), 1234)
 })
+
+test_that("crs propagates through conversion to wk::wkt() and wk::wkb()", {
+  geom <- new_geos_geometry(list(NULL), crs = 1234)
+  expect_identical(wk_crs(as_wkt(geom)), 1234)
+  expect_identical(wk_crs(as_wkb(geom)), 1234)
+})
+
+test_that("crs propagates through conversion frpm wk::wkt() and wk::wkb()", {
+  geom <- new_geos_geometry(list(NULL), crs = 1234)
+  expect_identical(as_geos_geometry(wk::wkt(NA_character_, crs = 1234)), geom)
+  expect_identical(as_geos_geometry(wk::wkb(list(NULL), crs = 1234)), geom)
+})

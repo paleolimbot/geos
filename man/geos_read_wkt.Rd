@@ -11,15 +11,15 @@
 \alias{geos_write_xy}
 \title{Read and write well-known text}
 \usage{
-geos_read_wkt(wkt)
+geos_read_wkt(wkt, crs = NULL)
 
 geos_write_wkt(geom, include_z = TRUE, precision = 16, trim = TRUE)
 
-geos_read_wkb(wkb)
+geos_read_wkb(wkb, crs = NULL)
 
 geos_write_wkb(geom, include_z = TRUE, include_srid = FALSE, endian = 1)
 
-geos_read_hex(hex)
+geos_read_hex(hex, crs = NULL)
 
 geos_write_hex(geom, include_z = TRUE, include_srid = FALSE, endian = 1)
 
@@ -29,6 +29,8 @@ geos_write_xy(geom)
 }
 \arguments{
 \item{wkt}{a \code{character()} vector of well-known text}
+
+\item{crs}{An object that can be interpreted as a CRS}
 
 \item{geom}{A \link[=as_geos_geometry]{GEOS geometry vector}}
 

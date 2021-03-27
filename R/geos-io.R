@@ -16,6 +16,7 @@
 #' @param endian 0 for big endian or 1 for little endian.
 #' @inheritParams geos_segment_intersection
 #' @param hex A hexidecimal representation of well-known binary
+#' @inheritParams wk::wk_crs
 #'
 #' @export
 #'
@@ -23,8 +24,8 @@
 #' geos_read_wkt("POINT (30 10)")
 #' geos_write_wkt(geos_read_wkt("POINT (30 10)"))
 #'
-geos_read_wkt <- function(wkt) {
-  new_geos_geometry(.Call(geos_c_read_wkt, as.character(wkt)))
+geos_read_wkt <- function(wkt, crs = NULL) {
+  new_geos_geometry(.Call(geos_c_read_wkt, as.character(wkt)), crs = crs)
 }
 
 #' @rdname geos_read_wkt
@@ -41,8 +42,8 @@ geos_write_wkt <- function(geom, include_z = TRUE, precision = 16, trim = TRUE) 
 
 #' @rdname geos_read_wkt
 #' @export
-geos_read_wkb <- function(wkb) {
-  new_geos_geometry(.Call(geos_c_read_wkb, as.list(wkb)))
+geos_read_wkb <- function(wkb, crs = NULL) {
+  new_geos_geometry(.Call(geos_c_read_wkb, as.list(wkb)), crs = crs)
 }
 
 #' @rdname geos_read_wkt
@@ -62,8 +63,8 @@ geos_write_wkb <- function(geom, include_z = TRUE, include_srid = FALSE, endian 
 
 #' @rdname geos_read_wkt
 #' @export
-geos_read_hex <- function(hex) {
-  new_geos_geometry(.Call(geos_c_read_hex, as.character(hex)))
+geos_read_hex <- function(hex, crs = NULL) {
+  new_geos_geometry(.Call(geos_c_read_hex, as.character(hex)), crs = crs)
 }
 
 #' @rdname geos_read_wkt
