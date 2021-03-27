@@ -53,7 +53,7 @@ as_wkb.geos_geometry <- function(x, ..., include_z = TRUE, include_srid = FALSE,
   # otherwise, the GEOS WKB writer errors on empty point, but wk_wkb uses POINT (nan nan)
   is_empty_point <- (geos_type_id(x) == 1L) & geos_is_empty(x) # nocov start
 
-  if (any(is_empty_point)) {
+  if (any(is_empty_point, na.rm = TRUE)) {
     out <- rep_len(list(NULL), length(x))
     out[is_empty_point] <- wk::wkt_translate_wkb("POINT EMPTY")
     out[!is_empty_point] <- unclass(
