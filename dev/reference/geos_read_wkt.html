@@ -58,6 +58,9 @@
 
 
 
+<!-- dependencies from examples -->
+
+
   
 
   
@@ -122,15 +125,15 @@
     <p>Read and write well-known text</p>
     </div>
 
-    <pre class="usage"><span class='fu'>geos_read_wkt</span><span class='op'>(</span><span class='va'>wkt</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>geos_read_wkt</span><span class='op'>(</span><span class='va'>wkt</span>, crs <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
 <span class='fu'>geos_write_wkt</span><span class='op'>(</span><span class='va'>geom</span>, include_z <span class='op'>=</span> <span class='cn'>TRUE</span>, precision <span class='op'>=</span> <span class='fl'>16</span>, trim <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
-<span class='fu'>geos_read_wkb</span><span class='op'>(</span><span class='va'>wkb</span><span class='op'>)</span>
+<span class='fu'>geos_read_wkb</span><span class='op'>(</span><span class='va'>wkb</span>, crs <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
 <span class='fu'>geos_write_wkb</span><span class='op'>(</span><span class='va'>geom</span>, include_z <span class='op'>=</span> <span class='cn'>TRUE</span>, include_srid <span class='op'>=</span> <span class='cn'>FALSE</span>, endian <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
 
-<span class='fu'>geos_read_hex</span><span class='op'>(</span><span class='va'>hex</span><span class='op'>)</span>
+<span class='fu'>geos_read_hex</span><span class='op'>(</span><span class='va'>hex</span>, crs <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
 <span class='fu'>geos_write_hex</span><span class='op'>(</span><span class='va'>geom</span>, include_z <span class='op'>=</span> <span class='cn'>TRUE</span>, include_srid <span class='op'>=</span> <span class='cn'>FALSE</span>, endian <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
 
@@ -143,24 +146,28 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>wkt</th>
-      <td><p>A character vector containing well-known text.</p></td>
+      <td><p>a <code><a href='https://rdrr.io/r/base/character.html'>character()</a></code> vector of well-known text</p></td>
+    </tr>
+    <tr>
+      <th>crs</th>
+      <td><p>An object that can be interpreted as a CRS</p></td>
     </tr>
     <tr>
       <th>geom</th>
       <td><p>A <a href='as_geos_geometry.html'>GEOS geometry vector</a></p></td>
     </tr>
     <tr>
-      <th>include_z</th>
-      <td><p>Include the
-values of the Z and M coordinates and/or SRID
-in the output? Use <code>FALSE</code> to omit, <code>TRUE</code> to include, or <code>NA</code> to include
-only if present. Note that using <code>TRUE</code> may result in an error if there
-is no value present in the original.</p></td>
+      <th>include_z, include_srid</th>
+      <td><p>Include the values of the Z and M coordinates and/or
+SRID in the output?
+Use <code>FALSE</code> to omit, <code>TRUE</code> to include, or <code>NA</code> to
+include only if present. Note that using <code>TRUE</code> may result
+in an error if there is no value present in the original.</p></td>
     </tr>
     <tr>
       <th>precision</th>
-      <td><p>The rounding precision to use when writing
-(number of decimal places).</p></td>
+      <td><p>The number of significant digits to include iin WKT
+output.</p></td>
     </tr>
     <tr>
       <th>trim</th>
@@ -168,21 +175,12 @@ is no value present in the original.</p></td>
     </tr>
     <tr>
       <th>wkb</th>
-      <td><p>A <code><a href='https://rdrr.io/r/base/list.html'>list()</a></code> of <code><a href='https://rdrr.io/r/base/raw.html'>raw()</a></code> vectors, such as that
-returned by <code><a href='https://r-spatial.github.io/sf/reference/st_as_binary.html'>sf::st_as_binary()</a></code>.</p></td>
-    </tr>
-    <tr>
-      <th>include_srid</th>
-      <td><p>Include the
-values of the Z and M coordinates and/or SRID
-in the output? Use <code>FALSE</code> to omit, <code>TRUE</code> to include, or <code>NA</code> to include
-only if present. Note that using <code>TRUE</code> may result in an error if there
-is no value present in the original.</p></td>
+      <td><p>A <code><a href='https://rdrr.io/r/base/list.html'>list()</a></code> of <code><a href='https://rdrr.io/r/base/raw.html'>raw()</a></code> vectors (or <code>NULL</code> representing
+an <code>NA</code> value).</p></td>
     </tr>
     <tr>
       <th>endian</th>
-      <td><p>For WKB writing, 0 for big endian, 1 for little endian.
-Defaults to <code><a href='https://paleolimbot.github.io/wk/reference/deprecated.html'>wk_platform_endian()</a></code> (slightly faster).</p></td>
+      <td><p>0 for big endian or 1 for little endian.</p></td>
     </tr>
     <tr>
       <th>hex</th>
@@ -216,7 +214,7 @@ Defaults to <code><a href='https://paleolimbot.github.io/wk/reference/deprecated
 </div>
 
 <div class="pkgdown">
-  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>

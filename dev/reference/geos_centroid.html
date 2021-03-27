@@ -58,6 +58,9 @@
 
 
 
+<!-- dependencies from examples -->
+
+
   
 
   
@@ -134,7 +137,11 @@
 
 <span class='fu'>geos_minimum_bounding_circle</span><span class='op'>(</span><span class='va'>geom</span><span class='op'>)</span>
 
+<span class='fu'>geos_maximum_inscribed_circle_spec</span><span class='op'>(</span><span class='va'>geom</span>, <span class='va'>tolerance</span><span class='op'>)</span>
+
 <span class='fu'>geos_unary_union</span><span class='op'>(</span><span class='va'>geom</span><span class='op'>)</span>
+
+<span class='fu'>geos_unary_union_prec</span><span class='op'>(</span><span class='va'>geom</span>, <span class='va'>grid_size</span><span class='op'>)</span>
 
 <span class='fu'>geos_coverage_union</span><span class='op'>(</span><span class='va'>geom</span><span class='op'>)</span>
 
@@ -189,22 +196,22 @@
       <td><p>A <a href='as_geos_geometry.html'>GEOS geometry vector</a></p></td>
     </tr>
     <tr>
-      <th>srid</th>
-      <td><p>An integer spatial reference identifier.</p></td>
-    </tr>
-    <tr>
-      <th>index</th>
-      <td><p>The index of the point or geometry to extract.</p></td>
-    </tr>
-    <tr>
       <th>tolerance</th>
       <td><p>A minimum distance to use for simplification. Use a higher
 value for more simplification.</p></td>
     </tr>
     <tr>
       <th>grid_size</th>
-      <td><p>The size of the grid to which coordinates should be
-rounded.</p></td>
+      <td><p>For <code>_prec()</code> variants, the grid size such that all vertices of
+the resulting geometry will lie on the grid.</p></td>
+    </tr>
+    <tr>
+      <th>srid</th>
+      <td><p>An integer spatial reference identifier.</p></td>
+    </tr>
+    <tr>
+      <th>index</th>
+      <td><p>The index of the point or geometry to extract.</p></td>
     </tr>
     <tr>
       <th>preserve_topology</th>
@@ -289,7 +296,7 @@ recycled to the length of the longest item.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
