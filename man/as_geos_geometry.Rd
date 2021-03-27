@@ -24,16 +24,18 @@ as_geos_geometry(x, ...)
 
 \method{as_geos_geometry}{geos_geometry}(x, ...)
 
-\method{as_geos_geometry}{character}(x, ...)
+\method{as_geos_geometry}{character}(x, ..., crs = NULL)
 
-\method{as_geos_geometry}{blob}(x, ...)
+\method{as_geos_geometry}{blob}(x, ..., crs = NULL)
 
-\method{as_geos_geometry}{WKB}(x, ...)
+\method{as_geos_geometry}{WKB}(x, ..., crs = NULL)
 }
 \arguments{
 \item{x}{An object to be coerced to a geometry vector}
 
 \item{...}{Unused}
+
+\item{crs}{An object that can be interpreted as a CRS}
 }
 \value{
 A geos geometry vector

@@ -2,6 +2,7 @@
 #' Create GEOS Geometry Vectors
 #'
 #' @param x An object to be coerced to a geometry vector
+#' @inheritParams wk::wk_crs
 #' @param ... Unused
 #'
 #' @return A geos geometry vector
@@ -22,20 +23,20 @@ as_geos_geometry.geos_geometry <- function(x, ...) {
 
 #' @rdname as_geos_geometry
 #' @export
-as_geos_geometry.character <- function(x, ...) {
-  geos_read_wkt(x)
+as_geos_geometry.character <- function(x, ..., crs = NULL) {
+  geos_read_wkt(x, crs = crs)
 }
 
 #' @rdname as_geos_geometry
 #' @export
-as_geos_geometry.blob <- function(x, ...) {
-  geos_read_wkb(x)
+as_geos_geometry.blob <- function(x, ..., crs = NULL) {
+  geos_read_wkb(x, crs = crs)
 }
 
 #' @rdname as_geos_geometry
 #' @export
-as_geos_geometry.WKB <- function(x, ...) {
-  geos_read_wkb(x)
+as_geos_geometry.WKB <- function(x, ..., crs = NULL) {
+  geos_read_wkb(x, crs = crs)
 }
 
 
