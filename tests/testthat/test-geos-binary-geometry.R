@@ -1,4 +1,26 @@
 
+test_that("pattern for erroring on mismatched CRS works", {
+  expect_error(
+    geos_intersection(
+      as_geos_geometry("POINT (1 1)", crs = 1234),
+      as_geos_geometry("POINT (1 1)", crs = 5678)
+    ),
+    "are not equal"
+  )
+})
+
+test_that("pattern for propagating CRS works", {
+  expect_identical(
+    wk::wk_crs(
+      geos_intersection(
+        as_geos_geometry("POINT (1 1)", crs = 1234),
+        as_geos_geometry("POINT (1 1)", crs = 1234)
+      )
+    ),
+    1234
+  )
+})
+
 test_that("binary operators work", {
   poly1 <- "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"
   poly2 <- c(NA, "POLYGON ((5 5, 5 15, 15 15, 15 5, 5 5))")

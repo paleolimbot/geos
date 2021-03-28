@@ -12,6 +12,7 @@
 #'
 geos_distance <- function(geom1, geom2) {
   recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  wk_crs_output(recycled[[1]], recycled[[2]])
   .Call(geos_c_distance, recycled[[1]], recycled[[2]])
 }
 
@@ -19,6 +20,7 @@ geos_distance <- function(geom1, geom2) {
 #' @export
 geos_distance_indexed <- function(geom1, geom2) {
   recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  wk_crs_output(recycled[[1]], recycled[[2]])
   .Call(geos_c_distance_indexed, recycled[[1]], recycled[[2]])
 }
 
@@ -26,6 +28,7 @@ geos_distance_indexed <- function(geom1, geom2) {
 #' @export
 geos_distance_hausdorff <- function(geom1, geom2, densify = NULL) {
   recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  wk_crs_output(recycled[[1]], recycled[[2]])
 
   if (is.null(densify)) {
     .Call(geos_c_distance_hausdorff, recycled[[1]], recycled[[2]])
@@ -39,6 +42,7 @@ geos_distance_hausdorff <- function(geom1, geom2, densify = NULL) {
 #' @export
 geos_distance_frechet <- function(geom1, geom2, densify = NULL) {
   recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  wk_crs_output(recycled[[1]], recycled[[2]])
 
   if (is.null(densify)) {
     .Call(geos_c_distance_frechet, recycled[[1]], recycled[[2]])
@@ -76,6 +80,7 @@ geos_distance_frechet <- function(geom1, geom2, densify = NULL) {
 #'
 geos_project <- function(geom1, geom2) {
   recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  wk_crs_output(recycled[[1]], recycled[[2]])
   .Call(geos_c_project, recycled[[1]], recycled[[2]])
 }
 
@@ -83,6 +88,7 @@ geos_project <- function(geom1, geom2) {
 #' @export
 geos_project_normalized <- function(geom1, geom2) {
   recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  wk_crs_output(recycled[[1]], recycled[[2]])
   .Call(geos_c_project_normalized, recycled[[1]], recycled[[2]])
 }
 
@@ -97,6 +103,7 @@ geos_project_normalized <- function(geom1, geom2) {
 #'
 geos_disjoint <- function(geom1, geom2) {
   recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  wk_crs_output(recycled[[1]], recycled[[2]])
   .Call(geos_c_disjoint, recycled[[1]], recycled[[2]])
 }
 
@@ -104,6 +111,7 @@ geos_disjoint <- function(geom1, geom2) {
 #' @export
 geos_touches <- function(geom1, geom2) {
   recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  wk_crs_output(recycled[[1]], recycled[[2]])
   .Call(geos_c_touches, recycled[[1]], recycled[[2]])
 }
 
@@ -111,6 +119,7 @@ geos_touches <- function(geom1, geom2) {
 #' @export
 geos_intersects <- function(geom1, geom2) {
   recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  wk_crs_output(recycled[[1]], recycled[[2]])
   .Call(geos_c_intersects, recycled[[1]], recycled[[2]])
 }
 
@@ -118,6 +127,7 @@ geos_intersects <- function(geom1, geom2) {
 #' @export
 geos_crosses <- function(geom1, geom2) {
   recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  wk_crs_output(recycled[[1]], recycled[[2]])
   .Call(geos_c_crosses, recycled[[1]], recycled[[2]])
 }
 
@@ -125,6 +135,7 @@ geos_crosses <- function(geom1, geom2) {
 #' @export
 geos_within <- function(geom1, geom2) {
   recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  wk_crs_output(recycled[[1]], recycled[[2]])
   .Call(geos_c_within, recycled[[1]], recycled[[2]])
 }
 
@@ -132,6 +143,7 @@ geos_within <- function(geom1, geom2) {
 #' @export
 geos_contains <- function(geom1, geom2) {
   recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  wk_crs_output(recycled[[1]], recycled[[2]])
   .Call(geos_c_contains, recycled[[1]], recycled[[2]])
 }
 
@@ -139,6 +151,7 @@ geos_contains <- function(geom1, geom2) {
 #' @export
 geos_overlaps <- function(geom1, geom2) {
   recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  wk_crs_output(recycled[[1]], recycled[[2]])
   .Call(geos_c_overlaps, recycled[[1]], recycled[[2]])
 }
 
@@ -146,6 +159,7 @@ geos_overlaps <- function(geom1, geom2) {
 #' @export
 geos_equals <- function(geom1, geom2) {
   recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  wk_crs_output(recycled[[1]], recycled[[2]])
   .Call(geos_c_equals, recycled[[1]], recycled[[2]])
 }
 
@@ -153,6 +167,7 @@ geos_equals <- function(geom1, geom2) {
 #' @export
 geos_equals_exact <- function(geom1, geom2, tolerance = .Machine$double.eps ^ 2) {
   recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2), as.numeric(tolerance)))
+  wk_crs_output(recycled[[1]], recycled[[2]])
   .Call(geos_c_equals_exact, recycled[[1]], recycled[[2]], recycled[[3]])
 }
 
@@ -160,6 +175,7 @@ geos_equals_exact <- function(geom1, geom2, tolerance = .Machine$double.eps ^ 2)
 #' @export
 geos_covers <- function(geom1, geom2) {
   recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  wk_crs_output(recycled[[1]], recycled[[2]])
   .Call(geos_c_covers, recycled[[1]], recycled[[2]])
 }
 
@@ -167,6 +183,7 @@ geos_covers <- function(geom1, geom2) {
 #' @export
 geos_covered_by <- function(geom1, geom2) {
   recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  wk_crs_output(recycled[[1]], recycled[[2]])
   .Call(geos_c_covered_by, recycled[[1]], recycled[[2]])
 }
 
@@ -174,6 +191,7 @@ geos_covered_by <- function(geom1, geom2) {
 #' @export
 geos_prepared_disjoint <- function(geom1, geom2) {
   recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  wk_crs_output(recycled[[1]], recycled[[2]])
   .Call(geos_c_prepared_disjoint, recycled[[1]], recycled[[2]])
 }
 
@@ -181,6 +199,7 @@ geos_prepared_disjoint <- function(geom1, geom2) {
 #' @export
 geos_prepared_touches <- function(geom1, geom2) {
   recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  wk_crs_output(recycled[[1]], recycled[[2]])
   .Call(geos_c_prepared_touches, recycled[[1]], recycled[[2]])
 }
 
@@ -188,6 +207,7 @@ geos_prepared_touches <- function(geom1, geom2) {
 #' @export
 geos_prepared_intersects <- function(geom1, geom2) {
   recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  wk_crs_output(recycled[[1]], recycled[[2]])
   .Call(geos_c_prepared_intersects, recycled[[1]], recycled[[2]])
 }
 
@@ -195,6 +215,7 @@ geos_prepared_intersects <- function(geom1, geom2) {
 #' @export
 geos_prepared_crosses <- function(geom1, geom2) {
   recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  wk_crs_output(recycled[[1]], recycled[[2]])
   .Call(geos_c_prepared_crosses, recycled[[1]], recycled[[2]])
 }
 
@@ -202,6 +223,7 @@ geos_prepared_crosses <- function(geom1, geom2) {
 #' @export
 geos_prepared_within <- function(geom1, geom2) {
   recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  wk_crs_output(recycled[[1]], recycled[[2]])
   .Call(geos_c_prepared_within, recycled[[1]], recycled[[2]])
 }
 
@@ -209,6 +231,7 @@ geos_prepared_within <- function(geom1, geom2) {
 #' @export
 geos_prepared_contains <- function(geom1, geom2) {
   recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  wk_crs_output(recycled[[1]], recycled[[2]])
   .Call(geos_c_prepared_contains, recycled[[1]], recycled[[2]])
 }
 
@@ -216,6 +239,7 @@ geos_prepared_contains <- function(geom1, geom2) {
 #' @export
 geos_prepared_contains_properly <- function(geom1, geom2) {
   recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  wk_crs_output(recycled[[1]], recycled[[2]])
   .Call(geos_c_prepared_contains_properly, recycled[[1]], recycled[[2]])
 }
 
@@ -223,6 +247,7 @@ geos_prepared_contains_properly <- function(geom1, geom2) {
 #' @export
 geos_prepared_overlaps <- function(geom1, geom2) {
   recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  wk_crs_output(recycled[[1]], recycled[[2]])
   .Call(geos_c_prepared_overlaps, recycled[[1]], recycled[[2]])
 }
 
@@ -230,6 +255,7 @@ geos_prepared_overlaps <- function(geom1, geom2) {
 #' @export
 geos_prepared_covers <- function(geom1, geom2) {
   recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  wk_crs_output(recycled[[1]], recycled[[2]])
   .Call(geos_c_prepared_covers, recycled[[1]], recycled[[2]])
 }
 
@@ -237,6 +263,7 @@ geos_prepared_covers <- function(geom1, geom2) {
 #' @export
 geos_prepared_covered_by <- function(geom1, geom2) {
   recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  wk_crs_output(recycled[[1]], recycled[[2]])
   .Call(geos_c_prepared_covered_by, recycled[[1]], recycled[[2]])
 }
 
@@ -265,6 +292,7 @@ geos_prepared_covered_by <- function(geom1, geom2) {
 #'
 geos_relate <- function(geom1, geom2, boundary_node_rule = "mod2") {
   recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  wk_crs_output(recycled[[1]], recycled[[2]])
   bnr_choices <- c("mod2", "endpoint", "multivalent_endpoint", "monovalent_endpoint")
   boundary_node_rule <- match.arg(boundary_node_rule, bnr_choices)
 

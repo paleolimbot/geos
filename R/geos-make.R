@@ -14,14 +14,17 @@
 #' geos_make_polygon(c(0, 1, 0), c(0, 0, 1))
 #' geos_make_collection("POINT (1 1)")
 #'
-geos_make_point <- function(x, y, z = NA_real_) {
+geos_make_point <- function(x, y, z = NA_real_, crs = NULL) {
   point <- recycle_common(list(as.numeric(x), as.numeric(y), as.numeric(z)))
-  new_geos_geometry(.Call(geos_c_make_point, point[[1]], point[[2]], point[[3]]))
+  new_geos_geometry(
+    .Call(geos_c_make_point, point[[1]], point[[2]], point[[3]]),
+    crs = crs
+  )
 }
 
 #' @rdname geos_make_point
 #' @export
-geos_make_linestring <- function(x, y, z = NA_real_, feature_id = 1L) {
+geos_make_linestring <- function(x, y, z = NA_real_, feature_id = 1L, crs = NULL) {
   recycled <- recycle_common(
     list(
       as.numeric(x), as.numeric(y), as.numeric(z),
@@ -38,14 +41,15 @@ geos_make_linestring <- function(x, y, z = NA_real_, feature_id = 1L) {
         geos_c_make_linestring,
         recycled[[1]], recycled[[2]], recycled[[3]],
         lengths
-      )
+      ),
+      crs = crs
     )
   }
 }
 
 #' @rdname geos_make_point
 #' @export
-geos_make_polygon <- function(x, y, z = NA_real_, feature_id = 1L, ring_id = 1L) {
+geos_make_polygon <- function(x, y, z = NA_real_, feature_id = 1L, ring_id = 1L, crs = NULL) {
   recycled <- recycle_common(
     list(
       as.numeric(x), as.numeric(y), as.numeric(z),
@@ -69,13 +73,14 @@ geos_make_polygon <- function(x, y, z = NA_real_, feature_id = 1L, ring_id = 1L)
       geos_c_make_polygon,
       recycled[[1]], recycled[[2]], recycled[[3]],
       ring_lengths_by_feature
-    )
+    ),
+    crs = crs
   )
 }
 
 #' @rdname geos_make_point
 #' @export
-geos_make_collection <- function(geom, type_id = "geometrycollection", feature_id = 1L) {
+geos_make_collection <- function(geom, type_id = "geometrycollection", feature_id = 1L, crs = NULL) {
   type_id <- as_geos_type_id(type_id)
   stopifnot(length(type_id) == 1)
 
@@ -87,7 +92,10 @@ geos_make_collection <- function(geom, type_id = "geometrycollection", feature_i
   if (length(lengths) == 0) {
     geos_empty(type_id)
   } else {
-    new_geos_geometry(.Call(geos_c_make_collection, recycled[[1]], type_id, lengths))
+    new_geos_geometry(
+      .Call(geos_c_make_collection, recycled[[1]], type_id, lengths),
+      crs = crs
+    )
   }
 }
 
@@ -109,8 +117,11 @@ geos_make_collection <- function(geom, type_id = "geometrycollection", feature_i
 #' geos_empty(1:7)
 #' geos_empty(geos_read_wkt(c("POINT (0 1)", "LINESTRING (0 0, 1 1)")))
 #'
-geos_empty <- function(type_id = "geometrycollection") {
-  new_geos_geometry(.Call(geos_c_empty, as_geos_type_id(type_id)))
+geos_empty <- function(type_id = "geometrycollection", crs = wk::wk_crs_inherit()) {
+  new_geos_geometry(
+    .Call(geos_c_empty, as_geos_type_id(type_id)),
+    crs = crs
+  )
 }
 
 #' @rdname geos_empty

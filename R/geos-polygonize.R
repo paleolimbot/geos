@@ -16,7 +16,10 @@ geos_polygonize <- function(collection) {
   collection <- as_geos_geometry(collection)
   stopifnot(length(collection) == 1)
 
-  new_geos_geometry(list(.Call(geos_c_polygonize, unclass(collection)[[1]])))
+  new_geos_geometry(
+    list(.Call(geos_c_polygonize, unclass(collection)[[1]])),
+    crs = attr(collection, "crs", exact = TRUE)
+  )
 }
 
 #' @rdname geos_polygonize
@@ -25,7 +28,10 @@ geos_polygonize_valid <- function(collection) {
   collection <- as_geos_geometry(collection)
   stopifnot(length(collection) == 1)
 
-  new_geos_geometry(list(.Call(geos_c_polygonize_valid, unclass(collection)[[1]])))
+  new_geos_geometry(
+    list(.Call(geos_c_polygonize_valid, unclass(collection)[[1]])),
+    crs = attr(collection, "crs", exact = TRUE)
+  )
 }
 
 #' @rdname geos_polygonize
@@ -34,7 +40,10 @@ geos_polygonize_cut_edges <- function(collection) {
   collection <- as_geos_geometry(collection)
   stopifnot(length(collection) == 1)
 
-  new_geos_geometry(list(.Call(geos_c_polygonize_cut_edges, unclass(collection)[[1]])))
+  new_geos_geometry(
+    list(.Call(geos_c_polygonize_cut_edges, unclass(collection)[[1]])),
+    crs = attr(collection, "crs", exact = TRUE)
+  )
 }
 
 #' @rdname geos_polygonize
@@ -43,7 +52,11 @@ geos_polygonize_full <- function(collection) {
   collection <- as_geos_geometry(collection)
   stopifnot(length(collection) == 1)
 
-  result <- new_geos_geometry(.Call(geos_c_polygonize_full, unclass(collection)[[1]]))
+  result <- new_geos_geometry(
+    .Call(geos_c_polygonize_full, unclass(collection)[[1]]),
+    crs = attr(collection, "crs", exact = TRUE)
+  )
+
   list(
     result = result[1],
     cut_edges = result[2],

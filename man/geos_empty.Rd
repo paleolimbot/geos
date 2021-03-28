@@ -8,7 +8,7 @@
 \alias{as_geos_type_id.numeric}
 \title{Create empty geometries}
 \usage{
-geos_empty(type_id = "geometrycollection")
+geos_empty(type_id = "geometrycollection", crs = wk::wk_crs_inherit())
 
 as_geos_type_id(type_id)
 

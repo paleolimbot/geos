@@ -1,6 +1,12 @@
 
 #' @importFrom wk wk_crs
 #' @export
+wk_crs.geos_strtree <- function(x) {
+  attr(x, "crs", exact = TRUE)
+}
+
+#' @importFrom wk wk_crs
+#' @export
 wk_crs.geos_geometry <- function(x) {
   attr(x, "crs", exact = TRUE)
 }

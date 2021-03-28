@@ -1,4 +1,14 @@
 
+test_that("pattern for erroring on mismatched CRSs works", {
+  expect_error(
+    geos_distance(
+      as_geos_geometry("POINT (0 1)", crs = 1234),
+      as_geos_geometry("POINT (0 1)", crs = 5678)
+    ),
+    "are not equal"
+  )
+})
+
 test_that("distance functions work", {
   expect_identical(geos_distance(c("POINT (0 0)", NA), "POINT (0 10)"), c(10, NA))
   expect_identical(geos_distance_indexed(c("POINT (0 0)", NA), "POINT (0 10)"), c(10, NA))

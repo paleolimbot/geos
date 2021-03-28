@@ -10,13 +10,21 @@
 #' @export
 #'
 geos_strtree <- function(geom) {
-  structure(.Call(geos_c_strtree_create, as_geos_geometry(geom)), class = "geos_strtree")
+  geom <- as_geos_geometry(geom)
+  structure(
+    .Call(geos_c_strtree_create, geom),
+    class = "geos_strtree",
+    crs = attr(geom, "crs", exact = TRUE)
+  )
 }
 
 #' @rdname geos_strtree
 #' @export
 geos_strtree_query <- function(tree, geom) {
-  .Call(geos_c_strtree_query, as_geos_strtree(tree), as_geos_geometry(geom))
+  tree <- as_geos_strtree(tree)
+  geom <- as_geos_geometry(geom)
+  wk_crs_output(tree, geom)
+  .Call(geos_c_strtree_query, tree, geom)
 }
 
 #' @rdname geos_strtree
@@ -88,68 +96,101 @@ geos_disjoint_matrix <- function(geom, tree) {
 #' @rdname geos_disjoint_matrix
 #' @export
 geos_touches_matrix <- function(geom, tree) {
-  .Call(geos_c_touches_matrix, as_geos_geometry(geom), as_geos_strtree(tree))
+  tree <- as_geos_strtree(tree)
+  geom <- as_geos_geometry(geom)
+  wk_crs_output(tree, geom)
+  .Call(geos_c_touches_matrix, geom, tree)
 }
 
 #' @rdname geos_disjoint_matrix
 #' @export
 geos_intersects_matrix <- function(geom, tree) {
-  .Call(geos_c_intersects_matrix, as_geos_geometry(geom), as_geos_strtree(tree))
+  tree <- as_geos_strtree(tree)
+  geom <- as_geos_geometry(geom)
+  wk_crs_output(tree, geom)
+  .Call(geos_c_intersects_matrix, geom, tree)
 }
 
 #' @rdname geos_disjoint_matrix
 #' @export
 geos_crosses_matrix <- function(geom, tree) {
-  .Call(geos_c_crosses_matrix, as_geos_geometry(geom), as_geos_strtree(tree))
+  tree <- as_geos_strtree(tree)
+  geom <- as_geos_geometry(geom)
+  wk_crs_output(tree, geom)
+  .Call(geos_c_crosses_matrix, geom, tree)
 }
 
 #' @rdname geos_disjoint_matrix
 #' @export
 geos_within_matrix <- function(geom, tree) {
-  .Call(geos_c_within_matrix, as_geos_geometry(geom), as_geos_strtree(tree))
+  tree <- as_geos_strtree(tree)
+  geom <- as_geos_geometry(geom)
+  wk_crs_output(tree, geom)
+  .Call(geos_c_within_matrix, geom, tree)
 }
 
 #' @rdname geos_disjoint_matrix
 #' @export
 geos_contains_matrix <- function(geom, tree) {
-  .Call(geos_c_contains_matrix, as_geos_geometry(geom), as_geos_strtree(tree))
+  tree <- as_geos_strtree(tree)
+  geom <- as_geos_geometry(geom)
+  wk_crs_output(tree, geom)
+  .Call(geos_c_contains_matrix, geom, tree)
 }
 
 #' @rdname geos_disjoint_matrix
 #' @export
 geos_contains_properly_matrix <- function(geom, tree) {
-  .Call(geos_c_contains_properly_matrix, as_geos_geometry(geom), as_geos_strtree(tree))
+  tree <- as_geos_strtree(tree)
+  geom <- as_geos_geometry(geom)
+  wk_crs_output(tree, geom)
+  .Call(geos_c_contains_properly_matrix, geom, tree)
 }
 
 #' @rdname geos_disjoint_matrix
 #' @export
 geos_overlaps_matrix <- function(geom, tree) {
-  .Call(geos_c_overlaps_matrix, as_geos_geometry(geom), as_geos_strtree(tree))
+  tree <- as_geos_strtree(tree)
+  geom <- as_geos_geometry(geom)
+  wk_crs_output(tree, geom)
+  .Call(geos_c_overlaps_matrix, geom, tree)
 }
 
 #' @rdname geos_disjoint_matrix
 #' @export
 geos_equals_matrix <- function(geom, tree) {
-  .Call(geos_c_equals_matrix, as_geos_geometry(geom), as_geos_strtree(tree))
+  tree <- as_geos_strtree(tree)
+  geom <- as_geos_geometry(geom)
+  wk_crs_output(tree, geom)
+  .Call(geos_c_equals_matrix, geom, tree)
 }
 
 #' @rdname geos_disjoint_matrix
 #' @export
 geos_equals_exact_matrix <- function(geom, tree, tolerance = .Machine$double.eps ^ 2) {
-  recycled <- recycle_common(list(as_geos_geometry(geom), as.numeric(tolerance)))
-  .Call(geos_c_equals_exact_matrix, recycled[[1]], as_geos_strtree(tree), recycled[[2]])
+  tree <- as_geos_strtree(tree)
+  geom <- as_geos_geometry(geom)
+  wk_crs_output(tree, geom)
+  recycled <- recycle_common(list(geom, as.numeric(tolerance)))
+  .Call(geos_c_equals_exact_matrix, recycled[[1]], tree, recycled[[2]])
 }
 
 #' @rdname geos_disjoint_matrix
 #' @export
 geos_covers_matrix <- function(geom, tree) {
-  .Call(geos_c_covers_matrix, as_geos_geometry(geom), as_geos_strtree(tree))
+  tree <- as_geos_strtree(tree)
+  geom <- as_geos_geometry(geom)
+  wk_crs_output(tree, geom)
+  .Call(geos_c_covers_matrix, geom, tree)
 }
 
 #' @rdname geos_disjoint_matrix
 #' @export
 geos_covered_by_matrix <- function(geom, tree) {
-  .Call(geos_c_covered_by_matrix, as_geos_geometry(geom), as_geos_strtree(tree))
+  tree <- as_geos_strtree(tree)
+  geom <- as_geos_geometry(geom)
+  wk_crs_output(tree, geom)
+  .Call(geos_c_covered_by_matrix, geom, tree)
 }
 
 #' @rdname geos_disjoint_matrix
@@ -238,18 +279,30 @@ geos_covered_by_any <- function(geom, tree) {
 #' @export
 #'
 geos_nearest <- function(geom, tree) {
+  tree <- as_geos_strtree(tree)
+  geom <- as_geos_geometry(geom)
+  wk_crs_output(tree, geom)
+
   .Call(geos_c_nearest, as_geos_geometry(geom), as_geos_strtree(tree))
 }
 
 #' @rdname geos_nearest
 #' @export
 geos_nearest_indexed <- function(geom, tree) {
+  tree <- as_geos_strtree(tree)
+  geom <- as_geos_geometry(geom)
+  wk_crs_output(tree, geom)
+
   .Call(geos_c_nearest_indexed, as_geos_geometry(geom), as_geos_strtree(tree))
 }
 
 #' @rdname geos_nearest
 #' @export
 geos_nearest_hausdorff <- function(geom, tree, densify = NULL) {
+  tree <- as_geos_strtree(tree)
+  geom <- as_geos_geometry(geom)
+  wk_crs_output(tree, geom)
+
   if (is.null(densify)) {
     .Call(geos_c_nearest_hausdorff, as_geos_geometry(geom), as_geos_strtree(tree))
   } else {
@@ -261,6 +314,10 @@ geos_nearest_hausdorff <- function(geom, tree, densify = NULL) {
 #' @rdname geos_nearest
 #' @export
 geos_nearest_frechet <- function(geom, tree, densify = NULL) {
+  tree <- as_geos_strtree(tree)
+  geom <- as_geos_geometry(geom)
+  wk_crs_output(tree, geom)
+
   if (is.null(densify)) {
     .Call(geos_c_nearest_frechet, as_geos_geometry(geom), as_geos_strtree(tree))
   } else {
