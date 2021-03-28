@@ -58,7 +58,7 @@ geos_make_polygon <- function(x, y, z = NA_real_, feature_id = 1L, ring_id = 1L,
   )
 
   if (length(recycled[[1]]) == 0) {
-    return(geos_empty("polygon"))
+    return(geos_empty("polygon", crs = crs))
   }
 
   lengths <- rle(recycled[[4]])$lengths
@@ -80,11 +80,12 @@ geos_make_polygon <- function(x, y, z = NA_real_, feature_id = 1L, ring_id = 1L,
 
 #' @rdname geos_make_point
 #' @export
-geos_make_collection <- function(geom, type_id = "geometrycollection", feature_id = 1L, crs = NULL) {
+geos_make_collection <- function(geom, type_id = "geometrycollection", feature_id = 1L) {
   type_id <- as_geos_type_id(type_id)
   stopifnot(length(type_id) == 1)
 
-  recycled <- recycle_common(list(as_geos_geometry(geom), as.integer(feature_id)))
+  geom <- as_geos_geometry(geom)
+  recycled <- recycle_common(list(geom, as.integer(feature_id)))
   lengths <- rle(recycled[[2]])$lengths
 
   # it's unlikely that anybody wants zero-length output, which is
@@ -94,7 +95,7 @@ geos_make_collection <- function(geom, type_id = "geometrycollection", feature_i
   } else {
     new_geos_geometry(
       .Call(geos_c_make_collection, recycled[[1]], type_id, lengths),
-      crs = crs
+      crs = attr(geom, "crs", exact = TRUE)
     )
   }
 }

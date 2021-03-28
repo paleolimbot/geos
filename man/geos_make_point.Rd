@@ -20,12 +20,7 @@ geos_make_polygon(
   crs = NULL
 )
 
-geos_make_collection(
-  geom,
-  type_id = "geometrycollection",
-  feature_id = 1L,
-  crs = NULL
-)
+geos_make_collection(geom, type_id = "geometrycollection", feature_id = 1L)
 }
 \arguments{
 \item{x}{Vectors of coordinate values}

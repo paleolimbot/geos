@@ -84,9 +84,10 @@ is.na.geos_geometry <- function(x) {
   }
 
   # check CRS compatibility
-  Reduce(wk::wk_crs_output, dots)
+  crs_reduce <- function(x, y) new_geos_geometry(crs = wk_crs_output(x, y))
+  crs <- Reduce(crs_reduce, dots)
 
-  geometry <- new_geos_geometry(NextMethod())
+  geometry <- new_geos_geometry(NextMethod(), crs = attr(dots[[1]], "crs", exact = TRUE))
   validate_geos_geometry(geometry)
   geometry
 }

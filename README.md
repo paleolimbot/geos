@@ -108,13 +108,11 @@ states_df %>%
 ```
 
 The easiest way to get data into and out of the package is using the [sf
-package](https://r-spatial.github.io/sf/). Note that the conversion will
-drop the CRS (it is your responsibility to make sure the assumptions of
-planar geometry are appropriate for your use-case).
+package](https://r-spatial.github.io/sf/).
 
 ``` r
 library(sf)
-#> Linking to GEOS 3.8.1, GDAL 3.1.1, PROJ 6.3.1
+#> Linking to GEOS 3.8.1, GDAL 3.1.2, PROJ 7.1.0
 nc <- read_sf(system.file("shape/nc.shp", package = "sf")) %>%
   st_transform(32119) # North Caroline state plane, m.
 
@@ -128,6 +126,6 @@ nc_geos %>%
 #> geometry type:  MULTIPOLYGON
 #> dimension:      XY
 #> bbox:           xmin: 123829.8 ymin: 14740.06 xmax: 930518.6 ymax: 318255.5
-#> CRS:            NA
-#> MULTIPOLYGON (((705428.2 49242.97, 705860.3 274...
+#> projected CRS:  NAD83 / North Carolina
+#> MULTIPOLYGON (((705860.3 27430.49, 698896.5 186...
 ```
