@@ -52,6 +52,20 @@ test_that("geos_geometry subsetting and concatenation work", {
   )
 })
 
+test_that("subset-assignment works", {
+  x <- as_geos_geometry(c("POINT EMPTY", "LINESTRING EMPTY", "POLYGON EMPTY"))
+  expect_identical(geos_write_wkt(x[3]), "POLYGON EMPTY")
+  x[3] <- "POINT (1 2)"
+  expect_identical(geos_write_wkt(x[3]), "POINT (1 2)")
+  x[3] <- as_geos_geometry("POINT (3 4)", crs = wk::wk_crs_inherit())
+  expect_identical(geos_write_wkt(x[3]), "POINT (3 4)")
+
+  x[[3]] <- "POINT (1 2)"
+  expect_identical(geos_write_wkt(x[3]), "POINT (1 2)")
+
+  expect_error(x[3] <- as_geos_geometry("POINT (1 2)", crs = 123), "are not equal")
+})
+
 test_that("geos_geometry can be put into a data.frame", {
   expect_identical(
     data.frame(geom = new_geos_geometry(list(NULL), crs = NULL)),

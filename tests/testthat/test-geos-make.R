@@ -3,6 +3,7 @@ test_that("make point works", {
   expect_true(geos_is_empty(geos_make_point(NA, NA)))
   expect_identical(geos_write_wkt(geos_make_point(1, 2)), "POINT (1 2)")
   expect_identical(geos_write_wkt(geos_make_point(1, 2, 3)), "POINT Z (1 2 3)")
+  expect_identical(wk::wk_crs(geos_make_point(1, 2, crs = 123)), 123)
 })
 
 test_that("make linestring works", {
@@ -16,6 +17,7 @@ test_that("make linestring works", {
     "LINESTRING Z (1 3 5, 2 4 6)"
   )
   expect_error(geos_make_linestring(1, 1), "IllegalArgumentException")
+  expect_identical(wk::wk_crs(geos_make_linestring(1:2, 2:3, crs = 123)), 123)
 })
 
 test_that("make polygon works", {
@@ -75,6 +77,12 @@ test_that("make polygon works", {
     geos_make_polygon(c(0, 1, 0, 0, 12), c(0, 0, 1, 0, 12), ring_id = c(rep(1, 4), 2)),
     "IllegalArgumentException"
   )
+
+  # crs
+  expect_identical(
+    wk::wk_crs(geos_make_polygon(c(0, 1, 0, 0), c(0, 0, 1, 0), crs = 123)),
+    123
+  )
 })
 
 test_that("make collection works", {
@@ -101,4 +109,9 @@ test_that("make collection works", {
   saveRDS(bad_ptr, tmp)
   bad_ptr <- readRDS(tmp)
   expect_error(geos_make_collection(bad_ptr), "External pointer is not valid")
+
+  expect_identical(
+    wk::wk_crs(geos_make_collection(as_geos_geometry("POINT (1 2)", crs = 123))),
+    123
+  )
 })

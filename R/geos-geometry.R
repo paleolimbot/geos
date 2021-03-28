@@ -80,6 +80,22 @@ is.na.geos_geometry <- function(x) {
 }
 
 #' @export
+`[<-.geos_geometry` <- function(x, i, value) {
+  replacement <- as_geos_geometry(value)
+  crs_out <- wk_crs_output(x, replacement)
+  x <- unclass(x)
+  x[i] <- replacement
+  attr(x, "crs") <- NULL
+  new_geos_geometry(x, crs = crs_out)
+}
+
+#' @export
+`[[<-.geos_geometry` <- function(x, i, value) {
+  x[i] <- value
+  x
+}
+
+#' @export
 `c.geos_geometry` <- function(...) {
   # make sure all items inherit the same top-level class
   dots <- list(...)

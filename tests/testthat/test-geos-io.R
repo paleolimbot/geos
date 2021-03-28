@@ -43,6 +43,10 @@ test_that("WKT reader works", {
   expect_error(geos_read_wkt(really_long_bad_wkt), "ParseException")
 })
 
+test_that("wkt reader can specify crs", {
+  expect_identical(wk::wk_crs(geos_read_wkt("POINT (1 1)", crs = 123)), 123)
+})
+
 test_that("WKB reader works", {
   # regular read/write
   expect_is(geos_read_wkb(wk::wkt_translate_wkb("POINT (30 10)")), "geos_geometry")
@@ -123,6 +127,10 @@ test_that("WKB reader works", {
   expect_error(geos_read_wkb(wkb), "Unknown WKB type")
 })
 
+test_that("wkb reader can specify crs", {
+  expect_identical(wk::wk_crs(geos_read_wkb(wk::as_wkb("POINT (1 1)"), crs = 123)), 123)
+})
+
 test_that("hex reader/writer works", {
   expect_identical(
     geos_write_wkt(
@@ -193,6 +201,13 @@ test_that("xy reader/writer works", {
   expect_error(geos_write_xy(geos_read_wkt("LINESTRING (0 0, 1 1)")), "Argument is not a Point")
 })
 
+test_that("hex reader can specify crs", {
+  expect_identical(
+    wk::wk_crs(geos_read_hex("01010000000000000000000000000000000000F03F", crs = 123)),
+    123
+  )
+})
+
 test_that("empty creator works", {
   expect_error(geos_empty(8), "Unsupported type request")
 
@@ -242,4 +257,9 @@ test_that("empty creator works", {
       "GEOMETRYCOLLECTION EMPTY", NA
     )
   )
+})
+
+test_that("empty creator can specify crs", {
+  expect_identical(wk::wk_crs(geos_empty()), wk::wk_crs_inherit())
+  expect_identical(wk::wk_crs(geos_empty(crs = 123)), 123)
 })
