@@ -108,6 +108,7 @@ geos_make_collection <- function(geom, type_id = "geometrycollection", feature_i
 #'   (default to calling [geos_type_id()]). This is most
 #'   usefully a character vector with the geometry type
 #'   (e.g., point, linestring, polygon).
+#' @inheritParams wk::wk_crs
 #'
 #' @return A [GEOS geometry vector][as_geos_geometry].
 #' @export
