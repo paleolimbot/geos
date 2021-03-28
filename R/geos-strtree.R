@@ -64,7 +64,19 @@ as_geos_strtree.geos_geometry <- function(x, ...) {
 format.geos_strtree <- function(x, ...) {
   data <- geos_strtree_data(x)
   n_items <- length(data)
-  sprintf("<geos_strtree containing %s item%s>", n_items, if(n_items == 1) "" else "s")
+
+  crs <- attr(x, "crs", exact = TRUE)
+  if (is.null(crs)) {
+    sprintf(
+      "<geos_strtree containing %s item%s>",
+      n_items, if(n_items == 1) "" else "s"
+    )
+  } else {
+    sprintf(
+      "<geos_strtree containing %s item%s with CRS=%s>",
+      n_items, if(n_items == 1) "" else "s", format(crs)
+    )
+  }
 }
 
 #' @export

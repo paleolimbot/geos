@@ -20,6 +20,13 @@ test_that("strtree objects can be created", {
   gc()
 })
 
+test_that("strtree object carry a wk_crs()", {
+  expect_identical(
+    wk_crs(geos_strtree(as_geos_geometry("POINT (0 1)", crs = 12))),
+    12
+  )
+})
+
 test_that("strtree objects can be created from well-known text", {
   expect_identical(
     geos_write_wkt(geos_strtree_data(as_geos_strtree("POINT (0 0)"))),
@@ -36,6 +43,11 @@ test_that("strtree objects can be created from well-known text", {
 test_that("strtree objects have reasonable format() and print() methods", {
   expect_identical(format(geos_strtree(character(0))), "<geos_strtree containing 0 items>")
   expect_output(print(geos_strtree(character(0))), "<geos_strtree containing 0 items>")
+
+  expect_match(
+    format(geos_strtree(as_geos_geometry("POINT (0 1)", crs = 1234))),
+    "with CRS=1234"
+  )
 })
 
 test_that("strtree objects that are invalid cannot be queried", {
@@ -45,6 +57,11 @@ test_that("strtree objects that are invalid cannot be queried", {
   saveRDS(tree, temprds)
   tree <- readRDS(temprds)
   expect_error(geos_strtree_query(tree, "POINT (30 10)"), "External.*?is not valid")
+})
+
+test_that("strtree objects error when queried with an object with a different crs", {
+  tree <- geos_strtree(as_geos_geometry("POINT (30 10)", crs = 1234))
+  expect_error(geos_strtree_query(tree, "POINT (30 10)"), "are not equal")
 })
 
 test_that("empty trees can be queried", {

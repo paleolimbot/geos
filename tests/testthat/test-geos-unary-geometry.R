@@ -1,4 +1,11 @@
 
+test_that("pattern for propagating crs works", {
+  expect_identical(
+    wk::wk_crs(geos_centroid(as_geos_geometry("POINT (0 1)", crs = 12345))),
+    12345
+  )
+})
+
 test_that("transformers work", {
   expect_identical(
     geos_write_wkt(geos_centroid(c("POINT (0 1)", "LINESTRING (0 0, 1 1)", NA))),

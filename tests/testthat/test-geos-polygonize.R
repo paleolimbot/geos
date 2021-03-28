@@ -15,6 +15,15 @@ test_that("polygonize works", {
   bad_ptr <- readRDS(tmp)
   unlink(tmp)
   expect_error(geos_polygonize(bad_ptr), "not a valid external pointer")
+
+  expect_identical(
+    wk::wk_crs(
+      geos_polygonize(
+        as_geos_geometry("MULTILINESTRING ((0 0, 0 1), (0 1, 1 0), (1 0, 0 0))", crs = 12)
+      )
+    ),
+    12
+  )
 })
 
 test_that("polygonize valid works", {
@@ -34,6 +43,15 @@ test_that("polygonize cut edges works", {
       geos_polygonize_cut_edges("MULTILINESTRING ((0 0, 0 1), (0 1, 1 0), (1 0, 0 0))"),
       "GEOMETRYCOLLECTION EMPTY"
     )
+  )
+
+  expect_identical(
+    wk::wk_crs(
+      geos_polygonize_cut_edges(
+        as_geos_geometry("MULTILINESTRING ((0 0, 0 1), (0 1, 1 0), (1 0, 0 0))", crs = 12)
+      )
+    ),
+    12
   )
 })
 
@@ -60,4 +78,14 @@ test_that("polygonize full works", {
   bad_ptr <- readRDS(tmp)
   unlink(tmp)
   expect_error(geos_polygonize_full(bad_ptr), "not a valid external pointer")
+
+  expect_identical(
+    lapply(
+      geos_polygonize_full(
+        as_geos_geometry("MULTILINESTRING ((0 0, 0 1), (0 1, 1 0), (1 0, 0 0))", crs = 12)
+      ),
+      wk::wk_crs
+    ),
+    list(result = 12, cut_edges = 12, dangles = 12, invalid_rings = 12)
+  )
 })

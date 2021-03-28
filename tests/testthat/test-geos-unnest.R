@@ -26,6 +26,17 @@ test_that("geos_unnest() works", {
   expect_identical(attr(unnested, "lengths"), 4L)
 })
 
+test_that("geos_unnest() propagates CRS", {
+  expect_identical(
+    wk::wk_crs(geos_unnest(as_geos_geometry("POINT (1 2)", crs = 784))),
+    784
+  )
+  expect_identical(
+    wk::wk_crs(geos_unnest(as_geos_geometry("GEOMETRYCOLLECTION(POINT (1 2))", crs = 784))),
+    784
+  )
+})
+
 test_that("wk*_unnest(max_depth) is respected", {
   unnested <-  geos_unnest(
     "GEOMETRYCOLLECTION (GEOMETRYCOLLECTION (GEOMETRYCOLLECTION (POINT (0 1))))",
