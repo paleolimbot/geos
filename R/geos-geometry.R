@@ -39,6 +39,11 @@ as_geos_geometry.WKB <- function(x, ..., crs = NULL) {
   geos_read_wkb(x, crs = crs)
 }
 
+#' @rdname as_geos_geometry
+#' @export
+geos_geometry <- function(crs = wk::wk_crs_inherit()) {
+  new_geos_geometry(list(), crs = crs)
+}
 
 new_geos_geometry <- function(x = list(), crs = NULL) {
   if (!is.list(x) || is.object(x)) {

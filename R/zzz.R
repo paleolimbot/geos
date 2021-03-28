@@ -13,6 +13,8 @@
   s3_register("vctrs::vec_proxy", "geos_geometry")
   s3_register("vctrs::vec_restore", "geos_geometry")
   s3_register("vctrs::vec_ptype_abbr", "geos_geometry")
+  s3_register("vctrs::vec_cast", "geos_geometry")
+  s3_register("vctrs::vec_ptype2", "geos_geometry")
 }
 
 s3_register <- function(generic, class, method = NULL) {

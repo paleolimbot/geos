@@ -5,11 +5,16 @@
 \alias{as_geos_geometry.sf}
 \alias{as_geos_geometry.wk_wkb}
 \alias{as_geos_geometry.wk_wkt}
+\alias{as_geos_geometry.wk_xy}
+\alias{as_geos_geometry.wk_xyz}
+\alias{as_geos_geometry.wk_rct}
+\alias{as_geos_geometry.wk_crc}
 \alias{as_geos_geometry}
 \alias{as_geos_geometry.geos_geometry}
 \alias{as_geos_geometry.character}
 \alias{as_geos_geometry.blob}
 \alias{as_geos_geometry.WKB}
+\alias{geos_geometry}
 \title{Create GEOS Geometry Vectors}
 \usage{
 \method{as_geos_geometry}{sfc}(x, ...)
@@ -20,6 +25,14 @@
 
 \method{as_geos_geometry}{wk_wkt}(x, ...)
 
+\method{as_geos_geometry}{wk_xy}(x, ...)
+
+\method{as_geos_geometry}{wk_xyz}(x, ...)
+
+\method{as_geos_geometry}{wk_rct}(x, ...)
+
+\method{as_geos_geometry}{wk_crc}(x, ...)
+
 as_geos_geometry(x, ...)
 
 \method{as_geos_geometry}{geos_geometry}(x, ...)
@@ -29,6 +42,8 @@ as_geos_geometry(x, ...)
 \method{as_geos_geometry}{blob}(x, ..., crs = NULL)
 
 \method{as_geos_geometry}{WKB}(x, ..., crs = NULL)
+
+geos_geometry(crs = wk::wk_crs_inherit())
 }
 \arguments{
 \item{x}{An object to be coerced to a geometry vector}

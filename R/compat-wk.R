@@ -30,6 +30,38 @@ as_geos_geometry.wk_wkt <- function(x, ...) {
   geos_read_wkt(x, attr(x, "crs", exact = TRUE))
 }
 
+#' @rdname as_geos_geometry
+#' @export
+as_geos_geometry.wk_xy <- function(x, ...) {
+  x <- unclass(x)
+  new_geos_geometry(
+    .Call(geos_c_make_point, x[[1]], x[[2]], rep(NA_real_, length(x[[1]]))),
+    crs = attr(x, "crs", exact = TRUE)
+  )
+}
+
+#' @rdname as_geos_geometry
+#' @export
+as_geos_geometry.wk_xyz <- function(x, ...) {
+  x <- unclass(x)
+  new_geos_geometry(
+    .Call(geos_c_make_point, x[[1]], x[[2]], x[[3]]),
+    crs = attr(x, "crs", exact = TRUE)
+  )
+}
+
+#' @rdname as_geos_geometry
+#' @export
+as_geos_geometry.wk_rct <- function(x, ...) {
+  as_geos_geometry(wk::as_wkb(x, ...))
+}
+
+#' @rdname as_geos_geometry
+#' @export
+as_geos_geometry.wk_crc <- function(x, ...) {
+  as_geos_geometry(wk::as_wkb(x, ...))
+}
+
 #' @importFrom wk as_wkt
 #' @export
 as_wkt.geos_geometry <- function(x, ..., include_z = TRUE, precision = 16, trim = TRUE) {
@@ -82,4 +114,18 @@ as_wkb.geos_geometry <- function(x, ..., include_z = TRUE, include_srid = FALSE,
   }
 
   wk::new_wk_wkb(out, crs = attr(x, "crs", exact = TRUE)) # nocov end
+}
+
+#' @importFrom wk as_xy
+#' @export
+as_xy.geos_geometry <- function(x, ..., dims = NULL) {
+  xy <- geos_write_xy(x)
+
+  has_z <- geos_has_z(x)
+  if (any(has_z, na.rm = TRUE) && (is.null(dims)) || ("z" %in% dims)) {
+    xy$z <- geos_z(x)
+    wk::new_wk_xyz(xy, crs = attr(x, "crs", exact = TRUE))
+  } else {
+    wk::new_wk_xy(xy, crs = attr(x, "crs", exact = TRUE))
+  }
 }
