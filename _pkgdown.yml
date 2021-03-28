@@ -37,3 +37,7 @@ reference:
 - title: GEOS Information
   contents:
   - geos_version
+
+- title: S3 Details
+  contents:
+  - vctrs-methods
