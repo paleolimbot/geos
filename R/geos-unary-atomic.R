@@ -240,13 +240,14 @@ geos_is_valid <- function(geom) {
 #' @rdname geos_is_valid
 #' @export
 geos_is_valid_detail <- function(geom, allow_self_touching_ring_forming_hole = FALSE) {
+  geom <- as_geos_geometry(geom)
   result <- .Call(
     geos_c_is_valid_detail,
-    as_geos_geometry(geom),
+    geom,
     as.logical(allow_self_touching_ring_forming_hole)[1]
   )
 
   names(result) <- c("is_valid", "reason", "location")
-  result$location <- new_geos_geometry(result$location)
+  result$location <- new_geos_geometry(result$location, attr(geom, "crs", exact = TRUE))
   new_data_frame(result)
 }

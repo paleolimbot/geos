@@ -13,7 +13,7 @@ test_that("coercion to wk::wkt and wk::wkb", {
 })
 
 test_that("crs can be fetched and set", {
-  geom <- new_geos_geometry(list(NULL))
+  geom <- new_geos_geometry(list(NULL), crs = NULL)
   expect_null(wk_crs(geom))
   geom <- wk_set_crs(geom, 1234)
   expect_identical(wk_crs(geom), 1234)

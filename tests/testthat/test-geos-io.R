@@ -19,8 +19,14 @@ test_that("WKT reader works", {
   )
 
   # NULL/NA read/write
-  expect_identical(geos_write_wkt(new_geos_geometry(list(NULL))), NA_character_)
-  expect_identical(geos_read_wkt(NA_character_), new_geos_geometry(list(NULL)))
+  expect_identical(
+    geos_write_wkt(new_geos_geometry(list(NULL), crs = NULL)),
+    NA_character_
+  )
+  expect_identical(
+    geos_read_wkt(NA_character_),
+    new_geos_geometry(list(NULL), crs = NULL)
+  )
 
   # read/write when the internal pointer is NULL
   temp_rds <- tempfile()
@@ -73,10 +79,13 @@ test_that("WKB reader works", {
 
   # NULL/NA read/write
   expect_identical(
-    geos_write_wkb(new_geos_geometry(list(NULL))),
+    geos_write_wkb(new_geos_geometry(list(NULL), crs = NULL)),
     structure(list(NULL), class = "blob")
   )
-  expect_identical(geos_read_wkb(list(NULL)), new_geos_geometry(list(NULL)))
+  expect_identical(
+    geos_read_wkb(list(NULL)),
+    new_geos_geometry(list(NULL), crs = NULL)
+  )
 
   # read/write when the internal pointer is NULL
   temp_rds <- tempfile()
@@ -177,7 +186,10 @@ test_that("xy reader/writer works", {
     list(x = c(0, 0, 0, NA), y = as.numeric(c(1:3, NA)))
   )
 
-  expect_identical(geos_write_xy(new_geos_geometry(list(NULL))), list(x = NA_real_, y = NA_real_))
+  expect_identical(
+    geos_write_xy(new_geos_geometry(list(NULL), crs = NULL)),
+    list(x = NA_real_, y = NA_real_)
+  )
   expect_error(geos_write_xy(geos_read_wkt("LINESTRING (0 0, 1 1)")), "Argument is not a Point")
 })
 
