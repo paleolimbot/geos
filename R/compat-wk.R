@@ -123,7 +123,9 @@ as_xy.geos_geometry <- function(x, ..., dims = NULL) {
 
   has_z <- geos_has_z(x)
   if (any(has_z, na.rm = TRUE) && (is.null(dims)) || ("z" %in% dims)) {
-    xy$z <- geos_z(x)
+    is_empty <- is.na(x) | geos_is_empty(x)
+    xy$z <- rep(NA_real_, length(x))
+    xy$z[!is_empty] <- geos_z(x[!is_empty])
     wk::new_wk_xyz(xy, crs = attr(x, "crs", exact = TRUE))
   } else {
     wk::new_wk_xy(xy, crs = attr(x, "crs", exact = TRUE))
