@@ -50,6 +50,7 @@ test_that("geos_geometry default format/print/str methods work", {
   expect_match(format(geos_make_linestring(1:5, 1)), "<LINESTRING \\(")
   expect_output(print(new_geos_geometry()), "geos_geometry")
   expect_output(print(new_geos_geometry(list(NULL))), "geos_geometry")
+  expect_output(print(new_geos_geometry(crs = 1234)), "CRS=1234")
   expect_match(format(as_geos_geometry(c("POINT (0 1)", NA)))[2], "<NA>")
 
   expect_output(str(as_geos_geometry(character())), "geos_geometry\\[0\\]")

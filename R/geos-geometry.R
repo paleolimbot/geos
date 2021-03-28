@@ -146,7 +146,13 @@ as.data.frame.geos_geometry <- function(x, ..., optional = FALSE) {
 
 #' @export
 print.geos_geometry <- function(x, ...) {
-  cat(sprintf("<%s[%s]>\n", class(x)[1], length(x)))
+  crs <- attr(x, "crs", exact = TRUE)
+  if (is.null(crs)) {
+    cat(sprintf("<%s[%s]>\n", class(x)[1], length(x)))
+  } else {
+    cat(sprintf("<%s[%s] with CRS=%s>\n", class(x)[1], length(x), format(crs)))
+  }
+
   if (length(x) == 0) {
     return(invisible(x))
   }
