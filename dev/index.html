@@ -150,10 +150,10 @@
 <span class="co">#&gt;  9 florida              &lt;MULTIPOLYGON [-87.640 25.130...-80.042 31.008]&gt;  </span>
 <span class="co">#&gt; 10 georgia              &lt;MULTIPOLYGON [-85.611 30.355...-80.844 34.996]&gt;  </span>
 <span class="co">#&gt; # … with 39 more rows</span></code></pre></div>
-<p>The easiest way to get data into and out of the package is using the <a href="https://r-spatial.github.io/sf/" class="external-link">sf package</a>. Note that the conversion will drop the CRS (it is your responsibility to make sure the assumptions of planar geometry are appropriate for your use-case).</p>
+<p>The easiest way to get data into and out of the package is using the <a href="https://r-spatial.github.io/sf/" class="external-link">sf package</a>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span>
-<span class="co">#&gt; Linking to GEOS 3.8.1, GDAL 3.1.1, PROJ 6.3.1</span>
+<span class="co">#&gt; Linking to GEOS 3.8.1, GDAL 3.1.2, PROJ 7.1.0</span>
 <span class="va">nc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">read_sf</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"shape/nc.shp"</span>, package <span class="op">=</span> <span class="st">"sf"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html" class="external-link">st_transform</a></span><span class="op">(</span><span class="fl">32119</span><span class="op">)</span> <span class="co"># North Caroline state plane, m.</span>
 
@@ -167,8 +167,8 @@
 <span class="co">#&gt; geometry type:  MULTIPOLYGON</span>
 <span class="co">#&gt; dimension:      XY</span>
 <span class="co">#&gt; bbox:           xmin: 123829.8 ymin: 14740.06 xmax: 930518.6 ymax: 318255.5</span>
-<span class="co">#&gt; CRS:            NA</span>
-<span class="co">#&gt; MULTIPOLYGON (((705428.2 49242.97, 705860.3 274...</span></code></pre></div>
+<span class="co">#&gt; projected CRS:  NAD83 / North Carolina</span>
+<span class="co">#&gt; MULTIPOLYGON (((705860.3 27430.49, 698896.5 186...</span></code></pre></div>
 </div>
 </div>
   </div>
