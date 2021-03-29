@@ -99,6 +99,19 @@ geos_maximum_inscribed_circle_spec <- function(geom, tolerance) {
 
 #' @rdname geos_centroid
 #' @export
+geos_maximum_inscribed_crc <- function(geom, tolerance) {
+  spec <- geos_maximum_inscribed_circle_spec(geom, tolerance)
+  xy <- unclass(as_xy(geos_point_start(spec)))
+
+  wk::crc(
+    xy$x, xy$y,
+    geos_length(spec),
+    crs = attr(spec, "crs", exact = TRUE)
+  )
+}
+
+#' @rdname geos_centroid
+#' @export
 geos_unary_union <- function(geom) {
   geom <- as_geos_geometry(geom)
   new_geos_geometry(.Call(geos_c_unary_union, geom), crs = attr(geom, "crs", exact = TRUE))

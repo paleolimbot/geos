@@ -8,6 +8,7 @@
 \alias{geos_minimum_rotated_rectangle}
 \alias{geos_minimum_bounding_circle}
 \alias{geos_maximum_inscribed_circle_spec}
+\alias{geos_maximum_inscribed_crc}
 \alias{geos_unary_union}
 \alias{geos_unary_union_prec}
 \alias{geos_coverage_union}
@@ -45,6 +46,8 @@ geos_minimum_rotated_rectangle(geom)
 geos_minimum_bounding_circle(geom)
 
 geos_maximum_inscribed_circle_spec(geom, tolerance)
+
+geos_maximum_inscribed_crc(geom, tolerance)
 
 geos_unary_union(geom)
 

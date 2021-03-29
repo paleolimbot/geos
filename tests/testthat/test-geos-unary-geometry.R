@@ -186,6 +186,12 @@ test_that("geos_maximum_inscribed_circle_spec() works", {
       ),
       0.5
     )
+
+    expect_identical(
+      geos_maximum_inscribed_crc("POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))", 0.01),
+      wk::crc(0.5, 0.5, 0.5)
+    )
+
   } else if(geos_version(runtime = FALSE) >= "3.9.1") {
     expect_error(
       geos_maximum_inscribed_circle_spec("POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))", 0.01),
