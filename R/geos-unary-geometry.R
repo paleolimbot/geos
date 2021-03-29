@@ -208,6 +208,29 @@ geos_envelope <- function(geom) {
 
 #' @rdname geos_centroid
 #' @export
+geos_envelope_rct <- function(geom) {
+  geom <- as_geos_geometry(geom)
+
+  # geos_xmin() and friends errors on EMPTY
+  not_empty <- is.na(geom) | !geos_is_empty(geom)
+
+  result <- list(
+    xmin = rep(Inf, length(geom)),
+    ymin = rep(Inf, length(geom)),
+    xmax = rep(-Inf, length(geom)),
+    ymax = rep(-Inf, length(geom))
+  )
+
+  result$xmin[not_empty] <- geos_xmin(geom[not_empty])
+  result$ymin[not_empty] <- geos_ymin(geom[not_empty])
+  result$xmax[not_empty] <- geos_xmax(geom[not_empty])
+  result$ymax[not_empty] <- geos_ymax(geom[not_empty])
+
+  wk::new_wk_rct(result, crs = attr(geom, "crs", exact = TRUE))
+}
+
+#' @rdname geos_centroid
+#' @export
 geos_convex_hull <- function(geom) {
   geom <- as_geos_geometry(geom)
   new_geos_geometry(.Call(geos_c_convex_hull, geom), crs = attr(geom, "crs", exact = TRUE))
