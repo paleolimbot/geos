@@ -64,7 +64,7 @@ extern SEXP geos_c_polygonize_cut_edges(SEXP collection);
 extern SEXP geos_c_polygonize_full(SEXP collection);
 extern SEXP geos_c_segment_intersection(SEXP Sax0, SEXP Say0, SEXP Sax1, SEXP Say1, SEXP Sbx0, SEXP Sby0, SEXP Sbx1, SEXP Sby1);
 extern SEXP geos_c_orientation_index(SEXP SAx, SEXP SAy, SEXP SBx, SEXP SBy, SEXP SPx, SEXP SPy);
-extern SEXP geos_c_strtree_create(SEXP geom);
+extern SEXP geos_c_strtree_create(SEXP geom, SEXP node_capacity);
 extern SEXP geos_c_strtree_data(SEXP treeExternalPtr);
 extern SEXP geos_c_strtree_query(SEXP treeExternalPtr, SEXP geom);
 extern SEXP geos_c_touches_matrix(SEXP geom, SEXP treeExternalPtr);
@@ -214,7 +214,7 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_polygonize_full", (DL_FUNC) &geos_c_polygonize_full, 1},
   {"geos_c_segment_intersection", (DL_FUNC) &geos_c_segment_intersection, 8},
   {"geos_c_orientation_index", (DL_FUNC) &geos_c_orientation_index, 6},
-  {"geos_c_strtree_create", (DL_FUNC) &geos_c_strtree_create, 1},
+  {"geos_c_strtree_create", (DL_FUNC) &geos_c_strtree_create, 2},
   {"geos_c_strtree_data", (DL_FUNC) &geos_c_strtree_data, 1},
   {"geos_c_strtree_query", (DL_FUNC) &geos_c_strtree_query, 2},
   {"geos_c_touches_matrix", (DL_FUNC) &geos_c_touches_matrix, 2},

@@ -5,21 +5,16 @@
 
 #include <stdio.h>
 
-SEXP geos_c_strtree_create(SEXP geom) {
+SEXP geos_c_strtree_create(SEXP geom, SEXP node_capacity) {
   R_xlen_t size = Rf_xlength(geom);
-
-  // size == 0 will crash some GEOS builds, so we need a sentinel
-  if (size == 0) {
-    SEXP treeIndices = PROTECT(Rf_allocVector(INTSXP, 0));
-    SEXP treeExternalPtr = geos_common_tree_xptr(NULL, geom, treeIndices);
-    UNPROTECT(1);
-    return treeExternalPtr;
-  }
-
+  int nodeCapacityInt = INTEGER(node_capacity)[0];
   GEOS_INIT();
 
   // create the tree object
-  GEOSSTRtree* tree = GEOSSTRtree_create_r(handle, size);
+  GEOSSTRtree* tree = GEOSSTRtree_create_r(handle, nodeCapacityInt);
+  if (tree == NULL) {
+    GEOS_ERROR("%s", "Failed to create GEOSSTRtree*()"); // # nocov
+  }
 
   // also needed is a sequence of integers to which we can store
   // void* pointers, which are the 'hook' for GEOSSTRtree_insert_r()
@@ -77,8 +72,7 @@ struct QueryResult {
 SEXP strtree_query_base(SEXP treeExternalPtr, SEXP geom, GEOSQueryCallback callback,
                         int prepare, SEXP extra) {
   GEOSSTRtree* tree = (GEOSSTRtree*) R_ExternalPtrAddr(treeExternalPtr);
-
-  if (tree == NULL && Rf_xlength(R_ExternalPtrTag(treeExternalPtr)) > 0) {
+  if (tree == NULL) {
     UNPROTECT(1);
     Rf_error("External pointer (geos_strtree) is not valid");
   }
@@ -134,10 +128,7 @@ SEXP strtree_query_base(SEXP treeExternalPtr, SEXP geom, GEOSQueryCallback callb
     queryResult.geometry = geometry;
     queryResult.prepared = (GEOSPreparedGeometry*) prepared;
 
-    // tree is only NULL here as an empty tree
-    if (tree != NULL) {
-      GEOSSTRtree_query_r(handle, tree, geometry, callback, &queryResult);
-    }
+    GEOSSTRtree_query_r(handle, tree, geometry, callback, &queryResult);
 
     GEOSPreparedGeom_destroy_r(handle, prepared);
 
@@ -359,10 +350,12 @@ SEXP geos_strtree_nearest_base(SEXP treeExternalPtr, SEXP geom,
                                GEOSDistanceCallback callback, SEXP extra) {
   GEOSSTRtree* tree = (GEOSSTRtree*) R_ExternalPtrAddr(treeExternalPtr);
 
-  if (tree == NULL && Rf_xlength(R_ExternalPtrTag(treeExternalPtr)) > 0) {
+  if (tree == NULL) {
     UNPROTECT(1);
     Rf_error("External pointer (geos_strtree) is not valid");
   }
+
+  R_xlen_t treeSize = Rf_xlength(R_ExternalPtrProtected(treeExternalPtr));
 
   // allocate the list() result
   R_xlen_t size = Rf_xlength(geom);
@@ -391,8 +384,7 @@ SEXP geos_strtree_nearest_base(SEXP treeExternalPtr, SEXP geom,
     geometry = (GEOSGeometry*) R_ExternalPtrAddr(item);
     GEOS_CHECK_GEOMETRY(geometry, i);
 
-    // tree is only NULL here as an empty tree
-    if (tree != NULL) {
+    if (treeSize > 0) {
       itemResult = (int*) GEOSSTRtree_nearest_generic_r(
         handle, tree, geometry, geometry,
         callback, &distanceInfo

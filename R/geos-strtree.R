@@ -4,15 +4,24 @@
 #' @inheritParams geos_read_wkt
 #' @param tree A [geos_strtree()]
 #' @param x An object to convert to a [geos_strtree()]
+#' @param node_capacity The maximum number of child nodes that a node may have.
+#'   The minimum recommended capacity value is 4. If unsure, use a
+#'   default node capacity of 10.
 #' @param ... Unused
 #'
 #' @return A geos_str_tree object
 #' @export
 #'
-geos_strtree <- function(geom) {
+geos_strtree <- function(geom, node_capacity = 10L) {
   geom <- as_geos_geometry(geom)
+  node_capacity <- as.integer(node_capacity)
+  stopifnot(
+    length(node_capacity) == 1,
+    node_capacity >= 4, node_capacity < 1e6
+  )
+
   structure(
-    .Call(geos_c_strtree_create, geom),
+    .Call(geos_c_strtree_create, geom, node_capacity),
     class = "geos_strtree",
     crs = attr(geom, "crs", exact = TRUE)
   )

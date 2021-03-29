@@ -10,7 +10,7 @@
 \alias{as_geos_strtree.geos_geometry}
 \title{Create a GEOS STRTree}
 \usage{
-geos_strtree(geom)
+geos_strtree(geom, node_capacity = 10L)
 
 geos_strtree_query(tree, geom)
 
@@ -26,6 +26,10 @@ as_geos_strtree(x, ...)
 }
 \arguments{
 \item{geom}{A \link[=as_geos_geometry]{GEOS geometry vector}}
+
+\item{node_capacity}{The maximum number of child nodes that a node may have.
+The minimum recommended capacity value is 4. If unsure, use a
+default node capacity of 10.}
 
 \item{tree}{A \code{\link[=geos_strtree]{geos_strtree()}}}
 
