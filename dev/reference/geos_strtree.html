@@ -123,7 +123,7 @@
     <p>Create a GEOS STRTree</p>
     </div>
 
-    <pre class="usage"><span class='fu'>geos_strtree</span><span class='op'>(</span><span class='va'>geom</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>geos_strtree</span><span class='op'>(</span><span class='va'>geom</span>, node_capacity <span class='op'>=</span> <span class='fl'>10L</span><span class='op'>)</span>
 
 <span class='fu'>geos_strtree_query</span><span class='op'>(</span><span class='va'>tree</span>, <span class='va'>geom</span><span class='op'>)</span>
 
@@ -146,6 +146,12 @@
     <tr>
       <th>geom</th>
       <td><p>A <a href='as_geos_geometry.html'>GEOS geometry vector</a></p></td>
+    </tr>
+    <tr>
+      <th>node_capacity</th>
+      <td><p>The maximum number of child nodes that a node may have.
+The minimum recommended capacity value is 4. If unsure, use a
+default node capacity of 10.</p></td>
     </tr>
     <tr>
       <th>tree</th>
