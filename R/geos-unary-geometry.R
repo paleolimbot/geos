@@ -83,7 +83,22 @@ geos_minimum_rotated_rectangle <- function(geom) {
 #' @export
 geos_minimum_bounding_circle <- function(geom) {
   geom <- as_geos_geometry(geom)
-  new_geos_geometry(.Call(geos_c_minimum_bounding_circle, geom), crs = attr(geom, "crs", exact = TRUE))
+  result <- .Call(geos_c_minimum_bounding_circle, geom)
+  attributes(result) <- NULL
+  new_geos_geometry(result, crs = attr(geom, "crs", exact = TRUE))
+}
+
+#' @rdname geos_centroid
+#' @export
+geos_minimum_bounding_crc <- function(geom) {
+  geom <- as_geos_geometry(geom)
+  result <- .Call(geos_c_minimum_bounding_circle, geom)
+  wk::crc(
+    x = attr(result, "x"),
+    y = attr(result, "y"),
+    r = attr(result, "radius"),
+    crs = attr(geom, "crs", exact = TRUE)
+  )
 }
 
 #' @rdname geos_centroid
@@ -291,7 +306,12 @@ geos_normalize <- function(geom) {
 #' @export
 geos_clip_by_rect <- function(geom, rect) {
   geom <- as_geos_geometry(geom)
-  rect <- geos_assert_list_of_numeric(rect, 4, "rect")
+  if (inherits(rect, "wk_rct")) {
+    wk_crs_output(geom, rect)
+    rect <- unclass(rect)
+  } else {
+    rect <- geos_assert_list_of_numeric(rect, 4, "rect")
+  }
   recycled <- recycle_common(c(list(geom), rect))
   new_geos_geometry(
     .Call(

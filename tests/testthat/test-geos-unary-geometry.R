@@ -321,6 +321,17 @@ test_that("bounding circle works", {
   expect_error(geos_minimum_bounding_circle("POINT (nan inf)"), "encountered NaN/Inf")
 })
 
+test_that("bounding crc works", {
+  expect_identical(
+    geos_minimum_bounding_crc(c(NA, "LINESTRING (-1 -1, 1 1)")),
+    wk::crc(
+      c(NA, 0),
+      c(NA, 0),
+      c(NA, sqrt(2))
+    )
+  )
+})
+
 test_that("clip by rect works", {
   line <- "LINESTRING (-1 5, 11 5)"
   expect_identical(
@@ -350,6 +361,19 @@ test_that("clip by rect works", {
   expect_error(
     geos_write_wkt(geos_clip_by_rect(line, list(Inf, Inf, -Inf, -Inf))),
     "Clipping rectangle must be non-empty"
+  )
+})
+
+test_that("geos_clip_by_rect() can use a wk::rct()", {
+  line <- "LINESTRING (-1 5, 11 5)"
+  expect_identical(
+    geos_write_wkt(geos_clip_by_rect(c(NA, line), wk::rct(0, 0, 10, 10))),
+    c(NA, "LINESTRING (0 5, 10 5)")
+  )
+
+  expect_error(
+    geos_clip_by_rect(c(NA, line), wk::rct(0, 0, 10, 10, crs = 2928)),
+    "are not equal"
   )
 })
 

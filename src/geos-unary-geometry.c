@@ -306,6 +306,9 @@ SEXP geos_c_normalize(SEXP geom) {
 SEXP geos_c_minimum_bounding_circle(SEXP geom) {
   R_xlen_t size = Rf_xlength(geom);
   SEXP result = PROTECT(Rf_allocVector(VECSXP, size));
+  SEXP radius = PROTECT(Rf_allocVector(REALSXP, size));
+  SEXP x = PROTECT(Rf_allocVector(REALSXP, size));
+  SEXP y = PROTECT(Rf_allocVector(REALSXP, size));
 
   GEOS_INIT();
 
@@ -313,10 +316,11 @@ SEXP geos_c_minimum_bounding_circle(SEXP geom) {
   GEOSGeometry* geometry;
   GEOSGeometry* geometryResult;
 
-  // not using the centre or radius for now, but these are needed for
-  // call to GEOSMinimumBoundingCircle_r
   GEOSGeometry* center = GEOSGeom_createPointFromXY_r(handle, NAN, NAN);
-  double radius;
+  double* pRadius = REAL(radius);
+  double* pX = REAL(x);
+  double* pY = REAL(y);
+
   if (center == NULL) {
     GEOS_ERROR("Error allocating %s", "center point"); // # nocov
   }
@@ -326,13 +330,16 @@ SEXP geos_c_minimum_bounding_circle(SEXP geom) {
 
     if (item == R_NilValue) {
       SET_VECTOR_ELT(result, i, R_NilValue);
+      pX[i] = NA_REAL;
+      pY[i] = NA_REAL;
+      pRadius[i] = NA_REAL;
       continue;
     }
 
     geometry = (GEOSGeometry*) R_ExternalPtrAddr(item);
     GEOS_CHECK_GEOMETRY(geometry, i);
 
-    geometryResult = GEOSMinimumBoundingCircle_r(handle, geometry, &radius, &center);
+    geometryResult = GEOSMinimumBoundingCircle_r(handle, geometry, pRadius + i, &center);
 
     if (geometryResult == NULL) {
       GEOSGeom_destroy_r(handle, center);
@@ -340,12 +347,18 @@ SEXP geos_c_minimum_bounding_circle(SEXP geom) {
       GEOS_ERROR("[i=%d] ", i + 1);
     } else {
       SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometryResult));
+      GEOSGeomGetX_r(handle, center, pX + i);
+      GEOSGeomGetY_r(handle, center, pY + i);
     }
   }
 
   GEOSGeom_destroy_r(handle, center);
   GEOS_FINISH();
-  UNPROTECT(1);
+
+  Rf_setAttrib(result, Rf_install("x"), x);
+  Rf_setAttrib(result, Rf_install("y"), y);
+  Rf_setAttrib(result, Rf_install("radius"), radius);
+  UNPROTECT(4);
   return result;
 }
 

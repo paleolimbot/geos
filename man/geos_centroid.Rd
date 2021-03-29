@@ -7,6 +7,7 @@
 \alias{geos_minimum_clearance_line}
 \alias{geos_minimum_rotated_rectangle}
 \alias{geos_minimum_bounding_circle}
+\alias{geos_minimum_bounding_crc}
 \alias{geos_maximum_inscribed_circle_spec}
 \alias{geos_maximum_inscribed_crc}
 \alias{geos_unary_union}
@@ -44,6 +45,8 @@ geos_minimum_clearance_line(geom)
 geos_minimum_rotated_rectangle(geom)
 
 geos_minimum_bounding_circle(geom)
+
+geos_minimum_bounding_crc(geom)
 
 geos_maximum_inscribed_circle_spec(geom, tolerance)
 
