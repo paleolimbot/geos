@@ -111,7 +111,7 @@ geos_disjoint_matrix <- function(geom, tree) {
   tree <- as_geos_strtree(tree)
   tree_data <- geos_strtree_data(tree)
   intersects_matrix <- geos_intersects_matrix(geom, tree)
-  Map(setdiff, list(seq_along(tree_data)), intersects_matrix)
+  Map(setdiff, list(as.numeric(seq_along(tree_data))), intersects_matrix)
 }
 
 #' @rdname geos_disjoint_matrix
