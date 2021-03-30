@@ -46,6 +46,8 @@ extern SEXP geos_c_difference_prec(SEXP geom1, SEXP geom2, SEXP param);
 extern SEXP geos_c_sym_difference_prec(SEXP geom1, SEXP geom2, SEXP param);
 extern SEXP geos_c_union_prec(SEXP geom1, SEXP geom2, SEXP param);
 extern SEXP geos_c_clearance_line_between(SEXP geom1, SEXP geom2);
+extern SEXP geos_c_geos_geometry_is_null(SEXP geom);
+extern SEXP geos_c_geos_geometry_is_null_or_xptr(SEXP geom);
 extern SEXP geos_c_read_wkt(SEXP input);
 extern SEXP geos_c_write_wkt(SEXP input, SEXP includeZ, SEXP precision, SEXP trim);
 extern SEXP geos_c_read_wkb(SEXP input);
@@ -196,6 +198,8 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_sym_difference_prec", (DL_FUNC) &geos_c_sym_difference_prec, 3},
   {"geos_c_union_prec", (DL_FUNC) &geos_c_union_prec, 3},
   {"geos_c_clearance_line_between", (DL_FUNC) &geos_c_clearance_line_between, 2},
+  {"geos_c_geos_geometry_is_null", (DL_FUNC) &geos_c_geos_geometry_is_null, 1},
+  {"geos_c_geos_geometry_is_null_or_xptr", (DL_FUNC) &geos_c_geos_geometry_is_null_or_xptr, 1},
   {"geos_c_read_wkt", (DL_FUNC) &geos_c_read_wkt, 1},
   {"geos_c_write_wkt", (DL_FUNC) &geos_c_write_wkt, 4},
   {"geos_c_read_wkb", (DL_FUNC) &geos_c_read_wkb, 1},

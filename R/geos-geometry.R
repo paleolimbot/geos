@@ -54,8 +54,7 @@ new_geos_geometry <- function(x = list(), crs = NULL) {
 }
 
 validate_geos_geometry <- function(x) {
-  type <- vapply(unclass(x), typeof, character(1))
-  valid_items <- type %in% c("externalptr", "NULL")
+  valid_items <- .Call(geos_c_geos_geometry_is_null_or_xptr, x)
   if (any(!valid_items)) {
     stop("Items must be externalptr objects or NULL")
   }
@@ -65,7 +64,7 @@ validate_geos_geometry <- function(x) {
 
 #' @export
 is.na.geos_geometry <- function(x) {
-  vapply(unclass(x), is.null, logical(1))
+  .Call(geos_c_geos_geometry_is_null, x)
 }
 
 #' @export
