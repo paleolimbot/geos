@@ -317,14 +317,10 @@ SEXP geos_c_minimum_bounding_circle(SEXP geom) {
   GEOSGeometry* geometry;
   GEOSGeometry* geometryResult;
 
-  GEOSGeometry* center = GEOSGeom_createPointFromXY_r(handle, NAN, NAN);
+  GEOSGeometry* center;
   double* pRadius = REAL(radius);
   double* pX = REAL(x);
   double* pY = REAL(y);
-
-  if (center == NULL) {
-    GEOS_ERROR("Error allocating %s", "center point"); // # nocov
-  }
 
   for (R_xlen_t i = 0; i < size; i++) {
     item = VECTOR_ELT(geom, i);
@@ -338,25 +334,21 @@ SEXP geos_c_minimum_bounding_circle(SEXP geom) {
     }
 
     geometry = (GEOSGeometry*) R_ExternalPtrAddr(item);
-    if (geometry == NULL) {
-      GEOSGeom_destroy_r(handle, center);
-      GEOS_CHECK_GEOMETRY(geometry, i);
-    }
+    GEOS_CHECK_GEOMETRY(geometry, i);
 
     geometryResult = GEOSMinimumBoundingCircle_r(handle, geometry, pRadius + i, &center);
 
     if (geometryResult == NULL) {
-      GEOSGeom_destroy_r(handle, center);
       UNPROTECT(1);
       GEOS_ERROR("[i=%d] ", i + 1);
     } else {
       SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometryResult));
       GEOSGeomGetX_r(handle, center, pX + i);
       GEOSGeomGetY_r(handle, center, pY + i);
+      GEOSGeom_destroy_r(handle, center);
     }
   }
 
-  GEOSGeom_destroy_r(handle, center);
   GEOS_FINISH();
 
   Rf_setAttrib(result, Rf_install("x"), x);

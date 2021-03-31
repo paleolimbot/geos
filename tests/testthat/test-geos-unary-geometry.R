@@ -324,8 +324,6 @@ test_that("set precision works", {
 })
 
 test_that("bounding circle works", {
-  skip_if(identical(Sys.getenv("R_GEOS_SKIP_KNOWN_LEAK"), "true"))
-
   circle <- geos_minimum_bounding_circle(c(NA, "LINESTRING (-1 -1, 1 1)"))
   expect_equal(geos_xmin(circle), c(NA, -sqrt(2)))
   expect_equal(geos_ymin(circle), c(NA, -sqrt(2)))
@@ -336,8 +334,6 @@ test_that("bounding circle works", {
 })
 
 test_that("bounding crc works", {
-  skip_if(identical(Sys.getenv("R_GEOS_SKIP_KNOWN_LEAK"), "true"))
-
   expect_identical(
     geos_minimum_bounding_crc(c(NA, "LINESTRING (-1 -1, 1 1)")),
     wk::crc(
