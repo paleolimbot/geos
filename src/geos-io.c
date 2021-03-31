@@ -61,7 +61,10 @@ SEXP geos_c_write_wkt(SEXP input, SEXP includeZ, SEXP precision, SEXP trim) {
     }
 
     geometry = (GEOSGeometry*) R_ExternalPtrAddr(item);
-    GEOS_CHECK_GEOMETRY(geometry, i);
+    if (geometry == NULL) {
+      GEOSWKTWriter_destroy_r(handle, writer);
+      GEOS_CHECK_GEOMETRY(geometry, i);
+    }
 
     char* output = GEOSWKTWriter_write_r(handle, writer, geometry);
     if (output == NULL) {
@@ -150,12 +153,16 @@ SEXP geos_c_write_wkb(SEXP input, SEXP includeZ, SEXP includeSRID, SEXP endian) 
     }
 
     geometry = (GEOSGeometry*) R_ExternalPtrAddr(item);
-    GEOS_CHECK_GEOMETRY(geometry, i);
+    if (geometry == NULL) {
+      GEOSWKBWriter_destroy_r(handle, writer);
+      GEOS_CHECK_GEOMETRY(geometry, i);
+    }
 
     unsigned char* wkbPtr = GEOSWKBWriter_write_r(handle, writer, geometry, &itemSize);
     // returns NULL on error (e.g., when trying to write an empty point)
     if (wkbPtr == NULL) {
       UNPROTECT(1);
+      GEOSWKBWriter_destroy_r(handle, writer);
       GEOS_ERROR("[i=%d] ", i + 1);
     }
 
@@ -242,12 +249,16 @@ SEXP geos_c_write_hex(SEXP input, SEXP includeZ, SEXP includeSRID, SEXP endian) 
     }
 
     geometry = (GEOSGeometry*) R_ExternalPtrAddr(item);
-    GEOS_CHECK_GEOMETRY(geometry, i);
+    if (geometry == NULL) {
+      GEOSWKBWriter_destroy_r(handle, writer);
+      GEOS_CHECK_GEOMETRY(geometry, i);
+    }
 
     itemChars = GEOSWKBWriter_writeHEX_r(handle, writer, geometry, &itemSize);
     // returns NULL on error (e.g., when trying to write an empty point)
     if (itemChars == NULL) {
       UNPROTECT(1);
+      GEOSWKBWriter_destroy_r(handle, writer);
       GEOS_ERROR("[i=%d] ", i + 1);
     }
 

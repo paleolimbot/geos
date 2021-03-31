@@ -291,6 +291,7 @@ SEXP geos_c_normalize(SEXP geom) {
 
     if (returnCode == -1) {
       UNPROTECT(1); // # nocov
+      GEOSGeom_destroy_r(handle, geometryResult);
       GEOS_ERROR("[i=%d] ", i + 1); // # nocov
     }
 
@@ -337,7 +338,10 @@ SEXP geos_c_minimum_bounding_circle(SEXP geom) {
     }
 
     geometry = (GEOSGeometry*) R_ExternalPtrAddr(item);
-    GEOS_CHECK_GEOMETRY(geometry, i);
+    if (geometry == NULL) {
+      GEOSGeom_destroy_r(handle, center);
+      GEOS_CHECK_GEOMETRY(geometry, i);
+    }
 
     geometryResult = GEOSMinimumBoundingCircle_r(handle, geometry, pRadius + i, &center);
 
@@ -533,18 +537,23 @@ SEXP geos_c_voronoi_diagram(SEXP geom, SEXP env, SEXP tolerace, SEXP edges) {
     }                                                            \
                                                                  \
     geometry = (GEOSGeometry*) R_ExternalPtrAddr(item);          \
-    GEOS_CHECK_GEOMETRY(geometry, i);                            \
+    if (geometry == NULL) {                                      \
+      GEOSBufferParams_destroy_r(handle, bufferParams);          \
+      GEOS_CHECK_GEOMETRY(geometry, i);                          \
+    }                                                            \
                                                                  \
     geometryResult = _call;                                      \
                                                                  \
     if (geometryResult == NULL) {                                \
       UNPROTECT(1);                                              \
+      GEOSBufferParams_destroy_r(handle, bufferParams);          \
       GEOS_ERROR("[i=%d] ", i + 1);                              \
     } else {                                                     \
       SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometryResult));\
     }                                                            \
   }                                                              \
                                                                  \
+  GEOSBufferParams_destroy_r(handle, bufferParams);              \
   GEOS_FINISH();                                                 \
   UNPROTECT(1);                                                  \
   return result;
@@ -670,4 +679,3 @@ SEXP geos_c_ring_n(SEXP geom, SEXP n) {
   UNPROTECT(1);
   return result;
 }
-

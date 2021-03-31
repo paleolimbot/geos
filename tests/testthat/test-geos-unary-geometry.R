@@ -324,6 +324,8 @@ test_that("set precision works", {
 })
 
 test_that("bounding circle works", {
+  skip_if(identical(Sys.getenv("R_GEOS_SKIP_KNOWN_LEAK"), "true"))
+
   circle <- geos_minimum_bounding_circle(c(NA, "LINESTRING (-1 -1, 1 1)"))
   expect_equal(geos_xmin(circle), c(NA, -sqrt(2)))
   expect_equal(geos_ymin(circle), c(NA, -sqrt(2)))
@@ -334,6 +336,8 @@ test_that("bounding circle works", {
 })
 
 test_that("bounding crc works", {
+  skip_if(identical(Sys.getenv("R_GEOS_SKIP_KNOWN_LEAK"), "true"))
+
   expect_identical(
     geos_minimum_bounding_crc(c(NA, "LINESTRING (-1 -1, 1 1)")),
     wk::crc(
@@ -422,6 +426,7 @@ test_that("geos_buffer errors with bad params", {
   params$join_style = 10L
   expect_error(geos_buffer("POINT (0 0)", 1, params = params), "Invalid buffer join")
 
+  skip_if(identical(Sys.getenv("R_GEOS_SKIP_KNOWN_LEAK"), "true"))
   expect_error(geos_buffer("POINT (0 0)", Inf), "encountered NaN/Inf")
 })
 

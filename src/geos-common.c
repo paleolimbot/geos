@@ -25,7 +25,7 @@ void geos_common_release_geometry(SEXP externalPtr) {
   // geometry should not be NULL, but R will crash if NULL is passed here
   // this can occur if this object is saved and reloaded, in which
   // case this function quietly does nothing
-  if (geometry != NULL) {
+  if ((geometry != NULL) && (geos_gc_handle != NULL)) {
     GEOSGeom_destroy_r(geos_gc_handle, geometry);
   }
 }

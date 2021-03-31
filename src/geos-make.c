@@ -104,6 +104,7 @@ SEXP geos_c_make_linestring(SEXP x, SEXP y, SEXP z, SEXP featureLengths) {
     SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(itemGeometry));
   }
 
+  GEOS_FINISH();
   UNPROTECT(1);
   return result;
 }
@@ -224,6 +225,7 @@ SEXP geos_c_make_polygon(SEXP x, SEXP y, SEXP z, SEXP ringLengthsByFeature) {
     SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(itemGeometry));
   }
 
+  GEOS_FINISH();
   UNPROTECT(1);
   return result;
 }
