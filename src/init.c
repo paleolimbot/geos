@@ -315,16 +315,23 @@ void R_init_geos(DllInfo *dll) {
   R_useDynamicSymbols(dll, FALSE);
 }
 
+// # nocov start
+void R_unload_geos(DllInfo *dll) {
+  if (geos_gc_handle != NULL) {
+    GEOS_finish_r(geos_gc_handle);
+    geos_gc_handle = NULL;
+  }
+}
+// # nocov end
+
 SEXP geos_c_init() {
   // load functions into the (currently NULL) function pointers in libgeos-impl.c
   libgeos_init_api();
 
-  // create a context handle for the garbage collector
-  // this is technically leaked because it is never destroyed,
-  // but it is not safe to set it back to NULL on package unload
-  // because there might still be geometries that need to be
-  // garbage collected
-  geos_gc_handle = GEOS_init_r();
+  // create the global handle
+  if (geos_gc_handle == NULL) {
+    geos_gc_handle = GEOS_init_r();
+  }
 
   return R_NilValue;
 }

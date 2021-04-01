@@ -22,11 +22,18 @@ GEOSContextHandle_t geos_gc_handle = NULL;
 
 void geos_common_release_geometry(SEXP externalPtr) {
   GEOSGeometry* geometry = (GEOSGeometry*) R_ExternalPtrAddr(externalPtr);
+
   // geometry should not be NULL, but R will crash if NULL is passed here
   // this can occur if this object is saved and reloaded, in which
-  // case this function quietly does nothing
+  // case this function quietly does nothing.
   if ((geometry != NULL) && (geos_gc_handle != NULL)) {
     GEOSGeom_destroy_r(geos_gc_handle, geometry);
+  } else if (geometry != NULL) {
+    // in the unlikely event that the garbage collector runs after unload
+    // create a handle just for this (most likely during development)
+    GEOSContextHandle_t handle = GEOS_init_r(); // # nocov
+    GEOSGeom_destroy_r(handle, geometry); // # nocov
+    GEOS_finish_r(handle); // # nocov
   }
 }
 
