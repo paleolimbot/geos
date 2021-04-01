@@ -330,6 +330,7 @@ test_that("bounding circle works", {
   expect_equal(geos_xmax(circle), c(NA, sqrt(2)))
   expect_equal(geos_ymax(circle), c(NA, sqrt(2)))
 
+  skip_if(identical(Sys.getenv("R_GEOS_SKIP_KNOWN_LEAK"), "true"))
   expect_error(geos_minimum_bounding_circle("POINT (nan inf)"), "encountered NaN/Inf")
 })
 
