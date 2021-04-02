@@ -82,8 +82,72 @@ int geos_wk_read_linestring(const GEOSGeometry* g, uint32_t part_id, wk_handler_
   return handler->geometry_end(&meta, part_id, handler->handler_data);
 }
 
+int geos_wk_read_ring(const GEOSGeometry* r, uint32_t ring_id, const wk_meta_t* meta,
+                      wk_handler_t* handler) {
+  int result;
+  double coord[4];
+  uint32_t size;
+
+  const GEOSCoordSequence* seq = GEOSGeom_getCoordSeq_r(handle, r);
+  GEOSCoordSeq_getSize_r(handle, seq, &size);
+
+  HANDLE_OR_RETURN(handler->ring_start(meta, size, ring_id, handler->handler_data));
+  for (uint32_t i = 0; i < size; i++) {
+    GEOSCoordSeq_getX_r(handle, seq, i, coord + 0);
+    GEOSCoordSeq_getY_r(handle, seq, i, coord + 1);
+    HANDLE_OR_RETURN(handler->coord(meta, coord, i, handler->handler_data));
+  }
+  return handler->ring_end(meta, size, ring_id, handler->handler_data);
+}
+
+int geos_wk_read_ring_z(const GEOSGeometry* r, uint32_t ring_id, const wk_meta_t* meta,
+                        wk_handler_t* handler) {
+  int result;
+  double coord[4];
+  uint32_t size;
+
+  const GEOSCoordSequence* seq = GEOSGeom_getCoordSeq_r(handle, r);
+  GEOSCoordSeq_getSize_r(handle, seq, &size);
+
+  HANDLE_OR_RETURN(handler->ring_start(meta, size, ring_id, handler->handler_data));
+  for (uint32_t i = 0; i < size; i++) {
+    GEOSCoordSeq_getX_r(handle, seq, i, coord + 0);
+    GEOSCoordSeq_getY_r(handle, seq, i, coord + 1);
+    GEOSCoordSeq_getZ_r(handle, seq, i, coord + 2);
+    HANDLE_OR_RETURN(handler->coord(meta, coord, i, handler->handler_data));
+  }
+  return handler->ring_end(meta, size, ring_id, handler->handler_data);
+}
+
 int geos_wk_read_polygon(const GEOSGeometry* g, uint32_t part_id, wk_handler_t* handler) {
-  Rf_error("Not implemented");
+  int result;
+  wk_meta_t meta;
+  WK_META_RESET(meta, WK_POLYGON);
+
+  if (GEOSHasZ_r(handle, g)) {
+    meta.flags |= WK_FLAG_HAS_Z;
+  }
+
+  int n_interior_rings = GEOSGetNumInteriorRings_r(handle, g);
+  if (GEOSisEmpty_r(handle, g)) {
+    meta.size = 0;
+  } else {
+    meta.size = n_interior_rings + 1;
+  }
+
+  HANDLE_OR_RETURN(handler->geometry_start(&meta, part_id, handler->handler_data));
+  if (meta.size && (meta.flags & WK_FLAG_HAS_Z)) {
+    geos_wk_read_ring_z(GEOSGetExteriorRing_r(handle, g), 0, &meta, handler);
+    for (int i = 0; i < n_interior_rings; i++) {
+      geos_wk_read_ring_z(GEOSGetInteriorRingN_r(handle, g, i), i + 1, &meta, handler);
+    }
+  } else if (meta.size) {
+    geos_wk_read_ring(GEOSGetExteriorRing_r(handle, g), 0, &meta, handler);
+    for (int i = 0; i < n_interior_rings; i++) {
+      geos_wk_read_ring(GEOSGetInteriorRingN_r(handle, g, i), i + 1, &meta, handler);
+    }
+  }
+  return handler->geometry_end(&meta, part_id, handler->handler_data);
 }
 
 // definition needed by read_collection()
@@ -98,10 +162,6 @@ int geos_wk_read_collection(const GEOSGeometry* g, int geos_type, uint32_t part_
   meta.size = GEOSGetNumGeometries_r(handle, g);
 
   if (GEOSHasZ_r(handle, g)) {
-    meta.flags |= WK_FLAG_HAS_Z;
-  }
-
-  if (GEOSGeom_getDimensions_r(handle, g) == 3) {
     meta.flags |= WK_FLAG_HAS_Z;
   }
 
@@ -124,7 +184,7 @@ int geos_wk_read_geometry(const GEOSGeometry* g, uint32_t part_id, wk_handler_t*
     case GEOS_MULTIPOLYGON:
     case GEOS_GEOMETRYCOLLECTION: return geos_wk_read_collection(g, geos_type, part_id, handler);
     default: 
-      return handler->error("Unrecognized geometry type", handler->handler_data);
+      return handler->error("Unrecognized geometry type", handler->handler_data); // # nocov
     }
 }
 

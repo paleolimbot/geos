@@ -2,7 +2,7 @@
 test_that("wk_handle() works for points", {
   geoms <- as_geos_geometry(c("POINT (0 1)", "POINT Z (0 1 2)", "POINT EMPTY", NA))
   expect_identical(
-    unclass(wk_handle(geoms, wkb_writer(endian = 1))),
+    unclass(wk_handle(geoms, wk::wkb_writer(endian = 1))),
     unclass(geos_write_wkb(geoms, endian = 1))
   )
 })
@@ -15,7 +15,22 @@ test_that("wk_handle() works for linestrings", {
     )
   )
   expect_identical(
-    unclass(wk_handle(geoms, wkb_writer(endian = 1))),
+    unclass(wk_handle(geoms, wk::wkb_writer(endian = 1))),
+    unclass(geos_write_wkb(geoms, endian = 1))
+  )
+})
+
+test_that("wk_handle() works for polygons", {
+  geoms <- as_geos_geometry(
+    c("POLYGON ((0 0, 10 0, 10 10, 0 10, 0 0))",
+      "POLYGON ((0 0, 10 0, 10 10, 0 10, 0 0), (1 1, 9 1, 9 9, 1 9, 1 1))",
+      "POLYGON Z ((0 0 1, 10 0 1, 10 10 1, 0 10 1, 0 0 1))",
+      "POLYGON Z ((0 0 1, 10 0 1, 10 10 1, 0 10 1, 0 0 1), (1 1 1, 9 1 1, 9 9 1, 1 9 1, 1 1 1))",
+      "POLYGON EMPTY", NA
+    )
+  )
+  expect_identical(
+    unclass(wk_handle(geoms, wk::wkb_writer(endian = 1))),
     unclass(geos_write_wkb(geoms, endian = 1))
   )
 })
@@ -23,7 +38,7 @@ test_that("wk_handle() works for linestrings", {
 test_that("wk_handle() works for multipoints", {
   geoms <- as_geos_geometry(c("MULTIPOINT (0 1)", "MULTIPOINT Z (0 1 2)", "MULTIPOINT EMPTY", NA))
   expect_identical(
-    unclass(wk_handle(geoms, wkb_writer(endian = 1))),
+    unclass(wk_handle(geoms, wk::wkb_writer(endian = 1))),
     unclass(geos_write_wkb(geoms, endian = 1))
   )
 })
@@ -37,13 +52,10 @@ test_that("wk_handle() works for geometry collections", {
     )
   )
   expect_identical(
-    unclass(wk_handle(geoms, wkb_writer(endian = 1))),
+    unclass(wk_handle(geoms, wk::wkb_writer(endian = 1))),
     unclass(geos_write_wkb(geoms, endian = 1))
   )
 })
-
-
-
 
 test_that("geos_geometry can be created from wk package classes", {
   expect_s3_class(as_geos_geometry(wk::as_wkb("POINT (30 10)")), "geos_geometry")
