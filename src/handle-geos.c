@@ -46,7 +46,40 @@ int geos_wk_read_point(const GEOSGeometry* g, uint32_t part_id, wk_handler_t* ha
 }
 
 int geos_wk_read_linestring(const GEOSGeometry* g, uint32_t part_id, wk_handler_t* handler) {
-  Rf_error("Not implemented");
+  int result;
+  wk_meta_t meta;
+  WK_META_RESET(meta, WK_LINESTRING);
+
+  if (GEOSHasZ_r(handle, g)) {
+    meta.flags |= WK_FLAG_HAS_Z;
+  }
+
+  if (GEOSisEmpty_r(handle, g)) {
+    meta.size = 0;
+  } else {
+    meta.size = GEOSGetNumCoordinates_r(handle, g);
+  }
+  
+  HANDLE_OR_RETURN(handler->geometry_start(&meta, part_id, handler->handler_data));
+  if (meta.size && (meta.flags & WK_FLAG_HAS_Z)) {
+    double coord[4];
+    const GEOSCoordSequence* seq = GEOSGeom_getCoordSeq_r(handle, g);
+    for (uint32_t i = 0; i < meta.size; i++) {
+      GEOSCoordSeq_getX_r(handle, seq, i, coord + 0);
+      GEOSCoordSeq_getY_r(handle, seq, i, coord + 1);
+      GEOSCoordSeq_getZ_r(handle, seq, i, coord + 2);
+      HANDLE_OR_RETURN(handler->coord(&meta, coord, i, handler->handler_data));
+    }
+  } else if (meta.size) {
+    double coord[4];
+    const GEOSCoordSequence* seq = GEOSGeom_getCoordSeq_r(handle, g);
+    for (uint32_t i = 0; i < meta.size; i++) {
+      GEOSCoordSeq_getX_r(handle, seq, i, coord + 0);
+      GEOSCoordSeq_getY_r(handle, seq, i, coord + 1);
+      HANDLE_OR_RETURN(handler->coord(&meta, coord, i, handler->handler_data));
+    }
+  }
+  return handler->geometry_end(&meta, part_id, handler->handler_data);
 }
 
 int geos_wk_read_polygon(const GEOSGeometry* g, uint32_t part_id, wk_handler_t* handler) {

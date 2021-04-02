@@ -7,6 +7,19 @@ test_that("wk_handle() works for points", {
   )
 })
 
+test_that("wk_handle() works for linestrings", {
+  geoms <- as_geos_geometry(
+    c("LINESTRING (0 1, 2 3)",
+      "LINESTRING Z (0 1 2, 3 4 5)",
+      "LINESTRING EMPTY", NA
+    )
+  )
+  expect_identical(
+    unclass(wk_handle(geoms, wkb_writer(endian = 1))),
+    unclass(geos_write_wkb(geoms, endian = 1))
+  )
+})
+
 test_that("wk_handle() works for multipoints", {
   geoms <- as_geos_geometry(c("MULTIPOINT (0 1)", "MULTIPOINT Z (0 1 2)", "MULTIPOINT EMPTY", NA))
   expect_identical(
