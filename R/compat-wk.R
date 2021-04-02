@@ -1,4 +1,19 @@
 
+#' Compatibility with the wk package
+#'
+#' @inheritParams wk::wk_handle
+#'
+#' @return The result of the `handler`
+#' @export
+#'
+#' @examples
+#' wk_handle(as_geos_geometry("POINT (1 2)"), wk::wkt_writer())
+#'
+#' @importFrom wk wk_handle
+wk_handle.geos_geometry <- function(handleable, handler, ...) {
+  .Call(geos_c_wk_read_geos_geometry, handleable, handler)
+}
+
 #' @importFrom wk wk_crs
 #' @export
 wk_crs.geos_strtree <- function(x) {

@@ -1,5 +1,6 @@
 
 #include "libgeos.h"
+#include "wk-v1.h"
 #include "geos-common.h"
 #include <Rinternals.h>
 
@@ -151,6 +152,7 @@ extern SEXP geos_c_buffer(SEXP geom, SEXP distance, SEXP params);
 extern SEXP geos_c_offset_curve(SEXP geom, SEXP distance, SEXP params);
 extern SEXP geos_c_geometry_n(SEXP geom, SEXP n);
 extern SEXP geos_c_ring_n(SEXP geom, SEXP n);
+extern SEXP geos_c_wk_read_geos_geometry(SEXP geom, SEXP handler_xptr);
 extern SEXP geos_c_init();
 extern SEXP geos_c_version_runtime();
 extern SEXP geos_c_version_build();
@@ -303,6 +305,7 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_offset_curve", (DL_FUNC) &geos_c_offset_curve, 3},
   {"geos_c_geometry_n", (DL_FUNC) &geos_c_geometry_n, 2},
   {"geos_c_ring_n", (DL_FUNC) &geos_c_ring_n, 2},
+  {"geos_c_wk_read_geos_geometry", (DL_FUNC) &geos_c_wk_read_geos_geometry, 2},
   {"geos_c_init", (DL_FUNC) &geos_c_init, 0},
   {"geos_c_version_runtime", (DL_FUNC) &geos_c_version_runtime, 0},
   {"geos_c_version_build", (DL_FUNC) &geos_c_version_build, 0},
