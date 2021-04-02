@@ -41,3 +41,4 @@ reference:
 - title: S3 Details
   contents:
   - vctrs-methods
+  - wk-methods
