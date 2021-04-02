@@ -21,6 +21,7 @@ The result of the \code{handler}
 Compatibility with the wk package
 }
 \examples{
+library(wk)
 wk_handle(as_geos_geometry("POINT (1 2)"), wk::wkt_writer())
 
 }
