@@ -5,6 +5,15 @@ test_that("wk_handle() works for points", {
     unclass(wk_handle(geoms, wk::wkb_writer(endian = 1))),
     unclass(geos_write_wkb(geoms, endian = 1))
   )
+
+  geoms_srid <- geos_set_srid(geoms, 1234)
+  expect_identical(
+    unclass(wk_handle(geoms_srid, wk::wkb_writer(endian = 1))),
+    unclass(geos_write_wkb(geoms_srid, endian = 1, include_srid = TRUE))
+  )
+
+  geoms_prec <- geos_set_precision(geoms, 0.1)
+  expect_identical(wk::wk_meta(geoms_prec)$precision, c(0.1, 0.1, 0.1, NA))
 })
 
 test_that("wk_handle() works for linestrings", {
@@ -18,6 +27,15 @@ test_that("wk_handle() works for linestrings", {
     unclass(wk_handle(geoms, wk::wkb_writer(endian = 1))),
     unclass(geos_write_wkb(geoms, endian = 1))
   )
+
+  geoms_srid <- geos_set_srid(geoms, 1234)
+  expect_identical(
+    unclass(wk_handle(geoms_srid, wk::wkb_writer(endian = 1))),
+    unclass(geos_write_wkb(geoms_srid, endian = 1, include_srid = TRUE))
+  )
+
+  geoms_prec <- geos_set_precision(geoms, 0.1)
+  expect_identical(wk::wk_meta(geoms_prec)$precision, c(0.1, 0.1, 0.1, NA))
 })
 
 test_that("wk_handle() works for polygons", {
@@ -33,6 +51,15 @@ test_that("wk_handle() works for polygons", {
     unclass(wk_handle(geoms, wk::wkb_writer(endian = 1))),
     unclass(geos_write_wkb(geoms, endian = 1))
   )
+
+  geoms_srid <- geos_set_srid(geoms, 1234)
+  expect_identical(
+    unclass(wk_handle(geoms_srid, wk::wkb_writer(endian = 1))),
+    unclass(geos_write_wkb(geoms_srid, endian = 1, include_srid = TRUE))
+  )
+
+  geoms_prec <- geos_set_precision(geoms, 0.1)
+  expect_identical(wk::wk_meta(geoms_prec)$precision, c(0.1, 0.1, 0.1, 0.1, 0.1, NA))
 })
 
 test_that("wk_handle() works for multipoints", {
@@ -41,6 +68,15 @@ test_that("wk_handle() works for multipoints", {
     unclass(wk_handle(geoms, wk::wkb_writer(endian = 1))),
     unclass(geos_write_wkb(geoms, endian = 1))
   )
+
+  geoms_srid <- geos_set_srid(geoms, 1234)
+  expect_identical(
+    unclass(wk_handle(geoms_srid, wk::wkb_writer(endian = 1))),
+    unclass(geos_write_wkb(geoms_srid, endian = 1, include_srid = TRUE))
+  )
+
+  geoms_prec <- geos_set_precision(geoms, 0.1)
+  expect_identical(wk::wk_meta(geoms_prec)$precision, c(0.1, 0.1, 0.1, NA))
 })
 
 test_that("wk_handle() works for geometry collections", {
@@ -55,6 +91,15 @@ test_that("wk_handle() works for geometry collections", {
     unclass(wk_handle(geoms, wk::wkb_writer(endian = 1))),
     unclass(geos_write_wkb(geoms, endian = 1))
   )
+
+  geoms_srid <- geos_set_srid(geoms, 1234)
+  expect_identical(
+    unclass(wk_handle(geoms_srid, wk::wkb_writer(endian = 1))),
+    unclass(geos_write_wkb(geoms_srid, endian = 1, include_srid = TRUE))
+  )
+
+  geoms_prec <- geos_set_precision(geoms, 0.1)
+  expect_identical(wk::wk_meta(geoms_prec)$precision, c(0.1, 0.1, 0.1, 0.1, NA))
 })
 
 test_that("geos_geometry can be created from wk package classes", {

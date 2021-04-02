@@ -26,6 +26,13 @@ int geos_wk_read_point(const GEOSGeometry* g, uint32_t part_id, wk_handler_t* ha
     meta.flags |= WK_FLAG_HAS_Z;
   }
 
+  int srid = GEOSGetSRID_r(handle, g);
+  if (srid != 0) {
+    meta.srid = srid;
+  }
+
+  meta.precision = GEOSGeom_getPrecision_r(handle, g);
+
   if (GEOSisEmpty_r(handle, g)) {
     meta.size = 0;
   } else {
@@ -53,6 +60,13 @@ int geos_wk_read_linestring(const GEOSGeometry* g, uint32_t part_id, wk_handler_
   if (GEOSHasZ_r(handle, g)) {
     meta.flags |= WK_FLAG_HAS_Z;
   }
+
+  int srid = GEOSGetSRID_r(handle, g);
+  if (srid != 0) {
+    meta.srid = srid;
+  }
+
+  meta.precision = GEOSGeom_getPrecision_r(handle, g);
 
   if (GEOSisEmpty_r(handle, g)) {
     meta.size = 0;
@@ -128,6 +142,13 @@ int geos_wk_read_polygon(const GEOSGeometry* g, uint32_t part_id, wk_handler_t* 
     meta.flags |= WK_FLAG_HAS_Z;
   }
 
+  int srid = GEOSGetSRID_r(handle, g);
+  if (srid != 0) {
+    meta.srid = srid;
+  }
+
+  meta.precision = GEOSGeom_getPrecision_r(handle, g);
+
   int n_interior_rings = GEOSGetNumInteriorRings_r(handle, g);
   if (GEOSisEmpty_r(handle, g)) {
     meta.size = 0;
@@ -164,6 +185,13 @@ int geos_wk_read_collection(const GEOSGeometry* g, int geos_type, uint32_t part_
   if (GEOSHasZ_r(handle, g)) {
     meta.flags |= WK_FLAG_HAS_Z;
   }
+
+  int srid = GEOSGetSRID_r(handle, g);
+  if (srid != 0) {
+    meta.srid = srid;
+  }
+
+  meta.precision = GEOSGeom_getPrecision_r(handle, g);
 
   HANDLE_OR_RETURN(handler->geometry_start(&meta, part_id, handler->handler_data));
   for (int i = 0; i < meta.size; i++) {
