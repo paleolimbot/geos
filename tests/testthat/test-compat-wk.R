@@ -1,4 +1,37 @@
 
+test_that("wk_handle() works for points", {
+  geoms <- as_geos_geometry(c("POINT (0 1)", "POINT Z (0 1 2)", "POINT EMPTY", NA))
+  expect_identical(
+    unclass(wk_handle(geoms, wkb_writer(endian = 1))),
+    unclass(geos_write_wkb(geoms, endian = 1))
+  )
+})
+
+test_that("wk_handle() works for multipoints", {
+  geoms <- as_geos_geometry(c("MULTIPOINT (0 1)", "MULTIPOINT Z (0 1 2)", "MULTIPOINT EMPTY", NA))
+  expect_identical(
+    unclass(wk_handle(geoms, wkb_writer(endian = 1))),
+    unclass(geos_write_wkb(geoms, endian = 1))
+  )
+})
+
+test_that("wk_handle() works for geometry collections", {
+  geoms <- as_geos_geometry(
+    c("GEOMETRYCOLLECTION Z (POINT Z (0 1 2), POINT Z (2 3 4))",
+      "GEOMETRYCOLLECTION (MULTIPOINT (0 1))",
+      "GEOMETRYCOLLECTION (GEOMETRYCOLLECTION (MULTIPOINT (0 1)))",
+      "GEOMETRYCOLLECTION EMPTY", NA
+    )
+  )
+  expect_identical(
+    unclass(wk_handle(geoms, wkb_writer(endian = 1))),
+    unclass(geos_write_wkb(geoms, endian = 1))
+  )
+})
+
+
+
+
 test_that("geos_geometry can be created from wk package classes", {
   expect_s3_class(as_geos_geometry(wk::as_wkb("POINT (30 10)")), "geos_geometry")
   expect_s3_class(as_geos_geometry(wk::as_wkt("POINT (30 10)")), "geos_geometry")

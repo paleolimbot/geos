@@ -22,7 +22,7 @@ int geos_wk_read_point(const GEOSGeometry* g, uint32_t part_id, wk_handler_t* ha
   wk_meta_t meta;
   WK_META_RESET(meta, WK_POINT);
 
-  if (GEOSGeom_getDimensions_r(handle, g) == 3) {
+  if (GEOSHasZ_r(handle, g)) {
     meta.flags |= WK_FLAG_HAS_Z;
   }
 
@@ -62,7 +62,11 @@ int geos_wk_read_collection(const GEOSGeometry* g, int geos_type, uint32_t part_
   // type integers are identical for GEOS and WK for collection types
   wk_meta_t meta;
   WK_META_RESET(meta, geos_type);
-  meta.size = GEOSGetNumGeometries_r(handle, g);;
+  meta.size = GEOSGetNumGeometries_r(handle, g);
+
+  if (GEOSHasZ_r(handle, g)) {
+    meta.flags |= WK_FLAG_HAS_Z;
+  }
 
   if (GEOSGeom_getDimensions_r(handle, g) == 3) {
     meta.flags |= WK_FLAG_HAS_Z;
