@@ -1,22 +1,22 @@
 
 test_that("wk_handle() works for points", {
+  # ability to export an empty point in WKB changed in GEOS 3.9 so use WKT instead
   geoms <- as_geos_geometry(c("POINT (0 1)", "POINT Z (0 1 2)", "POINT EMPTY", NA))
+
   expect_identical(
-    unclass(wk_handle(geoms, wk::wkb_writer(endian = 1))),
-    unclass(geos_write_wkb(geoms, endian = 1))
+    unclass(wk_handle(geoms, wk::wkt_writer())),
+    unclass(geos_write_wkt(geoms))
   )
 
   geoms_srid <- geos_set_srid(geoms, 1234)
-  expect_identical(
-    unclass(wk_handle(geoms_srid, wk::wkb_writer(endian = 1))),
-    unclass(geos_write_wkb(geoms_srid, endian = 1, include_srid = TRUE))
-  )
+  expect_identical(wk::wk_meta(geoms_srid)$srid, c(1234L, 1234L, 1234L, NA))
 
   geoms_prec <- geos_set_precision(geoms, 0.1)
   expect_identical(wk::wk_meta(geoms_prec)$precision, c(0.1, 0.1, 0.1, NA))
 })
 
 test_that("wk_handle() works for linestrings", {
+  # WKB export of LINESTRING EMPTY changed in GEOS 3.9 (before it was setting the Z flag)
   geoms <- as_geos_geometry(
     c("LINESTRING (0 1, 2 3)",
       "LINESTRING Z (0 1 2, 3 4 5)",
@@ -24,15 +24,12 @@ test_that("wk_handle() works for linestrings", {
     )
   )
   expect_identical(
-    unclass(wk_handle(geoms, wk::wkb_writer(endian = 1))),
-    unclass(geos_write_wkb(geoms, endian = 1))
+    unclass(wk_handle(geoms, wk::wkt_writer())),
+    unclass(geos_write_wkt(geoms))
   )
 
   geoms_srid <- geos_set_srid(geoms, 1234)
-  expect_identical(
-    unclass(wk_handle(geoms_srid, wk::wkb_writer(endian = 1))),
-    unclass(geos_write_wkb(geoms_srid, endian = 1, include_srid = TRUE))
-  )
+  expect_identical(wk::wk_meta(geoms_srid)$srid, c(1234L, 1234L, 1234L, NA))
 
   geoms_prec <- geos_set_precision(geoms, 0.1)
   expect_identical(wk::wk_meta(geoms_prec)$precision, c(0.1, 0.1, 0.1, NA))
@@ -48,15 +45,12 @@ test_that("wk_handle() works for polygons", {
     )
   )
   expect_identical(
-    unclass(wk_handle(geoms, wk::wkb_writer(endian = 1))),
-    unclass(geos_write_wkb(geoms, endian = 1))
+    unclass(wk_handle(geoms, wk::wkt_writer())),
+    unclass(geos_write_wkt(geoms))
   )
 
   geoms_srid <- geos_set_srid(geoms, 1234)
-  expect_identical(
-    unclass(wk_handle(geoms_srid, wk::wkb_writer(endian = 1))),
-    unclass(geos_write_wkb(geoms_srid, endian = 1, include_srid = TRUE))
-  )
+  expect_identical(wk::wk_meta(geoms_srid)$srid, c(1234L, 1234L, 1234L, 1234L, 1234L, NA))
 
   geoms_prec <- geos_set_precision(geoms, 0.1)
   expect_identical(wk::wk_meta(geoms_prec)$precision, c(0.1, 0.1, 0.1, 0.1, 0.1, NA))
