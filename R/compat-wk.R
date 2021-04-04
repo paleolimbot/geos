@@ -5,6 +5,7 @@
 #'
 #' @return The result of the `handler`
 #' @export
+#' @rdname wk-methods
 #'
 #' @examples
 #' library(wk)

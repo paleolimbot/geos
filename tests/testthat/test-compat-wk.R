@@ -1,4 +1,101 @@
 
+test_that("wk_handle() works for points", {
+  # ability to export an empty point in WKB changed in GEOS 3.9 so use WKT instead
+  geoms <- as_geos_geometry(c("POINT (0 1)", "POINT Z (0 1 2)", "POINT EMPTY", NA))
+
+  expect_identical(
+    unclass(wk_handle(geoms, wk::wkt_writer())),
+    unclass(geos_write_wkt(geoms))
+  )
+
+  geoms_srid <- geos_set_srid(geoms, 1234)
+  expect_identical(wk::wk_meta(geoms_srid)$srid, c(1234L, 1234L, 1234L, NA))
+
+  geoms_prec <- geos_set_precision(geoms, 0.1)
+  expect_identical(wk::wk_meta(geoms_prec)$precision, c(0.1, 0.1, 0.1, NA))
+})
+
+test_that("wk_handle() works for linestrings", {
+  # WKB export of LINESTRING EMPTY changed in GEOS 3.9 (before it was setting the Z flag)
+  geoms <- as_geos_geometry(
+    c("LINESTRING (0 1, 2 3)",
+      "LINESTRING Z (0 1 2, 3 4 5)",
+      "LINESTRING EMPTY", NA
+    )
+  )
+  expect_identical(
+    unclass(wk_handle(geoms, wk::wkt_writer())),
+    unclass(geos_write_wkt(geoms))
+  )
+
+  geoms_srid <- geos_set_srid(geoms, 1234)
+  expect_identical(wk::wk_meta(geoms_srid)$srid, c(1234L, 1234L, 1234L, NA))
+
+  geoms_prec <- geos_set_precision(geoms, 0.1)
+  expect_identical(wk::wk_meta(geoms_prec)$precision, c(0.1, 0.1, 0.1, NA))
+})
+
+test_that("wk_handle() works for polygons", {
+  geoms <- as_geos_geometry(
+    c("POLYGON ((0 0, 10 0, 10 10, 0 10, 0 0))",
+      "POLYGON ((0 0, 10 0, 10 10, 0 10, 0 0), (1 1, 9 1, 9 9, 1 9, 1 1))",
+      "POLYGON Z ((0 0 1, 10 0 1, 10 10 1, 0 10 1, 0 0 1))",
+      "POLYGON Z ((0 0 1, 10 0 1, 10 10 1, 0 10 1, 0 0 1), (1 1 1, 9 1 1, 9 9 1, 1 9 1, 1 1 1))",
+      "POLYGON EMPTY", NA
+    )
+  )
+  expect_identical(
+    unclass(wk_handle(geoms, wk::wkt_writer())),
+    unclass(geos_write_wkt(geoms))
+  )
+
+  geoms_srid <- geos_set_srid(geoms, 1234)
+  expect_identical(wk::wk_meta(geoms_srid)$srid, c(1234L, 1234L, 1234L, 1234L, 1234L, NA))
+
+  geoms_prec <- geos_set_precision(geoms, 0.1)
+  expect_identical(wk::wk_meta(geoms_prec)$precision, c(0.1, 0.1, 0.1, 0.1, 0.1, NA))
+})
+
+test_that("wk_handle() works for multipoints", {
+  geoms <- as_geos_geometry(c("MULTIPOINT (0 1)", "MULTIPOINT Z (0 1 2)", "MULTIPOINT EMPTY", NA))
+  expect_identical(
+    unclass(wk_handle(geoms, wk::wkb_writer(endian = 1))),
+    unclass(geos_write_wkb(geoms, endian = 1))
+  )
+
+  geoms_srid <- geos_set_srid(geoms, 1234)
+  expect_identical(
+    unclass(wk_handle(geoms_srid, wk::wkb_writer(endian = 1))),
+    unclass(geos_write_wkb(geoms_srid, endian = 1, include_srid = TRUE))
+  )
+
+  geoms_prec <- geos_set_precision(geoms, 0.1)
+  expect_identical(wk::wk_meta(geoms_prec)$precision, c(0.1, 0.1, 0.1, NA))
+})
+
+test_that("wk_handle() works for geometry collections", {
+  geoms <- as_geos_geometry(
+    c("GEOMETRYCOLLECTION Z (POINT Z (0 1 2), POINT Z (2 3 4))",
+      "GEOMETRYCOLLECTION (MULTIPOINT (0 1))",
+      "GEOMETRYCOLLECTION (GEOMETRYCOLLECTION (MULTIPOINT (0 1)))",
+      "GEOMETRYCOLLECTION EMPTY", NA
+    )
+  )
+  expect_identical(
+    unclass(wk_handle(geoms, wk::wkb_writer(endian = 1))),
+    unclass(geos_write_wkb(geoms, endian = 1))
+  )
+
+  geoms_srid <- geos_set_srid(geoms, 1234)
+  expect_identical(
+    unclass(wk_handle(geoms_srid, wk::wkb_writer(endian = 1))),
+    unclass(geos_write_wkb(geoms_srid, endian = 1, include_srid = TRUE))
+  )
+
+  geoms_prec <- geos_set_precision(geoms, 0.1)
+  expect_identical(wk::wk_meta(geoms_prec)$precision, c(0.1, 0.1, 0.1, 0.1, NA))
+})
+
 test_that("geos_geometry can be created from wk package classes", {
   expect_s3_class(as_geos_geometry(wk::as_wkb("POINT (30 10)")), "geos_geometry")
   expect_s3_class(as_geos_geometry(wk::as_wkt("POINT (30 10)")), "geos_geometry")
