@@ -18,6 +18,7 @@ void geos_common_handle_error(const char *message, void* userdata);
 // much faster than creating a new handle for each geometry to be destroyed
 // (possibly millions)
 extern GEOSContextHandle_t geos_gc_handle;
+extern char globalErrorMessage[GEOS_ERROR_MESSAGE_BUFFER_SIZE];
 
 // creates an externalptr with the appropriate finisher for a GEOSGeometry*
 // and calls GEOSGeom_destory_r(), finishing an externalptr

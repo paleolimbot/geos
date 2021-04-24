@@ -96,6 +96,30 @@ test_that("wk_handle() works for geometry collections", {
   expect_identical(wk::wk_meta(geoms_prec)$precision, c(0.1, 0.1, 0.1, 0.1, NA))
 })
 
+test_that("geos_geometry_writer() works for points", {
+  expect_identical(
+    geos_write_wkt(
+      wk::wk_handle(
+        wk::wkt(c("POINT EMPTY", "POINT (1 2)", "POINT Z (1 2 3)")),
+        geos_geometry_writer()
+      )
+    ),
+    c("POINT EMPTY", "POINT (1 2)", "POINT Z (1 2 3)")
+  )
+})
+
+test_that("geos_geometry_writer() works for linestrings", {
+  expect_identical(
+    geos_write_wkt(
+      wk::wk_handle(
+        wk::wkt(c("LINESTRING EMPTY", "LINESTRING (1 2, 3 4)", "LINESTRING Z (1 2 3, 4 5 6)")),
+        geos_geometry_writer()
+      )
+    ),
+    c("LINESTRING EMPTY", "LINESTRING (1 2, 3 4)", "LINESTRING Z (1 2 3, 4 5 6)")
+  )
+})
+
 test_that("geos_geometry can be created from wk package classes", {
   expect_s3_class(as_geos_geometry(wk::as_wkb("POINT (30 10)")), "geos_geometry")
   expect_s3_class(as_geos_geometry(wk::as_wkt("POINT (30 10)")), "geos_geometry")

@@ -2,9 +2,12 @@
 % Please edit documentation in R/compat-wk.R
 \name{wk_handle.geos_geometry}
 \alias{wk_handle.geos_geometry}
+\alias{geos_geometry_writer}
 \title{Compatibility with the wk package}
 \usage{
 \method{wk_handle}{geos_geometry}(handleable, handler, ...)
+
+geos_geometry_writer()
 }
 \arguments{
 \item{handleable}{A geometry vector (e.g., \code{\link[wk:wkb]{wkb()}}, \code{\link[wk:wkt]{wkt()}}, \code{\link[wk:xy]{xy()}},

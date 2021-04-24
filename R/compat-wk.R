@@ -16,6 +16,12 @@ wk_handle.geos_geometry <- function(handleable, handler, ...) {
   .Call(geos_c_wk_read_geos_geometry, handleable, handler)
 }
 
+#' @rdname wk-methods
+#' @export
+geos_geometry_writer <- function() {
+  wk::new_wk_handler(.Call(geos_c_geos_writer_new), "geos_geometry_writer")
+}
+
 #' @importFrom wk wk_crs
 #' @export
 wk_crs.geos_strtree <- function(x) {
