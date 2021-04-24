@@ -100,11 +100,11 @@ test_that("geos_geometry_writer() works for points", {
   expect_identical(
     geos_write_wkt(
       wk::wk_handle(
-        wk::wkt(c("POINT EMPTY", "POINT (1 2)", "POINT Z (1 2 3)")),
+        wk::wkt(c("POINT EMPTY", "POINT (1 2)", "POINT Z (1 2 3)", NA)),
         geos_geometry_writer()
       )
     ),
-    c("POINT EMPTY", "POINT (1 2)", "POINT Z (1 2 3)")
+    c("POINT EMPTY", "POINT (1 2)", "POINT Z (1 2 3)", NA)
   )
 })
 
@@ -112,11 +112,11 @@ test_that("geos_geometry_writer() works for linestrings", {
   expect_identical(
     geos_write_wkt(
       wk::wk_handle(
-        wk::wkt(c("LINESTRING EMPTY", "LINESTRING (1 2, 3 4)", "LINESTRING Z (1 2 3, 4 5 6)")),
+        wk::wkt(c("LINESTRING EMPTY", "LINESTRING (1 2, 3 4)", "LINESTRING Z (1 2 3, 4 5 6)", NA)),
         geos_geometry_writer()
       )
     ),
-    c("LINESTRING EMPTY", "LINESTRING (1 2, 3 4)", "LINESTRING Z (1 2 3, 4 5 6)")
+    c("LINESTRING EMPTY", "LINESTRING (1 2, 3 4)", "LINESTRING Z (1 2 3, 4 5 6)", NA)
   )
 })
 
