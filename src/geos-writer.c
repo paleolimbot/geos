@@ -146,19 +146,21 @@ static inline GEOSCoordSequence* geos_writer_coord_seq_finalize(geos_writer_t* w
 
 static inline void geos_writer_geom_append(geos_writer_t* writer, GEOSGeometry* g) {
     int level = writer->recursion_level;
-    if (level >= GEOS_MAX_RECURSION_DEPTH) {
-        Rf_error("Exceeded max recursion depth"); // # nocov
+    if ((level >= GEOS_MAX_RECURSION_DEPTH) || (level < 0)) {
+        Rf_error("Invalid recursion depth");
     }
     
     if (writer->geom[level] == NULL) {
         writer->geom[level] = 
           (GEOSGeometry**) malloc(GEOS_INITIAL_SIZE_IF_UNKNOWN * sizeof(GEOSGeometry**));
+        memset(writer->geom[level], 0, GEOS_INITIAL_SIZE_IF_UNKNOWN * sizeof(GEOSGeometry**));
         writer->geom_size[level] = GEOS_INITIAL_SIZE_IF_UNKNOWN;
     }
 
     if (writer->part_id[level] >= writer->geom_size[level]) {
         int current_size = writer->geom_size[level];
         GEOSGeometry** new_seq = malloc((current_size * 2 + 1) * sizeof(GEOSGeometry**));
+        memset(new_seq, 0, (current_size * 2 + 1) * sizeof(GEOSGeometry**));
         for (int i = 0; i < writer->part_id[level]; i++) {
             new_seq[i] = writer->geom[level][i];
         }
@@ -167,6 +169,7 @@ static inline void geos_writer_geom_append(geos_writer_t* writer, GEOSGeometry* 
     }
 
     writer->geom[level][writer->part_id[level]] = g;
+    writer->part_id[level]++;
 }
 
 static inline void geos_writer_geom_release(geos_writer_t* writer) {
@@ -211,12 +214,16 @@ int geos_writer_null_feature(void* handler_data) {
 int geos_writer_geometry_start(const wk_meta_t* meta, uint32_t part_id, void* handler_data) {
     geos_writer_t* writer = (geos_writer_t*) handler_data;
     writer->recursion_level++;
+
     writer->coord_id = 0;
     if (meta->flags & WK_FLAG_HAS_Z) {
         writer->coord_size = 3;
     } else {
         writer->coord_size = 2;
     }
+
+    writer->part_id[writer->recursion_level] = 0;
+
     return WK_CONTINUE;
 }
 
@@ -267,9 +274,9 @@ int geos_writer_geometry_end(const wk_meta_t* meta, uint32_t part_id, void* hand
         geom = GEOSGeom_createLineString_r(handle, seq);
         break;
     case WK_POLYGON:
-        if (writer->geom_size[writer->recursion_level] == 0) {
+        if (writer->part_id[writer->recursion_level] == 0) {
             geom = GEOSGeom_createEmptyPolygon_r(handle);
-        } else if (writer->geom_size[writer->recursion_level] == 1) {
+        } else if (writer->part_id[writer->recursion_level] == 1) {
             geom = GEOSGeom_createPolygon_r(
                 handle,
                 writer->geom[writer->recursion_level][0],
@@ -281,7 +288,7 @@ int geos_writer_geometry_end(const wk_meta_t* meta, uint32_t part_id, void* hand
                 handle,
                 writer->geom[writer->recursion_level][0],
                 writer->geom[writer->recursion_level] + 1,
-                writer->geom_size[writer->recursion_level] - 1
+                writer->part_id[writer->recursion_level] - 1
             );
         }
 
@@ -295,8 +302,9 @@ int geos_writer_geometry_end(const wk_meta_t* meta, uint32_t part_id, void* hand
             handle,
             meta->geometry_type,
             writer->geom[writer->recursion_level],
-            writer->geom_size[writer->recursion_level]
+            writer->part_id[writer->recursion_level]
         );
+        geos_writer_geom_release(writer);
         break;
     default:
         Rf_error("Unknown geometry type: %d", meta->geometry_type);
