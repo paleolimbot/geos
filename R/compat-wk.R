@@ -23,6 +23,13 @@ geos_geometry_writer <- function() {
   wk::new_wk_handler(.Call(geos_c_geos_writer_new), "geos_geometry_writer")
 }
 
+#' @rdname wk-methods
+#' @importFrom wk wk_writer
+#' @export
+wk_writer.geos_geometry <- function(handleable, ...) {
+  geos_geometry_writer()
+}
+
 #' @importFrom wk wk_crs
 #' @export
 wk_crs.geos_strtree <- function(x) {
