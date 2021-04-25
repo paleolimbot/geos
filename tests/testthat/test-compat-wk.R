@@ -96,6 +96,161 @@ test_that("wk_handle() works for geometry collections", {
   expect_identical(wk::wk_meta(geoms_prec)$precision, c(0.1, 0.1, 0.1, 0.1, NA))
 })
 
+test_that("geos_geometry_writer() works for points", {
+  expect_identical(
+    geos_write_wkt(
+      wk::wk_handle(
+        wk::wkt(c("POINT EMPTY", "POINT (1 2)", "POINT Z (1 2 3)", NA)),
+        geos_geometry_writer()
+      )
+    ),
+    c("POINT EMPTY", "POINT (1 2)", "POINT Z (1 2 3)", NA)
+  )
+})
+
+test_that("geos_geometry_writer() works for linestrings", {
+  expect_identical(
+    geos_write_wkt(
+      wk::wk_handle(
+        wk::wkt(c("LINESTRING EMPTY", "LINESTRING (1 2, 3 4)", "LINESTRING Z (1 2 3, 4 5 6)", NA)),
+        geos_geometry_writer()
+      )
+    ),
+    c("LINESTRING EMPTY", "LINESTRING (1 2, 3 4)", "LINESTRING Z (1 2 3, 4 5 6)", NA)
+  )
+})
+
+test_that("geos_geometry_writer() works for polygons", {
+  expect_identical(
+    geos_write_wkt(
+      wk::wk_handle(
+        wk::wkt(
+          c("POLYGON EMPTY",
+            "POLYGON ((0 0, 10 0, 0 10, 0 0))",
+            "POLYGON ((0 0, 10 0, 0 10, 0 0), (1 1, 2 1, 1 2, 1 1))"
+          )
+        ),
+        geos_geometry_writer()
+      )
+    ),
+    c("POLYGON EMPTY",
+      "POLYGON ((0 0, 10 0, 0 10, 0 0))",
+      "POLYGON ((0 0, 10 0, 0 10, 0 0), (1 1, 2 1, 1 2, 1 1))"
+    )
+  )
+})
+
+test_that("geos_geometry_writer() works for collections", {
+  # note: in GEOS, multipoint, multilinestring, multipolygon, and geometrycollection
+  # are handled using the same constructor (hence multipoint here)
+  expect_identical(
+    geos_write_wkt(
+      wk::wk_handle(
+        wk::wkt(c("MULTIPOINT EMPTY", "MULTIPOINT (1 2, 3 4)", "MULTIPOINT Z (1 2 3)", NA)),
+        geos_geometry_writer()
+      )
+    ),
+    c("MULTIPOINT EMPTY", "MULTIPOINT (1 2, 3 4)", "MULTIPOINT Z (1 2 3)", NA)
+  )
+})
+
+test_that("geos_geometry_writer() works with re-alloced sub-geometry pointer arrays", {
+  # check a collection so long that it needs a re-alloc of the pointer arrays
+  # that hold the sub-geometries while the geometries are being constructed
+  coords <- paste0(1:33, " ", 1:33, collapse = ", ")
+  expect_identical(
+    geos_write_wkt(
+      wk::wk_handle(
+        wk::wkt(paste0("MULTIPOINT (", coords, ")")),
+        geos_geometry_writer()
+      )
+    ),
+    paste0("MULTIPOINT (", coords, ")")
+  )
+})
+
+test_that("geos_geometry_writer() silently drops M coordinates", {
+  expect_identical(
+    geos_write_wkt(
+      wk::wk_handle(wk::wkt("POINT ZM (1 2 3 4)"), geos_geometry_writer()),
+    ),
+    "POINT Z (1 2 3)"
+  )
+
+  expect_identical(
+    geos_write_wkt(
+      wk::wk_handle(wk::wkt("POINT M (1 2 3)"), geos_geometry_writer()),
+    ),
+    "POINT (1 2)"
+  )
+})
+
+test_that("geos_geometry_writer() works with  a re-alloced coordinate sequence", {
+  # default sequence length is 1024 numbers, so >512 would trigger at least once realloc
+  coords <- paste0(1:1000, " ", 1:1000, collapse = ", ")
+  expect_identical(
+    geos_write_wkt(
+      wk::wk_handle(
+        wk::wkt(paste0("LINESTRING (", coords, ")")),
+        geos_geometry_writer()
+      )
+    ),
+    paste0("LINESTRING (", coords, ")")
+  )
+})
+
+test_that("geos_geometry_writer() passes along LinearRing creation errors", {
+  expect_error(
+    wk::wk_handle(wk::wkt("POLYGON ((0 0, 1 1))"), geos_geometry_writer()),
+    "IllegalArgumentException"
+  )
+})
+
+test_that("geos_geometry_writer() passes along geometry creation errors", {
+  expect_error(
+    wk::wk_handle(wk::wkt("LINESTRING (0 0)"), geos_geometry_writer()),
+    "IllegalArgumentException"
+  )
+})
+
+test_that("geos_geometry_writer() destroys dangling geometries when it aborts via error", {
+  # this test is for coverage and is important to include because it forces
+  # the cleanup of a GEOSGeometry* that has been created but not yet made the responsibility
+  # of the MULTILINESTRING
+  expect_error(
+    wk::wk_handle(wk::wkt("MULTILINESTRING ((0 0, 1 1), (0 0))"), geos_geometry_writer()),
+    "IllegalArgumentException"
+  )
+})
+
+test_that("geos_geometry_writer() errors for collections that are nested too deeply", {
+  make_really_recursive_geom <- function(n) {
+    wk::wkt(paste0(
+      c(rep("GEOMETRYCOLLECTION (", n), "POINT (0 1)", rep(")", n)),
+      collapse = ""
+    ))
+  }
+
+  # errors in geometry_start
+  expect_error(
+    wk::wk_handle(make_really_recursive_geom(32), geos_geometry_writer()),
+    "Invalid recursion depth"
+  )
+})
+
+test_that("geos_geometry_writer() can handle input of undefined size", {
+  many_points <- paste0("POINT (", 1:1025, " ", 1:1025, ")")
+  expect_identical(
+    geos_write_wkt(
+      wk::handle_wkt_without_vector_size(
+        wk::wkt(many_points),
+        geos_geometry_writer()
+      )
+    ),
+    many_points
+  )
+})
+
 test_that("geos_geometry can be created from wk package classes", {
   expect_s3_class(as_geos_geometry(wk::as_wkb("POINT (30 10)")), "geos_geometry")
   expect_s3_class(as_geos_geometry(wk::as_wkt("POINT (30 10)")), "geos_geometry")
