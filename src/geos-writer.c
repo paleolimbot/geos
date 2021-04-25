@@ -162,18 +162,20 @@ static inline void geos_writer_geom_append(geos_writer_t* writer, GEOSGeometry* 
 
     if (writer->part_id[level] >= writer->geom_size[level]) {
         int current_size = writer->geom_size[level];
-        GEOSGeometry** new_seq = malloc((current_size * 2 + 1) * sizeof(GEOSGeometry**));
+        int new_size = current_size * 2 + 1;
+        GEOSGeometry** new_seq = malloc(new_size * sizeof(GEOSGeometry**));
         if (new_seq == NULL) {
             GEOSGeom_destroy_r(handle, g); // # nocov
             Rf_error("Failed to realloc geom array at recursion level %d", level); // # nocov
         }
 
-        memset(new_seq, 0, (current_size * 2 + 1) * sizeof(GEOSGeometry**));
+        memset(new_seq, 0, new_size * sizeof(GEOSGeometry**));
         for (int i = 0; i < writer->part_id[level]; i++) {
             new_seq[i] = writer->geom[level][i];
         }
         free(writer->geom[level]);
         writer->geom[level] = new_seq;
+        writer->geom_size[level] = new_size;
     }
 
     writer->geom[level][writer->part_id[level]] = g;
