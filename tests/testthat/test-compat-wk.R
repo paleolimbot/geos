@@ -169,6 +169,60 @@ test_that("geos_geometry_writer() works with re-alloced sub-geometry pointer arr
   )
 })
 
+test_that("geos_geometry_writer() silently drops M coordinates", {
+  expect_identical(
+    geos_write_wkt(
+      wk::wk_handle(wk::wkt("POINT ZM (1 2 3 4)"), geos_geometry_writer()),
+    ),
+    "POINT Z (1 2 3)"
+  )
+
+  expect_identical(
+    geos_write_wkt(
+      wk::wk_handle(wk::wkt("POINT M (1 2 3)"), geos_geometry_writer()),
+    ),
+    "POINT (1 2)"
+  )
+})
+
+test_that("geos_geometry_writer() works with  a re-alloced coordinate sequence", {
+  # default sequence length is 1024 numbers, so >512 would trigger at least once realloc
+  coords <- paste0(1:1000, " ", 1:1000, collapse = ", ")
+  expect_identical(
+    geos_write_wkt(
+      wk::wk_handle(
+        wk::wkt(paste0("LINESTRING (", coords, ")")),
+        geos_geometry_writer()
+      )
+    ),
+    paste0("LINESTRING (", coords, ")")
+  )
+})
+
+test_that("geos_geometry_writer() passes along LinearRing creation errors", {
+  expect_error(
+    wk::wk_handle(wk::wkt("POLYGON ((0 0, 1 1))"), geos_geometry_writer()),
+    "IllegalArgumentException"
+  )
+})
+
+test_that("geos_geometry_writer() passes along geometry creation errors", {
+  expect_error(
+    wk::wk_handle(wk::wkt("LINESTRING (0 0)"), geos_geometry_writer()),
+    "IllegalArgumentException"
+  )
+})
+
+test_that("geos_geometry_writer() destroys dangling geometries when it aborts via error", {
+  # this test is for coverage and is important to include because it forces
+  # the cleanup of a GEOSGeometry* that has been created but not yet made the responsibility
+  # of the MULTILINESTRING
+  expect_error(
+    wk::wk_handle(wk::wkt("MULTILINESTRING ((0 0, 1 1), (0 0))"), geos_geometry_writer()),
+    "IllegalArgumentException"
+  )
+})
+
 test_that("geos_geometry_writer() errors for collections that are nested too deeply", {
   make_really_recursive_geom <- function(n) {
     wk::wkt(paste0(

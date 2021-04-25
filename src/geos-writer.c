@@ -41,7 +41,7 @@ typedef struct {
 geos_writer_t* geos_writer_new() {
     geos_writer_t* writer = (geos_writer_t*) malloc(sizeof(geos_writer_t));
     if (writer == NULL) {
-        return NULL;
+        return NULL; // # nocov
     }
 
     writer->geos = R_NilValue;
@@ -99,12 +99,10 @@ static inline void geos_writer_geos_finalize(geos_writer_t* writer) {
 static inline void geos_writer_coord_seq_append(geos_writer_t* writer, const double* coord) {
     if ((writer->coord_id * writer->coord_size) >= writer->coord_seq_size) {
         uint32_t new_size = writer->coord_seq_size * 2 + 1;
-        double* new_coord_seq = (double*) realloc(writer->coord_seq, new_size);
-        if (new_coord_seq == NULL) {
+        writer->coord_seq = (double*) realloc(writer->coord_seq, new_size * sizeof(double));
+        if (writer->coord_seq == NULL) {
             Rf_error("Failed to realloc coordinate sequence"); // # nocov
         }
-        free(writer->coord_seq);
-        writer->coord_seq = new_coord_seq;
         writer->coord_seq_size = new_size;
     }
 
@@ -147,12 +145,17 @@ static inline GEOSCoordSequence* geos_writer_coord_seq_finalize(geos_writer_t* w
 static inline void geos_writer_geom_append(geos_writer_t* writer, GEOSGeometry* g) {
     int level = writer->recursion_level;
     if ((level >= GEOS_MAX_RECURSION_DEPTH) || (level < 0)) {
+        GEOSGeom_destroy_r(handle, g);
         Rf_error("Invalid recursion depth");
     }
     
     if (writer->geom[level] == NULL) {
         writer->geom[level] = 
           (GEOSGeometry**) malloc(GEOS_INITIAL_SIZE_IF_UNKNOWN * sizeof(GEOSGeometry**));
+        if (writer->geom[level] == NULL) {
+            GEOSGeom_destroy_r(handle, g); // # nocov
+            Rf_error("Failed to alloc geom array at recursion level %d", level); // # nocov
+        }
         memset(writer->geom[level], 0, GEOS_INITIAL_SIZE_IF_UNKNOWN * sizeof(GEOSGeometry**));
         writer->geom_size[level] = GEOS_INITIAL_SIZE_IF_UNKNOWN;
     }
@@ -160,6 +163,11 @@ static inline void geos_writer_geom_append(geos_writer_t* writer, GEOSGeometry* 
     if (writer->part_id[level] >= writer->geom_size[level]) {
         int current_size = writer->geom_size[level];
         GEOSGeometry** new_seq = malloc((current_size * 2 + 1) * sizeof(GEOSGeometry**));
+        if (new_seq == NULL) {
+            GEOSGeom_destroy_r(handle, g); // # nocov
+            Rf_error("Failed to realloc geom array at recursion level %d", level); // # nocov
+        }
+
         memset(new_seq, 0, (current_size * 2 + 1) * sizeof(GEOSGeometry**));
         for (int i = 0; i < writer->part_id[level]; i++) {
             new_seq[i] = writer->geom[level][i];
@@ -252,7 +260,7 @@ int geos_writer_ring_end(const wk_meta_t* meta, uint32_t size, uint32_t ring_id,
     writer->recursion_level--;
 
     if (writer->recursion_level == 0) {
-        Rf_error("Can't add ring as a top-level geometry");
+        Rf_error("Can't add ring as a top-level geometry"); // # nocov
     }
 
     geos_writer_geom_append(writer, geom);
@@ -307,7 +315,7 @@ int geos_writer_geometry_end(const wk_meta_t* meta, uint32_t part_id, void* hand
         geos_writer_geom_release(writer);
         break;
     default:
-        Rf_error("Unknown geometry type: %d", meta->geometry_type);
+        Rf_error("Unknown geometry type: %d", meta->geometry_type); // # nocov
     }
 
     if (geom == NULL) {
@@ -347,6 +355,7 @@ void geos_writer_deinitialize(void* handler_data) {
                 g = writer->geom[i][j];
                 if (g != NULL) {
                     GEOSGeom_destroy_r(handle, g);
+                    writer->geom[i][j] = NULL;
                 }
             }
             free(writer->geom[i]);
