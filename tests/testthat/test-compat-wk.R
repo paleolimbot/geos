@@ -96,6 +96,11 @@ test_that("wk_handle() works for geometry collections", {
   expect_identical(wk::wk_meta(geoms_prec)$precision, c(0.1, 0.1, 0.1, 0.1, NA))
 })
 
+test_that("wk_writer() and wk_translate() work for geos_geometry vectors", {
+  expect_s3_class(wk::wk_writer(geos_geometry()), "geos_geometry_writer")
+  expect_s3_class(wk::wk_translate(wk::wkb(), geos_geometry()), "geos_geometry")
+})
+
 test_that("geos_geometry_writer() works for points", {
   expect_identical(
     geos_write_wkt(
@@ -196,6 +201,18 @@ test_that("geos_geometry_writer() works with  a re-alloced coordinate sequence",
       )
     ),
     paste0("LINESTRING (", coords, ")")
+  )
+})
+
+test_that("geos_geometry_writer() passes along SRID to geometry", {
+  expect_identical(
+    geos_srid(
+      wk::wk_handle(
+        wk::wkt(c("SRID=4321;POINT(0 1)", "SRID=0;POINT (0 1)", "POINT (0 1)")),
+        geos_geometry_writer()
+      )
+    ),
+    c(4321L, 0L, 0L)
   )
 })
 

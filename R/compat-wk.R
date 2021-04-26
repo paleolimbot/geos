@@ -6,6 +6,7 @@
 #' @return The result of the `handler`
 #' @export
 #' @rdname wk-methods
+#' @name wk-methods
 #'
 #' @examples
 #' library(wk)
@@ -20,6 +21,13 @@ wk_handle.geos_geometry <- function(handleable, handler, ...) {
 #' @export
 geos_geometry_writer <- function() {
   wk::new_wk_handler(.Call(geos_c_geos_writer_new), "geos_geometry_writer")
+}
+
+#' @rdname wk-methods
+#' @importFrom wk wk_writer
+#' @export
+wk_writer.geos_geometry <- function(handleable, ...) {
+  geos_geometry_writer()
 }
 
 #' @importFrom wk wk_crs
@@ -44,13 +52,19 @@ wk_set_crs.geos_geometry <- function(x, crs) {
 #' @rdname as_geos_geometry
 #' @export
 as_geos_geometry.wk_wkb <- function(x, ...) {
-  geos_read_wkb(x, crs = attr(x, "crs", exact = TRUE))
+  geom <- wk_handle(x, geos_geometry_writer())
+  attr(geom, "crs") <- attr(x, "crs", exact = TRUE)
+  geom
 }
 
 #' @rdname as_geos_geometry
 #' @export
 as_geos_geometry.wk_wkt <- function(x, ...) {
-  geos_read_wkt(x, attr(x, "crs", exact = TRUE))
+  # geos_read_wkt() is faster, but doesn't do EWKT which might be
+  # expected for users of wkt() since this is interpreted elsewhere
+  geom <- wk_handle(x, geos_geometry_writer())
+  attr(geom, "crs") <- attr(x, "crs", exact = TRUE)
+  geom
 }
 
 #' @rdname as_geos_geometry
@@ -76,13 +90,17 @@ as_geos_geometry.wk_xyz <- function(x, ...) {
 #' @rdname as_geos_geometry
 #' @export
 as_geos_geometry.wk_rct <- function(x, ...) {
-  as_geos_geometry(wk::as_wkb(x, ...))
+  geom <- wk_handle(x, geos_geometry_writer())
+  attr(geom, "crs") <- attr(x, "crs", exact = TRUE)
+  geom
 }
 
 #' @rdname as_geos_geometry
 #' @export
 as_geos_geometry.wk_crc <- function(x, ...) {
-  as_geos_geometry(wk::as_wkb(x, ...))
+  geom <- wk_handle(x, geos_geometry_writer())
+  attr(geom, "crs") <- attr(x, "crs", exact = TRUE)
+  geom
 }
 
 #' @importFrom wk as_wkt
@@ -96,47 +114,10 @@ as_wkt.geos_geometry <- function(x, ..., include_z = TRUE, precision = 16, trim 
 
 #' @importFrom wk as_wkb
 #' @export
-as_wkb.geos_geometry <- function(x, ..., include_z = TRUE, include_srid = FALSE, endian = 1) {
-  # GEOS 3.9 and up can handle the empty point natively
-  if (geos_version() >= "3.9.1") {
-    out <- unclass(
-      geos_write_wkb(
-        x,
-        include_z = include_z,
-        include_srid = include_srid,
-        endian = endian
-      )
-    )
-
-    return(wk::new_wk_wkb(out, crs = attr(x, "crs", exact = TRUE)))
-  }
-
-  # otherwise, the GEOS WKB writer errors on empty point, but wk_wkb uses POINT (nan nan)
-  is_empty_point <- (geos_type_id(x) == 1L) & geos_is_empty(x) # nocov start
-
-  if (any(is_empty_point, na.rm = TRUE)) {
-    out <- rep_len(list(NULL), length(x))
-    out[is_empty_point] <- wk::wkt_translate_wkb("POINT EMPTY")
-    out[!is_empty_point] <- unclass(
-      geos_write_wkb(
-        x[!is_empty_point],
-        include_z = include_z,
-        include_srid = include_srid,
-        endian = endian
-      )
-    )
-  } else {
-    out <- unclass(
-      geos_write_wkb(
-        x,
-        include_z = include_z,
-        include_srid = include_srid,
-        endian = endian
-      )
-    )
-  }
-
-  wk::new_wk_wkb(out, crs = attr(x, "crs", exact = TRUE)) # nocov end
+as_wkb.geos_geometry <- function(x, ..., endian = NA_integer_) {
+  geom <- wk_handle(x, wk::wkb_writer(endian = endian))
+  attr(geom, "crs") <- attr(x, "crs", exact = TRUE)
+  geom
 }
 
 #' @importFrom wk as_xy
