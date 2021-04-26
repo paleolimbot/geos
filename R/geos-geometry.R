@@ -30,13 +30,19 @@ as_geos_geometry.character <- function(x, ..., crs = NULL) {
 #' @rdname as_geos_geometry
 #' @export
 as_geos_geometry.blob <- function(x, ..., crs = NULL) {
-  geos_read_wkb(x, crs = crs)
+  attributes(x) <- NULL
+  geom <- wk_handle(wk::new_wk_wkb(x, crs = NULL), geos_geometry_writer())
+  attr(geom, "crs") <- crs
+  geom
 }
 
 #' @rdname as_geos_geometry
 #' @export
 as_geos_geometry.WKB <- function(x, ..., crs = NULL) {
-  geos_read_wkb(x, crs = crs)
+  attributes(x) <- NULL
+  geom <- wk_handle(wk::new_wk_wkb(x, crs = NULL), geos_geometry_writer())
+  attr(geom, "crs") <- crs
+  geom
 }
 
 #' @rdname as_geos_geometry
