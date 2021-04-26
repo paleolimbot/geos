@@ -329,15 +329,8 @@ int geos_writer_geometry_end(const wk_meta_t* meta, uint32_t part_id, void* hand
         GEOSSetSRID_r(handle, geom, meta->srid);
     }
 
-    // set precision if defined (use default flags)
-    if (meta->precision != WK_PRECISION_NONE) {
-        GEOSGeometry* geom_precise = GEOSGeom_setPrecision_r(handle, geom, meta->precision, 0);
-        GEOSGeom_destroy_r(handle, geom);
-        if (geom_precise == NULL) {
-            Rf_error("Failed to set precision on geometry"); // # nocov
-        }
-        geom = geom_precise;
-    }
+    // not setting precision because this messes with the geometry
+    // and can easily be replicated via wk_meta() and geos_set_precision()
 
     writer->recursion_level--;
 

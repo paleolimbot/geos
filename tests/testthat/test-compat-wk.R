@@ -204,6 +204,18 @@ test_that("geos_geometry_writer() works with  a re-alloced coordinate sequence",
   )
 })
 
+test_that("geos_geometry_writer() passes along SRID to geometry", {
+  expect_identical(
+    geos_srid(
+      wk::wk_handle(
+        wk::wkt(c("SRID=4321;POINT(0 1)", "SRID=0;POINT (0 1)", "POINT (0 1)")),
+        geos_geometry_writer()
+      )
+    ),
+    c(4321L, 0L, 0L)
+  )
+})
+
 test_that("geos_geometry_writer() passes along LinearRing creation errors", {
   expect_error(
     wk::wk_handle(wk::wkt("POLYGON ((0 0, 1 1))"), geos_geometry_writer()),
