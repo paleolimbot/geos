@@ -32,8 +32,7 @@ SEXP geos_c_make_point(SEXP x, SEXP y, SEXP z) {
       // don't know how to make this fire
       // if similar to linestring, destroying seq here
       // will crash the session
-      UNPROTECT(1); // # nocov
-      GEOS_ERROR("[i=%d] ", i + 1); // # nocov
+      Rf_error("[%d] %s", i + 1, globalErrorMessage); // # nocov
     }
 
     SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometry));

@@ -410,8 +410,7 @@ SEXP geos_strtree_nearest_base(SEXP treeExternalPtr, SEXP geom,
       );
 
       if (itemResult == NULL) {
-        UNPROTECT(1); // result
-        GEOS_ERROR("[i=%d] ", i + 1);
+        Rf_error("[%d] %s", i + 1, globalErrorMessage);
       }
 
       pResult[i] = *itemResult;

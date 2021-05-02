@@ -29,8 +29,7 @@
     int resultCode = _func(handle, geometry, &pResult[i]);     \
                                                                \
     if (resultCode == _errorValue) {                           \
-      UNPROTECT(1);                                            \
-      GEOS_ERROR("[i=%d] ", i + 1);                            \
+      Rf_error("[%d] %s", i + 1, globalErrorMessage);                            \
     }                                                          \
   }                                                            \
                                                                \
@@ -104,8 +103,7 @@ SEXP geos_c_minimum_clearance(SEXP geom) {
     int resultCode = _func(handle, geometry);                     \
                                                                   \
     if (resultCode == _errorValue) {                              \
-      UNPROTECT(1);                                               \
-      GEOS_ERROR("[i=%d] ", i + 1);                               \
+      Rf_error("[%d] %s", i + 1, globalErrorMessage);                               \
     } else {                                                      \
       pResult[i] = resultCode;                                    \
     }                                                             \
@@ -202,16 +200,14 @@ SEXP geos_c_is_clockwise(SEXP geom) {
     seq = GEOSGeom_getCoordSeq_r(handle, geometry);
     // e.g., when not a point, linestring, or linearring
     if (seq == NULL) {
-      UNPROTECT(1);
-      GEOS_ERROR("[i=%d] ", i + 1);
+      Rf_error("[%d] %s", i + 1, globalErrorMessage);
     }
 
     int resultCode = GEOSCoordSeq_isCCW_r(handle, seq, &isCCW);
 
     // e.g., not enough points in ring
     if (resultCode == 0) {
-      UNPROTECT(1);
-      GEOS_ERROR("[i=%d] ", i + 1);
+      Rf_error("[%d] %s", i + 1, globalErrorMessage);
     }
 
     pResult[i] = !isCCW;
@@ -265,8 +261,7 @@ SEXP geos_c_is_valid_detail(SEXP geom, SEXP allowSelfTouchingRingFormingHole) {
     // error
     // (don't know how to trigger this error)
     if (validResult == 2) {
-      UNPROTECT(3); // # nocov
-      GEOS_ERROR("[i=%d] ", i + 1); // # nocov
+      Rf_error("[%d] %s", i + 1, globalErrorMessage); // # nocov
     } else if (validResult == 1) {
       pResultIsValid[i] = 1;
       SET_STRING_ELT(resultReason, i, NA_STRING);
