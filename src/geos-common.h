@@ -39,13 +39,10 @@ SEXP geos_common_child_geometry_xptr(const GEOSGeometry* geometry, SEXP parent);
 void geos_common_release_tree(SEXP externalPtr);
 SEXP geos_common_tree_xptr(GEOSSTRtree* geometry, SEXP geom, SEXP indices);
 
-// macros to set up and tear down the GEOS error handling code
-// hardcodes 'handle' as the GEOS handle type
-#define GEOS_INIT()  \
-  GEOSContextHandle_t handle = GEOS_init_r();  \
-  char lastGEOSErrorMessage[GEOS_ERROR_MESSAGE_BUFFER_SIZE];  \
-  strcpy(lastGEOSErrorMessage, "Unknown error");  \
-  GEOSContext_setErrorMessageHandler_r(handle, &geos_common_handle_error, lastGEOSErrorMessage)\
+// hardcodes 'handle' as the GEOS handle and resets the error message
+#define GEOS_INIT() \
+  GEOSContextHandle_t handle = globalHandle; \
+  strcpy(globalErrorMessage, "Unknown error")
 
 // the error macro wraps Rf_error() but adds the error message at the end
 // works for the frequent usage with exactly one arg to Rf_error()
@@ -53,17 +50,15 @@ SEXP geos_common_tree_xptr(GEOSSTRtree* geometry, SEXP geom, SEXP indices);
 #define GEOS_ERROR(msg, arg) GEOS_FINISH();  \
   char actualErrorMessage[GEOS_ACTUAL_ERROR_MESSAGE_BUFFER_SIZE];     \
   strcpy(actualErrorMessage, msg); \
-  memcpy(&actualErrorMessage[strlen(msg)], lastGEOSErrorMessage, strlen(lastGEOSErrorMessage)); \
-  actualErrorMessage[strlen(msg) + strlen(lastGEOSErrorMessage)] = '\0'; \
+  memcpy(&actualErrorMessage[strlen(msg)], globalErrorMessage, strlen(globalErrorMessage)); \
+  actualErrorMessage[strlen(msg) + strlen(globalErrorMessage)] = '\0'; \
   Rf_error(actualErrorMessage, arg)
 
-// finishes handle
-#define GEOS_FINISH() GEOS_finish_r(handle)
+#define GEOS_FINISH()
 
 // check geometry coming out of an externalptr
 #define GEOS_CHECK_GEOMETRY(geometry, i)  \
   if (geometry == NULL) {   \
-    GEOS_FINISH();          \
     Rf_error("External pointer is not valid [i=%d]", i + 1);  \
   }
 
