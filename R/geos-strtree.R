@@ -13,8 +13,8 @@
 #' @export
 #'
 geos_strtree <- function(geom, node_capacity = 10L) {
-  geom <- as_geos_geometry(geom)
-  node_capacity <- as.integer(node_capacity)
+  geom <- sanitize_geos_geometry(geom)
+  node_capacity <- sanitize_integer_scalar(node_capacity)
   stopifnot(
     length(node_capacity) == 1,
     node_capacity >= 4, node_capacity < 1e6
@@ -30,8 +30,8 @@ geos_strtree <- function(geom, node_capacity = 10L) {
 #' @rdname geos_strtree
 #' @export
 geos_strtree_query <- function(tree, geom) {
-  tree <- as_geos_strtree(tree)
-  geom <- as_geos_geometry(geom)
+  tree <- sanitize_geos_strtree(tree)
+  geom <- sanitize_geos_geometry(geom)
   wk_crs_output(tree, geom)
   .Call(geos_c_strtree_query, tree, geom)
 }
@@ -42,7 +42,7 @@ geos_strtree_data <- function(tree) {
   # doesn't make sense to coerce here because then the output == tree
   stopifnot(inherits(tree, "geos_strtree"))
 
-  .Call(geos_c_strtree_data, as_geos_strtree(tree))
+  .Call(geos_c_strtree_data, sanitize_geos_strtree(tree))
 }
 
 #' @rdname geos_strtree
@@ -54,7 +54,7 @@ as_geos_strtree <- function(x, ...) {
 #' @rdname geos_strtree
 #' @export
 as_geos_strtree.default <- function(x, ...) {
-  as_geos_strtree(as_geos_geometry(x), ...)
+  as_geos_strtree(sanitize_geos_geometry(x), ...)
 }
 
 #' @rdname geos_strtree
@@ -116,7 +116,7 @@ geos_disjoint_matrix <- function(geom, tree) {
   # disjoint is the odd one out, in that it requires a negation of intersects
   # this is easier to maintain
   # with setdiff() here (unless somebody complains that this is slow)
-  tree <- as_geos_strtree(tree)
+  tree <- sanitize_geos_strtree(tree)
   tree_data <- geos_strtree_data(tree)
   intersects_matrix <- geos_intersects_matrix(geom, tree)
   Map(setdiff, list(as.numeric(seq_along(tree_data))), intersects_matrix)
@@ -125,8 +125,8 @@ geos_disjoint_matrix <- function(geom, tree) {
 #' @rdname geos_disjoint_matrix
 #' @export
 geos_touches_matrix <- function(geom, tree) {
-  tree <- as_geos_strtree(tree)
-  geom <- as_geos_geometry(geom)
+  tree <- sanitize_geos_strtree(tree)
+  geom <- sanitize_geos_geometry(geom)
   wk_crs_output(tree, geom)
   .Call(geos_c_touches_matrix, geom, tree)
 }
@@ -134,8 +134,8 @@ geos_touches_matrix <- function(geom, tree) {
 #' @rdname geos_disjoint_matrix
 #' @export
 geos_intersects_matrix <- function(geom, tree) {
-  tree <- as_geos_strtree(tree)
-  geom <- as_geos_geometry(geom)
+  tree <- sanitize_geos_strtree(tree)
+  geom <- sanitize_geos_geometry(geom)
   wk_crs_output(tree, geom)
   .Call(geos_c_intersects_matrix, geom, tree)
 }
@@ -143,8 +143,8 @@ geos_intersects_matrix <- function(geom, tree) {
 #' @rdname geos_disjoint_matrix
 #' @export
 geos_crosses_matrix <- function(geom, tree) {
-  tree <- as_geos_strtree(tree)
-  geom <- as_geos_geometry(geom)
+  tree <- sanitize_geos_strtree(tree)
+  geom <- sanitize_geos_geometry(geom)
   wk_crs_output(tree, geom)
   .Call(geos_c_crosses_matrix, geom, tree)
 }
@@ -152,8 +152,8 @@ geos_crosses_matrix <- function(geom, tree) {
 #' @rdname geos_disjoint_matrix
 #' @export
 geos_within_matrix <- function(geom, tree) {
-  tree <- as_geos_strtree(tree)
-  geom <- as_geos_geometry(geom)
+  tree <- sanitize_geos_strtree(tree)
+  geom <- sanitize_geos_geometry(geom)
   wk_crs_output(tree, geom)
   .Call(geos_c_within_matrix, geom, tree)
 }
@@ -161,8 +161,8 @@ geos_within_matrix <- function(geom, tree) {
 #' @rdname geos_disjoint_matrix
 #' @export
 geos_contains_matrix <- function(geom, tree) {
-  tree <- as_geos_strtree(tree)
-  geom <- as_geos_geometry(geom)
+  tree <- sanitize_geos_strtree(tree)
+  geom <- sanitize_geos_geometry(geom)
   wk_crs_output(tree, geom)
   .Call(geos_c_contains_matrix, geom, tree)
 }
@@ -170,8 +170,8 @@ geos_contains_matrix <- function(geom, tree) {
 #' @rdname geos_disjoint_matrix
 #' @export
 geos_contains_properly_matrix <- function(geom, tree) {
-  tree <- as_geos_strtree(tree)
-  geom <- as_geos_geometry(geom)
+  tree <- sanitize_geos_strtree(tree)
+  geom <- sanitize_geos_geometry(geom)
   wk_crs_output(tree, geom)
   .Call(geos_c_contains_properly_matrix, geom, tree)
 }
@@ -179,8 +179,8 @@ geos_contains_properly_matrix <- function(geom, tree) {
 #' @rdname geos_disjoint_matrix
 #' @export
 geos_overlaps_matrix <- function(geom, tree) {
-  tree <- as_geos_strtree(tree)
-  geom <- as_geos_geometry(geom)
+  tree <- sanitize_geos_strtree(tree)
+  geom <- sanitize_geos_geometry(geom)
   wk_crs_output(tree, geom)
   .Call(geos_c_overlaps_matrix, geom, tree)
 }
@@ -188,8 +188,8 @@ geos_overlaps_matrix <- function(geom, tree) {
 #' @rdname geos_disjoint_matrix
 #' @export
 geos_equals_matrix <- function(geom, tree) {
-  tree <- as_geos_strtree(tree)
-  geom <- as_geos_geometry(geom)
+  tree <- sanitize_geos_strtree(tree)
+  geom <- sanitize_geos_geometry(geom)
   wk_crs_output(tree, geom)
   .Call(geos_c_equals_matrix, geom, tree)
 }
@@ -197,18 +197,18 @@ geos_equals_matrix <- function(geom, tree) {
 #' @rdname geos_disjoint_matrix
 #' @export
 geos_equals_exact_matrix <- function(geom, tree, tolerance = .Machine$double.eps ^ 2) {
-  tree <- as_geos_strtree(tree)
-  geom <- as_geos_geometry(geom)
+  tree <- sanitize_geos_strtree(tree)
+  geom <- sanitize_geos_geometry(geom)
   wk_crs_output(tree, geom)
-  recycled <- recycle_common(list(geom, as.numeric(tolerance)))
+  recycled <- recycle_common(list(geom, sanitize_double(tolerance)))
   .Call(geos_c_equals_exact_matrix, recycled[[1]], tree, recycled[[2]])
 }
 
 #' @rdname geos_disjoint_matrix
 #' @export
 geos_covers_matrix <- function(geom, tree) {
-  tree <- as_geos_strtree(tree)
-  geom <- as_geos_geometry(geom)
+  tree <- sanitize_geos_strtree(tree)
+  geom <- sanitize_geos_geometry(geom)
   wk_crs_output(tree, geom)
   .Call(geos_c_covers_matrix, geom, tree)
 }
@@ -216,8 +216,8 @@ geos_covers_matrix <- function(geom, tree) {
 #' @rdname geos_disjoint_matrix
 #' @export
 geos_covered_by_matrix <- function(geom, tree) {
-  tree <- as_geos_strtree(tree)
-  geom <- as_geos_geometry(geom)
+  tree <- sanitize_geos_strtree(tree)
+  geom <- sanitize_geos_geometry(geom)
   wk_crs_output(tree, geom)
   .Call(geos_c_covered_by_matrix, geom, tree)
 }
@@ -308,54 +308,54 @@ geos_covered_by_any <- function(geom, tree) {
 #' @export
 #'
 geos_nearest <- function(geom, tree) {
-  tree <- as_geos_strtree(tree)
-  geom <- as_geos_geometry(geom)
+  tree <- sanitize_geos_strtree(tree)
+  geom <- sanitize_geos_geometry(geom)
   wk_crs_output(tree, geom)
 
-  .Call(geos_c_nearest, as_geos_geometry(geom), as_geos_strtree(tree))
+  .Call(geos_c_nearest, geom, tree)
 }
 
 #' @rdname geos_nearest
 #' @export
 geos_nearest_indexed <- function(geom, tree) {
-  tree <- as_geos_strtree(tree)
-  geom <- as_geos_geometry(geom)
+  tree <- sanitize_geos_strtree(tree)
+  geom <- sanitize_geos_geometry(geom)
   wk_crs_output(tree, geom)
 
-  .Call(geos_c_nearest_indexed, as_geos_geometry(geom), as_geos_strtree(tree))
+  .Call(geos_c_nearest_indexed, geom, tree)
 }
 
 #' @rdname geos_nearest
 #' @export
 geos_nearest_hausdorff <- function(geom, tree, densify = NULL) {
-  tree <- as_geos_strtree(tree)
-  geom <- as_geos_geometry(geom)
+  tree <- sanitize_geos_strtree(tree)
+  geom <- sanitize_geos_geometry(geom)
   wk_crs_output(tree, geom)
 
   if (is.null(densify)) {
-    .Call(geos_c_nearest_hausdorff, as_geos_geometry(geom), as_geos_strtree(tree))
+    .Call(geos_c_nearest_hausdorff, geom, tree)
   } else {
-    desnify <- as.numeric(densify)
-    .Call(geos_c_nearest_hausdorff_densify, as_geos_geometry(geom), as_geos_strtree(tree), densify[1])
+    desnify <- sanitize_double_scalar(densify)
+    .Call(geos_c_nearest_hausdorff_densify, geom, tree, densify)
   }
 }
 
 #' @rdname geos_nearest
 #' @export
 geos_nearest_frechet <- function(geom, tree, densify = NULL) {
-  tree <- as_geos_strtree(tree)
-  geom <- as_geos_geometry(geom)
+  tree <- sanitize_geos_strtree(tree)
+  geom <- sanitize_geos_geometry(geom)
   wk_crs_output(tree, geom)
 
   if (is.null(densify)) {
-    .Call(geos_c_nearest_frechet, as_geos_geometry(geom), as_geos_strtree(tree))
+    .Call(geos_c_nearest_frechet, geom, tree)
   } else {
-    desnify <- as.numeric(densify)
-    .Call(geos_c_nearest_frechet_densify, as_geos_geometry(geom), as_geos_strtree(tree), densify[1])
+    desnify <- sanitize_double_scalar(densify)
+    .Call(geos_c_nearest_frechet_densify, geom, tree, densify)
   }
 }
 
 # for testing...triggers an error that is hard to otherwise trigger
 geos_nearest_error <- function(geom, tree) {
-  .Call(geos_c_nearest_error, as_geos_geometry(geom), as_geos_strtree(tree))
+  .Call(geos_c_nearest_error, sanitize_geos_geometry(geom), sanitize_geos_strtree(tree))
 }
