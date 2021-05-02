@@ -17,7 +17,7 @@ geos_unnest <- function(geom, keep_empty = FALSE, keep_multi = TRUE, max_depth =
   # extract previous length information (if recursive call)
   lengths <- attr(geom, "lengths") %||% rep(1L, length(geom))
 
-  geom <- as_geos_geometry(geom)
+  geom <- sanitize_geos_geometry(geom)
 
   # recursive base case
   if (max_depth == 0) {

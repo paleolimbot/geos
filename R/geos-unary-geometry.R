@@ -47,42 +47,42 @@
 #' geos_simplify_preserve_topology("LINESTRING (0 0, 0 1, 0 2)", 0.1)
 #'
 geos_centroid <- function(geom) {
-  geom <- as_geos_geometry(geom)
+  geom <- sanitize_geos_geometry(geom)
   new_geos_geometry(.Call(geos_c_centroid, geom), crs = attr(geom, "crs", exact = TRUE))
 }
 
 #' @rdname geos_centroid
 #' @export
 geos_boundary <- function(geom) {
-  geom <- as_geos_geometry(geom)
+  geom <- sanitize_geos_geometry(geom)
   new_geos_geometry(.Call(geos_c_boundary, geom), crs = attr(geom, "crs", exact = TRUE))
 }
 
 #' @rdname geos_centroid
 #' @export
 geos_minimum_width <- function(geom) {
-  geom <- as_geos_geometry(geom)
+  geom <- sanitize_geos_geometry(geom)
   new_geos_geometry(.Call(geos_c_minimum_width, geom), crs = attr(geom, "crs", exact = TRUE))
 }
 
 #' @rdname geos_centroid
 #' @export
 geos_minimum_clearance_line <- function(geom) {
-  geom <- as_geos_geometry(geom)
+  geom <- sanitize_geos_geometry(geom)
   new_geos_geometry(.Call(geos_c_minimum_clearance_line, geom), crs = attr(geom, "crs", exact = TRUE))
 }
 
 #' @rdname geos_centroid
 #' @export
 geos_minimum_rotated_rectangle <- function(geom) {
-  geom <- as_geos_geometry(geom)
+  geom <- sanitize_geos_geometry(geom)
   new_geos_geometry(.Call(geos_c_minimum_rotated_rectagle, geom), crs = attr(geom, "crs", exact = TRUE))
 }
 
 #' @rdname geos_centroid
 #' @export
 geos_minimum_bounding_circle <- function(geom) {
-  geom <- as_geos_geometry(geom)
+  geom <- sanitize_geos_geometry(geom)
   result <- .Call(geos_c_minimum_bounding_circle, geom)
   attributes(result) <- NULL
   new_geos_geometry(result, crs = attr(geom, "crs", exact = TRUE))
@@ -91,7 +91,7 @@ geos_minimum_bounding_circle <- function(geom) {
 #' @rdname geos_centroid
 #' @export
 geos_minimum_bounding_crc <- function(geom) {
-  geom <- as_geos_geometry(geom)
+  geom <- sanitize_geos_geometry(geom)
   result <- .Call(geos_c_minimum_bounding_circle, geom)
   wk::crc(
     x = attr(result, "x"),
@@ -104,8 +104,8 @@ geos_minimum_bounding_crc <- function(geom) {
 #' @rdname geos_centroid
 #' @export
 geos_maximum_inscribed_circle_spec <- function(geom, tolerance) {
-  geom <- as_geos_geometry(geom)
-  recycled <- recycle_common(list(geom, as.numeric(tolerance)))
+  geom <- sanitize_geos_geometry(geom)
+  recycled <- recycle_common(list(geom, sanitize_double(tolerance)))
   new_geos_geometry(
     .Call(geos_c_maximum_inscribed_circle, recycled[[1]], recycled[[2]]),
     crs = attr(geom, "crs", exact = TRUE)
@@ -128,15 +128,15 @@ geos_maximum_inscribed_crc <- function(geom, tolerance) {
 #' @rdname geos_centroid
 #' @export
 geos_unary_union <- function(geom) {
-  geom <- as_geos_geometry(geom)
+  geom <- sanitize_geos_geometry(geom)
   new_geos_geometry(.Call(geos_c_unary_union, geom), crs = attr(geom, "crs", exact = TRUE))
 }
 
 #' @rdname geos_centroid
 #' @export
 geos_unary_union_prec <- function(geom, grid_size) {
-  geom <- as_geos_geometry(geom)
-  recycled <- recycle_common(list(geom, as.numeric(grid_size)))
+  geom <- sanitize_geos_geometry(geom)
+  recycled <- recycle_common(list(geom, sanitize_double(grid_size)))
   new_geos_geometry(
     .Call(geos_c_unary_union_prec, recycled[[1]], recycled[[2]]),
     crs = attr(geom, "crs", exact = TRUE)
@@ -146,70 +146,70 @@ geos_unary_union_prec <- function(geom, grid_size) {
 #' @rdname geos_centroid
 #' @export
 geos_coverage_union <- function(geom) {
-  geom <- as_geos_geometry(geom)
+  geom <- sanitize_geos_geometry(geom)
   new_geos_geometry(.Call(geos_c_coverage_union, geom), crs = attr(geom, "crs", exact = TRUE))
 }
 
 #' @rdname geos_centroid
 #' @export
 geos_point_on_surface <- function(geom) {
-  geom <- as_geos_geometry(geom)
+  geom <- sanitize_geos_geometry(geom)
   new_geos_geometry(.Call(geos_c_point_on_surface, geom), crs = attr(geom, "crs", exact = TRUE))
 }
 
 #' @rdname geos_centroid
 #' @export
 geos_node <- function(geom) {
-  geom <- as_geos_geometry(geom)
+  geom <- sanitize_geos_geometry(geom)
   new_geos_geometry(.Call(geos_c_node, geom), crs = attr(geom, "crs", exact = TRUE))
 }
 
 #' @rdname geos_centroid
 #' @export
 geos_make_valid <- function(geom) {
-  geom <- as_geos_geometry(geom)
+  geom <- sanitize_geos_geometry(geom)
   new_geos_geometry(.Call(geos_c_make_valid, geom), crs = attr(geom, "crs", exact = TRUE))
 }
 
 #' @rdname geos_centroid
 #' @export
 geos_unique_points <- function(geom) {
-  geom <- as_geos_geometry(geom)
+  geom <- sanitize_geos_geometry(geom)
   new_geos_geometry(.Call(geos_c_unique_points, geom), crs = attr(geom, "crs", exact = TRUE))
 }
 
 #' @rdname geos_centroid
 #' @export
 geos_reverse <- function(geom) {
-  geom <- as_geos_geometry(geom)
+  geom <- sanitize_geos_geometry(geom)
   new_geos_geometry(.Call(geos_c_reverse, geom), crs = attr(geom, "crs", exact = TRUE))
 }
 
 #' @rdname geos_centroid
 #' @export
 geos_merge_lines <- function(geom) {
-  geom <- as_geos_geometry(geom)
+  geom <- sanitize_geos_geometry(geom)
   new_geos_geometry(.Call(geos_c_merge_lines, geom), crs = attr(geom, "crs", exact = TRUE))
 }
 
 #' @rdname geos_centroid
 #' @export
 geos_build_area <- function(geom) {
-  geom <- as_geos_geometry(geom)
+  geom <- sanitize_geos_geometry(geom)
   new_geos_geometry(.Call(geos_c_build_area, geom), crs = attr(geom, "crs", exact = TRUE))
 }
 
 #' @rdname geos_centroid
 #' @export
 geos_envelope <- function(geom) {
-  geom <- as_geos_geometry(geom)
+  geom <- sanitize_geos_geometry(geom)
   new_geos_geometry(.Call(geos_c_envelope, geom), crs = attr(geom, "crs", exact = TRUE))
 }
 
 #' @rdname geos_centroid
 #' @export
 geos_envelope_rct <- function(geom) {
-  geom <- as_geos_geometry(geom)
+  geom <- sanitize_geos_geometry(geom)
 
   # geos_xmin() and friends errors on EMPTY
   not_empty <- is.na(geom) | !geos_is_empty(geom)
@@ -232,36 +232,36 @@ geos_envelope_rct <- function(geom) {
 #' @rdname geos_centroid
 #' @export
 geos_convex_hull <- function(geom) {
-  geom <- as_geos_geometry(geom)
+  geom <- sanitize_geos_geometry(geom)
   new_geos_geometry(.Call(geos_c_convex_hull, geom), crs = attr(geom, "crs", exact = TRUE))
 }
 
 #' @rdname geos_centroid
 #' @export
 geos_point_start <- function(geom) {
-  geom <- as_geos_geometry(geom)
+  geom <- sanitize_geos_geometry(geom)
   new_geos_geometry(.Call(geos_c_point_start, geom), crs = attr(geom, "crs", exact = TRUE))
 }
 
 #' @rdname geos_centroid
 #' @export
 geos_point_end <- function(geom) {
-  geom <- as_geos_geometry(geom)
+  geom <- sanitize_geos_geometry(geom)
   new_geos_geometry(.Call(geos_c_point_end, geom), crs = attr(geom, "crs", exact = TRUE))
 }
 
 #' @rdname geos_centroid
 #' @export
 geos_clone <- function(geom) {
-  geom <- as_geos_geometry(geom)
+  geom <- sanitize_geos_geometry(geom)
   new_geos_geometry(.Call(geos_c_clone, geom), crs = attr(geom, "crs", exact = TRUE))
 }
 
 #' @rdname geos_centroid
 #' @export
 geos_set_srid <- function(geom, srid) {
-  geom <- as_geos_geometry(geom)
-  recycled <- recycle_common(list(geom, as.integer(srid)))
+  geom <- sanitize_geos_geometry(geom)
+  recycled <- recycle_common(list(geom, sanitize_integer(srid)))
   new_geos_geometry(
     .Call(geos_c_set_srid, recycled[[1]], recycled[[2]]),
     crs = attr(geom, "crs", exact = TRUE)
@@ -271,8 +271,8 @@ geos_set_srid <- function(geom, srid) {
 #' @rdname geos_centroid
 #' @export
 geos_point_n <- function(geom, index) {
-  geom <- as_geos_geometry(geom)
-  recycled <- recycle_common(list(geom, as.integer(index) - 1L))
+  geom <- sanitize_geos_geometry(geom)
+  recycled <- recycle_common(list(geom, sanitize_integer(index) - 1L))
   new_geos_geometry(
     .Call(geos_c_point_n, recycled[[1]], recycled[[2]]),
     crs = attr(geom, "crs", exact = TRUE)
@@ -282,8 +282,8 @@ geos_point_n <- function(geom, index) {
 #' @rdname geos_centroid
 #' @export
 geos_simplify <- function(geom, tolerance) {
-  geom <- as_geos_geometry(geom)
-  recycled <- recycle_common(list(geom, as.numeric(tolerance)))
+  geom <- sanitize_geos_geometry(geom)
+  recycled <- recycle_common(list(geom, sanitize_double(tolerance)))
   new_geos_geometry(
     .Call(geos_c_simplify, recycled[[1]], recycled[[2]]),
     crs = attr(geom, "crs", exact = TRUE)
@@ -293,8 +293,8 @@ geos_simplify <- function(geom, tolerance) {
 #' @rdname geos_centroid
 #' @export
 geos_simplify_preserve_topology <- function(geom, tolerance) {
-  geom <- as_geos_geometry(geom)
-  recycled <- recycle_common(list(geom, as.numeric(tolerance)))
+  geom <- sanitize_geos_geometry(geom)
+  recycled <- recycle_common(list(geom, sanitize_double(tolerance)))
   new_geos_geometry(
     .Call(geos_c_simplify_preserve_topology, recycled[[1]], recycled[[2]]),
     crs = attr(geom, "crs", exact = TRUE)
@@ -304,8 +304,8 @@ geos_simplify_preserve_topology <- function(geom, tolerance) {
 #' @rdname geos_centroid
 #' @export
 geos_set_precision <- function(geom, grid_size, preserve_topology = TRUE, keep_collapsed = FALSE) {
-  geom <- as_geos_geometry(geom)
-  recycled <- recycle_common(list(geom, as.numeric(grid_size)))
+  geom <- sanitize_geos_geometry(geom)
+  recycled <- recycle_common(list(geom, sanitize_double(grid_size)))
   new_geos_geometry(
     .Call(
       geos_c_set_precision,
@@ -321,14 +321,14 @@ geos_set_precision <- function(geom, grid_size, preserve_topology = TRUE, keep_c
 #' @rdname geos_centroid
 #' @export
 geos_normalize <- function(geom) {
-  geom <- as_geos_geometry(geom)
+  geom <- sanitize_geos_geometry(geom)
   new_geos_geometry(.Call(geos_c_normalize, geom), crs = attr(geom, "crs", exact = TRUE))
 }
 
 #' @rdname geos_centroid
 #' @export
 geos_clip_by_rect <- function(geom, rect) {
-  geom <- as_geos_geometry(geom)
+  geom <- sanitize_geos_geometry(geom)
   if (inherits(rect, "wk_rct")) {
     wk_crs_output(geom, rect)
     rect <- unclass(rect)
@@ -351,8 +351,8 @@ geos_clip_by_rect <- function(geom, rect) {
 #' @rdname geos_project
 #' @export
 geos_interpolate <- function(geom, distance) {
-  geom <- as_geos_geometry(geom)
-  recycled <- recycle_common(list(geom, as.numeric(distance)))
+  geom <- sanitize_geos_geometry(geom)
+  recycled <- recycle_common(list(geom, sanitize_double(distance)))
   new_geos_geometry(
     .Call(geos_c_interpolate, recycled[[1]], recycled[[2]]),
     crs = attr(geom, "crs", exact = TRUE)
@@ -362,8 +362,8 @@ geos_interpolate <- function(geom, distance) {
 #' @rdname geos_project
 #' @export
 geos_interpolate_normalized <- function(geom, distance_normalized) {
-  geom <- as_geos_geometry(geom)
-  recycled <- recycle_common(list(geom, as.numeric(distance_normalized)))
+  geom <- sanitize_geos_geometry(geom)
+  recycled <- recycle_common(list(geom, sanitize_double(distance_normalized)))
   new_geos_geometry(
     .Call(geos_c_interpolate_normalized, recycled[[1]], recycled[[2]]),
     crs = attr(geom, "crs", exact = TRUE)
@@ -400,8 +400,8 @@ geos_interpolate_normalized <- function(geom, distance_normalized) {
 #' geos_offset_curve("LINESTRING (0 0, 0 10, 10 0)", 1)
 #'
 geos_buffer <- function(geom, distance, params = geos_buffer_params()) {
-  geom <- as_geos_geometry(geom)
-  recycled <- recycle_common(list(geom, as.numeric(distance)))
+  geom <- sanitize_geos_geometry(geom)
+  recycled <- recycle_common(list(geom, sanitize_double(distance)))
 
   result <- .Call(
     geos_c_buffer,
@@ -416,8 +416,8 @@ geos_buffer <- function(geom, distance, params = geos_buffer_params()) {
 #' @rdname geos_buffer
 #' @export
 geos_offset_curve <- function(geom, distance, params = geos_buffer_params()) {
-  geom <- as_geos_geometry(geom)
-  recycled <- recycle_common(list(geom, as.numeric(distance)))
+  geom <- sanitize_geos_geometry(geom)
+  recycled <- recycle_common(list(geom, sanitize_double(distance)))
 
   result <- .Call(
     geos_c_offset_curve,
@@ -441,11 +441,11 @@ geos_buffer_params <- function(quad_segs = 30,
 
   structure(
     list(
-      quad_segs = as.integer(quad_segs),
+      quad_segs = sanitize_integer_scalar(quad_segs),
       end_cap_style = match(end_cap_style, c("round", "flat", "square")),
       join_style = match(join_style, c("round", "mitre", "bevel")),
-      mitre_limit = as.numeric(mitre_limit),
-      single_sided = as.logical(single_sided)
+      mitre_limit = sanitize_double_scalar(mitre_limit),
+      single_sided = sanitize_logical_scalar(single_sided)
     ),
     class = "geos_buffer_params"
   )
@@ -474,7 +474,7 @@ geos_buffer_params <- function(quad_segs = 30,
 #' geos_voronoi_edges("MULTIPOINT (0 0, 1 0, 0 1)")
 #'
 geos_delaunay_triangles <- function(geom, tolerance = 0) {
-  geom <- as_geos_geometry(geom)
+  geom <- sanitize_geos_geometry(geom)
   new_geos_geometry(
     .Call(geos_c_delaunay_triangulation, geom, tolerance, FALSE),
     crs = attr(geom, "crs", exact = TRUE)
@@ -484,7 +484,7 @@ geos_delaunay_triangles <- function(geom, tolerance = 0) {
 #' @rdname geos_delaunay_triangles
 #' @export
 geos_delaunay_edges <- function(geom, tolerance = 0) {
-  geom <- as_geos_geometry(geom)
+  geom <- sanitize_geos_geometry(geom)
   new_geos_geometry(
     .Call(geos_c_delaunay_triangulation, geom, tolerance, TRUE),
     crs = attr(geom, "crs", exact = TRUE)
@@ -494,7 +494,7 @@ geos_delaunay_edges <- function(geom, tolerance = 0) {
 #' @rdname geos_delaunay_triangles
 #' @export
 geos_voronoi_polygons <- function(geom, env = NULL, tolerance = 0) {
-  geom <- as_geos_geometry(geom)
+  geom <- sanitize_geos_geometry(geom)
   env <- get_env_xptr(env)
   new_geos_geometry(
     .Call(geos_c_voronoi_diagram, geom, env, tolerance, FALSE),
@@ -505,7 +505,7 @@ geos_voronoi_polygons <- function(geom, env = NULL, tolerance = 0) {
 #' @rdname geos_delaunay_triangles
 #' @export
 geos_voronoi_edges <- function(geom, env = NULL, tolerance = 0) {
-  geom <- as_geos_geometry(geom)
+  geom <- sanitize_geos_geometry(geom)
   env <- get_env_xptr(env)
   new_geos_geometry(
     .Call(geos_c_voronoi_diagram, geom, env, tolerance, TRUE),
@@ -515,7 +515,7 @@ geos_voronoi_edges <- function(geom, env = NULL, tolerance = 0) {
 
 get_env_xptr <- function(env) {
   if (!is.null(env)) {
-    env <- as_geos_geometry(env)
+    env <- sanitize_geos_geometry(env)
     stopifnot(length(env) == 1)
     unclass(env)[[1]]
   } else {
@@ -540,8 +540,8 @@ get_env_xptr <- function(env) {
 #' geos_ring_n(poly, seq_len(geos_num_rings(poly)))
 #'
 geos_geometry_n <- function(geom, n) {
-  geom <- as_geos_geometry(geom)
-  recycled <- recycle_common(list(geom, as.integer(n) - 1L))
+  geom <- sanitize_geos_geometry(geom)
+  recycled <- recycle_common(list(geom, sanitize_integer(n) - 1L))
   new_geos_geometry(
     .Call(geos_c_geometry_n, recycled[[1]], recycled[[2]]),
     crs = attr(geom, "crs", exact = TRUE)
@@ -551,8 +551,8 @@ geos_geometry_n <- function(geom, n) {
 #' @rdname geos_geometry_n
 #' @export
 geos_ring_n <- function(geom, n) {
-  geom <- as_geos_geometry(geom)
-  recycled <- recycle_common(list(geom, as.integer(n) - 1L))
+  geom <- sanitize_geos_geometry(geom)
+  recycled <- recycle_common(list(geom, sanitize_integer(n) - 1L))
   new_geos_geometry(
     .Call(geos_c_ring_n, recycled[[1]], recycled[[2]]),
     crs = attr(geom, "crs", exact = TRUE)

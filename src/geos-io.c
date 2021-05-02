@@ -21,17 +21,15 @@ SEXP geos_c_read_wkt(SEXP input) {
 
     // returns NULL on error
     if (geometry == NULL) {
-      UNPROTECT(1); // result
       GEOSWKTReader_destroy_r(handle, reader);
-      GEOS_ERROR("[i=%d] ", i + 1);
+      Rf_error("[%d] %s", i + 1, globalErrorMessage);
     } else {
       SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometry));
     }
   }
 
   GEOSWKTReader_destroy_r(handle, reader);
-  GEOS_FINISH();
-  UNPROTECT(1); // result
+    UNPROTECT(1); // result
   return result;
 }
 
@@ -69,9 +67,8 @@ SEXP geos_c_write_wkt(SEXP input, SEXP includeZ, SEXP precision, SEXP trim) {
     char* output = GEOSWKTWriter_write_r(handle, writer, geometry);
     if (output == NULL) {
       // don't know how to make this occur
-      UNPROTECT(1); // result # nocov
       GEOSWKTWriter_destroy_r(handle, writer); // # nocov
-      GEOS_ERROR("[i=%d] ", i + 1); // # nocov
+      Rf_error("[%d] %s", i + 1, globalErrorMessage); // # nocov
     }
 
     SET_STRING_ELT(result, i, Rf_mkChar(output));
@@ -79,8 +76,7 @@ SEXP geos_c_write_wkt(SEXP input, SEXP includeZ, SEXP precision, SEXP trim) {
   }
 
   GEOSWKTWriter_destroy_r(handle, writer);
-  GEOS_FINISH();
-  UNPROTECT(1); // result
+    UNPROTECT(1); // result
   return result;
 }
 
@@ -107,17 +103,15 @@ SEXP geos_c_read_wkb(SEXP input) {
 
     // returns NULL on error
     if (geometry == NULL) {
-      UNPROTECT(1);
       GEOSWKBReader_destroy_r(handle, reader);
-      GEOS_ERROR("[i=%d] ", i + 1);
+      Rf_error("[%d] %s", i + 1, globalErrorMessage);
     } else {
       SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometry));
     }
   }
 
   GEOSWKBReader_destroy_r(handle, reader);
-  GEOS_FINISH();
-  UNPROTECT(1);
+    UNPROTECT(1);
   return result;
 }
 
@@ -161,9 +155,8 @@ SEXP geos_c_write_wkb(SEXP input, SEXP includeZ, SEXP includeSRID, SEXP endian) 
     unsigned char* wkbPtr = GEOSWKBWriter_write_r(handle, writer, geometry, &itemSize);
     // returns NULL on error (e.g., when trying to write an empty point)
     if (wkbPtr == NULL) {
-      UNPROTECT(1);
       GEOSWKBWriter_destroy_r(handle, writer);
-      GEOS_ERROR("[i=%d] ", i + 1);
+      Rf_error("[%d] %s", i + 1, globalErrorMessage);
     }
 
     SEXP itemWKB = PROTECT(Rf_allocVector(RAWSXP, itemSize));
@@ -174,8 +167,7 @@ SEXP geos_c_write_wkb(SEXP input, SEXP includeZ, SEXP includeSRID, SEXP endian) 
   }
 
   GEOSWKBWriter_destroy_r(handle, writer);
-  GEOS_FINISH();
-  UNPROTECT(1); // result
+    UNPROTECT(1); // result
   return result;
 }
 
@@ -202,17 +194,15 @@ SEXP geos_c_read_hex(SEXP input) {
 
     // returns NULL on error
     if (geometry == NULL) {
-      UNPROTECT(1);
       GEOSWKBReader_destroy_r(handle, reader);
-      GEOS_ERROR("[i=%d] ", i + 1);
+      Rf_error("[%d] %s", i + 1, globalErrorMessage);
     } else {
       SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometry));
     }
   }
 
   GEOSWKBReader_destroy_r(handle, reader);
-  GEOS_FINISH();
-  UNPROTECT(1);
+    UNPROTECT(1);
   return result;
 }
 
@@ -257,9 +247,8 @@ SEXP geos_c_write_hex(SEXP input, SEXP includeZ, SEXP includeSRID, SEXP endian) 
     itemChars = GEOSWKBWriter_writeHEX_r(handle, writer, geometry, &itemSize);
     // returns NULL on error (e.g., when trying to write an empty point)
     if (itemChars == NULL) {
-      UNPROTECT(1);
       GEOSWKBWriter_destroy_r(handle, writer);
-      GEOS_ERROR("[i=%d] ", i + 1);
+      Rf_error("[%d] %s", i + 1, globalErrorMessage);
     }
 
     SET_STRING_ELT(result, i, Rf_mkCharLen((const char*) itemChars, itemSize));
@@ -267,8 +256,7 @@ SEXP geos_c_write_hex(SEXP input, SEXP includeZ, SEXP includeSRID, SEXP endian) 
   }
 
   GEOSWKBWriter_destroy_r(handle, writer);
-  GEOS_FINISH();
-  UNPROTECT(1); // result
+    UNPROTECT(1); // result
   return result;
 }
 
@@ -304,14 +292,12 @@ SEXP geos_c_write_xy(SEXP input) {
       codeY = GEOSGeomGetY_r(handle, geometry, &py[i]);
       if (codeX == 0 || codeY == 0) {
         // e.g., geometry is not a point
-        UNPROTECT(2); // resultX, resultY
-        GEOS_ERROR("[i=%d] ", i + 1);
+        Rf_error("[%d] %s", i + 1, globalErrorMessage);
       }
     }
   }
 
-  GEOS_FINISH();
-
+  
   const char* names[] = {"x", "y", ""};
   SEXP result = PROTECT(Rf_mkNamed(VECSXP, names));
   SET_VECTOR_ELT(result, 0, resultX);

@@ -7,7 +7,7 @@
 #include "libgeos.h"
 #include "wk-v1.h"
 
-#define handle geos_gc_handle
+#define handle globalHandle
 
 #define HANDLE_OR_RETURN(expr)                                 \
     result = expr;                                             \

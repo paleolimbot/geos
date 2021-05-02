@@ -38,7 +38,7 @@
 #' geos_shared_paths("LINESTRING (0 0, 1 1, 2 2)", "LINESTRING (3 3, 2 2, 1 1)")
 #'
 geos_intersection <- function(geom1, geom2) {
-  recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  recycled <- recycle_common(list(sanitize_geos_geometry(geom1), sanitize_geos_geometry(geom2)))
   new_geos_geometry(
     .Call(geos_c_intersection, recycled[[1]], recycled[[2]]),
     crs = wk_crs_output(recycled[[1]], recycled[[2]])
@@ -48,7 +48,7 @@ geos_intersection <- function(geom1, geom2) {
 #' @rdname geos_intersection
 #' @export
 geos_difference <- function(geom1, geom2) {
-  recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  recycled <- recycle_common(list(sanitize_geos_geometry(geom1), sanitize_geos_geometry(geom2)))
   new_geos_geometry(
     .Call(geos_c_difference, recycled[[1]], recycled[[2]]),
     crs = wk_crs_output(recycled[[1]], recycled[[2]])
@@ -58,7 +58,7 @@ geos_difference <- function(geom1, geom2) {
 #' @rdname geos_intersection
 #' @export
 geos_sym_difference <- function(geom1, geom2) {
-  recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  recycled <- recycle_common(list(sanitize_geos_geometry(geom1), sanitize_geos_geometry(geom2)))
   new_geos_geometry(
     .Call(geos_c_sym_difference, recycled[[1]], recycled[[2]]),
     crs = wk_crs_output(recycled[[1]], recycled[[2]])
@@ -68,7 +68,7 @@ geos_sym_difference <- function(geom1, geom2) {
 #' @rdname geos_intersection
 #' @export
 geos_union <- function(geom1, geom2) {
-  recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  recycled <- recycle_common(list(sanitize_geos_geometry(geom1), sanitize_geos_geometry(geom2)))
   new_geos_geometry(
     .Call(geos_c_union, recycled[[1]], recycled[[2]]),
     crs = wk_crs_output(recycled[[1]], recycled[[2]])
@@ -80,9 +80,9 @@ geos_union <- function(geom1, geom2) {
 geos_intersection_prec <- function(geom1, geom2, grid_size) {
   recycled <- recycle_common(
     list(
-      as_geos_geometry(geom1),
-      as_geos_geometry(geom2),
-      as.numeric(grid_size)
+      sanitize_geos_geometry(geom1),
+      sanitize_geos_geometry(geom2),
+      sanitize_double(grid_size)
     )
   )
   new_geos_geometry(
@@ -96,9 +96,9 @@ geos_intersection_prec <- function(geom1, geom2, grid_size) {
 geos_difference_prec <- function(geom1, geom2, grid_size) {
   recycled <- recycle_common(
     list(
-      as_geos_geometry(geom1),
-      as_geos_geometry(geom2),
-      as.numeric(grid_size)
+      sanitize_geos_geometry(geom1),
+      sanitize_geos_geometry(geom2),
+      sanitize_double(grid_size)
     )
   )
   new_geos_geometry(
@@ -112,9 +112,9 @@ geos_difference_prec <- function(geom1, geom2, grid_size) {
 geos_sym_difference_prec <- function(geom1, geom2, grid_size) {
   recycled <- recycle_common(
     list(
-      as_geos_geometry(geom1),
-      as_geos_geometry(geom2),
-      as.numeric(grid_size)
+      sanitize_geos_geometry(geom1),
+      sanitize_geos_geometry(geom2),
+      sanitize_double(grid_size)
     )
   )
   new_geos_geometry(
@@ -128,9 +128,9 @@ geos_sym_difference_prec <- function(geom1, geom2, grid_size) {
 geos_union_prec <- function(geom1, geom2, grid_size) {
   recycled <- recycle_common(
     list(
-      as_geos_geometry(geom1),
-      as_geos_geometry(geom2),
-      as.numeric(grid_size)
+      sanitize_geos_geometry(geom1),
+      sanitize_geos_geometry(geom2),
+      sanitize_double(grid_size)
     )
   )
   new_geos_geometry(
@@ -142,7 +142,7 @@ geos_union_prec <- function(geom1, geom2, grid_size) {
 #' @rdname geos_intersection
 #' @export
 geos_shared_paths <- function(geom1, geom2) {
-  recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  recycled <- recycle_common(list(sanitize_geos_geometry(geom1), sanitize_geos_geometry(geom2)))
   new_geos_geometry(
     .Call(geos_c_shared_paths, recycled[[1]], recycled[[2]]),
     crs = wk_crs_output(recycled[[1]], recycled[[2]])
@@ -152,7 +152,13 @@ geos_shared_paths <- function(geom1, geom2) {
 #' @rdname geos_intersection
 #' @export
 geos_snap <- function(geom1, geom2, tolerance = .Machine$double.eps ^ 2) {
-  recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2), tolerance))
+  recycled <- recycle_common(
+    list(
+      sanitize_geos_geometry(geom1),
+      sanitize_geos_geometry(geom2),
+      sanitize_double(tolerance)
+    )
+  )
   new_geos_geometry(
     .Call(geos_c_snap, recycled[[1]], recycled[[2]], recycled[[3]]),
     crs = wk_crs_output(recycled[[1]], recycled[[2]])
@@ -162,7 +168,7 @@ geos_snap <- function(geom1, geom2, tolerance = .Machine$double.eps ^ 2) {
 #' @rdname geos_intersection
 #' @export
 geos_clearance_line_between <- function(geom1, geom2) {
-  recycled <- recycle_common(list(as_geos_geometry(geom1), as_geos_geometry(geom2)))
+  recycled <- recycle_common(list(sanitize_geos_geometry(geom1), sanitize_geos_geometry(geom2)))
   new_geos_geometry(
     .Call(geos_c_clearance_line_between, recycled[[1]], recycled[[2]]),
     crs = wk_crs_output(recycled[[1]], recycled[[2]])

@@ -1,4 +1,34 @@
 
+# slightly faster than as*() and better communicates intention
+# in the future these could error for spurious inputs / be implemented in C
+sanitize_geos_geometry <- function(x) {
+  if (inherits(x, "geos_geometry")) x else as_geos_geometry(x)
+}
+
+sanitize_geos_strtree <- function(x) {
+  if (inherits(x, "geos_strtree")) x else as_geos_strtree(x)
+}
+
+sanitize_double <- function(x) {
+  as.numeric(x)
+}
+
+sanitize_integer <- function(x) {
+  as.integer(x)
+}
+
+sanitize_double_scalar <- function(x) {
+  as.numeric(x)[1]
+}
+
+sanitize_integer_scalar <- function(x) {
+  as.integer(x)[1]
+}
+
+sanitize_logical_scalar <- function(x) {
+  as.logical(x)[1]
+}
+
 recycle_common <- function(dots) {
   final_length <- check_lengths(dots)
   lapply(dots, rep_len, final_length)

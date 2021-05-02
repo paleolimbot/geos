@@ -322,9 +322,9 @@ void R_init_geos(DllInfo *dll) {
 
 // # nocov start
 void R_unload_geos(DllInfo *dll) {
-  if (geos_gc_handle != NULL) {
-    GEOS_finish_r(geos_gc_handle);
-    geos_gc_handle = NULL;
+  if (globalHandle != NULL) {
+    GEOS_finish_r(globalHandle);
+    globalHandle = NULL;
   }
 }
 // # nocov end
@@ -334,9 +334,9 @@ SEXP geos_c_init() {
   libgeos_init_api();
 
   // create the global handle
-  if (geos_gc_handle == NULL) {
-    geos_gc_handle = GEOS_init_r();
-    GEOSContext_setErrorMessageHandler_r(geos_gc_handle, &geos_common_handle_error, globalErrorMessage);
+  if (globalHandle == NULL) {
+    globalHandle = GEOS_init_r();
+    GEOSContext_setErrorMessageHandler_r(globalHandle, &geos_common_handle_error, globalErrorMessage);
     memset(globalErrorMessage, 0, sizeof(globalErrorMessage));
   }
 

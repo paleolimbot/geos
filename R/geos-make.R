@@ -15,7 +15,7 @@
 #' geos_make_collection("POINT (1 1)")
 #'
 geos_make_point <- function(x, y, z = NA_real_, crs = NULL) {
-  point <- recycle_common(list(as.numeric(x), as.numeric(y), as.numeric(z)))
+  point <- recycle_common(list(sanitize_double(x), sanitize_double(y), sanitize_double(z)))
   new_geos_geometry(
     .Call(geos_c_make_point, point[[1]], point[[2]], point[[3]]),
     crs = crs
@@ -27,8 +27,8 @@ geos_make_point <- function(x, y, z = NA_real_, crs = NULL) {
 geos_make_linestring <- function(x, y, z = NA_real_, feature_id = 1L, crs = NULL) {
   recycled <- recycle_common(
     list(
-      as.numeric(x), as.numeric(y), as.numeric(z),
-      as.integer(feature_id)
+      sanitize_double(x), sanitize_double(y), sanitize_double(z),
+      sanitize_integer(feature_id)
     )
   )
   lengths <- rle(recycled[[4]])$lengths
@@ -52,8 +52,8 @@ geos_make_linestring <- function(x, y, z = NA_real_, feature_id = 1L, crs = NULL
 geos_make_polygon <- function(x, y, z = NA_real_, feature_id = 1L, ring_id = 1L, crs = NULL) {
   recycled <- recycle_common(
     list(
-      as.numeric(x), as.numeric(y), as.numeric(z),
-      as.integer(feature_id), as.integer(ring_id)
+      sanitize_double(x), sanitize_double(y), sanitize_double(z),
+      sanitize_integer(feature_id), sanitize_integer(ring_id)
     )
   )
 
@@ -85,7 +85,7 @@ geos_make_collection <- function(geom, type_id = "geometrycollection", feature_i
   stopifnot(length(type_id) == 1)
 
   geom <- as_geos_geometry(geom)
-  recycled <- recycle_common(list(geom, as.integer(feature_id)))
+  recycled <- recycle_common(list(geom, sanitize_integer(feature_id)))
   lengths <- rle(recycled[[2]])$lengths
 
   # it's unlikely that anybody wants zero-length output, which is

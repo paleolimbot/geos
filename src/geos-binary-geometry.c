@@ -31,14 +31,12 @@
     geometryResult = _func(handle, geometry1, geometry2);                     \
                                                                               \
     if (geometryResult == NULL) {                                             \
-      UNPROTECT(1);                                                           \
-      GEOS_ERROR("[i=%d] ", i + 1);                                           \
+      Rf_error("[%d] %s", i + 1, globalErrorMessage);                                           \
     }                                                                         \
     SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometryResult));     \
   }                                                                           \
                                                                               \
-  GEOS_FINISH();                                                              \
-  UNPROTECT(1);                                                               \
+    UNPROTECT(1);                                                               \
   return result;
 
 
@@ -91,15 +89,13 @@ R_xlen_t size = Rf_xlength(geom1);                        \
     geometryResult = _func(handle, geometry1, geometry2, pParam[i]); \
                                                           \
     if (geometryResult == NULL) {                         \
-      UNPROTECT(1);                                       \
-      GEOS_ERROR("[i=%d] ", i + 1);                       \
+      Rf_error("[%d] %s", i + 1, globalErrorMessage);                       \
     }                                                     \
                                                           \
     SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometryResult)); \
   }                                                       \
                                                           \
-  GEOS_FINISH();                                          \
-  UNPROTECT(1);                                           \
+    UNPROTECT(1);                                           \
   return result;
 
 SEXP geos_c_snap(SEXP geom1, SEXP geom2, SEXP param) {
@@ -191,23 +187,20 @@ SEXP geos_c_clearance_line_between(SEXP geom1, SEXP geom2) {
 
     sequenceResult = GEOSNearestPoints_r(handle, geometry1, geometry2);
     if (sequenceResult == NULL) {
-      UNPROTECT(1);
-      GEOS_ERROR("[i=%d] ", i + 1);
+      Rf_error("[%d] %s", i + 1, globalErrorMessage);
     }
 
     geometryResult = GEOSGeom_createLineString_r(handle, sequenceResult);
 
     // don't know how to make this fire
     if (geometryResult == NULL) {
-      UNPROTECT(1); // # nocov
       GEOSCoordSeq_destroy_r(handle, sequenceResult); // # nocov
-      GEOS_ERROR("[i=%d] ", i + 1); // # nocov
+      Rf_error("[%d] %s", i + 1, globalErrorMessage); // # nocov
     }
 
     SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometryResult));
   }
 
-  GEOS_FINISH();
-  UNPROTECT(1);
+    UNPROTECT(1);
   return result;
 }

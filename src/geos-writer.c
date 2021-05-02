@@ -9,7 +9,7 @@
 #include "libgeos.h"
 #include "wk-v1.h"
 
-#define handle geos_gc_handle
+#define handle globalHandle
 
 #define GEOS_MAX_RECURSION_DEPTH 32
 #define GEOS_WRITER_GEOM_LENGTH GEOS_MAX_RECURSION_DEPTH + 2

@@ -13,7 +13,7 @@
 #' geos_polygonize_cut_edges("MULTILINESTRING ((0 0, 0 1), (0 1, 1 0), (1 0, 0 0))")
 #'
 geos_polygonize <- function(collection) {
-  collection <- as_geos_geometry(collection)
+  collection <- sanitize_geos_geometry(collection)
   stopifnot(length(collection) == 1)
 
   new_geos_geometry(
@@ -25,7 +25,7 @@ geos_polygonize <- function(collection) {
 #' @rdname geos_polygonize
 #' @export
 geos_polygonize_valid <- function(collection) {
-  collection <- as_geos_geometry(collection)
+  collection <- sanitize_geos_geometry(collection)
   stopifnot(length(collection) == 1)
 
   new_geos_geometry(
@@ -37,7 +37,7 @@ geos_polygonize_valid <- function(collection) {
 #' @rdname geos_polygonize
 #' @export
 geos_polygonize_cut_edges <- function(collection) {
-  collection <- as_geos_geometry(collection)
+  collection <- sanitize_geos_geometry(collection)
   stopifnot(length(collection) == 1)
 
   new_geos_geometry(
@@ -49,7 +49,7 @@ geos_polygonize_cut_edges <- function(collection) {
 #' @rdname geos_polygonize
 #' @export
 geos_polygonize_full <- function(collection) {
-  collection <- as_geos_geometry(collection)
+  collection <- sanitize_geos_geometry(collection)
   stopifnot(length(collection) == 1)
 
   result <- new_geos_geometry(
