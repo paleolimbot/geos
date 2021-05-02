@@ -47,91 +47,91 @@
 #' geos_coordinate_dimension(c("POINT (0 0)", "POINT Z (0 0 1)"))
 #'
 geos_area <- function(geom) {
-  .Call(geos_c_area, as_geos_geometry(geom))
+  .Call(geos_c_area, sanitize_geos_geometry(geom))
 }
 
 #' @rdname geos_area
 #' @export
 geos_length <- function(geom) {
-  .Call(geos_c_length, as_geos_geometry(geom))
+  .Call(geos_c_length, sanitize_geos_geometry(geom))
 }
 
 #' @rdname geos_area
 #' @export
 geos_x <- function(geom) {
-  .Call(geos_c_x, as_geos_geometry(geom))
+  .Call(geos_c_x, sanitize_geos_geometry(geom))
 }
 
 #' @rdname geos_area
 #' @export
 geos_y <- function(geom) {
-  .Call(geos_c_y, as_geos_geometry(geom))
+  .Call(geos_c_y, sanitize_geos_geometry(geom))
 }
 
 #' @rdname geos_area
 #' @export
 geos_z <- function(geom) {
-  .Call(geos_c_z, as_geos_geometry(geom))
+  .Call(geos_c_z, sanitize_geos_geometry(geom))
 }
 
 #' @rdname geos_area
 #' @export
 geos_xmin <- function(geom) {
-  .Call(geos_c_xmin, as_geos_geometry(geom))
+  .Call(geos_c_xmin, sanitize_geos_geometry(geom))
 }
 
 #' @rdname geos_area
 #' @export
 geos_ymin <- function(geom) {
-  .Call(geos_c_ymin, as_geos_geometry(geom))
+  .Call(geos_c_ymin, sanitize_geos_geometry(geom))
 }
 
 #' @rdname geos_area
 #' @export
 geos_xmax <- function(geom) {
-  .Call(geos_c_xmax, as_geos_geometry(geom))
+  .Call(geos_c_xmax, sanitize_geos_geometry(geom))
 }
 
 #' @rdname geos_area
 #' @export
 geos_ymax <- function(geom) {
-  .Call(geos_c_ymax, as_geos_geometry(geom))
+  .Call(geos_c_ymax, sanitize_geos_geometry(geom))
 }
 
 #' @rdname geos_area
 #' @export
 geos_minimum_clearance <- function(geom) {
-  .Call(geos_c_minimum_clearance, as_geos_geometry(geom))
+  .Call(geos_c_minimum_clearance, sanitize_geos_geometry(geom))
 }
 
 #' @rdname geos_area
 #' @export
 geos_is_empty <- function(geom) {
-  .Call(geos_c_is_empty, as_geos_geometry(geom))
+  .Call(geos_c_is_empty, sanitize_geos_geometry(geom))
 }
 
 #' @rdname geos_area
 #' @export
 geos_is_simple <- function(geom) {
-  .Call(geos_c_is_simple, as_geos_geometry(geom))
+  .Call(geos_c_is_simple, sanitize_geos_geometry(geom))
 }
 
 #' @rdname geos_area
 #' @export
 geos_is_ring <- function(geom) {
-  .Call(geos_c_is_ring, as_geos_geometry(geom))
+  .Call(geos_c_is_ring, sanitize_geos_geometry(geom))
 }
 
 #' @rdname geos_area
 #' @export
 geos_has_z <- function(geom) {
-  .Call(geos_c_has_z, as_geos_geometry(geom))
+  .Call(geos_c_has_z, sanitize_geos_geometry(geom))
 }
 
 #' @rdname geos_area
 #' @export
 geos_is_closed <- function(geom) {
-  .Call(geos_c_is_closed, as_geos_geometry(geom))
+  .Call(geos_c_is_closed, sanitize_geos_geometry(geom))
 }
 
 #' @rdname geos_area
@@ -139,7 +139,7 @@ geos_is_closed <- function(geom) {
 geos_type_id <- function(geom) {
   # in a slight departure from GEOS, returning the WKB
   # type IDs to avoid confusion (the problem is the LINEARRING)
-  match(.Call(geos_c_type_id, as_geos_geometry(geom)), c(0:1, 3:8))
+  match(.Call(geos_c_type_id, sanitize_geos_geometry(geom)), c(0:1, 3:8))
 }
 
 #' @rdname geos_area
@@ -149,37 +149,37 @@ geos_type <- function(geom) {
     "point", "linestring", "linearring", "polygon",
     "multipoint", "multilinestring", "multipolygon",
     "geometrycollection"
-  )[.Call(geos_c_type_id, as_geos_geometry(geom)) + 1]
+  )[.Call(geos_c_type_id, sanitize_geos_geometry(geom)) + 1]
 }
 
 #' @rdname geos_area
 #' @export
 geos_precision <- function(geom) {
-  .Call(geos_c_precision, as_geos_geometry(geom))
+  .Call(geos_c_precision, sanitize_geos_geometry(geom))
 }
 
 #' @rdname geos_area
 #' @export
 geos_srid <- function(geom) {
-  .Call(geos_c_srid, as_geos_geometry(geom))
+  .Call(geos_c_srid, sanitize_geos_geometry(geom))
 }
 
 #' @rdname geos_area
 #' @export
 geos_num_coordinates <- function(geom) {
-  .Call(geos_c_num_coordinates, as_geos_geometry(geom))
+  .Call(geos_c_num_coordinates, sanitize_geos_geometry(geom))
 }
 
 #' @rdname geos_area
 #' @export
 geos_num_geometries <- function(geom) {
-  .Call(geos_c_num_geometries, as_geos_geometry(geom))
+  .Call(geos_c_num_geometries, sanitize_geos_geometry(geom))
 }
 
 #' @rdname geos_area
 #' @export
 geos_num_interior_rings <- function(geom) {
-  .Call(geos_c_num_interior_rings, as_geos_geometry(geom))
+  .Call(geos_c_num_interior_rings, sanitize_geos_geometry(geom))
 }
 
 #' @rdname geos_area
@@ -191,19 +191,19 @@ geos_num_rings <- function(geom) {
 #' @rdname geos_area
 #' @export
 geos_dimension <- function(geom) {
-  .Call(geos_c_dimension, as_geos_geometry(geom))
+  .Call(geos_c_dimension, sanitize_geos_geometry(geom))
 }
 
 #' @rdname geos_area
 #' @export
 geos_coordinate_dimension <- function(geom) {
-  .Call(geos_c_coorinate_dimension, as_geos_geometry(geom))
+  .Call(geos_c_coorinate_dimension, sanitize_geos_geometry(geom))
 }
 
 #' @rdname geos_area
 #' @export
 geos_is_clockwise <- function(geom) {
-  .Call(geos_c_is_clockwise, as_geos_geometry(geom))
+  .Call(geos_c_is_clockwise, sanitize_geos_geometry(geom))
 }
 
 #' Geometry validity
@@ -234,17 +234,17 @@ geos_is_clockwise <- function(geom) {
 #' )
 #'
 geos_is_valid <- function(geom) {
-  .Call(geos_c_is_valid, as_geos_geometry(geom))
+  .Call(geos_c_is_valid, sanitize_geos_geometry(geom))
 }
 
 #' @rdname geos_is_valid
 #' @export
 geos_is_valid_detail <- function(geom, allow_self_touching_ring_forming_hole = FALSE) {
-  geom <- as_geos_geometry(geom)
+  geom <- sanitize_geos_geometry(geom)
   result <- .Call(
     geos_c_is_valid_detail,
     geom,
-    as.logical(allow_self_touching_ring_forming_hole)[1]
+    sanitize_logical_scalar(allow_self_touching_ring_forming_hole)
   )
 
   names(result) <- c("is_valid", "reason", "location")

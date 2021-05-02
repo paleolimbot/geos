@@ -56,5 +56,5 @@ geos_assert_list_of_numeric <- function(x, len, arg) {
     stop(sprintf("`%s` must be a list() of 'numeric' with length %s", arg, len))
   }
 
-  lapply(x, as.numeric)
+  lapply(x, sanitize_double)
 }
