@@ -92,7 +92,7 @@ format.geos_strtree <- function(x, ...) {
 str.geos_strtree <- function(object, ..., indent.str = "", width = getOption("width")) {
   cat(paste0(format(object), "\n"))
   cat("  ")
-  str(geos_strtree_data(object), ..., indent.str = paste0(indent.str, "  "), width = width)
+  utils::str(geos_strtree_data(object), ..., indent.str = paste0(indent.str, "  "), width = width)
   invisible(object)
 }
 

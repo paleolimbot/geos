@@ -41,17 +41,45 @@ SEXP geos_c_strtree_create(SEXP geom, SEXP node_capacity) {
     GEOSSTRtree_insert_r(handle, tree, geometry, pGeomIndices + i);
   }
 
-  // tree holds reference to geom to protect it (and the GEOSGeometry* pointers)
-  // from garbage collection
-  SEXP treeExternalPtr = geos_common_tree_xptr(tree, geom, geomIndices);
+  // Each call to a query function will need to accumulate indices.
+  // in the absence of std::vector(), we alloc swap space of the
+  // maximum size that would be needed (Rf_xlength(geomIndices)). Another
+  // option would be to implement a growable vector using realloc
+  // beucase it's highly unlikely that any query will actually return
+  // all the elements.
+  SEXP geomIndicesSwap = PROTECT(Rf_allocVector(REALSXP, size));
+
+  // We only get two SEXPs to protect from garbage collection with an externalptr
+  // and we'll used one of to protect `geom`. Use a list() to get around this
+  // for the second one.
+  SEXP externalPtrProt = PROTECT(Rf_allocVector(VECSXP, 2));
+  SET_VECTOR_ELT(externalPtrProt, 0, geomIndices);
+  SET_VECTOR_ELT(externalPtrProt, 1, geomIndicesSwap);
+
+  SEXP treeExternalPtr = geos_common_tree_xptr(tree, geom, externalPtrProt);
   GEOS_FINISH();
-  UNPROTECT(1); // geomIndices
+  UNPROTECT(3); // geomIndices, geomIndicesSwap, externalPtrProt
   return treeExternalPtr;
 }
 
-// re-extract the geometries used to construct the tree
+// Re-extract the geometries used to construct the tree
+// not necessary for querying but necessary for distance calculations,
+// and in this form, probably not faster
 SEXP geos_c_strtree_data(SEXP treeExternalPtr) {
   return R_ExternalPtrTag(treeExternalPtr);
+}
+
+// Extract the 1:n vector that holds the index "tag" for each item
+static inline SEXP geos_strtree_indices(SEXP treeExternalPtr) {
+  return VECTOR_ELT(R_ExternalPtrProtected(treeExternalPtr), 0);
+}
+
+// Extract the mutable swap space used to accumulate matching values of
+// geos_strtree_indices() while accumulating indices. Another option would be
+// to implement a growable vector that allocs on the C heap (because we can't
+// longjmp from within a callback).
+static inline SEXP geos_strtree_swap(SEXP treeExternalPtr) {
+  return VECTOR_ELT(R_ExternalPtrProtected(treeExternalPtr), 1);
 }
 
 // data structure and callback used for the generic query
@@ -81,12 +109,6 @@ SEXP strtree_query_base(SEXP treeExternalPtr, SEXP geom, GEOSQueryCallback callb
   R_xlen_t size = Rf_xlength(geom);
   SEXP result = PROTECT(Rf_allocVector(VECSXP, size));
 
-  // allocate a temporary integer() along the length of the tree data
-  // that will be used to contain the results while iterating
-  SEXP tempItemResult =  PROTECT(
-    Rf_allocVector(REALSXP, Rf_xlength(R_ExternalPtrProtected(treeExternalPtr)))
-  );
-
   GEOS_INIT();
 
   struct QueryResult queryResult = {
@@ -95,7 +117,7 @@ SEXP strtree_query_base(SEXP treeExternalPtr, SEXP geom, GEOSQueryCallback callb
     .prepared = NULL,
     .geom = geos_c_strtree_data(treeExternalPtr),
     .extra = extra,
-    .indexList = REAL(tempItemResult),
+    .indexList = REAL(geos_strtree_swap(treeExternalPtr)),
     .currentIndex = 0
   };
 
@@ -143,7 +165,7 @@ SEXP strtree_query_base(SEXP treeExternalPtr, SEXP geom, GEOSQueryCallback callb
   }
 
   GEOS_FINISH();
-  UNPROTECT(2); // result, tempItemResult
+  UNPROTECT(1); // result
   return result;
 }
 
@@ -355,7 +377,7 @@ SEXP geos_strtree_nearest_base(SEXP treeExternalPtr, SEXP geom,
     Rf_error("External pointer (geos_strtree) is not valid");
   }
 
-  R_xlen_t treeSize = Rf_xlength(R_ExternalPtrProtected(treeExternalPtr));
+  R_xlen_t treeSize = Rf_xlength(geos_strtree_indices(treeExternalPtr));
 
   // allocate the list() result
   R_xlen_t size = Rf_xlength(geom);
