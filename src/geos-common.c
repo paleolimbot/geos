@@ -18,7 +18,7 @@ void geos_common_handle_error(const char *message, void* userdata) {
 }
 
 // initialize (actual value is set in R_init_geos())
-GEOSContextHandle_t geos_gc_handle = NULL;
+GEOSContextHandle_t globalHandle = NULL;
 char globalErrorMessage[GEOS_ERROR_MESSAGE_BUFFER_SIZE];
 
 void geos_common_release_geometry(SEXP externalPtr) {
@@ -27,8 +27,8 @@ void geos_common_release_geometry(SEXP externalPtr) {
   // geometry should not be NULL, but R will crash if NULL is passed here
   // this can occur if this object is saved and reloaded, in which
   // case this function quietly does nothing.
-  if ((geometry != NULL) && (geos_gc_handle != NULL)) {
-    GEOSGeom_destroy_r(geos_gc_handle, geometry);
+  if ((geometry != NULL) && (globalHandle != NULL)) {
+    GEOSGeom_destroy_r(globalHandle, geometry);
   } else if (geometry != NULL) {
     // in the unlikely event that the garbage collector runs after unload
     // create a handle just for this (most likely during development)
@@ -51,7 +51,7 @@ SEXP geos_common_child_geometry_xptr(const GEOSGeometry* geometry, SEXP parent) 
 void geos_common_release_tree(SEXP externalPtr) {
   GEOSSTRtree* tree = (GEOSSTRtree*) R_ExternalPtrAddr(externalPtr);
   if (tree != NULL) {
-    GEOSSTRtree_destroy_r(geos_gc_handle, tree);
+    GEOSSTRtree_destroy_r(globalHandle, tree);
   }
 }
 
