@@ -27,8 +27,7 @@ SEXP geos_c_strtree_create(SEXP geom, SEXP node_capacity) {
     item = VECTOR_ELT(geom, i);
     if (item == R_NilValue) {
       GEOSSTRtree_destroy_r(handle, tree);
-      GEOS_FINISH();
-      UNPROTECT(1); // geomIndices
+            UNPROTECT(1); // geomIndices
       Rf_error("Can't insert NULL into a geos_str_tree()");
     }
 
@@ -57,8 +56,7 @@ SEXP geos_c_strtree_create(SEXP geom, SEXP node_capacity) {
   SET_VECTOR_ELT(externalPtrProt, 1, geomIndicesSwap);
 
   SEXP treeExternalPtr = geos_common_tree_xptr(tree, geom, externalPtrProt);
-  GEOS_FINISH();
-  UNPROTECT(3); // geomIndices, geomIndicesSwap, externalPtrProt
+    UNPROTECT(3); // geomIndices, geomIndicesSwap, externalPtrProt
   return treeExternalPtr;
 }
 
@@ -164,8 +162,7 @@ SEXP strtree_query_base(SEXP treeExternalPtr, SEXP geom, GEOSQueryCallback callb
     UNPROTECT(1); // itemResult
   }
 
-  GEOS_FINISH();
-  UNPROTECT(1); // result
+    UNPROTECT(1); // result
   return result;
 }
 
@@ -423,8 +420,7 @@ SEXP geos_strtree_nearest_base(SEXP treeExternalPtr, SEXP geom,
     }
   }
 
-  GEOS_FINISH();
-  UNPROTECT(1); // result
+    UNPROTECT(1); // result
   return result;
 }
 

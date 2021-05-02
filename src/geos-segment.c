@@ -57,8 +57,7 @@ SEXP geos_c_segment_intersection(SEXP Sax0, SEXP Say0, SEXP Sax1, SEXP Say1,
     }
   }
 
-  GEOS_FINISH();
-
+  
   const char* names[] = {"x", "y", ""};
   SEXP result = PROTECT(Rf_mkNamed(VECSXP, names));
   SET_VECTOR_ELT(result, 0, resultX);
@@ -103,7 +102,6 @@ SEXP geos_c_orientation_index(SEXP SAx, SEXP SAy, SEXP SBx, SEXP SBy, SEXP SPx, 
     }
   }
 
-  GEOS_FINISH();
-  UNPROTECT(1);
+    UNPROTECT(1);
   return result;
 }

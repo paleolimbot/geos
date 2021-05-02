@@ -33,8 +33,7 @@
     }                                                          \
   }                                                            \
                                                                \
-  GEOS_FINISH();                                               \
-  UNPROTECT(1);                                                \
+    UNPROTECT(1);                                                \
   return result;
 
 
@@ -145,8 +144,7 @@ SEXP geos_c_clone(SEXP geom) {
     }                                                                      \
   }                                                                        \
                                                                            \
-  GEOS_FINISH();                                                           \
-  UNPROTECT(1);                                                            \
+    UNPROTECT(1);                                                            \
   return result;
 
 
@@ -250,8 +248,7 @@ SEXP geos_c_set_srid(SEXP geom, SEXP srid) {
     SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometryResult));
   }
 
-  GEOS_FINISH();
-  UNPROTECT(1);
+    UNPROTECT(1);
   return result;
 }
 
@@ -298,8 +295,7 @@ SEXP geos_c_normalize(SEXP geom) {
     SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometryResult));
   }
 
-  GEOS_FINISH();
-  UNPROTECT(1);
+    UNPROTECT(1);
   return result;
 }
 
@@ -349,8 +345,7 @@ SEXP geos_c_minimum_bounding_circle(SEXP geom) {
     }
   }
 
-  GEOS_FINISH();
-
+  
   Rf_setAttrib(result, Rf_install("x"), x);
   Rf_setAttrib(result, Rf_install("y"), y);
   Rf_setAttrib(result, Rf_install("radius"), radius);
@@ -392,8 +387,7 @@ SEXP geos_c_clip_by_rect(SEXP geom, SEXP xmin, SEXP ymin, SEXP xmax, SEXP ymax) 
     }
   }
 
-  GEOS_FINISH();
-  UNPROTECT(1);
+    UNPROTECT(1);
   return result;
 }
 
@@ -431,8 +425,7 @@ SEXP geos_c_delaunay_triangulation(SEXP geom, SEXP tolerace, SEXP edges) {
     }
   }
 
-  GEOS_FINISH();
-  UNPROTECT(1);
+    UNPROTECT(1);
   return result;
 }
 
@@ -478,8 +471,7 @@ SEXP geos_c_voronoi_diagram(SEXP geom, SEXP env, SEXP tolerace, SEXP edges) {
     }
   }
 
-  GEOS_FINISH();
-  UNPROTECT(1);
+    UNPROTECT(1);
   return result;
 }
 
@@ -546,8 +538,7 @@ SEXP geos_c_voronoi_diagram(SEXP geom, SEXP env, SEXP tolerace, SEXP edges) {
   }                                                              \
                                                                  \
   GEOSBufferParams_destroy_r(handle, bufferParams);              \
-  GEOS_FINISH();                                                 \
-  UNPROTECT(1);                                                  \
+    UNPROTECT(1);                                                  \
   return result;
 
 
@@ -605,8 +596,7 @@ SEXP geos_c_geometry_n(SEXP geom, SEXP n) {
     SET_VECTOR_ELT(result, i, geos_common_child_geometry_xptr(geometryResult, item));
   }
 
-  GEOS_FINISH();
-  UNPROTECT(1);
+    UNPROTECT(1);
   return result;
 }
 
@@ -637,8 +627,7 @@ SEXP geos_c_ring_n(SEXP geom, SEXP n) {
 
     // error for non-polygons
     if (GEOSGeomTypeId_r(handle, geometry) != GEOS_POLYGON) {
-      GEOS_FINISH();
-      Rf_error("[i=%d] Can't extract rings from a non-polygon", i);
+            Rf_error("[i=%d] Can't extract rings from a non-polygon", i);
     }
 
     // extraction can result in segfault rather than exception here
@@ -667,7 +656,6 @@ SEXP geos_c_ring_n(SEXP geom, SEXP n) {
     SET_VECTOR_ELT(result, i, geos_common_child_geometry_xptr(geometryResult, item));
   }
 
-  GEOS_FINISH();
-  UNPROTECT(1);
+    UNPROTECT(1);
   return result;
 }

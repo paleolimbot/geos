@@ -34,8 +34,7 @@
     }                                                          \
   }                                                            \
                                                                \
-  GEOS_FINISH();                                               \
-  UNPROTECT(1);                                                \
+    UNPROTECT(1);                                                \
   return result;
 
 
@@ -112,8 +111,7 @@ SEXP geos_c_minimum_clearance(SEXP geom) {
     }                                                             \
   }                                                               \
                                                                   \
-  GEOS_FINISH();                                                  \
-  UNPROTECT(1);                                                   \
+    UNPROTECT(1);                                                   \
   return result;
 
 
@@ -219,8 +217,7 @@ SEXP geos_c_is_clockwise(SEXP geom) {
     pResult[i] = !isCCW;
   }
 
-  GEOS_FINISH();
-  UNPROTECT(1);
+    UNPROTECT(1);
   return result;
 }
 
@@ -286,8 +283,7 @@ SEXP geos_c_is_valid_detail(SEXP geom, SEXP allowSelfTouchingRingFormingHole) {
     }
   }
 
-  GEOS_FINISH();
-
+  
   SEXP result = PROTECT(Rf_allocVector(VECSXP, 3));
   SET_VECTOR_ELT(result, 0, resultIsValid);
   SET_VECTOR_ELT(result, 1, resultReason);

@@ -47,14 +47,12 @@ SEXP geos_common_tree_xptr(GEOSSTRtree* geometry, SEXP geom, SEXP indices);
 // the error macro wraps Rf_error() but adds the error message at the end
 // works for the frequent usage with exactly one arg to Rf_error()
 // only works in the same function where GEOS_INIT() was used
-#define GEOS_ERROR(msg, arg) GEOS_FINISH();  \
-  char actualErrorMessage[GEOS_ACTUAL_ERROR_MESSAGE_BUFFER_SIZE];     \
+#define GEOS_ERROR(msg, arg)   char actualErrorMessage[GEOS_ACTUAL_ERROR_MESSAGE_BUFFER_SIZE];     \
   strcpy(actualErrorMessage, msg); \
   memcpy(&actualErrorMessage[strlen(msg)], globalErrorMessage, strlen(globalErrorMessage)); \
   actualErrorMessage[strlen(msg) + strlen(globalErrorMessage)] = '\0'; \
   Rf_error(actualErrorMessage, arg)
 
-#define GEOS_FINISH()
 
 // check geometry coming out of an externalptr
 #define GEOS_CHECK_GEOMETRY(geometry, i)  \

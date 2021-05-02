@@ -30,8 +30,7 @@ SEXP geos_c_read_wkt(SEXP input) {
   }
 
   GEOSWKTReader_destroy_r(handle, reader);
-  GEOS_FINISH();
-  UNPROTECT(1); // result
+    UNPROTECT(1); // result
   return result;
 }
 
@@ -79,8 +78,7 @@ SEXP geos_c_write_wkt(SEXP input, SEXP includeZ, SEXP precision, SEXP trim) {
   }
 
   GEOSWKTWriter_destroy_r(handle, writer);
-  GEOS_FINISH();
-  UNPROTECT(1); // result
+    UNPROTECT(1); // result
   return result;
 }
 
@@ -116,8 +114,7 @@ SEXP geos_c_read_wkb(SEXP input) {
   }
 
   GEOSWKBReader_destroy_r(handle, reader);
-  GEOS_FINISH();
-  UNPROTECT(1);
+    UNPROTECT(1);
   return result;
 }
 
@@ -174,8 +171,7 @@ SEXP geos_c_write_wkb(SEXP input, SEXP includeZ, SEXP includeSRID, SEXP endian) 
   }
 
   GEOSWKBWriter_destroy_r(handle, writer);
-  GEOS_FINISH();
-  UNPROTECT(1); // result
+    UNPROTECT(1); // result
   return result;
 }
 
@@ -211,8 +207,7 @@ SEXP geos_c_read_hex(SEXP input) {
   }
 
   GEOSWKBReader_destroy_r(handle, reader);
-  GEOS_FINISH();
-  UNPROTECT(1);
+    UNPROTECT(1);
   return result;
 }
 
@@ -267,8 +262,7 @@ SEXP geos_c_write_hex(SEXP input, SEXP includeZ, SEXP includeSRID, SEXP endian) 
   }
 
   GEOSWKBWriter_destroy_r(handle, writer);
-  GEOS_FINISH();
-  UNPROTECT(1); // result
+    UNPROTECT(1); // result
   return result;
 }
 
@@ -310,8 +304,7 @@ SEXP geos_c_write_xy(SEXP input) {
     }
   }
 
-  GEOS_FINISH();
-
+  
   const char* names[] = {"x", "y", ""};
   SEXP result = PROTECT(Rf_mkNamed(VECSXP, names));
   SET_VECTOR_ELT(result, 0, resultX);

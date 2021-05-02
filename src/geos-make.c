@@ -39,8 +39,7 @@ SEXP geos_c_make_point(SEXP x, SEXP y, SEXP z) {
     SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometry));
   }
 
-  GEOS_FINISH();
-  UNPROTECT(1); // result
+    UNPROTECT(1); // result
   return result;
 }
 
@@ -104,8 +103,7 @@ SEXP geos_c_make_linestring(SEXP x, SEXP y, SEXP z, SEXP featureLengths) {
     SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(itemGeometry));
   }
 
-  GEOS_FINISH();
-  UNPROTECT(1);
+    UNPROTECT(1);
   return result;
 }
 
@@ -225,8 +223,7 @@ SEXP geos_c_make_polygon(SEXP x, SEXP y, SEXP z, SEXP ringLengthsByFeature) {
     SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(itemGeometry));
   }
 
-  GEOS_FINISH();
-  UNPROTECT(1);
+    UNPROTECT(1);
   return result;
 }
 
@@ -256,16 +253,14 @@ SEXP geos_c_make_collection(SEXP geom, SEXP typeId, SEXP featureLengths) {
       item = VECTOR_ELT(geom, iGeom);
       if (item == R_NilValue) {
         cleanup_geoms(handle, geoms, j);
-        GEOS_FINISH();
-        UNPROTECT(1);
+                UNPROTECT(1);
         Rf_error("[i=%d] Can't nest a missing geometry", iGeom);
       }
 
       itemGeometry = (GEOSGeometry*) R_ExternalPtrAddr(item);
       if (itemGeometry == NULL) {
         cleanup_geoms(handle, geoms, j);
-        GEOS_FINISH();
-        UNPROTECT(1);
+                UNPROTECT(1);
         Rf_error("[i=%d] External pointer is not valid", iGeom);
       }
 
@@ -297,8 +292,7 @@ SEXP geos_c_make_collection(SEXP geom, SEXP typeId, SEXP featureLengths) {
     SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(collection));
   }
 
-  GEOS_FINISH();
-  UNPROTECT(1);
+    UNPROTECT(1);
   return result;
 }
 
@@ -341,7 +335,6 @@ SEXP geos_c_empty(SEXP typeId) {
     SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometry));
   }
 
-  GEOS_FINISH();
-  UNPROTECT(1);
+    UNPROTECT(1);
   return result;
 }

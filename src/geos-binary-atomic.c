@@ -36,8 +36,7 @@
     }                                                             \
   }                                                               \
                                                                   \
-  GEOS_FINISH();                                                  \
-  UNPROTECT(1);                                                   \
+    UNPROTECT(1);                                                   \
   return result;
 
 
@@ -91,8 +90,7 @@ SEXP geos_c_distance_frechet(SEXP geom1, SEXP geom2) {
     }                                                                         \
   }                                                                           \
                                                                               \
-  GEOS_FINISH();                                                              \
-  UNPROTECT(1);                                                               \
+    UNPROTECT(1);                                                               \
   return result;
 
 SEXP geos_c_distance_hausdorff_densify(SEXP geom1, SEXP geom2, SEXP densifyFrac) {
@@ -140,8 +138,7 @@ SEXP geos_c_distance_frechet_densify(SEXP geom1, SEXP geom2, SEXP densifyFrac) {
     pResult[i] = itemResult;                                                  \
   }                                                                           \
                                                                               \
-  GEOS_FINISH();                                                              \
-  UNPROTECT(1);                                                               \
+    UNPROTECT(1);                                                               \
   return result;
 
 SEXP geos_c_project(SEXP geom1, SEXP geom2) {
@@ -187,8 +184,7 @@ SEXP geos_c_project_normalized(SEXP geom1, SEXP geom2) {
     pResult[i] = resultCode;                                                  \
   }                                                                           \
                                                                               \
-  GEOS_FINISH();                                                              \
-  UNPROTECT(1);                                                               \
+    UNPROTECT(1);                                                               \
   return result;
 
 
@@ -270,8 +266,7 @@ SEXP geos_c_equals_exact(SEXP geom1, SEXP geom2, SEXP tolerance) {
     pResult[i] = resultCode;
   }
 
-  GEOS_FINISH();
-  UNPROTECT(1);
+    UNPROTECT(1);
   return result;
 }
 
@@ -313,7 +308,6 @@ for (R_xlen_t i = 0; i < size; i++) {                                       \
   pResult[i] = resultCode;                                                  \
 }                                                                           \
                                                                             \
-GEOS_FINISH();                                                              \
 UNPROTECT(1);                                                               \
 return result;
 
@@ -397,8 +391,7 @@ SEXP geos_c_relate(SEXP geom1, SEXP geom2, SEXP boundaryNodeRule) {
     GEOSFree_r(handle, itemResult);
   }
 
-  GEOS_FINISH();
-  UNPROTECT(1);
+    UNPROTECT(1);
   return result;
 }
 
@@ -429,7 +422,6 @@ SEXP geos_c_relate_pattern_match(SEXP match, SEXP pattern) {
     pResult[i] = itemResult;
   }
 
-  GEOS_FINISH();
-  UNPROTECT(1);
+    UNPROTECT(1);
   return result;
 }

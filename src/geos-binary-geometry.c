@@ -37,8 +37,7 @@
     SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometryResult));     \
   }                                                                           \
                                                                               \
-  GEOS_FINISH();                                                              \
-  UNPROTECT(1);                                                               \
+    UNPROTECT(1);                                                               \
   return result;
 
 
@@ -98,8 +97,7 @@ R_xlen_t size = Rf_xlength(geom1);                        \
     SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometryResult)); \
   }                                                       \
                                                           \
-  GEOS_FINISH();                                          \
-  UNPROTECT(1);                                           \
+    UNPROTECT(1);                                           \
   return result;
 
 SEXP geos_c_snap(SEXP geom1, SEXP geom2, SEXP param) {
@@ -207,7 +205,6 @@ SEXP geos_c_clearance_line_between(SEXP geom1, SEXP geom2) {
     SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometryResult));
   }
 
-  GEOS_FINISH();
-  UNPROTECT(1);
+    UNPROTECT(1);
   return result;
 }
