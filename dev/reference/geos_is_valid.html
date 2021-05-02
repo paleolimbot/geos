@@ -164,14 +164,14 @@ is a valid geometry.</p></li>
     <span class='st'>"POLYGON ((0 0, 1 1, 1 0, 0 1, 0 0))"</span>
   <span class='op'>)</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; [1]  TRUE FALSE</div><div class='input'>
+</div><div class='co'>#&gt; [1]  TRUE FALSE</div><div class='input'>
 <span class='fu'>geos_is_valid_detail</span><span class='op'>(</span>
   <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>
     <span class='st'>"POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))"</span>,
     <span class='st'>"POLYGON ((0 0, 1 1, 1 0, 0 1, 0 0))"</span>
   <span class='op'>)</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt;   is_valid            reason                   location
+</div><div class='co'>#&gt;   is_valid            reason                   location
 #&gt; 1     TRUE              &lt;NA&gt; &lt;GEOMETRYCOLLECTION EMPTY&gt;
 #&gt; 2    FALSE Self-intersection          &lt;POINT (0.5 0.5)&gt;</div><div class='input'>
 </div></pre>

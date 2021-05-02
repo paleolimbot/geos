@@ -135,18 +135,18 @@
     <tr>
       <th>a, b</th>
       <td><p>A <code><a href='https://rdrr.io/r/base/list.html'>list()</a></code> representing segments in the form
-<code><a href='https://rdrr.io/r/base/list.html'>list(x0, y0, x1, y1)</a></code>. List items with length 1 will be
+<code>list(x0, y0, x1, y1)</code>. List items with length 1 will be
 recycled to the length of the longest item.</p></td>
     </tr>
     <tr>
       <th>point</th>
-      <td><p>A <code><a href='https://rdrr.io/r/base/list.html'>list()</a></code> representing points in the form <code><a href='https://rdrr.io/r/base/list.html'>list(x, y)</a></code>.</p></td>
+      <td><p>A <code><a href='https://rdrr.io/r/base/list.html'>list()</a></code> representing points in the form <code>list(x, y)</code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>geos_segment_intersection()</code> returns a <code><a href='https://rdrr.io/r/base/list.html'>list(x, y)</a></code>;
+    <p><code>geos_segment_intersection()</code> returns a <code>list(x, y)</code>;
 <code>geos_orientation_index()</code> returns -1, 0 or 1, depending if
 the <code>point</code> lies to the right of (-1), is colinear with (0) or
 lies to the left of (1) the segment (as judged from the start
@@ -157,7 +157,7 @@ of the segment looking towards the end).</p>
   <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>10</span>, <span class='fl'>10</span><span class='op'>)</span>,
   <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fl'>10</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>10</span><span class='op'>)</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; $x
+</div><div class='co'>#&gt; $x
 #&gt; [1] 5
 #&gt; 
 #&gt; $y
@@ -167,7 +167,7 @@ of the segment looking towards the end).</p>
   <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>10</span>, <span class='fl'>10</span><span class='op'>)</span>,
   <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fl'>15</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>12</span>, <span class='fl'>15</span>, <span class='fl'>17</span><span class='op'>)</span><span class='op'>)</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] -1  0  1</div><div class='input'>
+</div><div class='co'>#&gt; [1] -1  0  1</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
