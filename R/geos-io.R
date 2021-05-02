@@ -33,10 +33,10 @@ geos_read_wkt <- function(wkt, crs = NULL) {
 geos_write_wkt <- function(geom, include_z = TRUE, precision = 16, trim = TRUE) {
   .Call(
     geos_c_write_wkt,
-    as_geos_geometry(geom),
-    as.logical(include_z),
-    as.integer(precision),
-    as.logical(trim)
+    sanitize_geos_geometry(geom),
+    sanitize_logical_scalar(include_z),
+    sanitize_integer_scalar(precision),
+    sanitize_logical_scalar(trim)
   )
 }
 
@@ -52,10 +52,10 @@ geos_write_wkb <- function(geom, include_z = TRUE, include_srid = FALSE, endian 
   structure(
     .Call(
       geos_c_write_wkb,
-      as_geos_geometry(geom),
-      as.logical(include_z),
-      as.logical(include_srid),
-      as.integer(endian)
+      sanitize_geos_geometry(geom),
+      sanitize_logical_scalar(include_z),
+      sanitize_logical_scalar(include_srid),
+      sanitize_integer_scalar(endian)
     ),
     class = "blob"
   )
@@ -72,10 +72,10 @@ geos_read_hex <- function(hex, crs = NULL) {
 geos_write_hex <- function(geom, include_z = TRUE, include_srid = FALSE, endian = 1) {
   .Call(
     geos_c_write_hex,
-    as_geos_geometry(geom),
-    as.logical(include_z),
-    as.logical(include_srid),
-    as.integer(endian)
+    sanitize_geos_geometry(geom),
+    sanitize_logical_scalar(include_z),
+    sanitize_logical_scalar(include_srid),
+    sanitize_integer_scalar(endian)
   )
 }
 
@@ -89,6 +89,5 @@ geos_read_xy <- function(point) {
 #' @rdname geos_read_wkt
 #' @export
 geos_write_xy <- function(geom) {
-  .Call(geos_c_write_xy, as_geos_geometry(geom))
+  .Call(geos_c_write_xy, sanitize_geos_geometry(geom))
 }
-

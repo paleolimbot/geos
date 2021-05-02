@@ -25,6 +25,10 @@ sanitize_integer_scalar <- function(x) {
   as.integer(x)[1]
 }
 
+sanitize_logical_scalar <- function(x) {
+  as.logical(x)[1]
+}
+
 recycle_common <- function(dots) {
   final_length <- check_lengths(dots)
   lapply(dots, rep_len, final_length)
