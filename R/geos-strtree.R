@@ -89,6 +89,14 @@ format.geos_strtree <- function(x, ...) {
 }
 
 #' @export
+str.geos_strtree <- function(object, ..., indent.str = "", width = getOption("width")) {
+  cat(paste0(format(object), "\n"))
+  cat("  ")
+  str(geos_strtree_data(object), ..., indent.str = paste0(indent.str, "  "), width = width)
+  invisible(object)
+}
+
+#' @export
 print.geos_strtree <- function(x, ...) {
   cat(paste0(format(x), "\n"))
   invisible(x)

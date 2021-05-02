@@ -40,7 +40,7 @@ test_that("strtree objects can be created from well-known text", {
   )
 })
 
-test_that("strtree objects have reasonable format() and print() methods", {
+test_that("strtree objects have reasonable format(), print(), and str() methods", {
   expect_identical(format(geos_strtree(character(0))), "<geos_strtree containing 0 items>")
   expect_output(print(geos_strtree(character(0))), "<geos_strtree containing 0 items>")
 
@@ -48,6 +48,8 @@ test_that("strtree objects have reasonable format() and print() methods", {
     format(geos_strtree(as_geos_geometry("POINT (0 1)", crs = 1234))),
     "with CRS=1234"
   )
+
+  expect_output(str(geos_strtree("POINT (0 1)")), "geos_strtree containing 1 item")
 })
 
 test_that("strtree objects that are invalid cannot be queried", {
