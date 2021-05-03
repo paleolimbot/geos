@@ -1,3 +1,5 @@
+# geos (development version)
+
 # geos 0.1.0
 
 * Added vector class improvements for `geos_geometry()` vectors
