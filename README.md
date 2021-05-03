@@ -34,7 +34,7 @@ And the development version from [GitHub](https://github.com/) with:
 remotes::install_github("paleolimbot/geos")
 ```
 
-If you can load the package, you’re good to go\!
+If you can load the package, you’re good to go!
 
 ``` r
 library(geos)
@@ -42,7 +42,7 @@ library(geos)
 
 ## Example
 
-Buffer a line and plot it\!
+Buffer a line and plot it!
 
 ``` r
 line <- as_geos_geometry("LINESTRING (30 10, 10 30, 40 40)")
@@ -112,7 +112,8 @@ package](https://r-spatial.github.io/sf/).
 
 ``` r
 library(sf)
-#> Linking to GEOS 3.8.1, GDAL 3.1.2, PROJ 7.1.0
+#> Warning: package 'sf' was built under R version 4.0.5
+#> Linking to GEOS 3.8.1, GDAL 3.2.0, PROJ 7.2.0
 nc <- read_sf(system.file("shape/nc.shp", package = "sf")) %>%
   st_transform(32119) # North Caroline state plane, m.
 
@@ -123,9 +124,9 @@ nc_geos %>%
   geos_unary_union() %>% 
   st_as_sfc(nc_state)
 #> Geometry set for 1 feature 
-#> geometry type:  MULTIPOLYGON
-#> dimension:      XY
-#> bbox:           xmin: 123829.8 ymin: 14740.06 xmax: 930518.6 ymax: 318255.5
-#> projected CRS:  NAD83 / North Carolina
-#> MULTIPOLYGON (((705860.3 27430.49, 698896.5 186...
+#> Geometry type: MULTIPOLYGON
+#> Dimension:     XY
+#> Bounding box:  xmin: 123829.8 ymin: 14740.06 xmax: 930518.6 ymax: 318255.5
+#> Projected CRS: NAD83 / North Carolina
+#> MULTIPOLYGON (((705428.2 49242.97, 705860.3 274...
 ```
