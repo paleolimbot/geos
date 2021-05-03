@@ -46,6 +46,7 @@ extern SEXP geos_c_intersection_prec(SEXP geom1, SEXP geom2, SEXP param);
 extern SEXP geos_c_difference_prec(SEXP geom1, SEXP geom2, SEXP param);
 extern SEXP geos_c_sym_difference_prec(SEXP geom1, SEXP geom2, SEXP param);
 extern SEXP geos_c_union_prec(SEXP geom1, SEXP geom2, SEXP param);
+extern SEXP geos_c_largest_empty_circle(SEXP geom1, SEXP geom2, SEXP param);
 extern SEXP geos_c_clearance_line_between(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_geos_geometry_is_null(SEXP geom);
 extern SEXP geos_c_geos_geometry_is_null_or_xptr(SEXP geom);
@@ -200,6 +201,7 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_difference_prec", (DL_FUNC) &geos_c_difference_prec, 3},
   {"geos_c_sym_difference_prec", (DL_FUNC) &geos_c_sym_difference_prec, 3},
   {"geos_c_union_prec", (DL_FUNC) &geos_c_union_prec, 3},
+  {"geos_c_largest_empty_circle", (DL_FUNC) &geos_c_largest_empty_circle, 3},
   {"geos_c_clearance_line_between", (DL_FUNC) &geos_c_clearance_line_between, 2},
   {"geos_c_geos_geometry_is_null", (DL_FUNC) &geos_c_geos_geometry_is_null, 1},
   {"geos_c_geos_geometry_is_null_or_xptr", (DL_FUNC) &geos_c_geos_geometry_is_null_or_xptr, 1},

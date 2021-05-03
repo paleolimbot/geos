@@ -175,3 +175,13 @@ test_that("clearance line between works", {
     "Unknown error"
   )
 })
+
+test_that("geos_largest_empty_circle() works", {
+  boundary <- wk::rct(0, 0, 10, 10)
+  geom <- "POLYGON ((1 1, 0 10, 10 0, 1 1))"
+  spec <- geos_largest_empty_circle_spec(geom, boundary, tolerance = 1e-4)
+  expect_identical(geos_write_wkt(spec, precision = 4), "LINESTRING (10 10, 5 5)")
+
+  crc <- geos_largest_empty_crc(geom, boundary, tolerance = 1e-4)
+  expect_identical(unclass(crc)$r, geos_length(spec))
+})

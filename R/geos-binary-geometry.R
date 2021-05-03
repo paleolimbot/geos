@@ -174,3 +174,34 @@ geos_clearance_line_between <- function(geom1, geom2) {
     crs = wk_crs_output(recycled[[1]], recycled[[2]])
   )
 }
+
+# documented with other circle functions in geos-unary-geometry.R
+#' @rdname geos_minimum_bounding_circle
+#' @export
+geos_largest_empty_circle_spec <- function(geom, boundary, tolerance) {
+  recycled <- recycle_common(
+    list(
+      sanitize_geos_geometry(geom),
+      sanitize_geos_geometry(boundary),
+      sanitize_double(tolerance)
+    )
+  )
+
+  new_geos_geometry(
+    .Call(geos_c_largest_empty_circle, recycled[[1]], recycled[[2]], recycled[[3]]),
+    crs = wk_crs_output(recycled[[1]], recycled[[2]])
+  )
+}
+
+#' @rdname geos_minimum_bounding_circle
+#' @export
+geos_largest_empty_crc <- function(geom, boundary, tolerance) {
+  spec <- geos_largest_empty_circle_spec(geom, boundary, tolerance)
+  xy <- unclass(as_xy(geos_point_end(spec)))
+
+  wk::crc(
+    xy$x, xy$y,
+    geos_length(spec),
+    crs = attr(spec, "crs", exact = TRUE)
+  )
+}

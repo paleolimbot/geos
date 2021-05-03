@@ -151,6 +151,19 @@ SEXP geos_c_union_prec(SEXP geom1, SEXP geom2, SEXP param) {
 #endif
 }
 
+SEXP geos_c_largest_empty_circle(SEXP geom1, SEXP geom2, SEXP param) {
+#if LIBGEOS_VERSION_COMPILE_INT >= LIBGEOS_VERSION_INT(3, 9, 1)
+  if (libgeos_version_int() < LIBGEOS_VERSION_INT(3, 9, 1)) {
+    ERROR_OLD_LIBGEOS("GEOSLargestEmptyCircle_r()", "3.9.1");
+  }
+
+  GEOS_BINARY_REAL(GEOSLargestEmptyCircle_r);
+#else
+  ERROR_OLD_LIBGEOS_BUILD("GEOSLargestEmptyCircle_r()", "3.9.1");
+#endif
+}
+
+
 SEXP geos_c_clearance_line_between(SEXP geom1, SEXP geom2) {
   R_xlen_t size = Rf_xlength(geom1);
   SEXP result = PROTECT(Rf_allocVector(VECSXP, size));
