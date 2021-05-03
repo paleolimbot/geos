@@ -177,6 +177,7 @@ test_that("clearance line between works", {
 })
 
 test_that("geos_largest_empty_circle() works", {
+  skip_if_not(geos_version() >= "3.9.1")
   boundary <- wk::rct(0, 0, 10, 10)
   geom <- "POLYGON ((1 1, 0 10, 10 0, 1 1))"
   spec <- geos_largest_empty_circle_spec(geom, boundary, tolerance = 1e-4)
