@@ -228,6 +228,27 @@ test_that("binary predicates work", {
   )
 })
 
+test_that("prepared binary predicates re-use cached prepared geometry", {
+  # this is hard to test from R but we can at least ensure that the line
+  # gets hit in code coverage
+  geom <- as_geos_geometry("POINT (5 5)")
+  expect_true(
+    geos_prepared_intersects(
+      geom,
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"
+    )
+  )
+
+  # the second time should return the same result but not
+  # re-compute the prepared geometry
+  expect_true(
+    geos_prepared_intersects(
+      geom,
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"
+    )
+  )
+})
+
 test_that("DE9IM functions work", {
   expect_identical(
     geos_relate_pattern_match("FF*FF****", c(NA, "FF*FF****", "FF*FF***F")),

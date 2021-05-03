@@ -67,22 +67,22 @@ test_that("binary_prec operators work", {
 
   if ((geos_version(runtime = TRUE) >= "3.9.1") && (geos_version(runtime = FALSE) >= "3.9.1")) {
     expect_identical(
-      geos_area(geos_intersection(poly1, poly2)),
+      geos_area(geos_intersection_prec(poly1, poly2, grid_size = 0.1)),
       c(NA, 25)
     )
 
     expect_identical(
-      geos_area(geos_difference(poly1, poly2)),
+      geos_area(geos_difference_prec(poly1, poly2, grid_size = 0.1)),
       c(NA, 100 - 25)
     )
 
     expect_identical(
-      geos_area(geos_sym_difference(poly1, poly2)),
+      geos_area(geos_sym_difference_prec(poly1, poly2, grid_size = 0.1)),
       c(NA, 100 * 2 - 50)
     )
 
     expect_identical(
-      geos_area(geos_union(poly1, poly2)),
+      geos_area(geos_union_prec(poly1, poly2, grid_size = 0.1)),
       c(NA, 100 * 2 - 25)
     )
 
@@ -95,8 +95,8 @@ test_that("binary_prec operators work", {
 
     expect_identical(
       geos_equals(
-        geos_unary_union(c(NA, collection)),
-        geos_union(poly1, poly2)
+        geos_unary_union_prec(c(NA, collection), grid_size = 0.1),
+        geos_union_prec(poly1, poly2, grid_size = 0.1)
       ),
       c(NA, TRUE)
     )
