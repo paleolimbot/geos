@@ -17,7 +17,7 @@ which functions are implemented in the R API.
 
 ## Installation
 
-You can install the released version of s2 from
+You can install the released version of geos from
 [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
@@ -112,7 +112,7 @@ library(sf)
 #> Warning: package 'sf' was built under R version 4.0.5
 #> Linking to GEOS 3.8.1, GDAL 3.2.0, PROJ 7.2.0
 nc <- read_sf(system.file("shape/nc.shp", package = "sf")) %>%
-  st_transform(32119) # North Caroline state plane, m.
+  st_transform(32119) # North Carolina state plane, m.
 
 nc_geos <- as_geos_geometry(nc)
 

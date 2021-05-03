@@ -25,7 +25,7 @@ The goal of geom is to provide access to the GEOS C API by vectorizing the C fun
 
 ## Installation
 
-You can install the released version of s2 from [CRAN](https://CRAN.R-project.org) with:
+You can install the released version of geos from [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
 install.packages("geos")
@@ -74,7 +74,7 @@ The easiest way to get data into and out of the package is using the [sf package
 ```{r sf-plot}
 library(sf)
 nc <- read_sf(system.file("shape/nc.shp", package = "sf")) %>%
-  st_transform(32119) # North Caroline state plane, m.
+  st_transform(32119) # North Carolina state plane, m.
 
 nc_geos <- as_geos_geometry(nc)
 
