@@ -33,6 +33,7 @@ reference:
   - geos_is_valid
   - geos_geometry_n
   - geos_unnest
+  - geos_largest_empty_circle_spec
 
 - title: GEOS Information
   contents:
