@@ -164,7 +164,18 @@ SEXP geos_c_largest_empty_circle(SEXP geom1, SEXP geom2, SEXP param) {
 }
 
 
-SEXP geos_c_clearance_line_between(SEXP geom1, SEXP geom2) {
+SEXP geos_c_clearance_line_between(SEXP geom1, SEXP geom2, SEXP prepare) {
+  int lglPrepare = LOGICAL(prepare)[0];
+  if (lglPrepare) {
+#if LIBGEOS_VERSION_COMPILE_INT >= LIBGEOS_VERSION_INT(3, 9, 1)
+    if (libgeos_version_int() < LIBGEOS_VERSION_INT(3, 9, 1)) {
+      ERROR_OLD_LIBGEOS("GEOSPreparedNearestPoints_r()", "3.9.1");
+    }
+#else
+    ERROR_OLD_LIBGEOS_BUILD("GEOSPreparedNearestPoints_r()", "3.9.1");
+#endif
+  }
+
   R_xlen_t size = Rf_xlength(geom1);
   SEXP result = PROTECT(Rf_allocVector(VECSXP, size));
 
@@ -198,7 +209,19 @@ SEXP geos_c_clearance_line_between(SEXP geom1, SEXP geom2) {
       continue;
     }
 
-    sequenceResult = GEOSNearestPoints_r(handle, geometry1, geometry2);
+    if (lglPrepare) {
+#if LIBGEOS_VERSION_COMPILE_INT >= LIBGEOS_VERSION_INT(3, 9, 1)
+      const GEOSPreparedGeometry* prepared1 = geos_common_geometry_prepared(item1);
+      if (prepared1 == NULL) {
+        Rf_error("[%d] %s", i + 1, globalErrorMessage);
+      }
+      sequenceResult = GEOSPreparedNearestPoints_r(handle, prepared1, geometry2);
+#else
+      sequenceResult = NULL;
+#endif
+    } else {
+      sequenceResult = GEOSNearestPoints_r(handle, geometry1, geometry2);
+    }
     if (sequenceResult == NULL) {
       Rf_error("[%d] %s", i + 1, globalErrorMessage);
     }
@@ -214,6 +237,6 @@ SEXP geos_c_clearance_line_between(SEXP geom1, SEXP geom2) {
     SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometryResult));
   }
 
-    UNPROTECT(1);
+  UNPROTECT(1);
   return result;
 }

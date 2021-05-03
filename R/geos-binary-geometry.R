@@ -167,10 +167,18 @@ geos_snap <- function(geom1, geom2, tolerance = .Machine$double.eps ^ 2) {
 
 #' @rdname geos_intersection
 #' @export
-geos_clearance_line_between <- function(geom1, geom2) {
-  recycled <- recycle_common(list(sanitize_geos_geometry(geom1), sanitize_geos_geometry(geom2)))
+geos_clearance_line_between <- function(geom1, geom2, prepare = FALSE) {
+  recycled <- recycle_common(
+    list(
+      sanitize_geos_geometry(geom1),
+      sanitize_geos_geometry(geom2)
+    )
+  )
+
+  prepare <- sanitize_logical_scalar(prepare)
+
   new_geos_geometry(
-    .Call(geos_c_clearance_line_between, recycled[[1]], recycled[[2]]),
+    .Call(geos_c_clearance_line_between, recycled[[1]], recycled[[2]], prepare),
     crs = wk_crs_output(recycled[[1]], recycled[[2]])
   )
 }

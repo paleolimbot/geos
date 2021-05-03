@@ -176,8 +176,35 @@ test_that("clearance line between works", {
   )
 })
 
+test_that("clearance line between works with prepare = TRUE", {
+  skip_if_not(geos_version() >= "3.9.1")
+
+  expect_identical(
+    geos_write_wkt(
+      geos_clearance_line_between(
+        "POINT (5 5)",
+        c(NA, "POINT (1 1)", "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"),
+        prepare = TRUE
+      )
+    ),
+    c(NA, "LINESTRING (5 5, 1 1)", "LINESTRING (5 5, 5 5)")
+  )
+
+  expect_true(
+    geos_is_empty(
+      geos_clearance_line_between("POINT (0 0)", "POINT EMPTY", prepare = TRUE)
+    )
+  )
+
+  expect_error(
+    geos_clearance_line_between("POINT (nan inf)", "POINT (0 0)", prepare = TRUE),
+    "Unknown error"
+  )
+})
+
 test_that("geos_largest_empty_circle() works", {
   skip_if_not(geos_version() >= "3.9.1")
+
   boundary <- wk::rct(0, 0, 10, 10)
   geom <- "POLYGON ((1 1, 0 10, 10 0, 1 1))"
   spec <- geos_largest_empty_circle_spec(geom, boundary, tolerance = 1e-4)
