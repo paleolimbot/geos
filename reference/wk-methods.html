@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Convert a geometry to a different data structure — geo_convert • geom</title>
+<title>Compatibility with the wk package — wk-methods • geos</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,10 @@
 
 
 
-<meta property="og:title" content="Convert a geometry to a different data structure — geo_convert" />
-<meta property="og:description" content="Convert a geometry to a different data structure" />
+<meta property="og:title" content="Compatibility with the wk package — wk-methods" />
+<meta property="og:description" content="Compatibility with the wk package" />
+
+
 
 
 
@@ -56,9 +58,18 @@
 
 
 
+<!-- dependencies from examples -->
+
+
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -71,27 +82,24 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">geom</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <a class="navbar-link" href="../index.html">geos</a>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
+  <a href="../reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/paleolimbot/geom/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/paleolimbot/geos/">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -108,38 +116,50 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Convert a geometry to a different data structure</h1>
-    <small class="dont-index">Source: <a href='https://github.com/paleolimbot/geom/blob/master/R/geo-convert.R'><code>R/geo-convert.R</code></a></small>
-    <div class="hidden name"><code>geo_convert.Rd</code></div>
+    <h1>Compatibility with the wk package</h1>
+    <small class="dont-index">Source: <a href='https://github.com/paleolimbot/geos/blob/master/R/compat-wk.R'><code>R/compat-wk.R</code></a></small>
+    <div class="hidden name"><code>wk-methods.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Convert a geometry to a different data structure</p>
+    <p>Compatibility with the wk package</p>
     </div>
 
-    <pre class="usage"><span class='fu'>geo_convert</span>(<span class='no'>x</span>, <span class='no'>to</span>)</pre>
+    <pre class="usage"><span class='co'># S3 method for geos_geometry</span>
+<span class='fu'>wk_handle</span><span class='op'>(</span><span class='va'>handleable</span>, <span class='va'>handler</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='fu'>geos_geometry_writer</span><span class='op'>(</span><span class='op'>)</span>
+
+<span class='co'># S3 method for geos_geometry</span>
+<span class='fu'>wk_writer</span><span class='op'>(</span><span class='va'>handleable</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>A geometry-like object</p></td>
+      <th>handleable</th>
+      <td><p>A geometry vector (e.g., <code><a href='https://paleolimbot.github.io/wk/reference/wkb.html'>wkb()</a></code>, <code><a href='https://paleolimbot.github.io/wk/reference/wkt.html'>wkt()</a></code>, <code><a href='https://paleolimbot.github.io/wk/reference/xy.html'>xy()</a></code>,
+<code><a href='https://paleolimbot.github.io/wk/reference/rct.html'>rct()</a></code>, or <code><a href='https://r-spatial.github.io/sf/reference/sfc.html'>sf::st_sfc()</a></code>) for which <code><a href='https://paleolimbot.github.io/wk/reference/wk_handle.html'>wk_handle()</a></code> is defined.</p></td>
     </tr>
     <tr>
-      <th>to</th>
-      <td><p>A prototype created by <code><a href='geo_ptype.html'>geo_ptype()</a></code></p></td>
+      <th>handler</th>
+      <td><p>A <a href='https://paleolimbot.github.io/wk/reference/wk_handle.html'>wk_handler</a> object.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Passed to the <code><a href='https://paleolimbot.github.io/wk/reference/wk_handle.html'>wk_handle()</a></code> method.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A geometry vector, in the format defined by <code>to</code>.</p>
+    <p>The result of the <code>handler</code></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>geo_convert</span>(<span class='fu'><a href='geo_wkt.html'>geo_wkt</a></span>(<span class='st'>"POINT (20 10)"</span>), <span class='fu'><a href='geo_wkb.html'>geo_wkb</a></span>())</div><div class='output co'>#&gt; &lt;geo_wkb [1]&gt;
-#&gt; &lt;raw [21]&gt;</div><div class='input'><span class='fu'>geo_convert</span>(<span class='fu'><a href='geo_wkt.html'>geo_wkt</a></span>(<span class='st'>"POINT (20 10)"</span>), <span class='fu'><a href='is_geo_coord.html'>geo_coord</a></span>())</div><div class='output co'>#&gt; &lt;geo_coord_point [1 coords, 1 features]&gt;
-#&gt; [1] &lt;feat `1` (20 10)&gt;</div><div class='input'>
+    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://paleolimbot.github.io/wk/'>wk</a></span><span class='op'>)</span>
+<span class='fu'><a href='https://paleolimbot.github.io/wk/reference/wk_handle.html'>wk_handle</a></span><span class='op'>(</span><span class='fu'><a href='as_geos_geometry.html'>as_geos_geometry</a></span><span class='op'>(</span><span class='st'>"POINT (1 2)"</span><span class='op'>)</span>, <span class='fu'>wk</span><span class='fu'>::</span><span class='fu'><a href='https://paleolimbot.github.io/wk/reference/wk_writer.html'>wkt_writer</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='co'>#&gt; &lt;wk_wkt[1]&gt;
+#&gt; [1] POINT (1 2)</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -152,11 +172,11 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Dewey Dunnington.</p>
+  <p><p>Developed by Dewey Dunnington, Edzer Pebesma.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -164,6 +184,8 @@
 
   
 
+
+  
 
   </body>
 </html>

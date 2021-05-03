@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Line segments — geo_segment • geom</title>
+<title>Vctrs methods — vctrs-methods • geos</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,10 @@
 
 
 
-<meta property="og:title" content="Line segments — geo_segment" />
-<meta property="og:description" content="Line segments" />
+<meta property="og:title" content="Vctrs methods — vctrs-methods" />
+<meta property="og:description" content="Vctrs methods" />
+
+
 
 
 
@@ -56,9 +58,16 @@
 
 
 
+
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -71,27 +80,24 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">geom</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <a class="navbar-link" href="../index.html">geos</a>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
+  <a href="../reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/paleolimbot/geom/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/paleolimbot/geos/">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -108,34 +114,29 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Line segments</h1>
-    <small class="dont-index">Source: <a href='https://github.com/paleolimbot/geom/blob/master/R/geo-segment.R'><code>R/geo-segment.R</code></a></small>
-    <div class="hidden name"><code>geo_segment.Rd</code></div>
+    <h1>Vctrs methods</h1>
+    <small class="dont-index">Source: <a href='https://github.com/paleolimbot/geos/blob/master/R/compat-vctrs.R'><code>R/compat-vctrs.R</code></a></small>
+    <div class="hidden name"><code>vctrs-methods.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Line segments</p>
+    <p>Vctrs methods</p>
     </div>
 
-    <pre class="usage"><span class='fu'>geo_segment</span>(<span class='kw'>start</span> <span class='kw'>=</span> <span class='fu'><a href='geo_xy.html'>geo_xy</a></span>(), <span class='kw'>end</span> <span class='kw'>=</span> <span class='fu'><a href='geo_xy.html'>geo_xy</a></span>())</pre>
+    <pre class="usage"><span class='fu'>vec_cast.geos_geometry</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>to</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='fu'>vec_ptype2.geos_geometry</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>start, end</th>
-      <td><p><code><a href='geo_xy.html'>geo_xy()</a></code>s for the start and end
-of the segment, respectively.</p></td>
+      <th>x, y, to, ...</th>
+      <td><p>See <code><a href='https://vctrs.r-lib.org/reference/vec_cast.html'>vctrs::vec_cast()</a></code> and <code><a href='https://vctrs.r-lib.org/reference/vec_ptype2.html'>vctrs::vec_ptype2()</a></code>.</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <code><a href='new_geo_segment.html'>new_geo_segment()</a></code></p>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>geo_segment</span>(<span class='kw'>start</span> <span class='kw'>=</span> <span class='fu'><a href='geo_xy.html'>geo_xy</a></span>(), <span class='kw'>end</span> <span class='kw'>=</span> <span class='fu'><a href='geo_xy.html'>geo_xy</a></span>())</div><div class='output co'>#&gt; &lt;geo_segment[0]&gt;</div><div class='input'>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -147,11 +148,11 @@ of the segment, respectively.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Dewey Dunnington.</p>
+  <p><p>Developed by Dewey Dunnington, Edzer Pebesma.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -159,6 +160,8 @@ of the segment, respectively.</p></td>
 
   
 
+
+  
 
   </body>
 </html>
