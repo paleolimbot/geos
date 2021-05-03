@@ -5,6 +5,8 @@ test_that("strtree objects can be created", {
   geom <- geos_read_wkt("POLYGON ((0 0, 10 0, 10 10, 0 10, 0 0))")
   tree <- geos_strtree(geom)
 
+  expect_identical(as_geos_strtree(tree), tree)
+
   # make sure geom can be re-extracted from the object
   expect_reference(geos_strtree_data(tree), geom)
 

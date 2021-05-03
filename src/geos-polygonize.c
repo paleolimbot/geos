@@ -78,7 +78,7 @@ SEXP geos_c_polygonize_full(SEXP collection) {
 
   // don't know how to make the polygonizer fail
   if (resultGeometry == NULL) {
-    UNPROTECT(4);
+    UNPROTECT(4); // # nocov
     GEOS_ERROR("%s: ", "Error calling polygonize full"); // # nocov
   }
 

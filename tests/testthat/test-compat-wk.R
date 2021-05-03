@@ -184,6 +184,13 @@ test_that("geos_geometry_writer() silently drops M coordinates", {
 
   expect_identical(
     geos_write_wkt(
+      wk::wk_handle(wk::wkt("LINESTRING ZM (1 2 3 4, 5 6 7 8)"), geos_geometry_writer()),
+    ),
+    "LINESTRING Z (1 2 3, 5 6 7)"
+  )
+
+  expect_identical(
+    geos_write_wkt(
       wk::wk_handle(wk::wkt("POINT M (1 2 3)"), geos_geometry_writer()),
     ),
     "POINT (1 2)"

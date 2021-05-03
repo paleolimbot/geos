@@ -283,7 +283,7 @@ SEXP geos_c_normalize(SEXP geom) {
     returnCode = GEOSNormalize_r(handle, geometryResult);
 
     if (returnCode == -1) {
-      GEOSGeom_destroy_r(handle, geometryResult);
+      GEOSGeom_destroy_r(handle, geometryResult); // # nocov
       Rf_error("[%d] %s", i + 1, globalErrorMessage); // # nocov
     }
 
