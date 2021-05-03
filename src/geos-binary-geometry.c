@@ -213,7 +213,7 @@ SEXP geos_c_clearance_line_between(SEXP geom1, SEXP geom2, SEXP prepare) {
 #if LIBGEOS_VERSION_COMPILE_INT >= LIBGEOS_VERSION_INT(3, 9, 1)
       const GEOSPreparedGeometry* prepared1 = geos_common_geometry_prepared(item1);
       if (prepared1 == NULL) {
-        Rf_error("[%d] %s", i + 1, globalErrorMessage);
+        Rf_error("[%d] %s", i + 1, globalErrorMessage); // # nocov
       }
       sequenceResult = GEOSPreparedNearestPoints_r(handle, prepared1, geometry2);
 #else

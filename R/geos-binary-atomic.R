@@ -18,6 +18,14 @@ geos_distance <- function(geom1, geom2) {
 
 #' @rdname geos_distance
 #' @export
+geos_prepared_distance <- function(geom1, geom2) {
+  recycled <- recycle_common(list(sanitize_geos_geometry(geom1), sanitize_geos_geometry(geom2)))
+  wk_crs_output(recycled[[1]], recycled[[2]])
+  .Call(geos_c_prepared_distance, recycled[[1]], recycled[[2]])
+}
+
+#' @rdname geos_distance
+#' @export
 geos_distance_indexed <- function(geom1, geom2) {
   recycled <- recycle_common(list(sanitize_geos_geometry(geom1), sanitize_geos_geometry(geom2)))
   wk_crs_output(recycled[[1]], recycled[[2]])

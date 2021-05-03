@@ -2,12 +2,15 @@
 % Please edit documentation in R/geos-binary-atomic.R
 \name{geos_distance}
 \alias{geos_distance}
+\alias{geos_prepared_distance}
 \alias{geos_distance_indexed}
 \alias{geos_distance_hausdorff}
 \alias{geos_distance_frechet}
 \title{Distance calculations}
 \usage{
 geos_distance(geom1, geom2)
+
+geos_prepared_distance(geom1, geom2)
 
 geos_distance_indexed(geom1, geom2)
 

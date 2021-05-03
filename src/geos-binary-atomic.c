@@ -35,7 +35,7 @@
     }                                                             \
   }                                                               \
                                                                   \
-    UNPROTECT(1);                                                   \
+  UNPROTECT(1);                                                   \
   return result;
 
 
@@ -53,6 +53,55 @@ SEXP geos_c_distance_hausdorff(SEXP geom1, SEXP geom2) {
 
 SEXP geos_c_distance_frechet(SEXP geom1, SEXP geom2) {
   GEOS_DIST(GEOSFrechetDistance_r);
+}
+
+SEXP geos_c_prepared_distance(SEXP geom1, SEXP geom2) {
+#if LIBGEOS_VERSION_COMPILE_INT >= LIBGEOS_VERSION_INT(3, 9, 1)
+  if (libgeos_version_int() < LIBGEOS_VERSION_INT(3, 9, 1)) {
+    ERROR_OLD_LIBGEOS("GEOSPreparedDistance_r()", "3.9.1");
+  }
+
+  R_xlen_t size = Rf_xlength(geom1);
+  SEXP result = PROTECT(Rf_allocVector(REALSXP, size));
+  double* pResult = REAL(result);
+
+  GEOS_INIT();
+
+  SEXP item1;
+  SEXP item2;
+  GEOSGeometry* geometry1;
+  GEOSGeometry* geometry2;
+  for (R_xlen_t i = 0; i < size; i++) {
+    item1 = VECTOR_ELT(geom1, i);
+    item2 = VECTOR_ELT(geom2, i);
+
+    if (item1 == R_NilValue || item2 == R_NilValue) {
+      pResult[i] = NA_REAL;
+      continue;
+    }
+
+    geometry1 = (GEOSGeometry*) R_ExternalPtrAddr(item1);
+    GEOS_CHECK_GEOMETRY(geometry1, i);
+    geometry2 = (GEOSGeometry*) R_ExternalPtrAddr(item2);
+    GEOS_CHECK_GEOMETRY(geometry2, i);
+
+    const GEOSPreparedGeometry* prepared1 = geos_common_geometry_prepared(item1);
+    if (prepared1 == NULL) {
+      Rf_error("[%d] %s", i + 1, globalErrorMessage); // # nocov
+    }
+
+    int resultCode = GEOSPreparedDistance_r(handle, prepared1, geometry2, &pResult[i]);
+
+    if (resultCode == 0) {
+      Rf_error("[%d] %s", i + 1, globalErrorMessage);
+    }
+  }
+
+  UNPROTECT(1);
+  return result;
+#else
+  ERROR_OLD_LIBGEOS_BUILD("GEOSPreparedDistance_r()", "3.9.1");
+#endif
 }
 
 #define GEOS_DIST_DENSIFY(_func)                                \

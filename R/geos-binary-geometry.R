@@ -16,6 +16,7 @@
 #'   to `y`.
 #'
 #' @inheritParams geos_disjoint
+#' @param prepare Use prepared geometries to calculate clearance line
 #' @param grid_size For `_prec()` variants, the grid size such that all vertices of
 #'   the resulting geometry will lie on the grid.
 #'

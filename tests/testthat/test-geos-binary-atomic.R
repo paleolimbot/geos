@@ -25,6 +25,12 @@ test_that("distance functions work", {
   )
 })
 
+test_that("prepared distance function works", {
+  skip_if_not(geos_version() >= "3.9.1")
+
+  expect_identical(geos_prepared_distance(c("POINT (0 0)", NA), "POINT (0 10)"), c(10, NA))
+})
+
 test_that("linear referencing works", {
   expect_error(geos_project("POINT (0 0)", "POINT (0 0)"), "only supports lineal geometry")
   expect_identical(

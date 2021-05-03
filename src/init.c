@@ -9,6 +9,7 @@ extern SEXP geos_c_distance(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_distance_indexed(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_distance_hausdorff(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_distance_frechet(SEXP geom1, SEXP geom2);
+extern SEXP geos_c_prepared_distance(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_distance_hausdorff_densify(SEXP geom1, SEXP geom2, SEXP densifyFrac);
 extern SEXP geos_c_distance_frechet_densify(SEXP geom1, SEXP geom2, SEXP densifyFrac);
 extern SEXP geos_c_project(SEXP geom1, SEXP geom2);
@@ -164,6 +165,7 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_distance_indexed", (DL_FUNC) &geos_c_distance_indexed, 2},
   {"geos_c_distance_hausdorff", (DL_FUNC) &geos_c_distance_hausdorff, 2},
   {"geos_c_distance_frechet", (DL_FUNC) &geos_c_distance_frechet, 2},
+  {"geos_c_prepared_distance", (DL_FUNC) &geos_c_prepared_distance, 2},
   {"geos_c_distance_hausdorff_densify", (DL_FUNC) &geos_c_distance_hausdorff_densify, 3},
   {"geos_c_distance_frechet_densify", (DL_FUNC) &geos_c_distance_frechet_densify, 3},
   {"geos_c_project", (DL_FUNC) &geos_c_project, 2},
