@@ -206,7 +206,7 @@ geos_largest_empty_circle_spec <- function(geom, boundary, tolerance) {
 #' @export
 geos_largest_empty_crc <- function(geom, boundary, tolerance) {
   spec <- geos_largest_empty_circle_spec(geom, boundary, tolerance)
-  xy <- unclass(as_xy(geos_point_end(spec)))
+  xy <- unclass(as_xy(geos_point_start(spec)))
 
   wk::crc(
     xy$x, xy$y,
