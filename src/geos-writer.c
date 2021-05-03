@@ -333,7 +333,9 @@ int geos_writer_geometry_end(const wk_meta_t* meta, uint32_t part_id, void* hand
     writer->recursion_level--;
 
     if (writer->recursion_level == 0) {
-        geos_writer_geos_append(writer, geos_common_geometry_xptr(geom));
+        SEXP new_xptr = PROTECT(geos_common_geometry_xptr(geom));
+        geos_writer_geos_append(writer, new_xptr);
+        UNPROTECT(1);
     } else {
         geos_writer_geom_append(writer, geom);
     }
