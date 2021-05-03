@@ -1,4 +1,4 @@
-# geos (development version)
+# geos 0.1.0
 
 * Added vector class improvements for `geos_geometry()` vectors
   including a proper `str()` method, proper behaviour with
