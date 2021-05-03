@@ -79,7 +79,14 @@ geos_minimum_rotated_rectangle <- function(geom) {
   new_geos_geometry(.Call(geos_c_minimum_rotated_rectagle, geom), crs = attr(geom, "crs", exact = TRUE))
 }
 
-#' @rdname geos_centroid
+#' Circular approximations
+#'
+#' @inheritParams geos_centroid
+#' @param tolerance Threshold for considering circles to be touching
+#'   a boundary.
+#' @param boundary An outer boundary for the largest empty circle
+#'   algorithm.
+#'
 #' @export
 geos_minimum_bounding_circle <- function(geom) {
   geom <- sanitize_geos_geometry(geom)
@@ -88,7 +95,7 @@ geos_minimum_bounding_circle <- function(geom) {
   new_geos_geometry(result, crs = attr(geom, "crs", exact = TRUE))
 }
 
-#' @rdname geos_centroid
+#' @rdname geos_minimum_bounding_circle
 #' @export
 geos_minimum_bounding_crc <- function(geom) {
   geom <- sanitize_geos_geometry(geom)
@@ -101,7 +108,7 @@ geos_minimum_bounding_crc <- function(geom) {
   )
 }
 
-#' @rdname geos_centroid
+#' @rdname geos_minimum_bounding_circle
 #' @export
 geos_maximum_inscribed_circle_spec <- function(geom, tolerance) {
   geom <- sanitize_geos_geometry(geom)
@@ -112,7 +119,7 @@ geos_maximum_inscribed_circle_spec <- function(geom, tolerance) {
   )
 }
 
-#' @rdname geos_centroid
+#' @rdname geos_minimum_bounding_circle
 #' @export
 geos_maximum_inscribed_crc <- function(geom, tolerance) {
   spec <- geos_maximum_inscribed_circle_spec(geom, tolerance)

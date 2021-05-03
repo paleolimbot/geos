@@ -34,7 +34,7 @@ geos_shared_paths(geom1, geom2)
 
 geos_snap(geom1, geom2, tolerance = .Machine$double.eps^2)
 
-geos_clearance_line_between(geom1, geom2)
+geos_clearance_line_between(geom1, geom2, prepare = FALSE)
 }
 \arguments{
 \item{geom1}{\link[=as_geos_geometry]{GEOS geometry vectors},
@@ -48,6 +48,8 @@ the resulting geometry will lie on the grid.}
 
 \item{tolerance}{The maximum separation of vertices that should
 be considered equal.}
+
+\item{prepare}{Use prepared geometries to calculate clearance line}
 }
 \value{
 A \link[=as_geos_geometry]{GEOS geometry vector} along the recycled

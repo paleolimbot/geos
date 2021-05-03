@@ -116,10 +116,8 @@ static inline void geos_writer_coord_seq_append(geos_writer_t* writer, const dou
 }
 
 static inline GEOSCoordSequence* geos_writer_coord_seq_finalize(geos_writer_t* writer) {
+    // in geometry_start, writer->coord_size is set to 2 or 3
     int geos_coord_size = writer->coord_size;
-    if (geos_coord_size > 3) {
-        geos_coord_size = 3;
-    }
 
     GEOSCoordSequence* seq = GEOSCoordSeq_create_r(handle, writer->coord_id, geos_coord_size);
     if (seq == NULL) {

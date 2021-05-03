@@ -25,6 +25,12 @@ test_that("distance functions work", {
   )
 })
 
+test_that("prepared distance function works", {
+  skip_if_not(geos_version() >= "3.9.1")
+
+  expect_identical(geos_prepared_distance(c("POINT (0 0)", NA), "POINT (0 10)"), c(10, NA))
+})
+
 test_that("linear referencing works", {
   expect_error(geos_project("POINT (0 0)", "POINT (0 0)"), "only supports lineal geometry")
   expect_identical(
@@ -223,6 +229,27 @@ test_that("binary predicates work", {
   expect_true(
     geos_prepared_covered_by(
       "POINT (5 5)",
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"
+    )
+  )
+})
+
+test_that("prepared binary predicates re-use cached prepared geometry", {
+  # this is hard to test from R but we can at least ensure that the line
+  # gets hit in code coverage
+  geom <- as_geos_geometry("POINT (5 5)")
+  expect_true(
+    geos_prepared_intersects(
+      geom,
+      "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"
+    )
+  )
+
+  # the second time should return the same result but not
+  # re-compute the prepared geometry
+  expect_true(
+    geos_prepared_intersects(
+      geom,
       "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"
     )
   )

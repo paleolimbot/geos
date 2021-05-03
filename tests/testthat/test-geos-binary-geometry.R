@@ -67,22 +67,22 @@ test_that("binary_prec operators work", {
 
   if ((geos_version(runtime = TRUE) >= "3.9.1") && (geos_version(runtime = FALSE) >= "3.9.1")) {
     expect_identical(
-      geos_area(geos_intersection(poly1, poly2)),
+      geos_area(geos_intersection_prec(poly1, poly2, grid_size = 0.1)),
       c(NA, 25)
     )
 
     expect_identical(
-      geos_area(geos_difference(poly1, poly2)),
+      geos_area(geos_difference_prec(poly1, poly2, grid_size = 0.1)),
       c(NA, 100 - 25)
     )
 
     expect_identical(
-      geos_area(geos_sym_difference(poly1, poly2)),
+      geos_area(geos_sym_difference_prec(poly1, poly2, grid_size = 0.1)),
       c(NA, 100 * 2 - 50)
     )
 
     expect_identical(
-      geos_area(geos_union(poly1, poly2)),
+      geos_area(geos_union_prec(poly1, poly2, grid_size = 0.1)),
       c(NA, 100 * 2 - 25)
     )
 
@@ -95,8 +95,8 @@ test_that("binary_prec operators work", {
 
     expect_identical(
       geos_equals(
-        geos_unary_union(c(NA, collection)),
-        geos_union(poly1, poly2)
+        geos_unary_union_prec(c(NA, collection), grid_size = 0.1),
+        geos_union_prec(poly1, poly2, grid_size = 0.1)
       ),
       c(NA, TRUE)
     )
@@ -174,4 +174,42 @@ test_that("clearance line between works", {
     geos_clearance_line_between("POINT (nan inf)", "POINT (0 0)"),
     "Unknown error"
   )
+})
+
+test_that("clearance line between works with prepare = TRUE", {
+  skip_if_not(geos_version() >= "3.9.1")
+
+  expect_identical(
+    geos_write_wkt(
+      geos_clearance_line_between(
+        "POINT (5 5)",
+        c(NA, "POINT (1 1)", "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"),
+        prepare = TRUE
+      )
+    ),
+    c(NA, "LINESTRING (5 5, 1 1)", "LINESTRING (5 5, 5 5)")
+  )
+
+  expect_true(
+    geos_is_empty(
+      geos_clearance_line_between("POINT (0 0)", "POINT EMPTY", prepare = TRUE)
+    )
+  )
+
+  expect_error(
+    geos_clearance_line_between("POINT (nan inf)", "POINT (0 0)", prepare = TRUE),
+    "Unknown error"
+  )
+})
+
+test_that("geos_largest_empty_circle() works", {
+  skip_if_not(geos_version() >= "3.9.1")
+
+  boundary <- wk::rct(0, 0, 10, 10)
+  geom <- "POLYGON ((1 1, 0 10, 10 0, 1 1))"
+  spec <- geos_largest_empty_circle_spec(geom, boundary, tolerance = 1e-4)
+  expect_identical(geos_write_wkt(spec, precision = 4), "LINESTRING (10 10, 5 5)")
+
+  crc <- geos_largest_empty_crc(geom, boundary, tolerance = 1e-4)
+  expect_identical(unclass(crc)$r, geos_length(spec))
 })

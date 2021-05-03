@@ -9,6 +9,7 @@ extern SEXP geos_c_distance(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_distance_indexed(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_distance_hausdorff(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_distance_frechet(SEXP geom1, SEXP geom2);
+extern SEXP geos_c_prepared_distance(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_distance_hausdorff_densify(SEXP geom1, SEXP geom2, SEXP densifyFrac);
 extern SEXP geos_c_distance_frechet_densify(SEXP geom1, SEXP geom2, SEXP densifyFrac);
 extern SEXP geos_c_project(SEXP geom1, SEXP geom2);
@@ -46,7 +47,8 @@ extern SEXP geos_c_intersection_prec(SEXP geom1, SEXP geom2, SEXP param);
 extern SEXP geos_c_difference_prec(SEXP geom1, SEXP geom2, SEXP param);
 extern SEXP geos_c_sym_difference_prec(SEXP geom1, SEXP geom2, SEXP param);
 extern SEXP geos_c_union_prec(SEXP geom1, SEXP geom2, SEXP param);
-extern SEXP geos_c_clearance_line_between(SEXP geom1, SEXP geom2);
+extern SEXP geos_c_largest_empty_circle(SEXP geom1, SEXP geom2, SEXP param);
+extern SEXP geos_c_clearance_line_between(SEXP geom1, SEXP geom2, SEXP prepare);
 extern SEXP geos_c_geos_geometry_is_null(SEXP geom);
 extern SEXP geos_c_geos_geometry_is_null_or_xptr(SEXP geom);
 extern SEXP geos_c_read_wkt(SEXP input);
@@ -163,6 +165,7 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_distance_indexed", (DL_FUNC) &geos_c_distance_indexed, 2},
   {"geos_c_distance_hausdorff", (DL_FUNC) &geos_c_distance_hausdorff, 2},
   {"geos_c_distance_frechet", (DL_FUNC) &geos_c_distance_frechet, 2},
+  {"geos_c_prepared_distance", (DL_FUNC) &geos_c_prepared_distance, 2},
   {"geos_c_distance_hausdorff_densify", (DL_FUNC) &geos_c_distance_hausdorff_densify, 3},
   {"geos_c_distance_frechet_densify", (DL_FUNC) &geos_c_distance_frechet_densify, 3},
   {"geos_c_project", (DL_FUNC) &geos_c_project, 2},
@@ -200,7 +203,8 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_difference_prec", (DL_FUNC) &geos_c_difference_prec, 3},
   {"geos_c_sym_difference_prec", (DL_FUNC) &geos_c_sym_difference_prec, 3},
   {"geos_c_union_prec", (DL_FUNC) &geos_c_union_prec, 3},
-  {"geos_c_clearance_line_between", (DL_FUNC) &geos_c_clearance_line_between, 2},
+  {"geos_c_largest_empty_circle", (DL_FUNC) &geos_c_largest_empty_circle, 3},
+  {"geos_c_clearance_line_between", (DL_FUNC) &geos_c_clearance_line_between, 3},
   {"geos_c_geos_geometry_is_null", (DL_FUNC) &geos_c_geos_geometry_is_null, 1},
   {"geos_c_geos_geometry_is_null_or_xptr", (DL_FUNC) &geos_c_geos_geometry_is_null_or_xptr, 1},
   {"geos_c_read_wkt", (DL_FUNC) &geos_c_read_wkt, 1},

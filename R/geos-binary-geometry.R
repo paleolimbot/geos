@@ -16,6 +16,7 @@
 #'   to `y`.
 #'
 #' @inheritParams geos_disjoint
+#' @param prepare Use prepared geometries to calculate clearance line
 #' @param grid_size For `_prec()` variants, the grid size such that all vertices of
 #'   the resulting geometry will lie on the grid.
 #'
@@ -167,10 +168,49 @@ geos_snap <- function(geom1, geom2, tolerance = .Machine$double.eps ^ 2) {
 
 #' @rdname geos_intersection
 #' @export
-geos_clearance_line_between <- function(geom1, geom2) {
-  recycled <- recycle_common(list(sanitize_geos_geometry(geom1), sanitize_geos_geometry(geom2)))
+geos_clearance_line_between <- function(geom1, geom2, prepare = FALSE) {
+  recycled <- recycle_common(
+    list(
+      sanitize_geos_geometry(geom1),
+      sanitize_geos_geometry(geom2)
+    )
+  )
+
+  prepare <- sanitize_logical_scalar(prepare)
+
   new_geos_geometry(
-    .Call(geos_c_clearance_line_between, recycled[[1]], recycled[[2]]),
+    .Call(geos_c_clearance_line_between, recycled[[1]], recycled[[2]], prepare),
     crs = wk_crs_output(recycled[[1]], recycled[[2]])
+  )
+}
+
+# documented with other circle functions in geos-unary-geometry.R
+#' @rdname geos_minimum_bounding_circle
+#' @export
+geos_largest_empty_circle_spec <- function(geom, boundary, tolerance) {
+  recycled <- recycle_common(
+    list(
+      sanitize_geos_geometry(geom),
+      sanitize_geos_geometry(boundary),
+      sanitize_double(tolerance)
+    )
+  )
+
+  new_geos_geometry(
+    .Call(geos_c_largest_empty_circle, recycled[[1]], recycled[[2]], recycled[[3]]),
+    crs = wk_crs_output(recycled[[1]], recycled[[2]])
+  )
+}
+
+#' @rdname geos_minimum_bounding_circle
+#' @export
+geos_largest_empty_crc <- function(geom, boundary, tolerance) {
+  spec <- geos_largest_empty_circle_spec(geom, boundary, tolerance)
+  xy <- unclass(as_xy(geos_point_end(spec)))
+
+  wk::crc(
+    xy$x, xy$y,
+    geos_length(spec),
+    crs = attr(spec, "crs", exact = TRUE)
   )
 }

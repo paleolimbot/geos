@@ -6,10 +6,6 @@
 \alias{geos_minimum_width}
 \alias{geos_minimum_clearance_line}
 \alias{geos_minimum_rotated_rectangle}
-\alias{geos_minimum_bounding_circle}
-\alias{geos_minimum_bounding_crc}
-\alias{geos_maximum_inscribed_circle_spec}
-\alias{geos_maximum_inscribed_crc}
 \alias{geos_unary_union}
 \alias{geos_unary_union_prec}
 \alias{geos_coverage_union}
@@ -44,14 +40,6 @@ geos_minimum_width(geom)
 geos_minimum_clearance_line(geom)
 
 geos_minimum_rotated_rectangle(geom)
-
-geos_minimum_bounding_circle(geom)
-
-geos_minimum_bounding_crc(geom)
-
-geos_maximum_inscribed_circle_spec(geom, tolerance)
-
-geos_maximum_inscribed_crc(geom, tolerance)
 
 geos_unary_union(geom)
 
@@ -107,15 +95,15 @@ geos_clip_by_rect(geom, rect)
 \arguments{
 \item{geom}{A \link[=as_geos_geometry]{GEOS geometry vector}}
 
-\item{tolerance}{A minimum distance to use for simplification. Use a higher
-value for more simplification.}
-
 \item{grid_size}{For \verb{_prec()} variants, the grid size such that all vertices of
 the resulting geometry will lie on the grid.}
 
 \item{srid}{An integer spatial reference identifier.}
 
 \item{index}{The index of the point or geometry to extract.}
+
+\item{tolerance}{A minimum distance to use for simplification. Use a higher
+value for more simplification.}
 
 \item{preserve_topology}{Should topology internal to each feature
 be preserved?}

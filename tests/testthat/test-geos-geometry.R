@@ -71,6 +71,7 @@ test_that("geos_geometry can be put into a data.frame", {
     data.frame(geom = new_geos_geometry(list(NULL), crs = NULL)),
     new_data_frame(list(geom = new_geos_geometry(list(NULL), crs = NULL)))
   )
+  expect_error(as.data.frame(new_geos_geometry(list(NULL), crs = NULL)), "cannot coerce class")
 })
 
 test_that("geos_geometry default format/print/str methods work", {
