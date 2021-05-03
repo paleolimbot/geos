@@ -291,13 +291,13 @@ for (R_xlen_t i = 0; i < size; i++) {                                       \
   geometry2 = (GEOSGeometry*) R_ExternalPtrAddr(item2);                     \
   GEOS_CHECK_GEOMETRY(geometry2, i);                                        \
                                                                             \
-  const GEOSPreparedGeometry* prepared = GEOSPrepare_r(handle, geometry1);  \
-  GEOS_CHECK_GEOMETRY(prepared, i);                                         \
+  const GEOSPreparedGeometry* prepared = geos_common_geometry_prepared(item1);  \
+  if (prepared == NULL) {                                                   \
+    Rf_error("[%d] %s", i + 1, globalErrorMessage);                         \
+  }                                                                         \
   int resultCode = _func(handle, prepared, geometry2);                      \
-  GEOSPreparedGeom_destroy_r(handle, prepared);                             \
-                                                                            \
   if (resultCode == 2) {                                                    \
-    Rf_error("[%d] %s", i + 1, globalErrorMessage);                                           \
+    Rf_error("[%d] %s", i + 1, globalErrorMessage);                         \
   }                                                                         \
   pResult[i] = resultCode;                                                  \
 }                                                                           \

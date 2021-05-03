@@ -135,8 +135,10 @@ SEXP strtree_query_base(SEXP treeExternalPtr, SEXP geom, GEOSQueryCallback callb
 
     const GEOSPreparedGeometry* prepared;
     if (prepare) {
-      prepared = GEOSPrepare_r(handle, geometry);
-      GEOS_CHECK_GEOMETRY(prepared, i);
+      prepared = geos_common_geometry_prepared(item);
+      if (prepared == NULL) {
+        Rf_error("[%d] %s", i + 1, globalErrorMessage);
+      }
     } else {
       prepared = NULL;
     }
@@ -149,8 +151,6 @@ SEXP strtree_query_base(SEXP treeExternalPtr, SEXP geom, GEOSQueryCallback callb
     queryResult.prepared = (GEOSPreparedGeometry*) prepared;
 
     GEOSSTRtree_query_r(handle, tree, geometry, callback, &queryResult);
-
-    GEOSPreparedGeom_destroy_r(handle, prepared);
 
     // at this point, queryResult now holds the indices of potential intersectors to `geometry`
     // allocate a new vector with the appropriate length and copy the temporary result there

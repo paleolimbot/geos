@@ -25,6 +25,11 @@ extern char globalErrorMessage[GEOS_ERROR_MESSAGE_BUFFER_SIZE];
 void geos_common_release_geometry(SEXP externalPtr);
 SEXP geos_common_geometry_xptr(GEOSGeometry* geometry);
 
+// return the prepared geometry associated with the geos_geometry exernalptr
+// this is cached so that subsequent calls don't need to re-prepare this
+// geometry
+const GEOSPreparedGeometry* geos_common_geometry_prepared(SEXP externalPtr);
+
 // when referencing child geometries, we can avoid cloning by protecting
 // the parent from garbage collection but not registering a finalizer
 // (these geometries must not be finalized, as they are owned by
