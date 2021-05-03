@@ -76,11 +76,11 @@
 <a href="#geos" class="anchor" aria-hidden="true"></a>geos</h1></div>
 <!-- badges: start -->
 
-<p>The goal of geom is to provide <a href="https://geos.osgeo.org/doxygen/geos__c_8h_source.html" class="external-link">access to the GEOS C API</a> by vectorizing the C functions for use in R. See the <a href="https://paleolimbot.github.io/geos/reference/index.html" class="external-link">package function reference</a> for which functions are implemented in the R API.</p>
+<p>The goal of geom is to provide access to the GEOS C API by vectorizing the C functions for use in R. See the <a href="https://paleolimbot.github.io/geos/reference/index.html" class="external-link">package function reference</a> for which functions are implemented in the R API.</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor" aria-hidden="true"></a>Installation</h2>
-<p>You can install the released version of s2 from <a href="https://CRAN.R-project.org" class="external-link">CRAN</a> with:</p>
+<p>You can install the released version of geos from <a href="https://CRAN.R-project.org" class="external-link">CRAN</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"geos"</span><span class="op">)</span></code></pre></div>
 <p>And the development version from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
@@ -153,9 +153,10 @@
 <p>The easiest way to get data into and out of the package is using the <a href="https://r-spatial.github.io/sf/" class="external-link">sf package</a>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span>
-<span class="co">#&gt; Linking to GEOS 3.8.1, GDAL 3.1.2, PROJ 7.1.0</span>
+<span class="co">#&gt; Warning: package 'sf' was built under R version 4.0.5</span>
+<span class="co">#&gt; Linking to GEOS 3.8.1, GDAL 3.2.0, PROJ 7.2.0</span>
 <span class="va">nc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">read_sf</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"shape/nc.shp"</span>, package <span class="op">=</span> <span class="st">"sf"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html" class="external-link">st_transform</a></span><span class="op">(</span><span class="fl">32119</span><span class="op">)</span> <span class="co"># North Caroline state plane, m.</span>
+  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html" class="external-link">st_transform</a></span><span class="op">(</span><span class="fl">32119</span><span class="op">)</span> <span class="co"># North Carolina state plane, m.</span>
 
 <span class="va">nc_geos</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/as_geos_geometry.html">as_geos_geometry</a></span><span class="op">(</span><span class="va">nc</span><span class="op">)</span>
 
@@ -164,11 +165,11 @@
   <span class="fu"><a href="reference/geos_centroid.html">geos_unary_union</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
   <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sfc.html" class="external-link">st_as_sfc</a></span><span class="op">(</span><span class="va">nc_state</span><span class="op">)</span>
 <span class="co">#&gt; Geometry set for 1 feature </span>
-<span class="co">#&gt; geometry type:  MULTIPOLYGON</span>
-<span class="co">#&gt; dimension:      XY</span>
-<span class="co">#&gt; bbox:           xmin: 123829.8 ymin: 14740.06 xmax: 930518.6 ymax: 318255.5</span>
-<span class="co">#&gt; projected CRS:  NAD83 / North Carolina</span>
-<span class="co">#&gt; MULTIPOLYGON (((705860.3 27430.49, 698896.5 186...</span></code></pre></div>
+<span class="co">#&gt; Geometry type: MULTIPOLYGON</span>
+<span class="co">#&gt; Dimension:     XY</span>
+<span class="co">#&gt; Bounding box:  xmin: 123829.8 ymin: 14740.06 xmax: 930518.6 ymax: 318255.5</span>
+<span class="co">#&gt; Projected CRS: NAD83 / North Carolina</span>
+<span class="co">#&gt; MULTIPOLYGON (((705428.2 49242.97, 705860.3 274...</span></code></pre></div>
 </div>
 </div>
   </div>
@@ -206,7 +207,6 @@
 <div class="dev-status">
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://www.tidyverse.org/lifecycle/#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
 <li><a href="https://codecov.io/gh/paleolimbot/geos?branch=master" class="external-link"><img src="https://codecov.io/gh/paleolimbot/geos/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
 </ul>
 </div>

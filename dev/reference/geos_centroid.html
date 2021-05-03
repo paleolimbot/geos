@@ -135,14 +135,6 @@
 
 <span class='fu'>geos_minimum_rotated_rectangle</span><span class='op'>(</span><span class='va'>geom</span><span class='op'>)</span>
 
-<span class='fu'>geos_minimum_bounding_circle</span><span class='op'>(</span><span class='va'>geom</span><span class='op'>)</span>
-
-<span class='fu'>geos_minimum_bounding_crc</span><span class='op'>(</span><span class='va'>geom</span><span class='op'>)</span>
-
-<span class='fu'>geos_maximum_inscribed_circle_spec</span><span class='op'>(</span><span class='va'>geom</span>, <span class='va'>tolerance</span><span class='op'>)</span>
-
-<span class='fu'>geos_maximum_inscribed_crc</span><span class='op'>(</span><span class='va'>geom</span>, <span class='va'>tolerance</span><span class='op'>)</span>
-
 <span class='fu'>geos_unary_union</span><span class='op'>(</span><span class='va'>geom</span><span class='op'>)</span>
 
 <span class='fu'>geos_unary_union_prec</span><span class='op'>(</span><span class='va'>geom</span>, <span class='va'>grid_size</span><span class='op'>)</span>
@@ -202,11 +194,6 @@
       <td><p>A <a href='as_geos_geometry.html'>GEOS geometry vector</a></p></td>
     </tr>
     <tr>
-      <th>tolerance</th>
-      <td><p>A minimum distance to use for simplification. Use a higher
-value for more simplification.</p></td>
-    </tr>
-    <tr>
       <th>grid_size</th>
       <td><p>For <code>_prec()</code> variants, the grid size such that all vertices of
 the resulting geometry will lie on the grid.</p></td>
@@ -218,6 +205,11 @@ the resulting geometry will lie on the grid.</p></td>
     <tr>
       <th>index</th>
       <td><p>The index of the point or geometry to extract.</p></td>
+    </tr>
+    <tr>
+      <th>tolerance</th>
+      <td><p>A minimum distance to use for simplification. Use a higher
+value for more simplification.</p></td>
     </tr>
     <tr>
       <th>preserve_topology</th>
@@ -252,7 +244,7 @@ recycled to the length of the longest item.</p></td>
 </div><div class='co'>#&gt; &lt;geos_geometry[1]&gt;
 #&gt; [1] &lt;LINESTRING (3 5, 0 5)&gt;</div><div class='input'><span class='fu'>geos_minimum_rotated_rectangle</span><span class='op'>(</span><span class='st'>"POLYGON ((0 0, 1 0, 0.5 0.5, 0 0))"</span><span class='op'>)</span>
 </div><div class='co'>#&gt; &lt;geos_geometry[1]&gt;
-#&gt; [1] &lt;POLYGON ((1 0, 1 0.5, 0 0.5, 0 0, 1 0))&gt;</div><div class='input'><span class='fu'>geos_minimum_bounding_circle</span><span class='op'>(</span><span class='st'>"LINESTRING (-1 -1, 1 1)"</span><span class='op'>)</span>
+#&gt; [1] &lt;POLYGON ((1 0, 1 0.5, 0 0.5, 0 0, 1 0))&gt;</div><div class='input'><span class='fu'><a href='geos_minimum_bounding_circle.html'>geos_minimum_bounding_circle</a></span><span class='op'>(</span><span class='st'>"LINESTRING (-1 -1, 1 1)"</span><span class='op'>)</span>
 </div><div class='co'>#&gt; &lt;geos_geometry[1]&gt;
 #&gt; [1] &lt;POLYGON [-1.4142 -1.4142...1.4142 1.4142]&gt;</div><div class='input'><span class='fu'>geos_unary_union</span><span class='op'>(</span><span class='st'>"MULTIPOINT (0 1, 0 1)"</span><span class='op'>)</span>
 </div><div class='co'>#&gt; &lt;geos_geometry[1]&gt;

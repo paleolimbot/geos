@@ -177,7 +177,7 @@ to <code>y</code>.</p></li>
 
 <span class='fu'>geos_snap</span><span class='op'>(</span><span class='va'>geom1</span>, <span class='va'>geom2</span>, tolerance <span class='op'>=</span> <span class='va'>.Machine</span><span class='op'>$</span><span class='va'>double.eps</span><span class='op'>^</span><span class='fl'>2</span><span class='op'>)</span>
 
-<span class='fu'>geos_clearance_line_between</span><span class='op'>(</span><span class='va'>geom1</span>, <span class='va'>geom2</span><span class='op'>)</span></pre>
+<span class='fu'>geos_clearance_line_between</span><span class='op'>(</span><span class='va'>geom1</span>, <span class='va'>geom2</span>, prepare <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -201,6 +201,10 @@ the resulting geometry will lie on the grid.</p></td>
       <th>tolerance</th>
       <td><p>The maximum separation of vertices that should
 be considered equal.</p></td>
+    </tr>
+    <tr>
+      <th>prepare</th>
+      <td><p>Use prepared geometries to calculate clearance line</p></td>
     </tr>
     </table>
 
