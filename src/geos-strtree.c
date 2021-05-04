@@ -47,6 +47,9 @@ SEXP geos_c_strtree_create(SEXP geom, SEXP node_capacity) {
   // beucase it's highly unlikely that any query will actually return
   // all the elements.
   SEXP geomIndicesSwap = PROTECT(Rf_allocVector(REALSXP, size));
+  // Not initializing this array causes a valgrind error when an strtree
+  // is serialized, because uninitialized valules are fed to the serializer
+  memset(REAL(geomIndicesSwap), 0, Rf_xlength(geomIndicesSwap) * sizeof(double));
 
   // We only get two SEXPs to protect from garbage collection with an externalptr
   // and we'll used one of to protect `geom`. Use a list() to get around this
