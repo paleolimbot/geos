@@ -58,8 +58,6 @@
 
 
 
-<!-- dependencies from examples -->
-
 
   
 
@@ -83,7 +81,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">geos</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -125,7 +123,7 @@
     <p>Unnest nested geometries</p>
     </div>
 
-    <pre class="usage"><span class='fu'>geos_unnest</span><span class='op'>(</span><span class='va'>geom</span>, keep_empty <span class='op'>=</span> <span class='cn'>FALSE</span>, keep_multi <span class='op'>=</span> <span class='cn'>TRUE</span>, max_depth <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></pre>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>geos_unnest</span><span class='op'>(</span><span class='va'>geom</span>, keep_empty <span class='op'>=</span> <span class='cn'>FALSE</span>, keep_multi <span class='op'>=</span> <span class='cn'>TRUE</span>, max_depth <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -157,10 +155,11 @@ that can be used to map elements of the result to the
 original item.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>geos_unnest</span><span class='op'>(</span><span class='st'>"GEOMETRYCOLLECTION (POINT (1 2), POINT (3 4))"</span><span class='op'>)</span>
-</div><div class='co'>#&gt; &lt;geos_geometry[2]&gt;
-#&gt; [1] &lt;POINT (1 2)&gt; &lt;POINT (3 4)&gt;</div><div class='input'>
-</div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='fu'>geos_unnest</span><span class='op'>(</span><span class='st'>"GEOMETRYCOLLECTION (POINT (1 2), POINT (3 4))"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;geos_geometry[2]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] &lt;POINT (1 2)&gt; &lt;POINT (3 4)&gt;</span>
+<span class='r-in'></span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

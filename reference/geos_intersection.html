@@ -74,8 +74,6 @@ to y.
 
 
 
-<!-- dependencies from examples -->
-
 
   
 
@@ -99,7 +97,7 @@ to y.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">geos</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -157,7 +155,7 @@ to <code>y</code>.</p></li>
 
     </div>
 
-    <pre class="usage"><span class='fu'>geos_intersection</span><span class='op'>(</span><span class='va'>geom1</span>, <span class='va'>geom2</span><span class='op'>)</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>geos_intersection</span><span class='op'>(</span><span class='va'>geom1</span>, <span class='va'>geom2</span><span class='op'>)</span>
 
 <span class='fu'>geos_difference</span><span class='op'>(</span><span class='va'>geom1</span>, <span class='va'>geom2</span><span class='op'>)</span>
 
@@ -177,7 +175,7 @@ to <code>y</code>.</p></li>
 
 <span class='fu'>geos_snap</span><span class='op'>(</span><span class='va'>geom1</span>, <span class='va'>geom2</span>, tolerance <span class='op'>=</span> <span class='va'>.Machine</span><span class='op'>$</span><span class='va'>double.eps</span><span class='op'>^</span><span class='fl'>2</span><span class='op'>)</span>
 
-<span class='fu'>geos_clearance_line_between</span><span class='op'>(</span><span class='va'>geom1</span>, <span class='va'>geom2</span>, prepare <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
+<span class='fu'>geos_clearance_line_between</span><span class='op'>(</span><span class='va'>geom1</span>, <span class='va'>geom2</span>, prepare <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -214,26 +212,32 @@ be considered equal.</p></td>
 length of <code>geom1</code> and <code>geom2</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>poly1</span> <span class='op'>&lt;-</span> <span class='st'>"POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"</span>
-<span class='va'>poly2</span> <span class='op'>&lt;-</span> <span class='st'>"POLYGON ((5 5, 5 15, 15 15, 15 5, 5 5))"</span>
-
-<span class='fu'>geos_intersection</span><span class='op'>(</span><span class='va'>poly1</span>, <span class='va'>poly2</span><span class='op'>)</span>
-</div><div class='co'>#&gt; &lt;geos_geometry[1]&gt;
-#&gt; [1] &lt;POLYGON ((5 10, 10 10, 10 5, 5 5, 5 10))&gt;</div><div class='input'><span class='fu'>geos_difference</span><span class='op'>(</span><span class='va'>poly1</span>, <span class='va'>poly2</span><span class='op'>)</span>
-</div><div class='co'>#&gt; &lt;geos_geometry[1]&gt;
-#&gt; [1] &lt;POLYGON [0 0...10 10]&gt;</div><div class='input'><span class='fu'>geos_sym_difference</span><span class='op'>(</span><span class='va'>poly1</span>, <span class='va'>poly2</span><span class='op'>)</span>
-</div><div class='co'>#&gt; &lt;geos_geometry[1]&gt;
-#&gt; [1] &lt;MULTIPOLYGON [0 0...15 15]&gt;</div><div class='input'><span class='fu'>geos_union</span><span class='op'>(</span><span class='va'>poly1</span>, <span class='va'>poly2</span><span class='op'>)</span>
-</div><div class='co'>#&gt; &lt;geos_geometry[1]&gt;
-#&gt; [1] &lt;POLYGON [0 0...15 15]&gt;</div><div class='input'>
-<span class='va'>line</span> <span class='op'>&lt;-</span> <span class='st'>"LINESTRING (11 0, 11 10)"</span>
-<span class='fu'>geos_snap</span><span class='op'>(</span><span class='va'>poly1</span>, <span class='va'>line</span>, tolerance <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
-</div><div class='co'>#&gt; &lt;geos_geometry[1]&gt;
-#&gt; [1] &lt;POLYGON ((0 0, 0 10, 11 10, 11 0, 0 0))&gt;</div><div class='input'>
-<span class='fu'>geos_shared_paths</span><span class='op'>(</span><span class='st'>"LINESTRING (0 0, 1 1, 2 2)"</span>, <span class='st'>"LINESTRING (3 3, 2 2, 1 1)"</span><span class='op'>)</span>
-</div><div class='co'>#&gt; &lt;geos_geometry[1]&gt;
-#&gt; [1] &lt;GEOMETRYCOLLECTION (MULTILINESTRING EMPTY, MULTILINESTRING ((1 1, 2 2)))&gt;</div><div class='input'>
-</div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='va'>poly1</span> <span class='op'>&lt;-</span> <span class='st'>"POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))"</span></span>
+<span class='r-in'><span class='va'>poly2</span> <span class='op'>&lt;-</span> <span class='st'>"POLYGON ((5 5, 5 15, 15 15, 15 5, 5 5))"</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>geos_intersection</span><span class='op'>(</span><span class='va'>poly1</span>, <span class='va'>poly2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;geos_geometry[1]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] &lt;POLYGON ((10 10, 10 5, 5 5, 5 10, 10 10))&gt;</span>
+<span class='r-in'><span class='fu'>geos_difference</span><span class='op'>(</span><span class='va'>poly1</span>, <span class='va'>poly2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;geos_geometry[1]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] &lt;POLYGON [0 0...10 10]&gt;</span>
+<span class='r-in'><span class='fu'>geos_sym_difference</span><span class='op'>(</span><span class='va'>poly1</span>, <span class='va'>poly2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;geos_geometry[1]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] &lt;MULTIPOLYGON [0 0...15 15]&gt;</span>
+<span class='r-in'><span class='fu'>geos_union</span><span class='op'>(</span><span class='va'>poly1</span>, <span class='va'>poly2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;geos_geometry[1]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] &lt;POLYGON [0 0...15 15]&gt;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>line</span> <span class='op'>&lt;-</span> <span class='st'>"LINESTRING (11 0, 11 10)"</span></span>
+<span class='r-in'><span class='fu'>geos_snap</span><span class='op'>(</span><span class='va'>poly1</span>, <span class='va'>line</span>, tolerance <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;geos_geometry[1]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] &lt;POLYGON ((0 0, 0 10, 11 10, 11 0, 0 0))&gt;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>geos_shared_paths</span><span class='op'>(</span><span class='st'>"LINESTRING (0 0, 1 1, 2 2)"</span>, <span class='st'>"LINESTRING (3 3, 2 2, 1 1)"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;geos_geometry[1]&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] &lt;GEOMETRYCOLLECTION (MULTILINESTRING EMPTY, MULTILINESTRING ((1 1, 2 2)))&gt;</span>
+<span class='r-in'></span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

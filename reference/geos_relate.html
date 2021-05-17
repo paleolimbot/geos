@@ -60,8 +60,6 @@ and/or geos_relate_pattern_create()." />
 
 
 
-<!-- dependencies from examples -->
-
 
   
 
@@ -85,7 +83,7 @@ and/or geos_relate_pattern_create()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">geos</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -129,7 +127,7 @@ for how to interpret <code>pattern</code>, <code>match</code>, and the result of
 and/or <code>geos_relate_pattern_create()</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>geos_relate</span><span class='op'>(</span><span class='va'>geom1</span>, <span class='va'>geom2</span>, boundary_node_rule <span class='op'>=</span> <span class='st'>"mod2"</span><span class='op'>)</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>geos_relate</span><span class='op'>(</span><span class='va'>geom1</span>, <span class='va'>geom2</span>, boundary_node_rule <span class='op'>=</span> <span class='st'>"mod2"</span><span class='op'>)</span>
 
 <span class='fu'>geos_relate_pattern</span><span class='op'>(</span><span class='va'>geom1</span>, <span class='va'>geom2</span>, <span class='va'>pattern</span>, boundary_node_rule <span class='op'>=</span> <span class='st'>"mod2"</span><span class='op'>)</span>
 
@@ -145,7 +143,7 @@ and/or <code>geos_relate_pattern_create()</code>.</p>
   EI <span class='op'>=</span> <span class='st'>"*"</span>,
   EB <span class='op'>=</span> <span class='st'>"*"</span>,
   EE <span class='op'>=</span> <span class='st'>"*"</span>
-<span class='op'>)</span></pre>
+<span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -179,12 +177,16 @@ boundary (B), and exterior (E).</p></td>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>geos_relate_pattern_match</span><span class='op'>(</span><span class='st'>"FF*FF1***"</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA</span>, <span class='st'>"FF*FF****"</span>, <span class='st'>"FF*FF***F"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='co'>#&gt; [1]    NA  TRUE FALSE</div><div class='input'><span class='fu'>geos_relate</span><span class='op'>(</span><span class='st'>"POINT (0 0)"</span>, <span class='st'>"POINT (0 0)"</span><span class='op'>)</span>
-</div><div class='co'>#&gt; [1] "0FFFFFFF2"</div><div class='input'><span class='fu'>geos_relate_pattern</span><span class='op'>(</span><span class='st'>"POINT (0 0)"</span>, <span class='st'>"POINT (0 0)"</span>, <span class='st'>"T********"</span><span class='op'>)</span>
-</div><div class='co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>geos_relate_pattern_create</span><span class='op'>(</span>II <span class='op'>=</span> <span class='st'>"T"</span><span class='op'>)</span>
-</div><div class='co'>#&gt; [1] "T********"</div><div class='input'>
-</div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='fu'>geos_relate_pattern_match</span><span class='op'>(</span><span class='st'>"FF*FF1***"</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA</span>, <span class='st'>"FF*FF****"</span>, <span class='st'>"FF*FF***F"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1]    NA  TRUE FALSE</span>
+<span class='r-in'><span class='fu'>geos_relate</span><span class='op'>(</span><span class='st'>"POINT (0 0)"</span>, <span class='st'>"POINT (0 0)"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "0FFFFFFF2"</span>
+<span class='r-in'><span class='fu'>geos_relate_pattern</span><span class='op'>(</span><span class='st'>"POINT (0 0)"</span>, <span class='st'>"POINT (0 0)"</span>, <span class='st'>"T********"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-in'><span class='fu'>geos_relate_pattern_create</span><span class='op'>(</span>II <span class='op'>=</span> <span class='st'>"T"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "T********"</span>
+<span class='r-in'></span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

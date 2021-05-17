@@ -60,8 +60,6 @@ Similarly, the min/max functions will error on empty geometries." />
 
 
 
-<!-- dependencies from examples -->
-
 
   
 
@@ -85,7 +83,7 @@ Similarly, the min/max functions will error on empty geometries." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">geos</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -129,7 +127,7 @@ empty points (use <code><a href='geos_read_wkt.html'>geos_write_xy()</a></code> 
 Similarly, the min/max functions will error on empty geometries.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>geos_area</span><span class='op'>(</span><span class='va'>geom</span><span class='op'>)</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>geos_area</span><span class='op'>(</span><span class='va'>geom</span><span class='op'>)</span>
 
 <span class='fu'>geos_length</span><span class='op'>(</span><span class='va'>geom</span><span class='op'>)</span>
 
@@ -179,7 +177,7 @@ Similarly, the min/max functions will error on empty geometries.</p>
 
 <span class='fu'>geos_coordinate_dimension</span><span class='op'>(</span><span class='va'>geom</span><span class='op'>)</span>
 
-<span class='fu'>geos_is_clockwise</span><span class='op'>(</span><span class='va'>geom</span><span class='op'>)</span></pre>
+<span class='fu'>geos_is_clockwise</span><span class='op'>(</span><span class='va'>geom</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -195,42 +193,64 @@ Similarly, the min/max functions will error on empty geometries.</p>
     <p>A vector of length <code>geom</code></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>geos_area</span><span class='op'>(</span><span class='st'>"POLYGON ((0 0, 10 0, 10 10, 0 10, 0 0))"</span><span class='op'>)</span>
-</div><div class='co'>#&gt; [1] 100</div><div class='input'><span class='fu'>geos_length</span><span class='op'>(</span><span class='st'>"POLYGON ((0 0, 10 0, 10 10, 0 10, 0 0))"</span><span class='op'>)</span>
-</div><div class='co'>#&gt; [1] 40</div><div class='input'><span class='fu'>geos_x</span><span class='op'>(</span><span class='st'>"POINT Z (1 2 3)"</span><span class='op'>)</span>
-</div><div class='co'>#&gt; [1] 1</div><div class='input'><span class='fu'>geos_y</span><span class='op'>(</span><span class='st'>"POINT Z (1 2 3)"</span><span class='op'>)</span>
-</div><div class='co'>#&gt; [1] 2</div><div class='input'><span class='fu'>geos_z</span><span class='op'>(</span><span class='st'>"POINT Z (1 2 3)"</span><span class='op'>)</span>
-</div><div class='co'>#&gt; [1] 3</div><div class='input'><span class='fu'>geos_xmin</span><span class='op'>(</span><span class='st'>"LINESTRING (0 1, 2 3)"</span><span class='op'>)</span>
-</div><div class='co'>#&gt; [1] 0</div><div class='input'><span class='fu'>geos_ymin</span><span class='op'>(</span><span class='st'>"LINESTRING (0 1, 2 3)"</span><span class='op'>)</span>
-</div><div class='co'>#&gt; [1] 1</div><div class='input'><span class='fu'>geos_xmax</span><span class='op'>(</span><span class='st'>"LINESTRING (0 1, 2 3)"</span><span class='op'>)</span>
-</div><div class='co'>#&gt; [1] 2</div><div class='input'><span class='fu'>geos_ymax</span><span class='op'>(</span><span class='st'>"LINESTRING (0 1, 2 3)"</span><span class='op'>)</span>
-</div><div class='co'>#&gt; [1] 3</div><div class='input'><span class='fu'>geos_minimum_clearance</span><span class='op'>(</span><span class='st'>"POLYGON ((0 0, 10 0, 10 10, 3 5, 0 10, 0 0))"</span><span class='op'>)</span>
-</div><div class='co'>#&gt; [1] 3</div><div class='input'>
-<span class='fu'>geos_is_empty</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"POINT EMPTY"</span>, <span class='st'>"POINT (0 1)"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='co'>#&gt; [1]  TRUE FALSE</div><div class='input'><span class='fu'>geos_is_simple</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"LINESTRING (0 0, 1 1)"</span>, <span class='st'>"LINESTRING (0 0, 1 1, 1 0, 0 1)"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='co'>#&gt; [1]  TRUE FALSE</div><div class='input'><span class='fu'>geos_is_ring</span><span class='op'>(</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>
-    <span class='st'>"LINESTRING (0 0, 1 0, 1 1, 0 1, 0 0)"</span>,
-    <span class='st'>"LINESTRING (0 0, 1 0, 1 1, 0 1)"</span>
-   <span class='op'>)</span>
-<span class='op'>)</span>
-</div><div class='co'>#&gt; [1]  TRUE FALSE</div><div class='input'><span class='fu'>geos_is_closed</span><span class='op'>(</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>
-    <span class='st'>"LINESTRING (0 0, 1 0, 1 1, 0 1, 0 0)"</span>,
-    <span class='st'>"LINESTRING (0 0, 1 0, 1 1, 0 1)"</span>
-   <span class='op'>)</span>
-<span class='op'>)</span>
-</div><div class='co'>#&gt; [1]  TRUE FALSE</div><div class='input'><span class='fu'>geos_has_z</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"POINT Z (1 2 3)"</span>, <span class='st'>"POINT (1 2)"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='co'>#&gt; [1]  TRUE FALSE</div><div class='input'>
-<span class='fu'>geos_type_id</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"POINT (0 0)"</span>, <span class='st'>"LINESTRING (0 0, 1 1)"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='co'>#&gt; [1] 1 2</div><div class='input'><span class='fu'>geos_srid</span><span class='op'>(</span><span class='fu'>wk</span><span class='fu'>::</span><span class='fu'><a href='https://paleolimbot.github.io/wk/reference/wkb.html'>as_wkb</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"SRID=1234;POINT (0 0)"</span>, <span class='st'>"POINT (0 0)"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='co'>#&gt; [1] 1234    0</div><div class='input'><span class='fu'>geos_num_coordinates</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"POINT (0 0)"</span>, <span class='st'>"MULTIPOINT (0 0, 1 1)"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='co'>#&gt; [1] 1 2</div><div class='input'><span class='fu'>geos_num_geometries</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"POINT (0 0)"</span>, <span class='st'>"MULTIPOINT (0 0, 1 1)"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='co'>#&gt; [1] 1 2</div><div class='input'><span class='fu'>geos_num_interior_rings</span><span class='op'>(</span><span class='st'>"POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))"</span><span class='op'>)</span>
-</div><div class='co'>#&gt; [1] 0</div><div class='input'><span class='fu'>geos_dimension</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"POINT (0 0)"</span>, <span class='st'>"LINESTRING (0 0, 1 1)"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='co'>#&gt; [1] 0 1</div><div class='input'><span class='fu'>geos_coordinate_dimension</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"POINT (0 0)"</span>, <span class='st'>"POINT Z (0 0 1)"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='co'>#&gt; [1] 2 3</div><div class='input'>
-</div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='fu'>geos_area</span><span class='op'>(</span><span class='st'>"POLYGON ((0 0, 10 0, 10 10, 0 10, 0 0))"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 100</span>
+<span class='r-in'><span class='fu'>geos_length</span><span class='op'>(</span><span class='st'>"POLYGON ((0 0, 10 0, 10 10, 0 10, 0 0))"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 40</span>
+<span class='r-in'><span class='fu'>geos_x</span><span class='op'>(</span><span class='st'>"POINT Z (1 2 3)"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-in'><span class='fu'>geos_y</span><span class='op'>(</span><span class='st'>"POINT Z (1 2 3)"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 2</span>
+<span class='r-in'><span class='fu'>geos_z</span><span class='op'>(</span><span class='st'>"POINT Z (1 2 3)"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3</span>
+<span class='r-in'><span class='fu'>geos_xmin</span><span class='op'>(</span><span class='st'>"LINESTRING (0 1, 2 3)"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0</span>
+<span class='r-in'><span class='fu'>geos_ymin</span><span class='op'>(</span><span class='st'>"LINESTRING (0 1, 2 3)"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-in'><span class='fu'>geos_xmax</span><span class='op'>(</span><span class='st'>"LINESTRING (0 1, 2 3)"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 2</span>
+<span class='r-in'><span class='fu'>geos_ymax</span><span class='op'>(</span><span class='st'>"LINESTRING (0 1, 2 3)"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3</span>
+<span class='r-in'><span class='fu'>geos_minimum_clearance</span><span class='op'>(</span><span class='st'>"POLYGON ((0 0, 10 0, 10 10, 3 5, 0 10, 0 0))"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>geos_is_empty</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"POINT EMPTY"</span>, <span class='st'>"POINT (0 1)"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1]  TRUE FALSE</span>
+<span class='r-in'><span class='fu'>geos_is_simple</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"LINESTRING (0 0, 1 1)"</span>, <span class='st'>"LINESTRING (0 0, 1 1, 1 0, 0 1)"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1]  TRUE FALSE</span>
+<span class='r-in'><span class='fu'>geos_is_ring</span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='st'>"LINESTRING (0 0, 1 0, 1 1, 0 1, 0 0)"</span>,</span>
+<span class='r-in'>    <span class='st'>"LINESTRING (0 0, 1 0, 1 1, 0 1)"</span></span>
+<span class='r-in'>   <span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1]  TRUE FALSE</span>
+<span class='r-in'><span class='fu'>geos_is_closed</span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='st'>"LINESTRING (0 0, 1 0, 1 1, 0 1, 0 0)"</span>,</span>
+<span class='r-in'>    <span class='st'>"LINESTRING (0 0, 1 0, 1 1, 0 1)"</span></span>
+<span class='r-in'>   <span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1]  TRUE FALSE</span>
+<span class='r-in'><span class='fu'>geos_has_z</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"POINT Z (1 2 3)"</span>, <span class='st'>"POINT (1 2)"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1]  TRUE FALSE</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>geos_type_id</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"POINT (0 0)"</span>, <span class='st'>"LINESTRING (0 0, 1 1)"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1 2</span>
+<span class='r-in'><span class='fu'>geos_srid</span><span class='op'>(</span><span class='fu'>wk</span><span class='fu'>::</span><span class='fu'><a href='https://paleolimbot.github.io/wk/reference/wkb.html'>as_wkb</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"SRID=1234;POINT (0 0)"</span>, <span class='st'>"POINT (0 0)"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1234    0</span>
+<span class='r-in'><span class='fu'>geos_num_coordinates</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"POINT (0 0)"</span>, <span class='st'>"MULTIPOINT (0 0, 1 1)"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1 2</span>
+<span class='r-in'><span class='fu'>geos_num_geometries</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"POINT (0 0)"</span>, <span class='st'>"MULTIPOINT (0 0, 1 1)"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1 2</span>
+<span class='r-in'><span class='fu'>geos_num_interior_rings</span><span class='op'>(</span><span class='st'>"POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0</span>
+<span class='r-in'><span class='fu'>geos_dimension</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"POINT (0 0)"</span>, <span class='st'>"LINESTRING (0 0, 1 1)"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0 1</span>
+<span class='r-in'><span class='fu'>geos_coordinate_dimension</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"POINT (0 0)"</span>, <span class='st'>"POINT Z (0 0 1)"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 2 3</span>
+<span class='r-in'></span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
