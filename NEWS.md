@@ -1,4 +1,4 @@
-# geos (development version)
+# geos 0.1.1
 
 * Fixed an issue with the internals of the strtree object
   that resulted in a valgrind error on the CRAN check page.
