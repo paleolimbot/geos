@@ -125,5 +125,5 @@ nc_geos %>%
 #> Dimension:     XY
 #> Bounding box:  xmin: 123829.8 ymin: 14740.06 xmax: 930518.6 ymax: 318255.5
 #> Projected CRS: NAD83 / North Carolina
-#> MULTIPOLYGON (((705428.2 49242.97, 705860.3 274...
+#> MULTIPOLYGON (((705860.3 27430.49, 698896.5 186...
 ```
