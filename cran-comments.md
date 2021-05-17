@@ -1,6 +1,5 @@
 
-Release to prepare for an updated version of libgeos, which adds features
-from GEOS 3.9.1.
+This release fixes the valgrind issue noted on the CRAN check page.
 
 ## Test environments
 

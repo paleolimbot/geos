@@ -1,5 +1,8 @@
 # geos (development version)
 
+* Fixed an issue with the internals of the strtree object
+  that resulted in a valgrind error on the CRAN check page.
+
 # geos 0.1.0
 
 * Added vector class improvements for `geos_geometry()` vectors
