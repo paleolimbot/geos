@@ -1,14 +1,6 @@
 
-This release fixes the valgrind issue noted on the CRAN check page.
-
-## Test environments
-
-* local R installation, R 4.0.3
-* GitHub Actions: windows-latest (oldrel), windows-latest (release),
-  macOS-latest (release), ubuntu-20.04 (release), ubuntu-20.04 (devel)
-* win-builder (devel)
-* `rhub::check_for_cran()`
-* `rhub::check(platform = 'ubuntu-rchk')`
+This release prepares the 'geos' package for GEOS 3.10.0 to ensure that
+all tests pass under both GEOS 3.9.1 and GEOS 3.10.0.
 
 ## R CMD check results
 
