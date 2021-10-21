@@ -47,8 +47,6 @@ and/or geos_relate_pattern_create()." />
 
 
 
-
-
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -60,16 +58,9 @@ and/or geos_relate_pattern_create()." />
 
 
 
-
-  
-
-  
-
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    
-
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -83,13 +74,19 @@ and/or geos_relate_pattern_create()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">geos</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
+  <a href="../index.html">
+    <span class="fas fa-home fa-lg"></span>
+     
+  </a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li>
@@ -127,7 +124,7 @@ for how to interpret <code>pattern</code>, <code>match</code>, and the result of
 and/or <code>geos_relate_pattern_create()</code>.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>geos_relate</span><span class='op'>(</span><span class='va'>geom1</span>, <span class='va'>geom2</span>, boundary_node_rule <span class='op'>=</span> <span class='st'>"mod2"</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>geos_relate</span><span class='op'>(</span><span class='va'>geom1</span>, <span class='va'>geom2</span>, boundary_node_rule <span class='op'>=</span> <span class='st'>"mod2"</span><span class='op'>)</span>
 
 <span class='fu'>geos_relate_pattern</span><span class='op'>(</span><span class='va'>geom1</span>, <span class='va'>geom2</span>, <span class='va'>pattern</span>, boundary_node_rule <span class='op'>=</span> <span class='st'>"mod2"</span><span class='op'>)</span>
 
@@ -143,19 +140,19 @@ and/or <code>geos_relate_pattern_create()</code>.</p>
   EI <span class='op'>=</span> <span class='st'>"*"</span>,
   EB <span class='op'>=</span> <span class='st'>"*"</span>,
   EE <span class='op'>=</span> <span class='st'>"*"</span>
-<span class='op'>)</span></code></pre></div>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>geom1</th>
-      <td><p><a href='as_geos_geometry.html'>GEOS geometry vectors</a>,
+      <td><p><a href='as_geos_geometry.sfc.html'>GEOS geometry vectors</a>,
 recycled to a common length.</p></td>
     </tr>
     <tr>
       <th>geom2</th>
-      <td><p><a href='as_geos_geometry.html'>GEOS geometry vectors</a>,
+      <td><p><a href='as_geos_geometry.sfc.html'>GEOS geometry vectors</a>,
 recycled to a common length.</p></td>
     </tr>
     <tr>
@@ -177,16 +174,12 @@ boundary (B), and exterior (E).</p></td>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='fu'>geos_relate_pattern_match</span><span class='op'>(</span><span class='st'>"FF*FF1***"</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA</span>, <span class='st'>"FF*FF****"</span>, <span class='st'>"FF*FF***F"</span><span class='op'>)</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [1]    NA  TRUE FALSE</span>
-<span class='r-in'><span class='fu'>geos_relate</span><span class='op'>(</span><span class='st'>"POINT (0 0)"</span>, <span class='st'>"POINT (0 0)"</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "0FFFFFFF2"</span>
-<span class='r-in'><span class='fu'>geos_relate_pattern</span><span class='op'>(</span><span class='st'>"POINT (0 0)"</span>, <span class='st'>"POINT (0 0)"</span>, <span class='st'>"T********"</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
-<span class='r-in'><span class='fu'>geos_relate_pattern_create</span><span class='op'>(</span>II <span class='op'>=</span> <span class='st'>"T"</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "T********"</span>
-<span class='r-in'></span>
-</code></pre></div>
+    <pre class="examples"><div class='input'><span class='fu'>geos_relate_pattern_match</span><span class='op'>(</span><span class='st'>"FF*FF1***"</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA</span>, <span class='st'>"FF*FF****"</span>, <span class='st'>"FF*FF***F"</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1]    NA  TRUE FALSE</div><div class='input'><span class='fu'>geos_relate</span><span class='op'>(</span><span class='st'>"POINT (0 0)"</span>, <span class='st'>"POINT (0 0)"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "0FFFFFFF2"</div><div class='input'><span class='fu'>geos_relate_pattern</span><span class='op'>(</span><span class='st'>"POINT (0 0)"</span>, <span class='st'>"POINT (0 0)"</span>, <span class='st'>"T********"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>geos_relate_pattern_create</span><span class='op'>(</span>II <span class='op'>=</span> <span class='st'>"T"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "T********"</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -198,11 +191,11 @@ boundary (B), and exterior (E).</p></td>
 
       <footer>
       <div class="copyright">
-  <p><p>Developed by Dewey Dunnington, Edzer Pebesma.</p></p>
+  <p>Developed by Dewey Dunnington, Edzer Pebesma.</p>
 </div>
 
 <div class="pkgdown">
-  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
@@ -210,8 +203,6 @@ boundary (B), and exterior (E).</p></td>
 
   
 
-
-  
 
   </body>
 </html>
