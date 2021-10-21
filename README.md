@@ -7,7 +7,7 @@
 
 ![R-CMD-check](https://github.com/paleolimbot/geos/workflows/R-CMD-check/badge.svg)
 [![Codecov test
-coverage](https://codecov.io/gh/paleolimbot/geos/branch/master/graph/badge.svg)](https://codecov.io/gh/paleolimbot/geos?branch=master)
+coverage](https://codecov.io/gh/paleolimbot/geos/branch/master/graph/badge.svg)](https://app.codecov.io/gh/paleolimbot/geos?branch=master)
 <!-- badges: end -->
 
 The goal of geom is to provide access to the GEOS C API by vectorizing

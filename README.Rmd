@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 ![R-CMD-check](https://github.com/paleolimbot/geos/workflows/R-CMD-check/badge.svg)
-[![Codecov test coverage](https://codecov.io/gh/paleolimbot/geos/branch/master/graph/badge.svg)](https://codecov.io/gh/paleolimbot/geos?branch=master)
+[![Codecov test coverage](https://codecov.io/gh/paleolimbot/geos/branch/master/graph/badge.svg)](https://app.codecov.io/gh/paleolimbot/geos?branch=master)
 <!-- badges: end -->
 
 The goal of geom is to provide access to the GEOS C API by vectorizing the C functions for use in R. See the [package function reference](https://paleolimbot.github.io/geos/reference/index.html) for which functions are implemented in the R API.
