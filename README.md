@@ -10,7 +10,7 @@ coverage](https://codecov.io/gh/paleolimbot/geos/branch/master/graph/badge.svg)]
 [![R-CMD-check](https://github.com/paleolimbot/geos/workflows/R-CMD-check/badge.svg)](https://github.com/paleolimbot/geos/actions)
 <!-- badges: end -->
 
-The goal of geom is to provide access to the GEOS C API by vectorizing
+The goal of geos is to provide access to the GEOS C API by vectorizing
 the C functions for use in R. See the [package function
 reference](https://paleolimbot.github.io/geos/reference/index.html) for
 which functions are implemented in the R API.
