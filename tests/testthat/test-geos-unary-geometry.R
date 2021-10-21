@@ -330,8 +330,12 @@ test_that("bounding circle works", {
   expect_equal(geos_xmax(circle), c(NA, sqrt(2)))
   expect_equal(geos_ymax(circle), c(NA, sqrt(2)))
 
-  skip_if(identical(Sys.getenv("R_GEOS_SKIP_KNOWN_LEAK"), "true"))
-  expect_error(geos_minimum_bounding_circle("POINT (nan inf)"), "encountered NaN/Inf")
+  if (geos_version() >= "3.10") {
+    expect_true(geos_is_empty(geos_minimum_bounding_circle("POINT (nan inf)")))
+  } else {
+    skip_if(identical(Sys.getenv("R_GEOS_SKIP_KNOWN_LEAK"), "true"))
+    expect_error(geos_minimum_bounding_circle("POINT (nan inf)"), "encountered NaN/Inf")
+  }
 })
 
 test_that("bounding crc works", {
@@ -442,8 +446,8 @@ test_that("triangulation works", {
     )
   )
 
-  expect_error(geos_delaunay_triangles("POINT (nan inf)"), "Unknown error|LocateFailureException")
-  expect_error(geos_delaunay_edges("POINT (nan inf)"), "Unknown error|LocateFailureException")
+  expect_error(geos_delaunay_triangles("POINT (nan inf)"), "error|Exception")
+  expect_error(geos_delaunay_edges("POINT (nan inf)"), "error|Exception")
   expect_identical(geos_delaunay_triangles(NA_character_), geos_read_wkt(NA_character_))
   expect_identical(geos_delaunay_edges(NA_character_), geos_read_wkt(NA_character_))
 })
@@ -471,8 +475,8 @@ test_that("voronoi diagrams work", {
     )
   )
 
-  expect_error(geos_voronoi_polygons("POINT (nan inf)"), "Unknown error|LocateFailureException")
-  expect_error(geos_voronoi_edges("POINT (nan inf)"), "Unknown error|LocateFailureException")
+  expect_error(geos_voronoi_polygons("POINT (nan inf)"), "error|Exception")
+  expect_error(geos_voronoi_edges("POINT (nan inf)"), "error|Exception")
   expect_identical(geos_voronoi_polygons(NA_character_), geos_read_wkt(NA_character_))
   expect_identical(geos_voronoi_edges(NA_character_), geos_read_wkt(NA_character_))
 

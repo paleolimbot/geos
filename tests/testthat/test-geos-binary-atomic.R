@@ -17,7 +17,13 @@ test_that("distance functions work", {
     geos_distance_hausdorff(c("POINT (0 0)", NA), "LINESTRING (0 10, 0 20)", densify = 0.1),
     c(20, NA)
   )
-  expect_identical(geos_distance_frechet(c("POINT (0 0)", NA), "POINT (0 10)"), c(NaN, NA))
+
+  if (geos_version() >= "3.10") {
+    expect_identical(geos_distance_frechet(c("POINT (0 0)", NA), "POINT (0 10)"), c(10, NA))
+  } else {
+    expect_identical(geos_distance_frechet(c("POINT (0 0)", NA), "POINT (0 10)"), c(NaN, NA))
+  }
+
   expect_identical(geos_distance_frechet(c("POINT (0 0)", NA), "LINESTRING (0 10, 0 20)"), c(20, NA))
   expect_identical(
     geos_distance_frechet(c("POINT (0 0)", NA), "LINESTRING (0 10, 0 20)", densify = 0.1),
