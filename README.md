@@ -67,7 +67,7 @@ library(dplyr)
 # map data from the maps package via ggplot2
 states_df <- as_tibble(ggplot2::map_data("state"))
 states_df
-#> # A tibble: 15,537 x 6
+#> # A tibble: 15,537 × 6
 #>     long   lat group order region  subregion
 #>    <dbl> <dbl> <dbl> <int> <chr>   <chr>    
 #>  1 -87.5  30.4     1     1 alabama <NA>     
@@ -86,9 +86,8 @@ states_df %>%
   group_by(region, group) %>% 
   summarise(geometry = geos_make_polygon(long, lat)) %>% 
   summarise(geometry = geos_make_collection(geometry, "multipolygon"))
-#> `summarise()` regrouping output by 'region' (override with `.groups` argument)
-#> `summarise()` ungrouping output (override with `.groups` argument)
-#> # A tibble: 49 x 2
+#> `summarise()` has grouped output by 'region'. You can override using the `.groups` argument.
+#> # A tibble: 49 × 2
 #>    region               geometry                                          
 #>    <chr>                <geos_geom>                                       
 #>  1 alabama              <MULTIPOLYGON [-88.476 30.241...-84.901 35.013]>  
@@ -109,8 +108,7 @@ package](https://r-spatial.github.io/sf/).
 
 ``` r
 library(sf)
-#> Warning: package 'sf' was built under R version 4.0.5
-#> Linking to GEOS 3.8.1, GDAL 3.2.0, PROJ 7.2.0
+#> Linking to GEOS 3.9.1, GDAL 3.3.2, PROJ 8.1.0
 nc <- read_sf(system.file("shape/nc.shp", package = "sf")) %>%
   st_transform(32119) # North Carolina state plane, m.
 
@@ -125,5 +123,5 @@ nc_geos %>%
 #> Dimension:     XY
 #> Bounding box:  xmin: 123829.8 ymin: 14740.06 xmax: 930518.6 ymax: 318255.5
 #> Projected CRS: NAD83 / North Carolina
-#> MULTIPOLYGON (((705860.3 27430.49, 698896.5 186...
+#> MULTIPOLYGON (((138426.9 177702.5, 145549.4 177...
 ```
