@@ -112,6 +112,18 @@ SEXP geos_c_clone(SEXP geom) {
   GEOS_UNARY_GEOMETRY(GEOSGeom_clone_r);
 }
 
+SEXP geos_c_constrained_delaunay_triangulation(SEXP geom) {
+#if LIBGEOS_VERSION_COMPILE_INT >= LIBGEOS_VERSION_INT(3, 10, 0)
+  if (libgeos_version_int() < LIBGEOS_VERSION_INT(3, 10, 0)) {
+    ERROR_OLD_LIBGEOS("GEOSConstrainedDelaunayTriangulation_r()", "3.9.1");
+  }
+
+  GEOS_UNARY_GEOMETRY(GEOSConstrainedDelaunayTriangulation_r);
+#else
+  ERROR_OLD_LIBGEOS_BUILD("GEOSConstrainedDelaunayTriangulation_r()", "3.10.0");
+#endif
+}
+
 
 #define GEOS_UNARY_GEOMETRY_PARAM(_call, _param_scalar, _param_ptr, _na_check)        \
   R_xlen_t size = Rf_xlength(geom);                                        \

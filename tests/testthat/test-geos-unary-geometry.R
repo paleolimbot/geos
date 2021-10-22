@@ -286,6 +286,8 @@ test_that("transformers with atomic param work", {
 })
 
 test_that("densification works", {
+  skip_if_not(geos_version() >= "3.10.0")
+
   expect_identical(
     geos_write_wkt(geos_densify(c("POLYGON ((0 0, 10 0, 10 10, 0 10, 0 0))", NA), 5)),
     c(
@@ -502,6 +504,17 @@ test_that("voronoi diagrams work", {
   unlink(tmp)
   expect_error(geos_voronoi_polygons("POINT EMPTY", env = bad_env), "not a valid external")
   expect_error(geos_voronoi_edges("POINT EMPTY", env = bad_env), "not a valid external")
+})
+
+test_that("constrained triangulation works", {
+  skip_if_not(geos_version() >= "3.10.0")
+
+  expect_equal(
+    geos_area(
+      geos_constrained_delaunay_triangles("POLYGON ((0 0, 10 0, 10 10, 0 10, 0 0))")
+    ),
+    geos_area("POLYGON ((0 0, 10 0, 10 10, 0 10, 0 0))")
+  )
 })
 
 test_that("child geometry works", {

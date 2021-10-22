@@ -498,6 +498,16 @@ geos_delaunay_triangles <- function(geom, tolerance = 0) {
 
 #' @rdname geos_delaunay_triangles
 #' @export
+geos_constrained_delaunay_triangles <- function(geom) {
+  geom <- sanitize_geos_geometry(geom)
+  new_geos_geometry(
+    .Call(geos_c_constrained_delaunay_triangulation, geom),
+    crs = attr(geom, "crs", exact = TRUE)
+  )
+}
+
+#' @rdname geos_delaunay_triangles
+#' @export
 geos_delaunay_edges <- function(geom, tolerance = 0) {
   geom <- sanitize_geos_geometry(geom)
   new_geos_geometry(

@@ -2,12 +2,15 @@
 % Please edit documentation in R/geos-unary-geometry.R
 \name{geos_delaunay_triangles}
 \alias{geos_delaunay_triangles}
+\alias{geos_constrained_delaunay_triangles}
 \alias{geos_delaunay_edges}
 \alias{geos_voronoi_polygons}
 \alias{geos_voronoi_edges}
 \title{Delaunay triagulations and Voronoi diagrams}
 \usage{
 geos_delaunay_triangles(geom, tolerance = 0)
+
+geos_constrained_delaunay_triangles(geom)
 
 geos_delaunay_edges(geom, tolerance = 0)
 
