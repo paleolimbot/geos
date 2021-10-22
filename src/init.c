@@ -25,6 +25,7 @@ extern SEXP geos_c_equals(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_covers(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_covered_by(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_equals_exact(SEXP geom1, SEXP geom2, SEXP tolerance);
+extern SEXP geos_c_is_within_distance(SEXP geom1, SEXP geom2, SEXP tolerance);
 extern SEXP geos_c_prepared_disjoint(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_prepared_touches(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_prepared_intersects(SEXP geom1, SEXP geom2);
@@ -35,6 +36,7 @@ extern SEXP geos_c_prepared_contains_properly(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_prepared_overlaps(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_prepared_covers(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_prepared_covered_by(SEXP geom1, SEXP geom2);
+extern SEXP geos_c_prepared_is_within_distance(SEXP geom1, SEXP geom2, SEXP tolerance);
 extern SEXP geos_c_relate(SEXP geom1, SEXP geom2, SEXP boundaryNodeRule);
 extern SEXP geos_c_relate_pattern_match(SEXP match, SEXP pattern);
 extern SEXP geos_c_intersection(SEXP geom1, SEXP geom2);
@@ -181,6 +183,7 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_covers", (DL_FUNC) &geos_c_covers, 2},
   {"geos_c_covered_by", (DL_FUNC) &geos_c_covered_by, 2},
   {"geos_c_equals_exact", (DL_FUNC) &geos_c_equals_exact, 3},
+  {"geos_c_is_within_distance", (DL_FUNC) &geos_c_is_within_distance, 3},
   {"geos_c_prepared_disjoint", (DL_FUNC) &geos_c_prepared_disjoint, 2},
   {"geos_c_prepared_touches", (DL_FUNC) &geos_c_prepared_touches, 2},
   {"geos_c_prepared_intersects", (DL_FUNC) &geos_c_prepared_intersects, 2},
@@ -191,6 +194,7 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_prepared_overlaps", (DL_FUNC) &geos_c_prepared_overlaps, 2},
   {"geos_c_prepared_covers", (DL_FUNC) &geos_c_prepared_covers, 2},
   {"geos_c_prepared_covered_by", (DL_FUNC) &geos_c_prepared_covered_by, 2},
+  {"geos_c_prepared_is_within_distance", (DL_FUNC) &geos_c_prepared_is_within_distance, 3},
   {"geos_c_relate", (DL_FUNC) &geos_c_relate, 3},
   {"geos_c_relate_pattern_match", (DL_FUNC) &geos_c_relate_pattern_match, 2},
   {"geos_c_intersection", (DL_FUNC) &geos_c_intersection, 2},

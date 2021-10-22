@@ -6,6 +6,8 @@
 \alias{geos_distance_indexed}
 \alias{geos_distance_hausdorff}
 \alias{geos_distance_frechet}
+\alias{geos_is_within_distance}
+\alias{geos_prepared_is_within_distance}
 \title{Distance calculations}
 \usage{
 geos_distance(geom1, geom2)
@@ -17,6 +19,10 @@ geos_distance_indexed(geom1, geom2)
 geos_distance_hausdorff(geom1, geom2, densify = NULL)
 
 geos_distance_frechet(geom1, geom2, densify = NULL)
+
+geos_is_within_distance(geom1, geom2, distance)
+
+geos_prepared_is_within_distance(geom1, geom2, distance)
 }
 \arguments{
 \item{geom1, geom2}{\link[=as_geos_geometry]{GEOS geometry vectors},
@@ -25,6 +31,9 @@ recycled to a common length.}
 \item{densify}{A fraction between 0 and 1 denoting the degree to which
 edges should be subdivided (smaller value means more subdivisions).
 Use NULL to calculate the distance as-is.}
+
+\item{distance}{A threshold distance, below which \code{\link[=geos_is_within_distance]{geos_is_within_distance()}}
+and \code{\link[=geos_prepared_is_within_distance]{geos_prepared_is_within_distance()}} will return \code{TRUE}.}
 }
 \value{
 A numeric vector along the recycled length of \code{geom1} and \code{geom2}
