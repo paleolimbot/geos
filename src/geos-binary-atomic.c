@@ -316,6 +316,11 @@ SEXP geos_c_equals_exact(SEXP geom1, SEXP geom2, SEXP tolerance) {
 }
 
 SEXP geos_c_is_within_distance(SEXP geom1, SEXP geom2, SEXP tolerance) {
+#if LIBGEOS_VERSION_COMPILE_INT >= LIBGEOS_VERSION_INT(3, 10, 0)
+  if (libgeos_version_int() < LIBGEOS_VERSION_INT(3, 10, 0)) {
+    ERROR_OLD_LIBGEOS("GEOSDistanceWithin_r()", "3.10.0");
+  }
+
   R_xlen_t size = Rf_xlength(geom1);
   SEXP result = PROTECT(Rf_allocVector(LGLSXP, size));
   int* pResult = LOGICAL(result);
@@ -353,6 +358,10 @@ SEXP geos_c_is_within_distance(SEXP geom1, SEXP geom2, SEXP tolerance) {
 
   UNPROTECT(1);
   return result;
+
+#else
+  ERROR_OLD_LIBGEOS_BUILD("GEOSDistanceWithin_r()", "3.10.0");
+#endif
 }
 
 
@@ -437,6 +446,11 @@ SEXP geos_c_prepared_covered_by(SEXP geom1, SEXP geom2) {
 
 // odd one out because it has a parameter
 SEXP geos_c_prepared_is_within_distance(SEXP geom1, SEXP geom2, SEXP tolerance) {
+#if LIBGEOS_VERSION_COMPILE_INT >= LIBGEOS_VERSION_INT(3, 10, 0)
+  if (libgeos_version_int() < LIBGEOS_VERSION_INT(3, 10, 0)) {
+    ERROR_OLD_LIBGEOS("GEOSPreparedDistanceWithin_r()", "3.10.0");
+  }
+
   R_xlen_t size = Rf_xlength(geom1);
   SEXP result = PROTECT(Rf_allocVector(LGLSXP, size));
   int* pResult = LOGICAL(result);
@@ -475,6 +489,10 @@ SEXP geos_c_prepared_is_within_distance(SEXP geom1, SEXP geom2, SEXP tolerance) 
 
   UNPROTECT(1);
   return result;
+
+#else
+  ERROR_OLD_LIBGEOS_BUILD("GEOSPreparedDistanceWithin_r()", "3.10.0");
+#endif
 }
 
 // DE9IM relationships
