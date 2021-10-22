@@ -190,6 +190,17 @@ SEXP geos_c_maximum_inscribed_circle(SEXP geom, SEXP param) {
 #endif
 }
 
+SEXP geos_c_densify(SEXP geom, SEXP param) {
+#if LIBGEOS_VERSION_COMPILE_INT >= LIBGEOS_VERSION_INT(3, 10, 0)
+  if (libgeos_version_int() < LIBGEOS_VERSION_INT(3, 10, 0)) {
+    ERROR_OLD_LIBGEOS("GEOSMaximumInscribedCircle_r()", "3.9.1");
+  }
+
+  GEOS_UNARY_GEOMETRY_PARAM(GEOSDensify_r(handle, geometry, paramPtr[i]), double, REAL, ISNA(paramPtr[i]));
+#else
+  ERROR_OLD_LIBGEOS_BUILD("GEOSDensify_r()", "3.10.0");
+#endif
+}
 
 // this should really be defined in libgeos.h and probably will be in future versions
 #ifndef GEOS_PREC_NO_TOPO
@@ -339,7 +350,7 @@ SEXP geos_c_minimum_bounding_circle(SEXP geom) {
     }
   }
 
-  
+
   Rf_setAttrib(result, Rf_install("x"), x);
   Rf_setAttrib(result, Rf_install("y"), y);
   Rf_setAttrib(result, Rf_install("radius"), radius);

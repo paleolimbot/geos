@@ -2,8 +2,9 @@
 #' Geometry transformers
 #'
 #' @inheritParams geos_read_wkt
-#' @param tolerance A minimum distance to use for simplification. Use a higher
-#'   value for more simplification.
+#' @param tolerance A minimum distance to use for simplification or
+#'   densification. Use a higher value for more simplification (or
+#'   less densification).
 #' @param index The index of the point or geometry to extract.
 #' @param rect A `list()` representing rectangles in the form
 #'   `list(xmin, ymin, xmax, ymax)`. List items with length 1 will be
@@ -330,6 +331,13 @@ geos_set_precision <- function(geom, grid_size, preserve_topology = TRUE, keep_c
 geos_normalize <- function(geom) {
   geom <- sanitize_geos_geometry(geom)
   new_geos_geometry(.Call(geos_c_normalize, geom), crs = attr(geom, "crs", exact = TRUE))
+}
+
+#' @rdname geos_centroid
+#' @export
+geos_densify <- function(geom, tolerance) {
+  recycled <- recycle_common(list(sanitize_geos_geometry(geom), as.numeric(tolerance)))
+  new_geos_geometry(.Call(geos_c_densify, recycled[[1]], recycled[[2]]), crs = attr(geom, "crs", exact = TRUE))
 }
 
 #' @rdname geos_centroid

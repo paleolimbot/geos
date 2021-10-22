@@ -285,6 +285,21 @@ test_that("transformers with atomic param work", {
   expect_identical(geos_normalize(NA_character_), geos_read_wkt(NA_character_))
 })
 
+test_that("densification works", {
+  expect_identical(
+    geos_write_wkt(geos_densify(c("POLYGON ((0 0, 10 0, 10 10, 0 10, 0 0))", NA), 5)),
+    c(
+      "POLYGON ((0 0, 5 0, 10 0, 10 5, 10 10, 5 10, 0 10, 0 5, 0 0))",
+      NA
+    )
+  )
+
+  expect_error(
+    geos_densify(c("POLYGON ((0 0, 10 0, 10 10, 0 Inf, 0 0))", NA), 5),
+    "too small"
+  )
+})
+
 test_that("set precision works", {
   expect_identical(
     geos_equals(

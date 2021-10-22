@@ -28,6 +28,7 @@
 \alias{geos_simplify_preserve_topology}
 \alias{geos_set_precision}
 \alias{geos_normalize}
+\alias{geos_densify}
 \alias{geos_clip_by_rect}
 \title{Geometry transformers}
 \usage{
@@ -90,6 +91,8 @@ geos_set_precision(
 
 geos_normalize(geom)
 
+geos_densify(geom, tolerance)
+
 geos_clip_by_rect(geom, rect)
 }
 \arguments{
@@ -102,8 +105,9 @@ the resulting geometry will lie on the grid.}
 
 \item{index}{The index of the point or geometry to extract.}
 
-\item{tolerance}{A minimum distance to use for simplification. Use a higher
-value for more simplification.}
+\item{tolerance}{A minimum distance to use for simplification or
+densification. Use a higher value for more simplification (or
+less densification).}
 
 \item{preserve_topology}{Should topology internal to each feature
 be preserved?}
