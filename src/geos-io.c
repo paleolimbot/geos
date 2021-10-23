@@ -81,6 +81,11 @@ SEXP geos_c_write_wkt(SEXP input, SEXP includeZ, SEXP precision, SEXP trim) {
 }
 
 SEXP geos_c_read_geojson(SEXP input) {
+#if LIBGEOS_VERSION_COMPILE_INT >= LIBGEOS_VERSION_INT(3, 10, 0)
+  if (libgeos_version_int() < LIBGEOS_VERSION_INT(3, 10, 0)) {
+    ERROR_OLD_LIBGEOS("GEOSGeoJSONReader_create_r()", "3.10.0");
+  }
+
   R_xlen_t size = Rf_xlength(input);
   SEXP result = PROTECT(Rf_allocVector(VECSXP, size));
 
@@ -108,9 +113,18 @@ SEXP geos_c_read_geojson(SEXP input) {
   GEOSGeoJSONReader_destroy_r(handle, reader);
   UNPROTECT(1); // result
   return result;
+
+#else
+  ERROR_OLD_LIBGEOS_BUILD("GEOSGeoJSONReader_create_r()", "3.10.0");
+#endif
 }
 
 SEXP geos_c_write_geojson(SEXP input, SEXP indent) {
+#if LIBGEOS_VERSION_COMPILE_INT >= LIBGEOS_VERSION_INT(3, 10, 0)
+  if (libgeos_version_int() < LIBGEOS_VERSION_INT(3, 10, 0)) {
+    ERROR_OLD_LIBGEOS("GEOSGeoJSONWriter_create_r()", "3.10.0");
+  }
+
   R_xlen_t size = Rf_xlength(input);
 
   int indent_int = INTEGER(indent)[0];
@@ -150,6 +164,10 @@ SEXP geos_c_write_geojson(SEXP input, SEXP indent) {
   GEOSGeoJSONWriter_destroy_r(handle, writer);
   UNPROTECT(1); // result
   return result;
+
+#else
+  ERROR_OLD_LIBGEOS_BUILD("GEOSGeoJSONWriter_create_r()", "3.10.0");
+#endif
 }
 
 SEXP geos_c_read_wkb(SEXP input) {

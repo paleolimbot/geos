@@ -48,6 +48,8 @@ test_that("wkt reader can specify crs", {
 })
 
 test_that("GeoJSON reader works", {
+  skip_if_not(geos_version() >= "3.10.0")
+
   # regular read/write
   expect_is(geos_read_geojson('{"type":"Point","coordinates":[30.0,10.0]}'), "geos_geometry")
   expect_identical(geos_write_geojson("POINT (30 10)"), '{"type":"Point","coordinates":[30.0,10.0]}')
