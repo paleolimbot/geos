@@ -115,7 +115,7 @@ SEXP geos_c_clone(SEXP geom) {
 SEXP geos_c_constrained_delaunay_triangulation(SEXP geom) {
 #if LIBGEOS_VERSION_COMPILE_INT >= LIBGEOS_VERSION_INT(3, 10, 0)
   if (libgeos_version_int() < LIBGEOS_VERSION_INT(3, 10, 0)) {
-    ERROR_OLD_LIBGEOS("GEOSConstrainedDelaunayTriangulation_r()", "3.9.1");
+    ERROR_OLD_LIBGEOS("GEOSConstrainedDelaunayTriangulation_r()", "3.10.0");
   }
 
   GEOS_UNARY_GEOMETRY(GEOSConstrainedDelaunayTriangulation_r);
@@ -205,7 +205,7 @@ SEXP geos_c_maximum_inscribed_circle(SEXP geom, SEXP param) {
 SEXP geos_c_densify(SEXP geom, SEXP param) {
 #if LIBGEOS_VERSION_COMPILE_INT >= LIBGEOS_VERSION_INT(3, 10, 0)
   if (libgeos_version_int() < LIBGEOS_VERSION_INT(3, 10, 0)) {
-    ERROR_OLD_LIBGEOS("GEOSMaximumInscribedCircle_r()", "3.9.1");
+    ERROR_OLD_LIBGEOS("GEOSDensify_r()", "3.10.0");
   }
 
   GEOS_UNARY_GEOMETRY_PARAM(GEOSDensify_r(handle, geometry, paramPtr[i]), double, REAL, ISNA(paramPtr[i]));
