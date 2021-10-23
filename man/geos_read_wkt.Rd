@@ -3,6 +3,8 @@
 \name{geos_read_wkt}
 \alias{geos_read_wkt}
 \alias{geos_write_wkt}
+\alias{geos_read_geojson}
+\alias{geos_write_geojson}
 \alias{geos_read_wkb}
 \alias{geos_write_wkb}
 \alias{geos_read_hex}
@@ -14,6 +16,10 @@
 geos_read_wkt(wkt, crs = NULL)
 
 geos_write_wkt(geom, include_z = TRUE, precision = 16, trim = TRUE)
+
+geos_read_geojson(wkt, crs = NULL)
+
+geos_write_geojson(geom, indent = -1)
 
 geos_read_wkb(wkb, crs = NULL)
 
@@ -56,6 +62,9 @@ in an error if there is no value present in the original.}
 output.}
 
 \item{trim}{Trim unnecessary zeroes in the output?}
+
+\item{indent}{The number of spaces to use when indenting a formatted
+version of the output. Use -1 to indicate no formatting.}
 
 \item{wkb}{A \code{list()} of \code{raw()} vectors (or \code{NULL} representing
 an \code{NA} value).}

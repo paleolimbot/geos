@@ -47,6 +47,31 @@ test_that("wkt reader can specify crs", {
   expect_identical(wk::wk_crs(geos_read_wkt("POINT (1 1)", crs = 123)), 123)
 })
 
+test_that("GeoJSON reader works", {
+  # regular read/write
+  expect_is(geos_read_geojson('{"type":"Point","coordinates":[30.0,10.0]}'), "geos_geometry")
+  expect_identical(geos_write_geojson("POINT (30 10)"), '{"type":"Point","coordinates":[30.0,10.0]}')
+
+  # NULL/NA read/write
+  expect_identical(
+    geos_write_geojson(new_geos_geometry(list(NULL), crs = NULL)),
+    NA_character_
+  )
+  expect_identical(
+    geos_read_geojson(NA_character_),
+    new_geos_geometry(list(NULL), crs = NULL)
+  )
+
+  # read/write when the internal pointer is NULL
+  temp_rds <- tempfile()
+  saveRDS(geos_read_wkt("POINT EMPTY"), temp_rds)
+  expect_error(geos_write_geojson(readRDS(temp_rds)), "External pointer is not valid")
+  unlink(temp_rds)
+
+  # error parse
+  expect_error(geos_read_geojson("NOPE"), "ParseException")
+})
+
 test_that("WKB reader works", {
   # regular read/write
   expect_is(geos_read_wkb(wk::wkt_translate_wkb("POINT (30 10)")), "geos_geometry")

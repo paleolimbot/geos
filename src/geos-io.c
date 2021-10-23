@@ -80,6 +80,78 @@ SEXP geos_c_write_wkt(SEXP input, SEXP includeZ, SEXP precision, SEXP trim) {
   return result;
 }
 
+SEXP geos_c_read_geojson(SEXP input) {
+  R_xlen_t size = Rf_xlength(input);
+  SEXP result = PROTECT(Rf_allocVector(VECSXP, size));
+
+  GEOS_INIT();
+  GEOSGeoJSONReader* reader = GEOSGeoJSONReader_create_r(handle);
+
+  GEOSGeometry* geometry;
+  for (R_xlen_t i = 0; i < size; i++) {
+    if (STRING_ELT(input, i) == NA_STRING) {
+      SET_VECTOR_ELT(result, i, R_NilValue);
+      continue;
+    }
+
+    geometry = GEOSGeoJSONReader_readGeometry_r(handle, reader, CHAR(STRING_ELT(input, i)));
+
+    // returns NULL on error
+    if (geometry == NULL) {
+      GEOSGeoJSONReader_destroy_r(handle, reader);
+      Rf_error("[%d] %s", i + 1, globalErrorMessage);
+    } else {
+      SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometry));
+    }
+  }
+
+  GEOSGeoJSONReader_destroy_r(handle, reader);
+  UNPROTECT(1); // result
+  return result;
+}
+
+SEXP geos_c_write_geojson(SEXP input, SEXP indent) {
+  R_xlen_t size = Rf_xlength(input);
+
+  int indent_int = INTEGER(indent)[0];
+
+  SEXP result = PROTECT(Rf_allocVector(STRSXP, size));
+
+  GEOS_INIT();
+  GEOSGeoJSONWriter* writer = GEOSGeoJSONWriter_create_r(handle);
+
+  SEXP item;
+  GEOSGeometry* geometry;
+  for (R_xlen_t i = 0; i < size; i++) {
+    item = VECTOR_ELT(input, i);
+
+    if (item == R_NilValue) {
+      SET_STRING_ELT(result, i, NA_STRING);
+      continue;
+    }
+
+    geometry = (GEOSGeometry*) R_ExternalPtrAddr(item);
+    if (geometry == NULL) {
+      GEOSGeoJSONWriter_destroy_r(handle, writer);
+      GEOS_CHECK_GEOMETRY(geometry, i);
+    }
+
+    char* output = GEOSGeoJSONWriter_writeGeometry_r(handle, writer, geometry, indent_int);
+    if (output == NULL) {
+      // don't know how to make this occur
+      GEOSGeoJSONWriter_destroy_r(handle, writer); // # nocov
+      Rf_error("[%d] %s", i + 1, globalErrorMessage); // # nocov
+    }
+
+    SET_STRING_ELT(result, i, Rf_mkChar(output));
+    GEOSFree_r(handle, output);
+  }
+
+  GEOSGeoJSONWriter_destroy_r(handle, writer);
+  UNPROTECT(1); // result
+  return result;
+}
+
 SEXP geos_c_read_wkb(SEXP input) {
   R_xlen_t size = Rf_xlength(input);
   SEXP result = PROTECT(Rf_allocVector(VECSXP, size));

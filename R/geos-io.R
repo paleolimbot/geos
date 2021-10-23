@@ -15,6 +15,8 @@
 #'   output.
 #' @param endian 0 for big endian or 1 for little endian.
 #' @param flavor One of "extended" (i.e., EWKB) or "iso".
+#' @param indent The number of spaces to use when indenting a formatted
+#'   version of the output. Use -1 to indicate no formatting.
 #' @inheritParams geos_segment_intersection
 #' @param hex A hexidecimal representation of well-known binary
 #' @inheritParams wk::wk_crs
@@ -38,6 +40,22 @@ geos_write_wkt <- function(geom, include_z = TRUE, precision = 16, trim = TRUE) 
     sanitize_logical_scalar(include_z),
     sanitize_integer_scalar(precision),
     sanitize_logical_scalar(trim)
+  )
+}
+
+#' @rdname geos_read_wkt
+#' @export
+geos_read_geojson <- function(wkt, crs = NULL) {
+  new_geos_geometry(.Call(geos_c_read_geojson, as.character(wkt)), crs = crs)
+}
+
+#' @rdname geos_read_wkt
+#' @export
+geos_write_geojson <- function(geom, indent = -1) {
+  .Call(
+    geos_c_write_geojson,
+    sanitize_geos_geometry(geom),
+    sanitize_integer_scalar(indent)
   )
 }
 
