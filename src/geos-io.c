@@ -115,7 +115,7 @@ SEXP geos_c_read_wkb(SEXP input) {
   return result;
 }
 
-SEXP geos_c_write_wkb(SEXP input, SEXP includeZ, SEXP includeSRID, SEXP endian) {
+SEXP geos_c_write_wkb(SEXP input, SEXP includeZ, SEXP includeSRID, SEXP endian, SEXP flavor) {
   R_xlen_t size = Rf_xlength(input);
   SEXP result = PROTECT(Rf_allocVector(VECSXP, size));
 
@@ -133,6 +133,33 @@ SEXP geos_c_write_wkb(SEXP input, SEXP includeZ, SEXP includeSRID, SEXP endian) 
     GEOSWKBWriter_setIncludeSRID_r(handle, writer, 1);
   } else {
     GEOSWKBWriter_setIncludeSRID_r(handle, writer, 0);
+  }
+
+  int flavor_default = 1;
+  int flavor_int = INTEGER(flavor)[0];
+
+  // in GEOS 3.10.0 the constants required to specify ISO vs EWKB
+  // are swapped from those noted by the enum in the C API
+  if (libgeos_version_int() == LIBGEOS_VERSION_INT(3, 10, 0)) {
+    flavor_default = 2;
+
+    if (flavor_int == 2) {
+      flavor_int = 1;
+    } else if (flavor_int == 1) {
+      flavor_int = 2;
+    }
+  }
+
+  if (flavor_int != flavor_default) {
+#if LIBGEOS_VERSION_COMPILE_INT >= LIBGEOS_VERSION_INT(3, 10, 0)
+    if (libgeos_version_int() < LIBGEOS_VERSION_INT(3, 10, 0)) {
+      ERROR_OLD_LIBGEOS("GEOSWKBWriter_setFlavor_r()", "3.10.0");
+    }
+
+    GEOSWKBWriter_setFlavor_r(handle, writer, flavor_int);
+#else
+    ERROR_OLD_LIBGEOS_BUILD("GEOSWKBWriter_setFlavor_r()", "3.10.0");
+#endif
   }
 
   SEXP item;
@@ -167,7 +194,7 @@ SEXP geos_c_write_wkb(SEXP input, SEXP includeZ, SEXP includeSRID, SEXP endian) 
   }
 
   GEOSWKBWriter_destroy_r(handle, writer);
-    UNPROTECT(1); // result
+  UNPROTECT(1); // result
   return result;
 }
 
@@ -206,7 +233,7 @@ SEXP geos_c_read_hex(SEXP input) {
   return result;
 }
 
-SEXP geos_c_write_hex(SEXP input, SEXP includeZ, SEXP includeSRID, SEXP endian) {
+SEXP geos_c_write_hex(SEXP input, SEXP includeZ, SEXP includeSRID, SEXP endian, SEXP flavor) {
   R_xlen_t size = Rf_xlength(input);
   SEXP result = PROTECT(Rf_allocVector(STRSXP, size));
 
@@ -224,6 +251,33 @@ SEXP geos_c_write_hex(SEXP input, SEXP includeZ, SEXP includeSRID, SEXP endian) 
     GEOSWKBWriter_setIncludeSRID_r(handle, writer, 1);
   } else {
     GEOSWKBWriter_setIncludeSRID_r(handle, writer, 0);
+  }
+
+  int flavor_default = 1;
+  int flavor_int = INTEGER(flavor)[0];
+
+  // in GEOS 3.10.0 the constants required to specify ISO vs EWKB
+  // are swapped from those noted by the enum in the C API
+  if (libgeos_version_int() == LIBGEOS_VERSION_INT(3, 10, 0)) {
+    flavor_default = 2;
+
+    if (flavor_int == 2) {
+      flavor_int = 1;
+    } else if (flavor_int == 1) {
+      flavor_int = 2;
+    }
+  }
+
+  if (flavor_int != flavor_default) {
+#if LIBGEOS_VERSION_COMPILE_INT >= LIBGEOS_VERSION_INT(3, 10, 0)
+    if (libgeos_version_int() < LIBGEOS_VERSION_INT(3, 10, 0)) {
+      ERROR_OLD_LIBGEOS("GEOSWKBWriter_setFlavor_r()", "3.10.0");
+    }
+
+    GEOSWKBWriter_setFlavor_r(handle, writer, flavor_int);
+#else
+    ERROR_OLD_LIBGEOS_BUILD("GEOSWKBWriter_setFlavor_r()", "3.10.0");
+#endif
   }
 
   SEXP item;
@@ -297,7 +351,7 @@ SEXP geos_c_write_xy(SEXP input) {
     }
   }
 
-  
+
   const char* names[] = {"x", "y", ""};
   SEXP result = PROTECT(Rf_mkNamed(VECSXP, names));
   SET_VECTOR_ELT(result, 0, resultX);

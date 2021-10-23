@@ -56,9 +56,9 @@ extern SEXP geos_c_geos_geometry_is_null_or_xptr(SEXP geom);
 extern SEXP geos_c_read_wkt(SEXP input);
 extern SEXP geos_c_write_wkt(SEXP input, SEXP includeZ, SEXP precision, SEXP trim);
 extern SEXP geos_c_read_wkb(SEXP input);
-extern SEXP geos_c_write_wkb(SEXP input, SEXP includeZ, SEXP includeSRID, SEXP endian);
+extern SEXP geos_c_write_wkb(SEXP input, SEXP includeZ, SEXP includeSRID, SEXP endian, SEXP flavor);
 extern SEXP geos_c_read_hex(SEXP input);
-extern SEXP geos_c_write_hex(SEXP input, SEXP includeZ, SEXP includeSRID, SEXP endian);
+extern SEXP geos_c_write_hex(SEXP input, SEXP includeZ, SEXP includeSRID, SEXP endian, SEXP flavor);
 extern SEXP geos_c_write_xy(SEXP input);
 extern SEXP geos_c_make_point(SEXP x, SEXP y, SEXP z);
 extern SEXP geos_c_make_linestring(SEXP x, SEXP y, SEXP z, SEXP featureLengths);
@@ -216,9 +216,9 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_read_wkt", (DL_FUNC) &geos_c_read_wkt, 1},
   {"geos_c_write_wkt", (DL_FUNC) &geos_c_write_wkt, 4},
   {"geos_c_read_wkb", (DL_FUNC) &geos_c_read_wkb, 1},
-  {"geos_c_write_wkb", (DL_FUNC) &geos_c_write_wkb, 4},
+  {"geos_c_write_wkb", (DL_FUNC) &geos_c_write_wkb, 5},
   {"geos_c_read_hex", (DL_FUNC) &geos_c_read_hex, 1},
-  {"geos_c_write_hex", (DL_FUNC) &geos_c_write_hex, 4},
+  {"geos_c_write_hex", (DL_FUNC) &geos_c_write_hex, 5},
   {"geos_c_write_xy", (DL_FUNC) &geos_c_write_xy, 1},
   {"geos_c_make_point", (DL_FUNC) &geos_c_make_point, 3},
   {"geos_c_make_linestring", (DL_FUNC) &geos_c_make_linestring, 4},

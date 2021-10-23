@@ -127,6 +127,29 @@ test_that("WKB reader works", {
   expect_error(geos_read_wkb(wkb), "Unknown WKB type")
 })
 
+test_that("wkb/hex writers can write ISO WKB", {
+  skip_if_not(geos_version() >= "3.10.0")
+
+  expect_identical(
+    unclass(geos_write_wkb("POINT Z (1 2 3)", flavor = "iso")),
+    list(
+      as.raw(
+        c(0x01,
+          0xe9, 0x03, 0x00, 0x00,
+          0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf0, 0x3f,
+          0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x40,
+          0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x08, 0x40
+        )
+      )
+    )
+  )
+
+  expect_identical(
+    unclass(geos_write_hex("POINT Z (1 2 3)", flavor = "iso")),
+    "01E9030000000000000000F03F00000000000000400000000000000840"
+  )
+})
+
 test_that("wkb reader can specify crs", {
   expect_identical(wk::wk_crs(geos_read_wkb(wk::as_wkb("POINT (1 1)"), crs = 123)), 123)
 })

@@ -14,6 +14,7 @@
 #' @param precision The number of significant digits to include iin WKT
 #'   output.
 #' @param endian 0 for big endian or 1 for little endian.
+#' @param flavor One of "extended" (i.e., EWKB) or "iso".
 #' @inheritParams geos_segment_intersection
 #' @param hex A hexidecimal representation of well-known binary
 #' @inheritParams wk::wk_crs
@@ -48,14 +49,18 @@ geos_read_wkb <- function(wkb, crs = NULL) {
 
 #' @rdname geos_read_wkt
 #' @export
-geos_write_wkb <- function(geom, include_z = TRUE, include_srid = FALSE, endian = 1) {
+geos_write_wkb <- function(geom, include_z = TRUE, include_srid = FALSE, endian = 1,
+                           flavor = c("extended", "iso")) {
+  flavor <- match.arg(flavor)
+
   structure(
     .Call(
       geos_c_write_wkb,
       sanitize_geos_geometry(geom),
       sanitize_logical_scalar(include_z),
       sanitize_logical_scalar(include_srid),
-      sanitize_integer_scalar(endian)
+      sanitize_integer_scalar(endian),
+      match(flavor, c("extended", "iso"))
     ),
     class = "blob"
   )
@@ -69,13 +74,17 @@ geos_read_hex <- function(hex, crs = NULL) {
 
 #' @rdname geos_read_wkt
 #' @export
-geos_write_hex <- function(geom, include_z = TRUE, include_srid = FALSE, endian = 1) {
+geos_write_hex <- function(geom, include_z = TRUE, include_srid = FALSE, endian = 1,
+                           flavor = c("extended", "iso")) {
+  flavor <- match.arg(flavor)
+
   .Call(
     geos_c_write_hex,
     sanitize_geos_geometry(geom),
     sanitize_logical_scalar(include_z),
     sanitize_logical_scalar(include_srid),
-    sanitize_integer_scalar(endian)
+    sanitize_integer_scalar(endian),
+    match(flavor, c("extended", "iso"))
   )
 }
 
