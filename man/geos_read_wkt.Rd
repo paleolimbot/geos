@@ -3,6 +3,8 @@
 \name{geos_read_wkt}
 \alias{geos_read_wkt}
 \alias{geos_write_wkt}
+\alias{geos_read_geojson}
+\alias{geos_write_geojson}
 \alias{geos_read_wkb}
 \alias{geos_write_wkb}
 \alias{geos_read_hex}
@@ -15,13 +17,29 @@ geos_read_wkt(wkt, crs = NULL)
 
 geos_write_wkt(geom, include_z = TRUE, precision = 16, trim = TRUE)
 
+geos_read_geojson(wkt, crs = NULL)
+
+geos_write_geojson(geom, indent = -1)
+
 geos_read_wkb(wkb, crs = NULL)
 
-geos_write_wkb(geom, include_z = TRUE, include_srid = FALSE, endian = 1)
+geos_write_wkb(
+  geom,
+  include_z = TRUE,
+  include_srid = FALSE,
+  endian = 1,
+  flavor = c("extended", "iso")
+)
 
 geos_read_hex(hex, crs = NULL)
 
-geos_write_hex(geom, include_z = TRUE, include_srid = FALSE, endian = 1)
+geos_write_hex(
+  geom,
+  include_z = TRUE,
+  include_srid = FALSE,
+  endian = 1,
+  flavor = c("extended", "iso")
+)
 
 geos_read_xy(point)
 
@@ -45,10 +63,15 @@ output.}
 
 \item{trim}{Trim unnecessary zeroes in the output?}
 
+\item{indent}{The number of spaces to use when indenting a formatted
+version of the output. Use -1 to indicate no formatting.}
+
 \item{wkb}{A \code{list()} of \code{raw()} vectors (or \code{NULL} representing
 an \code{NA} value).}
 
 \item{endian}{0 for big endian or 1 for little endian.}
+
+\item{flavor}{One of "extended" (i.e., EWKB) or "iso".}
 
 \item{hex}{A hexidecimal representation of well-known binary}
 

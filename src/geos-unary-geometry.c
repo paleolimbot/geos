@@ -112,6 +112,90 @@ SEXP geos_c_clone(SEXP geom) {
   GEOS_UNARY_GEOMETRY(GEOSGeom_clone_r);
 }
 
+SEXP geos_c_constrained_delaunay_triangulation(SEXP geom) {
+#if LIBGEOS_VERSION_COMPILE_INT >= LIBGEOS_VERSION_INT(3, 10, 0)
+  if (libgeos_version_int() < LIBGEOS_VERSION_INT(3, 10, 0)) {
+    ERROR_OLD_LIBGEOS("GEOSConstrainedDelaunayTriangulation_r()", "3.10.0");
+  }
+
+  GEOS_UNARY_GEOMETRY(GEOSConstrainedDelaunayTriangulation_r);
+#else
+  ERROR_OLD_LIBGEOS_BUILD("GEOSConstrainedDelaunayTriangulation_r()", "3.10.0");
+#endif
+}
+
+SEXP geos_c_make_valid_with_params(SEXP geom, SEXP params_sexp) {
+  if (!Rf_inherits(params_sexp, "geos_make_valid_params")) {
+    Rf_error("`make_valid_params` must be created using `geos_make_valid_params()`");
+  }
+
+  int keepCollapsed = LOGICAL(VECTOR_ELT(params_sexp, 0))[0];
+  int method = INTEGER(VECTOR_ELT(params_sexp, 1))[0];
+
+  // non-default options need GEOS 3.10 and GEOSMakeValidWithParams_r()
+  // for now, just use the previous method
+  if ((keepCollapsed == 1) && (method == 0)) {
+    return geos_c_make_valid(geom);
+  }
+
+#if LIBGEOS_VERSION_COMPILE_INT >= LIBGEOS_VERSION_INT(3, 10, 0)
+  if (libgeos_version_int() < LIBGEOS_VERSION_INT(3, 10, 0)) {
+    ERROR_OLD_LIBGEOS("GEOSMakeValidWithParams_r()", "3.10.0");
+  }
+
+  R_xlen_t size = Rf_xlength(geom);
+  SEXP result = PROTECT(Rf_allocVector(VECSXP, size));
+
+  GEOS_INIT();
+
+  GEOSMakeValidParams* params = GEOSMakeValidParams_create_r(handle);
+  if (params == NULL) {
+    Rf_error("Failed to alloc GEOSMakeValidWithParams_r()"); // # nocov
+  }
+
+  if (GEOSMakeValidParams_setKeepCollapsed_r(handle, params, keepCollapsed) == 0) {
+    GEOSMakeValidParams_destroy_r(handle, params); // # nocov
+    GEOS_ERROR("%s: ", "keep_collapsed"); // # nocov
+  }
+
+  if (GEOSMakeValidParams_setMethod_r(handle, params, method) == 0) {
+    GEOSMakeValidParams_destroy_r(handle, params);
+    GEOS_ERROR("%s: ", "method");
+  }
+
+  SEXP item;
+  GEOSGeometry* geometry;
+  GEOSGeometry* geometryResult;
+  for (R_xlen_t i = 0; i < size; i++) {
+    item = VECTOR_ELT(geom, i);
+
+    if (item == R_NilValue) {
+      SET_VECTOR_ELT(result, i, R_NilValue);
+      continue;
+    }
+
+    geometry = (GEOSGeometry*) R_ExternalPtrAddr(item);
+    GEOS_CHECK_GEOMETRY(geometry, i);
+
+    geometryResult = GEOSMakeValidWithParams_r(handle, geometry, params);
+
+    if (geometryResult == NULL) {
+      GEOSMakeValidParams_destroy_r(handle, params);
+      Rf_error("[%d] %s", i + 1, globalErrorMessage);
+    } else {
+      SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometryResult));
+    }
+  }
+
+  GEOSMakeValidParams_destroy_r(handle, params);
+  UNPROTECT(1);
+  return result;
+
+#else
+  ERROR_OLD_LIBGEOS_BUILD("GEOSMakeValidWithParams_r()", "3.10.0");
+#endif
+}
+
 
 #define GEOS_UNARY_GEOMETRY_PARAM(_call, _param_scalar, _param_ptr, _na_check)        \
   R_xlen_t size = Rf_xlength(geom);                                        \
@@ -190,6 +274,17 @@ SEXP geos_c_maximum_inscribed_circle(SEXP geom, SEXP param) {
 #endif
 }
 
+SEXP geos_c_densify(SEXP geom, SEXP param) {
+#if LIBGEOS_VERSION_COMPILE_INT >= LIBGEOS_VERSION_INT(3, 10, 0)
+  if (libgeos_version_int() < LIBGEOS_VERSION_INT(3, 10, 0)) {
+    ERROR_OLD_LIBGEOS("GEOSDensify_r()", "3.10.0");
+  }
+
+  GEOS_UNARY_GEOMETRY_PARAM(GEOSDensify_r(handle, geometry, paramPtr[i]), double, REAL, ISNA(paramPtr[i]));
+#else
+  ERROR_OLD_LIBGEOS_BUILD("GEOSDensify_r()", "3.10.0");
+#endif
+}
 
 // this should really be defined in libgeos.h and probably will be in future versions
 #ifndef GEOS_PREC_NO_TOPO
@@ -339,7 +434,7 @@ SEXP geos_c_minimum_bounding_circle(SEXP geom) {
     }
   }
 
-  
+
   Rf_setAttrib(result, Rf_install("x"), x);
   Rf_setAttrib(result, Rf_install("y"), y);
   Rf_setAttrib(result, Rf_install("radius"), radius);
@@ -484,6 +579,10 @@ SEXP geos_c_voronoi_diagram(SEXP geom, SEXP env, SEXP tolerace, SEXP edges) {
                                                                  \
   GEOS_INIT();                                                   \
   GEOSBufferParams* bufferParams = GEOSBufferParams_create_r(handle);\
+  if (bufferParams == NULL) {                                    \
+    Rf_error("Failed to alloc GEOSBufferParams");                \
+  }                                                              \
+                                                                 \
   if (GEOSBufferParams_setEndCapStyle_r(handle, bufferParams, endCapStyle) == 0) {\
     GEOSBufferParams_destroy_r(handle, bufferParams);            \
     GEOS_ERROR("%s: ", "end_cap_style");                         \

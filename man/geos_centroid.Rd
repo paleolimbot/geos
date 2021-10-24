@@ -12,6 +12,7 @@
 \alias{geos_point_on_surface}
 \alias{geos_node}
 \alias{geos_make_valid}
+\alias{geos_make_valid_params}
 \alias{geos_unique_points}
 \alias{geos_reverse}
 \alias{geos_merge_lines}
@@ -28,6 +29,7 @@
 \alias{geos_simplify_preserve_topology}
 \alias{geos_set_precision}
 \alias{geos_normalize}
+\alias{geos_densify}
 \alias{geos_clip_by_rect}
 \title{Geometry transformers}
 \usage{
@@ -51,7 +53,12 @@ geos_point_on_surface(geom)
 
 geos_node(geom)
 
-geos_make_valid(geom)
+geos_make_valid(geom, make_valid_params = geos_make_valid_params())
+
+geos_make_valid_params(
+  keep_collapsed = TRUE,
+  method = c("make_valid_linework", "make_valid_structure")
+)
 
 geos_unique_points(geom)
 
@@ -90,6 +97,8 @@ geos_set_precision(
 
 geos_normalize(geom)
 
+geos_densify(geom, tolerance)
+
 geos_clip_by_rect(geom, rect)
 }
 \arguments{
@@ -98,18 +107,30 @@ geos_clip_by_rect(geom, rect)
 \item{grid_size}{For \verb{_prec()} variants, the grid size such that all vertices of
 the resulting geometry will lie on the grid.}
 
+\item{make_valid_params}{A \code{\link[=geos_make_valid_params]{geos_make_valid_params()}} object.}
+
+\item{keep_collapsed}{Should items that become EMPTY due to rounding
+be kept in the output?}
+
+\item{method}{The method to use for \code{\link[=geos_make_valid]{geos_make_valid()}}.  One of:
+\itemize{
+\item "make_valid_linework" combines all rings into a set of noded lines
+and then extracts valid polygons from that linework.
+\item "make_valid_structure" Structured method, first makes all rings valid
+then merges shells and subtracts holes from shells to generate valid
+result. Assumes that holes and shells are correctly categorized.
+}}
+
 \item{srid}{An integer spatial reference identifier.}
 
 \item{index}{The index of the point or geometry to extract.}
 
-\item{tolerance}{A minimum distance to use for simplification. Use a higher
-value for more simplification.}
+\item{tolerance}{A minimum distance to use for simplification or
+densification. Use a higher value for more simplification (or
+less densification).}
 
 \item{preserve_topology}{Should topology internal to each feature
 be preserved?}
-
-\item{keep_collapsed}{Should items that become EMPTY due to rounding
-be kept in the output?}
 
 \item{rect}{A \code{list()} representing rectangles in the form
 \code{list(xmin, ymin, xmax, ymax)}. List items with length 1 will be

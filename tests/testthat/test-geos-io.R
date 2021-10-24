@@ -47,6 +47,33 @@ test_that("wkt reader can specify crs", {
   expect_identical(wk::wk_crs(geos_read_wkt("POINT (1 1)", crs = 123)), 123)
 })
 
+test_that("GeoJSON reader works", {
+  skip_if_not(geos_version() >= "3.10.0")
+
+  # regular read/write
+  expect_is(geos_read_geojson('{"type":"Point","coordinates":[30.0,10.0]}'), "geos_geometry")
+  expect_identical(geos_write_geojson("POINT (30 10)"), '{"type":"Point","coordinates":[30.0,10.0]}')
+
+  # NULL/NA read/write
+  expect_identical(
+    geos_write_geojson(new_geos_geometry(list(NULL), crs = NULL)),
+    NA_character_
+  )
+  expect_identical(
+    geos_read_geojson(NA_character_),
+    new_geos_geometry(list(NULL), crs = NULL)
+  )
+
+  # read/write when the internal pointer is NULL
+  temp_rds <- tempfile()
+  saveRDS(geos_read_wkt("POINT EMPTY"), temp_rds)
+  expect_error(geos_write_geojson(readRDS(temp_rds)), "External pointer is not valid")
+  unlink(temp_rds)
+
+  # error parse
+  expect_error(geos_read_geojson("NOPE"), "ParseException")
+})
+
 test_that("WKB reader works", {
   # regular read/write
   expect_is(geos_read_wkb(wk::wkt_translate_wkb("POINT (30 10)")), "geos_geometry")
@@ -125,6 +152,29 @@ test_that("WKB reader works", {
   wkb <- wk::wkt_translate_wkb("POINT (1 1)", endian = 1)
   wkb[[1]][3] <- as.raw(0xff)
   expect_error(geos_read_wkb(wkb), "Unknown WKB type")
+})
+
+test_that("wkb/hex writers can write ISO WKB", {
+  skip_if_not(geos_version() >= "3.10.0")
+
+  expect_identical(
+    unclass(geos_write_wkb("POINT Z (1 2 3)", flavor = "iso")),
+    list(
+      as.raw(
+        c(0x01,
+          0xe9, 0x03, 0x00, 0x00,
+          0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf0, 0x3f,
+          0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x40,
+          0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x08, 0x40
+        )
+      )
+    )
+  )
+
+  expect_identical(
+    unclass(geos_write_hex("POINT Z (1 2 3)", flavor = "iso")),
+    "01E9030000000000000000F03F00000000000000400000000000000840"
+  )
 })
 
 test_that("wkb reader can specify crs", {

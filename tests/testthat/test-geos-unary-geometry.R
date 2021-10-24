@@ -153,6 +153,35 @@ test_that("transformers work", {
   )
 })
 
+test_that("geos_make_valid() works with params", {
+  skip_if_not(geos_version() >= "3.10.0")
+
+  expect_identical(
+    geos_area(
+      geos_make_valid(
+        c("POLYGON ((0 0, 1 1, 1 0, 0 1, 0 0))", NA),
+        geos_make_valid_params(keep_collapsed = FALSE)
+      )
+    ),
+    geos_area(geos_make_valid(c("POLYGON ((0 0, 1 1, 1 0, 0 1, 0 0))", NA)))
+  )
+
+  expect_identical(
+    geos_area(
+      geos_make_valid(
+        c("POLYGON ((0 0, 1 1, 1 0, 0 1, 0 0))", NA),
+        geos_make_valid_params(method = "make_valid_structure")
+      )
+    ),
+    geos_area(geos_make_valid(c("POLYGON ((0 0, 1 1, 1 0, 0 1, 0 0))", NA)))
+  )
+
+  expect_error(geos_make_valid("POINT (0 1)", NULL), "must be created using")
+  params_bad <- geos_make_valid_params()
+  params_bad$method <- 100L
+  expect_error(geos_make_valid("POINT (0 1)", params_bad), "Unknown method")
+})
+
 test_that("geos_envelope_rct() works", {
   expect_identical(
     geos_envelope_rct(c("LINESTRING (0 0, 1 2)", "LINESTRING EMPTY", NA)),
@@ -283,6 +312,23 @@ test_that("transformers with atomic param work", {
   )
 
   expect_identical(geos_normalize(NA_character_), geos_read_wkt(NA_character_))
+})
+
+test_that("densification works", {
+  skip_if_not(geos_version() >= "3.10.0")
+
+  expect_identical(
+    geos_write_wkt(geos_densify(c("POLYGON ((0 0, 10 0, 10 10, 0 10, 0 0))", NA), 5)),
+    c(
+      "POLYGON ((0 0, 5 0, 10 0, 10 5, 10 10, 5 10, 0 10, 0 5, 0 0))",
+      NA
+    )
+  )
+
+  expect_error(
+    geos_densify(c("POLYGON ((0 0, 10 0, 10 10, 0 Inf, 0 0))", NA), 5),
+    "too small"
+  )
 })
 
 test_that("set precision works", {
@@ -487,6 +533,17 @@ test_that("voronoi diagrams work", {
   unlink(tmp)
   expect_error(geos_voronoi_polygons("POINT EMPTY", env = bad_env), "not a valid external")
   expect_error(geos_voronoi_edges("POINT EMPTY", env = bad_env), "not a valid external")
+})
+
+test_that("constrained triangulation works", {
+  skip_if_not(geos_version() >= "3.10.0")
+
+  expect_equal(
+    geos_area(
+      geos_constrained_delaunay_triangles("POLYGON ((0 0, 10 0, 10 10, 0 10, 0 0))")
+    ),
+    geos_area("POLYGON ((0 0, 10 0, 10 10, 0 10, 0 0))")
+  )
 })
 
 test_that("child geometry works", {

@@ -2,7 +2,9 @@
 #' Distance calculations
 #'
 #' @param geom1,geom2 [GEOS geometry vectors][as_geos_geometry],
-#'  recycled to a common length.
+#'   recycled to a common length.
+#' @param distance A threshold distance, below which [geos_is_within_distance()]
+#'   and [geos_prepared_is_within_distance()] will return `TRUE`.
 #' @param densify A fraction between 0 and 1 denoting the degree to which
 #'  edges should be subdivided (smaller value means more subdivisions).
 #'  Use NULL to calculate the distance as-is.
@@ -58,6 +60,22 @@ geos_distance_frechet <- function(geom1, geom2, densify = NULL) {
     desnify <- sanitize_double_scalar(densify)
     .Call(geos_c_distance_frechet_densify, recycled[[1]], recycled[[2]], densify)
   }
+}
+
+#' @rdname geos_distance
+#' @export
+geos_is_within_distance <- function(geom1, geom2, distance) {
+  recycled <- recycle_common(list(sanitize_geos_geometry(geom1), sanitize_geos_geometry(geom2), as.numeric(distance)))
+  wk_crs_output(recycled[[1]], recycled[[2]])
+  .Call(geos_c_is_within_distance, recycled[[1]], recycled[[2]], recycled[[3]])
+}
+
+#' @rdname geos_distance
+#' @export
+geos_prepared_is_within_distance <- function(geom1, geom2, distance) {
+  recycled <- recycle_common(list(sanitize_geos_geometry(geom1), sanitize_geos_geometry(geom2), as.numeric(distance)))
+  wk_crs_output(recycled[[1]], recycled[[2]])
+  .Call(geos_c_prepared_is_within_distance, recycled[[1]], recycled[[2]], recycled[[3]])
 }
 
 #' Linear referencing

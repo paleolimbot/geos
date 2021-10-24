@@ -25,6 +25,7 @@ extern SEXP geos_c_equals(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_covers(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_covered_by(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_equals_exact(SEXP geom1, SEXP geom2, SEXP tolerance);
+extern SEXP geos_c_is_within_distance(SEXP geom1, SEXP geom2, SEXP tolerance);
 extern SEXP geos_c_prepared_disjoint(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_prepared_touches(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_prepared_intersects(SEXP geom1, SEXP geom2);
@@ -35,6 +36,7 @@ extern SEXP geos_c_prepared_contains_properly(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_prepared_overlaps(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_prepared_covers(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_prepared_covered_by(SEXP geom1, SEXP geom2);
+extern SEXP geos_c_prepared_is_within_distance(SEXP geom1, SEXP geom2, SEXP tolerance);
 extern SEXP geos_c_relate(SEXP geom1, SEXP geom2, SEXP boundaryNodeRule);
 extern SEXP geos_c_relate_pattern_match(SEXP match, SEXP pattern);
 extern SEXP geos_c_intersection(SEXP geom1, SEXP geom2);
@@ -53,10 +55,12 @@ extern SEXP geos_c_geos_geometry_is_null(SEXP geom);
 extern SEXP geos_c_geos_geometry_is_null_or_xptr(SEXP geom);
 extern SEXP geos_c_read_wkt(SEXP input);
 extern SEXP geos_c_write_wkt(SEXP input, SEXP includeZ, SEXP precision, SEXP trim);
+extern SEXP geos_c_read_geojson(SEXP input);
+extern SEXP geos_c_write_geojson(SEXP input, SEXP indent);
 extern SEXP geos_c_read_wkb(SEXP input);
-extern SEXP geos_c_write_wkb(SEXP input, SEXP includeZ, SEXP includeSRID, SEXP endian);
+extern SEXP geos_c_write_wkb(SEXP input, SEXP includeZ, SEXP includeSRID, SEXP endian, SEXP flavor);
 extern SEXP geos_c_read_hex(SEXP input);
-extern SEXP geos_c_write_hex(SEXP input, SEXP includeZ, SEXP includeSRID, SEXP endian);
+extern SEXP geos_c_write_hex(SEXP input, SEXP includeZ, SEXP includeSRID, SEXP endian, SEXP flavor);
 extern SEXP geos_c_write_xy(SEXP input);
 extern SEXP geos_c_make_point(SEXP x, SEXP y, SEXP z);
 extern SEXP geos_c_make_linestring(SEXP x, SEXP y, SEXP z, SEXP featureLengths);
@@ -136,6 +140,8 @@ extern SEXP geos_c_convex_hull(SEXP geom);
 extern SEXP geos_c_point_start(SEXP geom);
 extern SEXP geos_c_point_end(SEXP geom);
 extern SEXP geos_c_clone(SEXP geom);
+extern SEXP geos_c_constrained_delaunay_triangulation(SEXP geom);
+extern SEXP geos_c_make_valid_with_params(SEXP geom, SEXP params_sexp);
 extern SEXP geos_c_interpolate(SEXP geom, SEXP param);
 extern SEXP geos_c_interpolate_normalized(SEXP geom, SEXP param);
 extern SEXP geos_c_point_n(SEXP geom, SEXP param);
@@ -143,6 +149,7 @@ extern SEXP geos_c_simplify(SEXP geom, SEXP param);
 extern SEXP geos_c_simplify_preserve_topology(SEXP geom, SEXP param);
 extern SEXP geos_c_unary_union_prec(SEXP geom, SEXP param);
 extern SEXP geos_c_maximum_inscribed_circle(SEXP geom, SEXP param);
+extern SEXP geos_c_densify(SEXP geom, SEXP param);
 extern SEXP geos_c_set_precision(SEXP geom, SEXP param, SEXP preserveTopology, SEXP keepCollapsed);
 extern SEXP geos_c_set_srid(SEXP geom, SEXP srid);
 extern SEXP geos_c_normalize(SEXP geom);
@@ -181,6 +188,7 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_covers", (DL_FUNC) &geos_c_covers, 2},
   {"geos_c_covered_by", (DL_FUNC) &geos_c_covered_by, 2},
   {"geos_c_equals_exact", (DL_FUNC) &geos_c_equals_exact, 3},
+  {"geos_c_is_within_distance", (DL_FUNC) &geos_c_is_within_distance, 3},
   {"geos_c_prepared_disjoint", (DL_FUNC) &geos_c_prepared_disjoint, 2},
   {"geos_c_prepared_touches", (DL_FUNC) &geos_c_prepared_touches, 2},
   {"geos_c_prepared_intersects", (DL_FUNC) &geos_c_prepared_intersects, 2},
@@ -191,6 +199,7 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_prepared_overlaps", (DL_FUNC) &geos_c_prepared_overlaps, 2},
   {"geos_c_prepared_covers", (DL_FUNC) &geos_c_prepared_covers, 2},
   {"geos_c_prepared_covered_by", (DL_FUNC) &geos_c_prepared_covered_by, 2},
+  {"geos_c_prepared_is_within_distance", (DL_FUNC) &geos_c_prepared_is_within_distance, 3},
   {"geos_c_relate", (DL_FUNC) &geos_c_relate, 3},
   {"geos_c_relate_pattern_match", (DL_FUNC) &geos_c_relate_pattern_match, 2},
   {"geos_c_intersection", (DL_FUNC) &geos_c_intersection, 2},
@@ -209,10 +218,12 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_geos_geometry_is_null_or_xptr", (DL_FUNC) &geos_c_geos_geometry_is_null_or_xptr, 1},
   {"geos_c_read_wkt", (DL_FUNC) &geos_c_read_wkt, 1},
   {"geos_c_write_wkt", (DL_FUNC) &geos_c_write_wkt, 4},
+  {"geos_c_read_geojson", (DL_FUNC) &geos_c_read_geojson, 1},
+  {"geos_c_write_geojson", (DL_FUNC) &geos_c_write_geojson, 2},
   {"geos_c_read_wkb", (DL_FUNC) &geos_c_read_wkb, 1},
-  {"geos_c_write_wkb", (DL_FUNC) &geos_c_write_wkb, 4},
+  {"geos_c_write_wkb", (DL_FUNC) &geos_c_write_wkb, 5},
   {"geos_c_read_hex", (DL_FUNC) &geos_c_read_hex, 1},
-  {"geos_c_write_hex", (DL_FUNC) &geos_c_write_hex, 4},
+  {"geos_c_write_hex", (DL_FUNC) &geos_c_write_hex, 5},
   {"geos_c_write_xy", (DL_FUNC) &geos_c_write_xy, 1},
   {"geos_c_make_point", (DL_FUNC) &geos_c_make_point, 3},
   {"geos_c_make_linestring", (DL_FUNC) &geos_c_make_linestring, 4},
@@ -292,6 +303,8 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_point_start", (DL_FUNC) &geos_c_point_start, 1},
   {"geos_c_point_end", (DL_FUNC) &geos_c_point_end, 1},
   {"geos_c_clone", (DL_FUNC) &geos_c_clone, 1},
+  {"geos_c_constrained_delaunay_triangulation", (DL_FUNC) &geos_c_constrained_delaunay_triangulation, 1},
+  {"geos_c_make_valid_with_params", (DL_FUNC) &geos_c_make_valid_with_params, 2},
   {"geos_c_interpolate", (DL_FUNC) &geos_c_interpolate, 2},
   {"geos_c_interpolate_normalized", (DL_FUNC) &geos_c_interpolate_normalized, 2},
   {"geos_c_point_n", (DL_FUNC) &geos_c_point_n, 2},
@@ -299,6 +312,7 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_simplify_preserve_topology", (DL_FUNC) &geos_c_simplify_preserve_topology, 2},
   {"geos_c_unary_union_prec", (DL_FUNC) &geos_c_unary_union_prec, 2},
   {"geos_c_maximum_inscribed_circle", (DL_FUNC) &geos_c_maximum_inscribed_circle, 2},
+  {"geos_c_densify", (DL_FUNC) &geos_c_densify, 2},
   {"geos_c_set_precision", (DL_FUNC) &geos_c_set_precision, 4},
   {"geos_c_set_srid", (DL_FUNC) &geos_c_set_srid, 2},
   {"geos_c_normalize", (DL_FUNC) &geos_c_normalize, 1},
