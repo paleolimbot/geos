@@ -141,6 +141,7 @@ extern SEXP geos_c_point_start(SEXP geom);
 extern SEXP geos_c_point_end(SEXP geom);
 extern SEXP geos_c_clone(SEXP geom);
 extern SEXP geos_c_constrained_delaunay_triangulation(SEXP geom);
+extern SEXP geos_c_make_valid_with_params(SEXP geom, SEXP params_sexp);
 extern SEXP geos_c_interpolate(SEXP geom, SEXP param);
 extern SEXP geos_c_interpolate_normalized(SEXP geom, SEXP param);
 extern SEXP geos_c_point_n(SEXP geom, SEXP param);
@@ -303,6 +304,7 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_point_end", (DL_FUNC) &geos_c_point_end, 1},
   {"geos_c_clone", (DL_FUNC) &geos_c_clone, 1},
   {"geos_c_constrained_delaunay_triangulation", (DL_FUNC) &geos_c_constrained_delaunay_triangulation, 1},
+  {"geos_c_make_valid_with_params", (DL_FUNC) &geos_c_make_valid_with_params, 2},
   {"geos_c_interpolate", (DL_FUNC) &geos_c_interpolate, 2},
   {"geos_c_interpolate_normalized", (DL_FUNC) &geos_c_interpolate_normalized, 2},
   {"geos_c_point_n", (DL_FUNC) &geos_c_point_n, 2},

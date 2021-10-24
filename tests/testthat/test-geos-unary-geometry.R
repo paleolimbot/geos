@@ -153,6 +153,35 @@ test_that("transformers work", {
   )
 })
 
+test_that("geos_make_valid() works with params", {
+  skip_if_not(geos_version() >= "3.10.0")
+
+  expect_identical(
+    geos_area(
+      geos_make_valid(
+        c("POLYGON ((0 0, 1 1, 1 0, 0 1, 0 0))", NA),
+        geos_make_valid_params(keep_collapsed = FALSE)
+      )
+    ),
+    geos_area(geos_make_valid(c("POLYGON ((0 0, 1 1, 1 0, 0 1, 0 0))", NA)))
+  )
+
+  expect_identical(
+    geos_area(
+      geos_make_valid(
+        c("POLYGON ((0 0, 1 1, 1 0, 0 1, 0 0))", NA),
+        geos_make_valid_params(method = "make_valid_structure")
+      )
+    ),
+    geos_area(geos_make_valid(c("POLYGON ((0 0, 1 1, 1 0, 0 1, 0 0))", NA)))
+  )
+
+  expect_error(geos_make_valid("POINT (0 1)", NULL), "must be created using")
+  params_bad <- geos_make_valid_params()
+  params_bad$method <- 100L
+  expect_error(geos_make_valid("POINT (0 1)", params_bad), "Unknown method")
+})
+
 test_that("geos_envelope_rct() works", {
   expect_identical(
     geos_envelope_rct(c("LINESTRING (0 0, 1 2)", "LINESTRING EMPTY", NA)),

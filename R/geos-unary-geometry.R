@@ -16,6 +16,13 @@
 #'   be preserved?
 #' @param keep_collapsed Should items that become EMPTY due to rounding
 #'   be kept in the output?
+#' @param make_valid_params A [geos_make_valid_params()] object.
+#' @param method The method to use for [geos_make_valid()].  One of:
+#'   - "make_valid_linework" combines all rings into a set of noded lines
+#'     and then extracts valid polygons from that linework.
+#'   - "make_valid_structure" Structured method, first makes all rings valid
+#'     then merges shells and subtracts holes from shells to generate valid
+#'     result. Assumes that holes and shells are correctly categorized.
 #' @param grid_size For `_prec()` variants, the grid size such that all vertices of
 #'   the resulting geometry will lie on the grid.
 #'
@@ -174,9 +181,27 @@ geos_node <- function(geom) {
 
 #' @rdname geos_centroid
 #' @export
-geos_make_valid <- function(geom) {
+geos_make_valid <- function(geom, make_valid_params = geos_make_valid_params()) {
   geom <- sanitize_geos_geometry(geom)
-  new_geos_geometry(.Call(geos_c_make_valid, geom), crs = attr(geom, "crs", exact = TRUE))
+  new_geos_geometry(
+    .Call(geos_c_make_valid_with_params, geom, make_valid_params),
+    crs = attr(geom, "crs", exact = TRUE)
+  )
+}
+
+#' @rdname geos_centroid
+#' @export
+geos_make_valid_params <- function(keep_collapsed = TRUE,
+                                   method = c("make_valid_linework", "make_valid_structure")) {
+  method <- match.arg(method)
+
+  structure(
+    list(
+      keep_collapsed = sanitize_logical_scalar(keep_collapsed),
+      method = match(method, c("make_valid_linework", "make_valid_structure")) - 1L
+    ),
+    class = "geos_make_valid_params"
+  )
 }
 
 #' @rdname geos_centroid
