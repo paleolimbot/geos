@@ -128,7 +128,11 @@
 
 <span class='fu'>geos_distance_hausdorff</span><span class='op'>(</span><span class='va'>geom1</span>, <span class='va'>geom2</span>, densify <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
-<span class='fu'>geos_distance_frechet</span><span class='op'>(</span><span class='va'>geom1</span>, <span class='va'>geom2</span>, densify <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+<span class='fu'>geos_distance_frechet</span><span class='op'>(</span><span class='va'>geom1</span>, <span class='va'>geom2</span>, densify <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
+
+<span class='fu'>geos_is_within_distance</span><span class='op'>(</span><span class='va'>geom1</span>, <span class='va'>geom2</span>, <span class='va'>distance</span><span class='op'>)</span>
+
+<span class='fu'>geos_prepared_is_within_distance</span><span class='op'>(</span><span class='va'>geom1</span>, <span class='va'>geom2</span>, <span class='va'>distance</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -143,6 +147,11 @@ recycled to a common length.</p></td>
       <td><p>A fraction between 0 and 1 denoting the degree to which
 edges should be subdivided (smaller value means more subdivisions).
 Use NULL to calculate the distance as-is.</p></td>
+    </tr>
+    <tr>
+      <th>distance</th>
+      <td><p>A threshold distance, below which <code>geos_is_within_distance()</code>
+and <code>geos_prepared_is_within_distance()</code> will return <code>TRUE</code>.</p></td>
     </tr>
     </table>
 

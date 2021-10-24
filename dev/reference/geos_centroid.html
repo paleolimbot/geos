@@ -140,7 +140,12 @@
 
 <span class='fu'>geos_node</span><span class='op'>(</span><span class='va'>geom</span><span class='op'>)</span>
 
-<span class='fu'>geos_make_valid</span><span class='op'>(</span><span class='va'>geom</span><span class='op'>)</span>
+<span class='fu'>geos_make_valid</span><span class='op'>(</span><span class='va'>geom</span>, make_valid_params <span class='op'>=</span> <span class='fu'>geos_make_valid_params</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='fu'>geos_make_valid_params</span><span class='op'>(</span>
+  keep_collapsed <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"make_valid_linework"</span>, <span class='st'>"make_valid_structure"</span><span class='op'>)</span>
+<span class='op'>)</span>
 
 <span class='fu'>geos_unique_points</span><span class='op'>(</span><span class='va'>geom</span><span class='op'>)</span>
 
@@ -179,6 +184,8 @@
 
 <span class='fu'>geos_normalize</span><span class='op'>(</span><span class='va'>geom</span><span class='op'>)</span>
 
+<span class='fu'>geos_densify</span><span class='op'>(</span><span class='va'>geom</span>, <span class='va'>tolerance</span><span class='op'>)</span>
+
 <span class='fu'>geos_clip_by_rect</span><span class='op'>(</span><span class='va'>geom</span>, <span class='va'>rect</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -194,6 +201,25 @@
 the resulting geometry will lie on the grid.</p></td>
     </tr>
     <tr>
+      <th>make_valid_params</th>
+      <td><p>A <code>geos_make_valid_params()</code> object.</p></td>
+    </tr>
+    <tr>
+      <th>keep_collapsed</th>
+      <td><p>Should items that become EMPTY due to rounding
+be kept in the output?</p></td>
+    </tr>
+    <tr>
+      <th>method</th>
+      <td><p>The method to use for <code>geos_make_valid()</code>.  One of:</p><ul>
+<li><p>"make_valid_linework" combines all rings into a set of noded lines
+and then extracts valid polygons from that linework.</p></li>
+<li><p>"make_valid_structure" Structured method, first makes all rings valid
+then merges shells and subtracts holes from shells to generate valid
+result. Assumes that holes and shells are correctly categorized.</p></li>
+</ul></td>
+    </tr>
+    <tr>
       <th>srid</th>
       <td><p>An integer spatial reference identifier.</p></td>
     </tr>
@@ -203,18 +229,14 @@ the resulting geometry will lie on the grid.</p></td>
     </tr>
     <tr>
       <th>tolerance</th>
-      <td><p>A minimum distance to use for simplification. Use a higher
-value for more simplification.</p></td>
+      <td><p>A minimum distance to use for simplification or
+densification. Use a higher value for more simplification (or
+less densification).</p></td>
     </tr>
     <tr>
       <th>preserve_topology</th>
       <td><p>Should topology internal to each feature
 be preserved?</p></td>
-    </tr>
-    <tr>
-      <th>keep_collapsed</th>
-      <td><p>Should items that become EMPTY due to rounding
-be kept in the output?</p></td>
     </tr>
     <tr>
       <th>rect</th>
