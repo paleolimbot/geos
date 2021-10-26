@@ -56,7 +56,7 @@ plot.geos_geometry <- function(x, ..., asp = 1, bbox = NULL, xlab = "", ylab = "
   dots_vector <- dots[dots_is_vector]
 
   # if adding, we only need features that touch the plot bbox
-  plot_area <- wk::rct(usr_x[1], usr_y[2], usr_x[2], usr_y[1], crs = wk::wk_crs(x_plot))
+  plot_area <- wk::rct(usr_x[1], usr_y[1], usr_x[2], usr_y[2], crs = wk::wk_crs(x_plot))
   ignore_bbox <- is.null(bbox) && !add
 
   if (!ignore_bbox) {
@@ -75,7 +75,7 @@ plot.geos_geometry <- function(x, ..., asp = 1, bbox = NULL, xlab = "", ylab = "
     x_mid <- mean(usr_x)
     y_mid <- mean(usr_y)
     usr_x_expanded <- x_mid + ((usr_x - x_mid) * 1.05)
-    usr_y_expanded <- x_mid + ((usr_y - y_mid) * 1.05)
+    usr_y_expanded <- y_mid + ((usr_y - y_mid) * 1.05)
 
     crop_area <- wk::rct(
       usr_x_expanded[1], usr_y_expanded[1],
