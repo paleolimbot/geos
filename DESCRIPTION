@@ -27,8 +27,7 @@ RoxygenNote: 7.1.2
 Suggests: 
     testthat (>= 2.1.0),
     vctrs,
-    sf,
-    wkutils
+    sf
 Imports: 
     libgeos (>= 3.8.1-4),
     wk (>= 0.4.1)

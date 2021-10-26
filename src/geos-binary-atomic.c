@@ -150,7 +150,8 @@ SEXP geos_c_distance_frechet_densify(SEXP geom1, SEXP geom2, SEXP densifyFrac) {
 
 // project and project _normalized both return their result rather than use a
 // pointer arg (-1 for error, but this is undocumented)
-#define GEOS_BINARY_REAL_RETURN(_func)                                        \
+// empty points cause a segfault so we have to check for them (return NaN)
+#define GEOS_PROJECT_BINARY_REAL_RETURN(_func)                                \
   R_xlen_t size = Rf_xlength(geom1);                                          \
   SEXP result = PROTECT(Rf_allocVector(REALSXP, size));                       \
   double* pResult = REAL(result);                                             \
@@ -176,23 +177,28 @@ SEXP geos_c_distance_frechet_densify(SEXP geom1, SEXP geom2, SEXP densifyFrac) {
     geometry2 = (GEOSGeometry*) R_ExternalPtrAddr(item2);                     \
     GEOS_CHECK_GEOMETRY(geometry2, i);                                        \
                                                                               \
+    if (GEOSisEmpty_r(handle, geometry1) || GEOSisEmpty_r(handle, geometry2)) { \
+      pResult[i] = R_NaN;                                                     \
+      continue;                                                               \
+    }                                                                         \
+                                                                              \
     itemResult = _func(handle, geometry1, geometry2);                         \
     if (itemResult == -1) {                                                   \
-      Rf_error("[%d] %s", i + 1, globalErrorMessage);                                           \
+      Rf_error("[%d] %s", i + 1, globalErrorMessage);                         \
     }                                                                         \
                                                                               \
     pResult[i] = itemResult;                                                  \
   }                                                                           \
                                                                               \
-    UNPROTECT(1);                                                               \
+  UNPROTECT(1);                                                               \
   return result;
 
 SEXP geos_c_project(SEXP geom1, SEXP geom2) {
-  GEOS_BINARY_REAL_RETURN(GEOSProject_r);
+  GEOS_PROJECT_BINARY_REAL_RETURN(GEOSProject_r);
 }
 
 SEXP geos_c_project_normalized(SEXP geom1, SEXP geom2) {
-  GEOS_BINARY_REAL_RETURN(GEOSProjectNormalized_r);
+  GEOS_PROJECT_BINARY_REAL_RETURN(GEOSProjectNormalized_r);
 }
 
 

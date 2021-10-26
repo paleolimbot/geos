@@ -66,13 +66,13 @@ test_that("linear referencing works", {
     c(1, NA)
   )
   expect_identical(
-    geos_project("LINESTRING (0 0, 0 10)", c("POINT (0 1)", NA)),
-    c(1, NA)
+    geos_project("LINESTRING (0 0, 0 10)", c("POINT (0 1)", "POINT EMPTY", NA)),
+    c(1, NaN, NA)
   )
 
   expect_identical(
-    geos_project_normalized("LINESTRING (0 0, 0 10)", c("POINT (0 1)", NA)),
-    c(0.1, NA)
+    geos_project_normalized("LINESTRING (0 0, 0 10)", c("POINT (0 1)", "POINT EMPTY", NA)),
+    c(0.1, NaN, NA)
   )
 })
 
