@@ -1,5 +1,18 @@
 # geos (development version)
 
+* Add support for new features in GEOS 3.10, including
+  `geos_is_within_distance()`, `geos_prepared_is_within_distance()`,
+  `geos_read_geojson()`, `geos_write_geojson()`,
+  `geos_constrained_delaunay_triangles()`, `geos_densify()`,
+  and a new argument `flavor` to `geos_write_wkb()` and
+  `geos_write_hex()` to allow ISO WKB output instead of
+  EWKB output for geometries with Z values (#57).
+* Fix crash when EMPTY points were passed to
+  `geos_project()` or `geos_project_normalized()` (#52, #61).
+* Use `geos_simplify()`, `geos_strtree_query()`, and
+  `geos_clip_by_rect()` to speed up plotting for polygons/
+  lines with many vertices (#59, #61).
+
 # geos 0.1.2
 
 * Update tests to pass on GEOS 3.9.1 and 3.10.0 (#54).
