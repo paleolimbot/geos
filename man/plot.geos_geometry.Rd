@@ -12,7 +12,9 @@
   xlab = "",
   ylab = "",
   rule = "evenodd",
-  add = FALSE
+  add = FALSE,
+  simplify = 1,
+  crop = TRUE
 )
 }
 \arguments{
@@ -25,7 +27,7 @@ and multipolygon geometries.}
 
 \item{asp}{Passed to \code{\link[graphics:plot.default]{graphics::plot()}}}
 
-\item{bbox}{The limits of the plot in the form returned by \code{\link[wkutils:wkb_ranges]{wkt_ranges()}}.}
+\item{bbox}{The limits of the plot as a \code{\link[wk:rct]{rct()}} or compatible object}
 
 \item{xlab}{Passed to \code{\link[graphics:plot.default]{graphics::plot()}}}
 
@@ -33,8 +35,14 @@ and multipolygon geometries.}
 
 \item{rule}{The rule to use for filling polygons (see \code{\link[graphics:polypath]{graphics::polypath()}})}
 
-\item{add}{Should a new plot be created, or should \code{x} be added to the
+\item{add}{Should a new plot be created, or should \code{handleable} be added to the
 existing plot?}
+
+\item{simplify}{A relative tolerance to use for simplification of
+geometries. Use 0 to disable simplification; use a higher number
+to make simplification coarser.}
+
+\item{crop}{Use \code{TRUE} to crop the input to the extent of the plot.}
 }
 \value{
 The input, invisibly
@@ -43,9 +51,7 @@ The input, invisibly
 Plot GEOS geometries
 }
 \examples{
-if (requireNamespace("wkutils")) {
-  plot(as_geos_geometry("LINESTRING (0 0, 1 1)"))
-  plot(as_geos_geometry("POINT (0.5 0.4)"), add = TRUE)
-}
+plot(as_geos_geometry("LINESTRING (0 0, 1 1)"))
+plot(as_geos_geometry("POINT (0.5 0.4)"), add = TRUE)
 
 }
