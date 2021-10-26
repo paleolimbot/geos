@@ -7,15 +7,15 @@ test_that("geos_geometry class works", {
 })
 
 test_that("geos_geometry can be created from well-known text", {
-  expect_is(as_geos_geometry("POINT (30 10)"), "geos_geometry")
-  expect_is(as_geos_geometry(wk::wkt("POINT (30 10)")), "geos_geometry")
+  expect_s3_class(as_geos_geometry("POINT (30 10)"), "geos_geometry")
+  expect_s3_class(as_geos_geometry(wk::wkt("POINT (30 10)")), "geos_geometry")
   expect_length(as_geos_geometry("POINT (30 10)"), 1)
   expect_length(as_geos_geometry(c(NA, "POINT (30 10)")), 2)
 })
 
 test_that("geos_geometry can be created from well-known binary", {
-  expect_is(as_geos_geometry(structure(wk::as_wkb("POINT (30 10)"), class = "blob")), "geos_geometry")
-  expect_is(as_geos_geometry(structure(wk::as_wkb("POINT (30 10)"), class = "WKB")), "geos_geometry")
+  expect_s3_class(as_geos_geometry(structure(wk::as_wkb("POINT (30 10)"), class = "blob")), "geos_geometry")
+  expect_s3_class(as_geos_geometry(structure(wk::as_wkb("POINT (30 10)"), class = "WKB")), "geos_geometry")
 })
 
 test_that("geos_geometry validation works", {
