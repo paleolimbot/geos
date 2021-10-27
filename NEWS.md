@@ -12,6 +12,7 @@
 * Use `geos_simplify()`, `geos_strtree_query()`, and
   `geos_clip_by_rect()` to speed up plotting for polygons/
   lines with many vertices (#59, #61).
+* Update tests to use testthat 3rd edition (#62).
 
 # geos 0.1.2
 

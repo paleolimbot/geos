@@ -8,7 +8,7 @@ test_that("strtree objects can be created", {
   expect_identical(as_geos_strtree(tree), tree)
 
   # make sure geom can be re-extracted from the object
-  expect_reference(geos_strtree_data(tree), geom)
+  expect_identical(geos_strtree_data(tree), geom)
 
   # ...even  when it goes out of scope
   geom <- NULL

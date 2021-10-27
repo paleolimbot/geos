@@ -1,7 +1,7 @@
 
 test_that("WKT reader works", {
   # regular read/write
-  expect_is(geos_read_wkt("POINT (30 10)"), "geos_geometry")
+  expect_s3_class(geos_read_wkt("POINT (30 10)"), "geos_geometry")
   expect_identical(geos_write_wkt(geos_read_wkt("POINT Z (30 10 2)")), "POINT Z (30 10 2)")
 
   # options
@@ -51,7 +51,7 @@ test_that("GeoJSON reader works", {
   skip_if_not(geos_version() >= "3.10.0")
 
   # regular read/write
-  expect_is(geos_read_geojson('{"type":"Point","coordinates":[30.0,10.0]}'), "geos_geometry")
+  expect_s3_class(geos_read_geojson('{"type":"Point","coordinates":[30.0,10.0]}'), "geos_geometry")
   expect_identical(geos_write_geojson("POINT (30 10)"), '{"type":"Point","coordinates":[30.0,10.0]}')
 
   # NULL/NA read/write
@@ -76,7 +76,7 @@ test_that("GeoJSON reader works", {
 
 test_that("WKB reader works", {
   # regular read/write
-  expect_is(geos_read_wkb(wk::wkt_translate_wkb("POINT (30 10)")), "geos_geometry")
+  expect_s3_class(geos_read_wkb(wk::wkt_translate_wkb("POINT (30 10)")), "geos_geometry")
   expect_identical(
     geos_write_wkb(geos_read_wkt("POINT Z (30 10 2)")),
     structure(wk::wkt_translate_wkb("POINT Z (30 10 2)"), class = "blob")
