@@ -123,6 +123,7 @@
 <li>Fix crash when EMPTY points were passed to <code><a href="../reference/geos_project.html">geos_project()</a></code> or <code><a href="../reference/geos_project.html">geos_project_normalized()</a></code> (<a href='https://github.com/paleolimbot/geos/issues/52'>#52</a>, <a href='https://github.com/paleolimbot/geos/issues/61'>#61</a>).</li>
 <li>Use <code><a href="../reference/geos_centroid.html">geos_simplify()</a></code>, <code><a href="../reference/geos_strtree.html">geos_strtree_query()</a></code>, and <code><a href="../reference/geos_centroid.html">geos_clip_by_rect()</a></code> to speed up plotting for polygons/ lines with many vertices (<a href='https://github.com/paleolimbot/geos/issues/59'>#59</a>, <a href='https://github.com/paleolimbot/geos/issues/61'>#61</a>).</li>
 <li>Update tests to use testthat 3rd edition (<a href='https://github.com/paleolimbot/geos/issues/62'>#62</a>).</li>
+<li>Add temporary workaround for intermittent crashes when importing large objects using <code><a href="../reference/wk-methods.html">geos_geometry_writer()</a></code> (workaround uses <code><a href="https://r-spatial.github.io/sf/reference/st_as_binary.html">sf::st_as_binary()</a></code> and <code><a href="../reference/geos_read_wkt.html">geos_read_wkb()</a></code> until the source of the crash can be determined) (<a href='https://github.com/paleolimbot/geos/issues/56'>#56</a>)</li>
 </ul>
 </div>
     <div id="geos-012" class="section level1">
