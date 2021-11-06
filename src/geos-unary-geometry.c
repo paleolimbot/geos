@@ -160,7 +160,7 @@ SEXP geos_c_make_valid_with_params(SEXP geom, SEXP params_sexp) {
 
   if (GEOSMakeValidParams_setMethod_r(handle, params, method) == 0) {
     GEOSMakeValidParams_destroy_r(handle, params);
-    GEOS_ERROR("%s: ", "method");
+    GEOS_ERROR("%s: ", "method"); // # nocov
   }
 
   SEXP item;
