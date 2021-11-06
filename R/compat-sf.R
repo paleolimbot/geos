@@ -2,17 +2,13 @@
 #' @rdname as_geos_geometry
 #' @export
 as_geos_geometry.sfc <- function(x, ...) {
-  geos <- wk::wk_handle(x, geos_geometry_writer())
-  attr(geos, "crs") <- sf::st_crs(x)
-  geos
+  geos_read_wkb(sf::st_as_binary(x), crs = sf::st_crs(x))
 }
 
 #' @rdname as_geos_geometry
 #' @export
 as_geos_geometry.sf <- function(x, ...) {
-  geos <- wk::wk_handle(x, geos_geometry_writer())
-  attr(geos, "crs") <- sf::st_crs(x)
-  geos
+  geos_read_wkb(sf::st_as_binary(sf::st_geometry(x)), crs = sf::st_crs(x))
 }
 
 # dynamically exported
