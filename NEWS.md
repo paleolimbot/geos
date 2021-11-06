@@ -13,6 +13,10 @@
   `geos_clip_by_rect()` to speed up plotting for polygons/
   lines with many vertices (#59, #61).
 * Update tests to use testthat 3rd edition (#62).
+* Add temporary workaround for intermittent crashes 
+  when importing large objects using `geos_geometry_writer()`
+  (workaround uses `sf::st_as_binary()` and `geos_read_wkb()`
+  until the source of the crash can be determined) (#56)
 
 # geos 0.1.2
 
