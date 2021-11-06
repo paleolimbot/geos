@@ -1,6 +1,6 @@
 
-This release prepares the 'geos' package for GEOS 3.10.0 to ensure that
-all tests pass under both GEOS 3.9.1 and GEOS 3.10.0.
+This release fixes bugs that were identified in the previous release
+and adds features that became available in GEOS 3.10.0.
 
 ## R CMD check results
 
