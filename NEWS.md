@@ -16,7 +16,7 @@
 * Add temporary workaround for intermittent crashes 
   when importing large objects using `geos_geometry_writer()`
   (workaround uses `sf::st_as_binary()` and `geos_read_wkb()`
-  until the source of the crash can be determined) (#56)
+  until the source of the crash can be determined) (#56).
 
 # geos 0.1.2
 
