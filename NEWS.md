@@ -1,4 +1,4 @@
-# geos (development version)
+# geos 0.1.3
 
 * Add support for new features in GEOS 3.10, including
   `geos_is_within_distance()`, `geos_prepared_is_within_distance()`,
