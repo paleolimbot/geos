@@ -74,7 +74,7 @@ and/or geos_relate_pattern_create()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">geos</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
       </span>
     </div>
 
@@ -174,12 +174,16 @@ boundary (B), and exterior (E).</p></td>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>geos_relate_pattern_match</span><span class='op'>(</span><span class='st'>"FF*FF1***"</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA</span>, <span class='st'>"FF*FF****"</span>, <span class='st'>"FF*FF***F"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1]    NA  TRUE FALSE</div><div class='input'><span class='fu'>geos_relate</span><span class='op'>(</span><span class='st'>"POINT (0 0)"</span>, <span class='st'>"POINT (0 0)"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "0FFFFFFF2"</div><div class='input'><span class='fu'>geos_relate_pattern</span><span class='op'>(</span><span class='st'>"POINT (0 0)"</span>, <span class='st'>"POINT (0 0)"</span>, <span class='st'>"T********"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>geos_relate_pattern_create</span><span class='op'>(</span>II <span class='op'>=</span> <span class='st'>"T"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "T********"</div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'>geos_relate_pattern_match</span><span class='op'>(</span><span class='st'>"FF*FF1***"</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA</span>, <span class='st'>"FF*FF****"</span>, <span class='st'>"FF*FF***F"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1]    NA  TRUE FALSE</span>
+<span class='r-in'><span class='fu'>geos_relate</span><span class='op'>(</span><span class='st'>"POINT (0 0)"</span>, <span class='st'>"POINT (0 0)"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "0FFFFFFF2"</span>
+<span class='r-in'><span class='fu'>geos_relate_pattern</span><span class='op'>(</span><span class='st'>"POINT (0 0)"</span>, <span class='st'>"POINT (0 0)"</span>, <span class='st'>"T********"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-in'><span class='fu'>geos_relate_pattern_create</span><span class='op'>(</span>II <span class='op'>=</span> <span class='st'>"T"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "T********"</span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
