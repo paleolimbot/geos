@@ -302,6 +302,18 @@ SEXP geos_c_densify(SEXP geom, SEXP param) {
 #endif
 }
 
+SEXP geos_c_remove_repeated_points(SEXP geom, SEXP param) {
+#if LIBGEOS_VERSION_COMPILE_INT >= LIBGEOS_VERSION_INT(3, 11, 0)
+  if (libgeos_version_int() < LIBGEOS_VERSION_INT(3, 11, 0)) {
+    ERROR_OLD_LIBGEOS("GEOSRemoveRepeatedPoints_r()", "3.11.0");
+  }
+
+  GEOS_UNARY_GEOMETRY_PARAM(GEOSRemoveRepeatedPoints_r(handle, geometry, paramPtr[i]), double, REAL, ISNA(paramPtr[i]));
+#else
+  ERROR_OLD_LIBGEOS_BUILD("GEOSRemoveRepeatedPoints_r()", "3.11.0");
+#endif
+}
+
 // this should really be defined in libgeos.h and probably will be in future versions
 #ifndef GEOS_PREC_NO_TOPO
 #define GEOS_PREC_NO_TOPO         (1<<0)

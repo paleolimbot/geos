@@ -152,6 +152,7 @@ extern SEXP geos_c_simplify_preserve_topology(SEXP geom, SEXP param);
 extern SEXP geos_c_unary_union_prec(SEXP geom, SEXP param);
 extern SEXP geos_c_maximum_inscribed_circle(SEXP geom, SEXP param);
 extern SEXP geos_c_densify(SEXP geom, SEXP param);
+extern SEXP geos_c_remove_repeated_points(SEXP geom, SEXP param);
 extern SEXP geos_c_set_precision(SEXP geom, SEXP param, SEXP preserveTopology, SEXP keepCollapsed);
 extern SEXP geos_c_set_srid(SEXP geom, SEXP srid);
 extern SEXP geos_c_normalize(SEXP geom);
@@ -317,6 +318,7 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_unary_union_prec", (DL_FUNC) &geos_c_unary_union_prec, 2},
   {"geos_c_maximum_inscribed_circle", (DL_FUNC) &geos_c_maximum_inscribed_circle, 2},
   {"geos_c_densify", (DL_FUNC) &geos_c_densify, 2},
+  {"geos_c_remove_repeated_points", (DL_FUNC) &geos_c_remove_repeated_points, 2},
   {"geos_c_set_precision", (DL_FUNC) &geos_c_set_precision, 4},
   {"geos_c_set_srid", (DL_FUNC) &geos_c_set_srid, 2},
   {"geos_c_normalize", (DL_FUNC) &geos_c_normalize, 1},

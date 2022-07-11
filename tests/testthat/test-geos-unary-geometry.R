@@ -352,6 +352,20 @@ test_that("densification works", {
   )
 })
 
+test_that("geos_remove_repeated_points() works", {
+  skip_if_not(geos_version() >= "3.11.0")
+
+  expect_identical(
+    geos_write_wkt(
+      geos_remove_repeated_points(
+        "LINESTRING (0 1, 2 3, 2.1 3)",
+        0.2
+      )
+    ),
+    "LINESTRING (0 1, 2.1 3)"
+  )
+})
+
 test_that("set precision works", {
   expect_identical(
     geos_equals(

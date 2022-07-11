@@ -28,6 +28,7 @@
 \alias{geos_set_srid}
 \alias{geos_point_n}
 \alias{geos_simplify}
+\alias{geos_remove_repeated_points}
 \alias{geos_simplify_preserve_topology}
 \alias{geos_set_precision}
 \alias{geos_normalize}
@@ -91,6 +92,8 @@ geos_set_srid(geom, srid)
 geos_point_n(geom, index)
 
 geos_simplify(geom, tolerance)
+
+geos_remove_repeated_points(geom, tolerance)
 
 geos_simplify_preserve_topology(geom, tolerance)
 

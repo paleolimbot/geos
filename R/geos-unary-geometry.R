@@ -339,6 +339,17 @@ geos_simplify <- function(geom, tolerance) {
 
 #' @rdname geos_centroid
 #' @export
+geos_remove_repeated_points <- function(geom, tolerance) {
+  geom <- sanitize_geos_geometry(geom)
+  recycled <- recycle_common(list(geom, sanitize_double(tolerance)))
+  new_geos_geometry(
+    .Call(geos_c_remove_repeated_points, recycled[[1]], recycled[[2]]),
+    crs = attr(geom, "crs", exact = TRUE)
+  )
+}
+
+#' @rdname geos_centroid
+#' @export
 geos_simplify_preserve_topology <- function(geom, tolerance) {
   geom <- sanitize_geos_geometry(geom)
   recycled <- recycle_common(list(geom, sanitize_double(tolerance)))
