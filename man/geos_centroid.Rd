@@ -22,6 +22,8 @@
 \alias{geos_convex_hull}
 \alias{geos_point_start}
 \alias{geos_point_end}
+\alias{geos_line_merge}
+\alias{geos_line_merge_directed}
 \alias{geos_clone}
 \alias{geos_set_srid}
 \alias{geos_point_n}
@@ -77,6 +79,10 @@ geos_convex_hull(geom)
 geos_point_start(geom)
 
 geos_point_end(geom)
+
+geos_line_merge(geom)
+
+geos_line_merge_directed(geom)
 
 geos_clone(geom)
 

@@ -26,10 +26,7 @@ geos_relate_pattern_create(
 )
 }
 \arguments{
-\item{geom1}{\link[=as_geos_geometry]{GEOS geometry vectors},
-recycled to a common length.}
-
-\item{geom2}{\link[=as_geos_geometry]{GEOS geometry vectors},
+\item{geom1, geom2}{\link[=as_geos_geometry]{GEOS geometry vectors},
 recycled to a common length.}
 
 \item{boundary_node_rule}{One of "mod2", "endpoint", "multivalent_endpoint",

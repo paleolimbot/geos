@@ -25,8 +25,6 @@ one can be extracted using \code{\link[=as_geos_type_id]{as_geos_type_id()}}
 (default to calling \code{\link[=geos_type_id]{geos_type_id()}}). This is most
 usefully a character vector with the geometry type
 (e.g., point, linestring, polygon).}
-
-\item{crs}{An object that can be interpreted as a CRS}
 }
 \value{
 A \link[=as_geos_geometry]{GEOS geometry vector}.
