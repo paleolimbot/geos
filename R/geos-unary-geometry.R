@@ -285,6 +285,20 @@ geos_point_end <- function(geom) {
 
 #' @rdname geos_centroid
 #' @export
+geos_line_merge <- function(geom) {
+  geom <- sanitize_geos_geometry(geom)
+  new_geos_geometry(.Call(geos_c_line_merge, geom), crs = attr(geom, "crs", exact = TRUE))
+}
+
+#' @rdname geos_centroid
+#' @export
+geos_line_merge_directed <- function(geom) {
+  geom <- sanitize_geos_geometry(geom)
+  new_geos_geometry(.Call(geos_c_line_merge_directed, geom), crs = attr(geom, "crs", exact = TRUE))
+}
+
+#' @rdname geos_centroid
+#' @export
 geos_clone <- function(geom) {
   geom <- sanitize_geos_geometry(geom)
   new_geos_geometry(.Call(geos_c_clone, geom), crs = attr(geom, "crs", exact = TRUE))

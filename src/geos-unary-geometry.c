@@ -108,6 +108,10 @@ SEXP geos_c_point_end(SEXP geom) {
   GEOS_UNARY_GEOMETRY(GEOSGeomGetEndPoint_r);
 }
 
+SEXP geos_c_line_merge(SEXP geom) {
+  GEOS_UNARY_GEOMETRY(GEOSLineMerge_r);
+}
+
 SEXP geos_c_clone(SEXP geom) {
   GEOS_UNARY_GEOMETRY(GEOSGeom_clone_r);
 }
@@ -121,6 +125,18 @@ SEXP geos_c_constrained_delaunay_triangulation(SEXP geom) {
   GEOS_UNARY_GEOMETRY(GEOSConstrainedDelaunayTriangulation_r);
 #else
   ERROR_OLD_LIBGEOS_BUILD("GEOSConstrainedDelaunayTriangulation_r()", "3.10.0");
+#endif
+}
+
+SEXP geos_c_line_merge_directed(SEXP geom) {
+#if LIBGEOS_VERSION_COMPILE_INT >= LIBGEOS_VERSION_INT(3, 11, 0)
+  if (libgeos_version_int() < LIBGEOS_VERSION_INT(3, 11, 0)) {
+    ERROR_OLD_LIBGEOS("GEOSLineMergeDirected_r()", "3.11.0");
+  }
+
+  GEOS_UNARY_GEOMETRY(GEOSLineMergeDirected_r);
+#else
+  ERROR_OLD_LIBGEOS_BUILD("GEOSLineMergeDirected_r()", "3.11.0");
 #endif
 }
 

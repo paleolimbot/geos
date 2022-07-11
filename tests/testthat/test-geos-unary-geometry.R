@@ -153,6 +153,25 @@ test_that("transformers work", {
   )
 })
 
+test_that("geos_line_merge/_directed() works ", {
+  expect_identical(
+    geos_write_wkt(geos_line_merge("MULTILINESTRING ((0 1, 2 3), (4 5, 2 3))")),
+    "LINESTRING (0 1, 2 3, 4 5)"
+  )
+
+  skip_if_not(geos_version() >= "3.11.0")
+
+  expect_identical(
+    geos_write_wkt(geos_line_merge_directed("MULTILINESTRING ((0 1, 2 3), (4 5, 2 3))")),
+    "MULTILINESTRING ((0 1, 2 3), (4 5, 2 3))"
+  )
+
+  expect_identical(
+    geos_write_wkt(geos_line_merge("MULTILINESTRING ((0 1, 2 3), (2 3, 4 5))")),
+    "LINESTRING (0 1, 2 3, 4 5)"
+  )
+})
+
 test_that("geos_make_valid() works with params", {
   skip_if_not(geos_version() >= "3.10.0")
 
