@@ -100,6 +100,34 @@ geos_make_collection <- function(geom, type_id = "geometrycollection", feature_i
   }
 }
 
+#' Create rectangles from bounds
+#'
+#' @param xmin Left bound of envelope
+#' @param ymin Lower bound of envelope
+#' @param xmax Right bound of envelope
+#' @param ymax Upper bound of envelope
+#' @inheritParams wk::wk_crs
+#'
+#' @return A [geos_geometry()] consisting of a polygon
+#' @export
+#'
+geos_create_rectangle <- function(xmin, ymin, xmax, ymax,
+                                  crs = NULL) {
+  args <- lapply(list(xmin, ymin, xmax, ymax), as.numeric)
+  recycled <- recycle_common(args)
+
+  new_geos_geometry(
+    .Call(
+      geos_c_create_rectangle,
+      recycled[[1]],
+      recycled[[2]],
+      recycled[[3]],
+      recycled[[4]]
+    ),
+    crs = crs
+  )
+}
+
 
 #' Create empty geometries
 #'

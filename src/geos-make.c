@@ -295,7 +295,52 @@ SEXP geos_c_make_collection(SEXP geom, SEXP typeId, SEXP featureLengths) {
   return result;
 }
 
+SEXP geos_c_create_rectangle(SEXP xmin_sexp, SEXP ymin_sexp,
+                             SEXP xmax_sexp, SEXP ymax_sexp) {
+#if LIBGEOS_VERSION_COMPILE_INT >= LIBGEOS_VERSION_INT(3, 11, 0)
+  if (libgeos_version_int() < LIBGEOS_VERSION_INT(3, 11, 0)) {
+    ERROR_OLD_LIBGEOS("GEOSGeom_createRectangle_r()", "3.11.0");
+  }
 
+  double* xmin = REAL(xmin_sexp);
+  double* ymin = REAL(ymin_sexp);
+  double* xmax = REAL(xmax_sexp);
+  double* ymax = REAL(ymax_sexp);
+
+  R_xlen_t n = Rf_xlength(xmin_sexp);
+  SEXP result = PROTECT(Rf_allocVector(VECSXP, n));
+
+  GEOS_INIT();
+  GEOSGeometry* geometryResult;
+  for (R_xlen_t i = 0; i < n; i++) {
+    if (R_IsNA(xmin[i]) || R_IsNaN(xmin[i]) ||
+        R_IsNA(ymin[i]) || R_IsNaN(ymin[i]) ||
+        R_IsNA(xmax[i]) || R_IsNaN(xmax[i]) ||
+        R_IsNA(ymax[i]) || R_IsNaN(ymax[i])) {
+      SET_VECTOR_ELT(result, i, R_NilValue);
+      continue;
+    }
+
+    geometryResult = GEOSGeom_createRectangle_r(
+      handle,
+      xmin[i], ymin[i],
+      xmax[i], ymax[i]
+    );
+
+    if (geometryResult == NULL) {                                             \
+      Rf_error("[%d] %s", i + 1, globalErrorMessage);                                           \
+    }
+
+    SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometryResult));
+  }
+
+  UNPROTECT(1);
+  return result;
+
+#else
+  ERROR_OLD_LIBGEOS_BUILD("GEOSGeom_createRectangle_r()", "3.11.0");
+#endif
+}
 
 SEXP geos_c_empty(SEXP typeId) {
   R_xlen_t size = Rf_xlength(typeId);

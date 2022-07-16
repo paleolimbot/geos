@@ -66,6 +66,7 @@ extern SEXP geos_c_make_point(SEXP x, SEXP y, SEXP z);
 extern SEXP geos_c_make_linestring(SEXP x, SEXP y, SEXP z, SEXP featureLengths);
 extern SEXP geos_c_make_polygon(SEXP x, SEXP y, SEXP z, SEXP ringLengthsByFeature);
 extern SEXP geos_c_make_collection(SEXP geom, SEXP typeId, SEXP featureLengths);
+extern SEXP geos_c_create_rectangle(SEXP xmin_sexp, SEXP ymin_sexp, SEXP xmax_sexp, SEXP ymax_sexp);
 extern SEXP geos_c_empty(SEXP typeId);
 extern SEXP geos_c_polygonize(SEXP collection);
 extern SEXP geos_c_polygonize_valid(SEXP collection);
@@ -232,6 +233,7 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_make_linestring", (DL_FUNC) &geos_c_make_linestring, 4},
   {"geos_c_make_polygon", (DL_FUNC) &geos_c_make_polygon, 4},
   {"geos_c_make_collection", (DL_FUNC) &geos_c_make_collection, 3},
+  {"geos_c_create_rectangle", (DL_FUNC) &geos_c_create_rectangle, 4},
   {"geos_c_empty", (DL_FUNC) &geos_c_empty, 1},
   {"geos_c_polygonize", (DL_FUNC) &geos_c_polygonize, 1},
   {"geos_c_polygonize_valid", (DL_FUNC) &geos_c_polygonize_valid, 1},

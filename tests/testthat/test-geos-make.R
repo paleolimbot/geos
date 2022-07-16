@@ -115,3 +115,22 @@ test_that("make collection works", {
     123
   )
 })
+
+test_that("geos_create_rectangle() works", {
+  skip_if_not(geos_version() >= "3.11.0")
+
+  expect_identical(
+    geos_write_wkt(geos_create_rectangle(0, 1, 2, 3)),
+    "POLYGON ((0 1, 2 1, 2 3, 0 3, 0 1))"
+  )
+
+  expect_identical(
+    geos_create_rectangle(
+      c(NA, NaN, 0, 0, 0, 0, 0, 0),
+      c(1, 1, NA, NaN, 1, 1, 1, 1),
+      c(2, 2, 2, 2, NA, NaN, 2, 2),
+      c(3, 3, 3, 3, 3, 3, NA, NaN)
+    ),
+    new_geos_geometry(rep(list(NULL), 8))
+  )
+})
