@@ -2,7 +2,7 @@
 #' Create GEOS Geometry Vectors
 #'
 #' @param x An object to be coerced to a geometry vector
-#' @inheritParams wk::wk_crs
+#' @param crs An object that can be interpreted as a CRS. See [wk::wk_crs()].
 #' @param ... Unused
 #'
 #' @return A geos geometry vector

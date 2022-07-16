@@ -1,7 +1,10 @@
 
 #' Create geometries from vectors of coordinates
 #'
-#' @inheritParams wkutils::coords_point_translate_wkt
+#' @param x,y,z Vectors of coordinate values
+#' @param feature_id,ring_id Vectors for which a change in sequential values
+#'   indicates a new feature or ring. Use [factor()] to convert from a character
+#'   vector.
 #' @inheritParams geos_empty
 #' @inheritParams geos_write_wkt
 #'
@@ -106,7 +109,7 @@ geos_make_collection <- function(geom, type_id = "geometrycollection", feature_i
 #' @param ymin Lower bound of envelope
 #' @param xmax Right bound of envelope
 #' @param ymax Upper bound of envelope
-#' @inheritParams wk::wk_crs
+#' @inheritParams as_geos_geometry
 #'
 #' @return A [geos_geometry()] consisting of a polygon
 #' @export
@@ -137,7 +140,7 @@ geos_create_rectangle <- function(xmin, ymin, xmax, ymax,
 #'   (default to calling [geos_type_id()]). This is most
 #'   usefully a character vector with the geometry type
 #'   (e.g., point, linestring, polygon).
-#' @inheritParams wk::wk_crs
+#' @inheritParams as_geos_geometry
 #'
 #' @return A [GEOS geometry vector][as_geos_geometry].
 #' @export

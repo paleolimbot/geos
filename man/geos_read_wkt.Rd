@@ -48,6 +48,8 @@ geos_write_xy(geom)
 \arguments{
 \item{wkt}{a \code{character()} vector of well-known text}
 
+\item{crs}{An object that can be interpreted as a CRS. See \code{\link[wk:wk_crs]{wk::wk_crs()}}.}
+
 \item{geom}{A \link[=as_geos_geometry]{GEOS geometry vector}}
 
 \item{include_z, include_srid}{Include the values of the Z and M coordinates and/or

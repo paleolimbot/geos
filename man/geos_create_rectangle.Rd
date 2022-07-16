@@ -14,6 +14,8 @@ geos_create_rectangle(xmin, ymin, xmax, ymax, crs = NULL)
 \item{xmax}{Right bound of envelope}
 
 \item{ymax}{Upper bound of envelope}
+
+\item{crs}{An object that can be interpreted as a CRS. See \code{\link[wk:wk_crs]{wk::wk_crs()}}.}
 }
 \value{
 A \code{\link[=geos_geometry]{geos_geometry()}} consisting of a polygon

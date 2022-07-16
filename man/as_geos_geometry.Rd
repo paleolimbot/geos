@@ -49,6 +49,8 @@ geos_geometry(crs = wk::wk_crs_inherit())
 \item{x}{An object to be coerced to a geometry vector}
 
 \item{...}{Unused}
+
+\item{crs}{An object that can be interpreted as a CRS. See \code{\link[wk:wk_crs]{wk::wk_crs()}}.}
 }
 \value{
 A geos geometry vector

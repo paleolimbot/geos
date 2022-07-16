@@ -23,9 +23,13 @@ geos_make_polygon(
 geos_make_collection(geom, type_id = "geometrycollection", feature_id = 1L)
 }
 \arguments{
-\item{feature_id, ring_id}{Vectors for which a change in
-sequential values indicates a new feature or ring. Use \code{\link[=factor]{factor()}}
-to convert from a character vector.}
+\item{x, y, z}{Vectors of coordinate values}
+
+\item{crs}{An object that can be interpreted as a CRS. See \code{\link[wk:wk_crs]{wk::wk_crs()}}.}
+
+\item{feature_id, ring_id}{Vectors for which a change in sequential values
+indicates a new feature or ring. Use \code{\link[=factor]{factor()}} to convert from a character
+vector.}
 
 \item{geom}{A \link[=as_geos_geometry]{GEOS geometry vector}}
 

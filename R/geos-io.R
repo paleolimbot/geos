@@ -19,7 +19,7 @@
 #'   version of the output. Use -1 to indicate no formatting.
 #' @inheritParams geos_segment_intersection
 #' @param hex A hexidecimal representation of well-known binary
-#' @inheritParams wk::wk_crs
+#' @inheritParams as_geos_geometry
 #'
 #' @export
 #'
