@@ -3,12 +3,28 @@
 #include "geos-common.h"
 #include "Rinternals.h"
 
-SEXP geos_c_read_wkt(SEXP input) {
+SEXP geos_c_read_wkt(SEXP input, SEXP fix_structure_sexp) {
+  int fix_structure = LOGICAL(fix_structure_sexp)[0];
+
   R_xlen_t size = Rf_xlength(input);
   SEXP result = PROTECT(Rf_allocVector(VECSXP, size));
 
   GEOS_INIT();
   GEOSWKTReader* reader = GEOSWKTReader_create_r(handle);
+
+  if (fix_structure) {
+#if LIBGEOS_VERSION_COMPILE_INT >= LIBGEOS_VERSION_INT(3, 11, 0)
+    if (libgeos_version_int() < LIBGEOS_VERSION_INT(3, 11, 0)) {
+      GEOSWKTReader_destroy_r(handle, reader);
+      ERROR_OLD_LIBGEOS("GEOSWKTReader_setFixStructure_r()", "3.11.0");
+    }
+
+    GEOSWKTReader_setFixStructure_r(handle, reader, fix_structure);
+#else
+    GEOSWKTReader_destroy_r(handle, reader);
+    ERROR_OLD_LIBGEOS_BUILD("GEOSWKTReader_setFixStructure_r()", "3.11.0");
+#endif
+  }
 
   GEOSGeometry* geometry;
   for (R_xlen_t i = 0; i < size; i++) {
@@ -170,12 +186,28 @@ SEXP geos_c_write_geojson(SEXP input, SEXP indent) {
 #endif
 }
 
-SEXP geos_c_read_wkb(SEXP input) {
+SEXP geos_c_read_wkb(SEXP input, SEXP fix_structure_sexp) {
+  int fix_structure = LOGICAL(fix_structure_sexp)[0];
+
   R_xlen_t size = Rf_xlength(input);
   SEXP result = PROTECT(Rf_allocVector(VECSXP, size));
 
   GEOS_INIT();
   GEOSWKBReader* reader = GEOSWKBReader_create_r(handle);
+
+  if (fix_structure) {
+#if LIBGEOS_VERSION_COMPILE_INT >= LIBGEOS_VERSION_INT(3, 11, 0)
+    if (libgeos_version_int() < LIBGEOS_VERSION_INT(3, 11, 0)) {
+      GEOSWKBReader_destroy_r(handle, reader);
+      ERROR_OLD_LIBGEOS("GEOSWKBReader_setFixStructure_r()", "3.11.0");
+    }
+
+    GEOSWKBReader_setFixStructure_r(handle, reader, fix_structure);
+#else
+    GEOSWKBReader_destroy_r(handle, reader);
+    ERROR_OLD_LIBGEOS_BUILD("GEOSWKBReader_setFixStructure_r()", "3.11.0");
+#endif
+  }
 
   GEOSGeometry* geometry;
   SEXP item;
@@ -288,12 +320,29 @@ SEXP geos_c_write_wkb(SEXP input, SEXP includeZ, SEXP includeSRID, SEXP endian, 
   return result;
 }
 
-SEXP geos_c_read_hex(SEXP input) {
+SEXP geos_c_read_hex(SEXP input, SEXP fix_structure_sexp) {
+  int fix_structure = LOGICAL(fix_structure_sexp)[0];
+
+
   R_xlen_t size = Rf_xlength(input);
   SEXP result = PROTECT(Rf_allocVector(VECSXP, size));
 
   GEOS_INIT();
   GEOSWKBReader* reader = GEOSWKBReader_create_r(handle);
+
+  if (fix_structure) {
+#if LIBGEOS_VERSION_COMPILE_INT >= LIBGEOS_VERSION_INT(3, 11, 0)
+    if (libgeos_version_int() < LIBGEOS_VERSION_INT(3, 11, 0)) {
+      GEOSWKBReader_destroy_r(handle, reader);
+      ERROR_OLD_LIBGEOS("GEOSWKBReader_setFixStructure_r()", "3.11.0");
+    }
+
+    GEOSWKBReader_setFixStructure_r(handle, reader, fix_structure);
+#else
+    GEOSWKBReader_destroy_r(handle, reader);
+    ERROR_OLD_LIBGEOS_BUILD("GEOSWKBReader_setFixStructure_r()", "3.11.0");
+#endif
+  }
 
   GEOSGeometry* geometry;
   SEXP item;

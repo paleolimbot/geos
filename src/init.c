@@ -53,13 +53,13 @@ extern SEXP geos_c_largest_empty_circle(SEXP geom1, SEXP geom2, SEXP param);
 extern SEXP geos_c_clearance_line_between(SEXP geom1, SEXP geom2, SEXP prepare);
 extern SEXP geos_c_geos_geometry_is_null(SEXP geom);
 extern SEXP geos_c_geos_geometry_is_null_or_xptr(SEXP geom);
-extern SEXP geos_c_read_wkt(SEXP input);
+extern SEXP geos_c_read_wkt(SEXP input, SEXP fix_structure_sexp);
 extern SEXP geos_c_write_wkt(SEXP input, SEXP includeZ, SEXP precision, SEXP trim);
 extern SEXP geos_c_read_geojson(SEXP input);
 extern SEXP geos_c_write_geojson(SEXP input, SEXP indent);
-extern SEXP geos_c_read_wkb(SEXP input);
+extern SEXP geos_c_read_wkb(SEXP input, SEXP fix_structure_sexp);
 extern SEXP geos_c_write_wkb(SEXP input, SEXP includeZ, SEXP includeSRID, SEXP endian, SEXP flavor);
-extern SEXP geos_c_read_hex(SEXP input);
+extern SEXP geos_c_read_hex(SEXP input, SEXP fix_structure_sexp);
 extern SEXP geos_c_write_hex(SEXP input, SEXP includeZ, SEXP includeSRID, SEXP endian, SEXP flavor);
 extern SEXP geos_c_write_xy(SEXP input);
 extern SEXP geos_c_make_point(SEXP x, SEXP y, SEXP z);
@@ -220,13 +220,13 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_clearance_line_between", (DL_FUNC) &geos_c_clearance_line_between, 3},
   {"geos_c_geos_geometry_is_null", (DL_FUNC) &geos_c_geos_geometry_is_null, 1},
   {"geos_c_geos_geometry_is_null_or_xptr", (DL_FUNC) &geos_c_geos_geometry_is_null_or_xptr, 1},
-  {"geos_c_read_wkt", (DL_FUNC) &geos_c_read_wkt, 1},
+  {"geos_c_read_wkt", (DL_FUNC) &geos_c_read_wkt, 2},
   {"geos_c_write_wkt", (DL_FUNC) &geos_c_write_wkt, 4},
   {"geos_c_read_geojson", (DL_FUNC) &geos_c_read_geojson, 1},
   {"geos_c_write_geojson", (DL_FUNC) &geos_c_write_geojson, 2},
-  {"geos_c_read_wkb", (DL_FUNC) &geos_c_read_wkb, 1},
+  {"geos_c_read_wkb", (DL_FUNC) &geos_c_read_wkb, 2},
   {"geos_c_write_wkb", (DL_FUNC) &geos_c_write_wkb, 5},
-  {"geos_c_read_hex", (DL_FUNC) &geos_c_read_hex, 1},
+  {"geos_c_read_hex", (DL_FUNC) &geos_c_read_hex, 2},
   {"geos_c_write_hex", (DL_FUNC) &geos_c_write_hex, 5},
   {"geos_c_write_xy", (DL_FUNC) &geos_c_write_xy, 1},
   {"geos_c_make_point", (DL_FUNC) &geos_c_make_point, 3},
