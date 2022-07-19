@@ -172,6 +172,17 @@ test_that("geos_line_merge/_directed() works ", {
   )
 })
 
+test_that("geos_transform_xy() works", {
+  skip_if_not(geos_version() >= "3.11.0")
+
+  expect_identical(
+    geos_write_wkt(
+      geos_transform_xy("POINT (0 1)", wk::wk_affine_translate(12, 34))
+    ),
+    "POINT (12 35)"
+  )
+})
+
 test_that("geos_make_valid() works with params", {
   skip_if_not(geos_version() >= "3.10.0")
 

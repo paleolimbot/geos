@@ -25,6 +25,7 @@
 \alias{geos_point_end}
 \alias{geos_line_merge}
 \alias{geos_line_merge_directed}
+\alias{geos_transform_xy}
 \alias{geos_clone}
 \alias{geos_set_srid}
 \alias{geos_point_n}
@@ -88,6 +89,8 @@ geos_line_merge(geom)
 
 geos_line_merge_directed(geom)
 
+geos_transform_xy(geom, trans)
+
 geos_clone(geom)
 
 geos_set_srid(geom, srid)
@@ -132,6 +135,8 @@ and then extracts valid polygons from that linework.
 then merges shells and subtracts holes from shells to generate valid
 result. Assumes that holes and shells are correctly categorized.
 }}
+
+\item{trans}{A \link[wk:wk_trans_inverse]{wk transform} object.}
 
 \item{srid}{An integer spatial reference identifier.}
 

@@ -1,6 +1,7 @@
 
 #include "libgeos.h"
 #include "geos-common.h"
+#include "wk-v1.h"
 #include "Rinternals.h"
 
 #define GEOS_UNARY_GEOMETRY(_func)                             \
@@ -137,6 +138,79 @@ SEXP geos_c_line_merge_directed(SEXP geom) {
   GEOS_UNARY_GEOMETRY(GEOSLineMergeDirected_r);
 #else
   ERROR_OLD_LIBGEOS_BUILD("GEOSLineMergeDirected_r()", "3.11.0");
+#endif
+}
+
+struct transform_callback_data {
+  wk_trans_t* trans;
+  double xyzm_in[4];
+  double xyzm_out[4];
+  R_xlen_t i;
+};
+
+static int transform_callback(double* x, double* y, void* userdata) {
+  struct transform_callback_data* data = (struct transform_callback_data*)userdata;
+
+  data->xyzm_in[0] = *x;
+  data->xyzm_in[1] = *y;
+
+  int result = data->trans->trans(
+    data->i,
+    data->xyzm_in,
+    data->xyzm_out,
+    data->trans->trans_data
+  );
+
+  *x = data->xyzm_out[0];
+  *y = data->xyzm_out[1];
+
+  return result == WK_CONTINUE;
+}
+
+SEXP geos_c_transform_xy(SEXP geom, SEXP trans_xptr) {
+#if LIBGEOS_VERSION_COMPILE_INT >= LIBGEOS_VERSION_INT(3, 11, 0)
+  if (libgeos_version_int() < LIBGEOS_VERSION_INT(3, 11, 0)) {
+    ERROR_OLD_LIBGEOS("GEOSGeom_transformXY_r()", "3.11.0");
+  }
+
+  R_xlen_t size = Rf_xlength(geom);
+  SEXP result = PROTECT(Rf_allocVector(VECSXP, size));
+
+  GEOS_INIT();
+
+  struct transform_callback_data data;
+  data.trans = (wk_trans_t*)R_ExternalPtrAddr(trans_xptr);
+  data.xyzm_in[2] = NA_REAL;
+  data.xyzm_out[3] = NA_REAL;
+
+  SEXP item;
+  GEOSGeometry* geometry;
+  GEOSGeometry* geometryResult;
+  for (R_xlen_t i = 0; i < size; i++) {
+    item = VECTOR_ELT(geom, i);
+
+    if (item == R_NilValue) {
+      SET_VECTOR_ELT(result, i, R_NilValue);
+      continue;
+    }
+
+    geometry = (GEOSGeometry*) R_ExternalPtrAddr(item);
+    GEOS_CHECK_GEOMETRY(geometry, i);
+
+    data.i = i;
+    geometryResult = GEOSGeom_transformXY_r(handle, geometry, &transform_callback, &data);
+
+    if (geometryResult == NULL) {
+      Rf_error("[%d] %s", i + 1, globalErrorMessage);
+    }
+
+    SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometryResult));
+  }
+
+  UNPROTECT(1);
+  return result;
+#else
+  ERROR_OLD_LIBGEOS_BUILD("GEOSGeom_transformXY_r()", "3.11.0");
 #endif
 }
 

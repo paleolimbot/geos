@@ -25,6 +25,7 @@
 #'     result. Assumes that holes and shells are correctly categorized.
 #' @param grid_size For `_prec()` variants, the grid size such that all vertices of
 #'   the resulting geometry will lie on the grid.
+#' @param trans A [wk transform][wk::as_wk_trans] object.
 #'
 #' @return A [GEOS geometry vector][as_geos_geometry] of length `geom`
 #' @export
@@ -306,6 +307,14 @@ geos_line_merge <- function(geom) {
 geos_line_merge_directed <- function(geom) {
   geom <- sanitize_geos_geometry(geom)
   new_geos_geometry(.Call(geos_c_line_merge_directed, geom), crs = attr(geom, "crs", exact = TRUE))
+}
+
+#' @rdname geos_centroid
+#' @export
+geos_transform_xy <- function(geom, trans) {
+  geom <- sanitize_geos_geometry(geom)
+  trans <- wk::as_wk_trans(trans)
+  new_geos_geometry(.Call(geos_c_transform_xy, geom, trans), crs = NULL)
 }
 
 #' @rdname geos_centroid
