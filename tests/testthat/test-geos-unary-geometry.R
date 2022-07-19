@@ -177,9 +177,12 @@ test_that("geos_transform_xy() works", {
 
   expect_identical(
     geos_write_wkt(
-      geos_transform_xy("POINT (0 1)", wk::wk_affine_translate(12, 34))
+      geos_transform_xy(
+        c(NA, "POINT (0 1)"),
+        wk::wk_affine_translate(12, 34)
+      )
     ),
-    "POINT (12 35)"
+    c(NA, "POINT (12 35)")
   )
 })
 
