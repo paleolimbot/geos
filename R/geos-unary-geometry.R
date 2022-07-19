@@ -264,6 +264,17 @@ geos_envelope_rct <- function(geom) {
 
 #' @rdname geos_centroid
 #' @export
+geos_extent <- function(geom) {
+  if (geos_version() >= "3.11.0") {
+    geom <- sanitize_geos_geometry(geom)
+    new_data_frame(.Call(geos_c_extent, geom))
+  } else {
+    as.data.frame(geos_envelope_rct(geom))
+  }
+}
+
+#' @rdname geos_centroid
+#' @export
 geos_convex_hull <- function(geom) {
   geom <- sanitize_geos_geometry(geom)
   new_geos_geometry(.Call(geos_c_convex_hull, geom), crs = attr(geom, "crs", exact = TRUE))

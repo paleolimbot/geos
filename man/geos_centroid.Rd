@@ -19,6 +19,7 @@
 \alias{geos_build_area}
 \alias{geos_envelope}
 \alias{geos_envelope_rct}
+\alias{geos_extent}
 \alias{geos_convex_hull}
 \alias{geos_point_start}
 \alias{geos_point_end}
@@ -74,6 +75,8 @@ geos_build_area(geom)
 geos_envelope(geom)
 
 geos_envelope_rct(geom)
+
+geos_extent(geom)
 
 geos_convex_hull(geom)
 

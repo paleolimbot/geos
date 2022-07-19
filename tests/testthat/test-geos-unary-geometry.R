@@ -215,6 +215,18 @@ test_that("geos_envelope_rct() works", {
   )
 })
 
+test_that("geos_extent() works", {
+  expect_identical(
+    geos_extent(c("LINESTRING (0 0, 1 2)", "LINESTRING EMPTY", NA)),
+    data.frame(
+      xmin = c(0, Inf, NA),
+      ymin = c(0, Inf, NA),
+      xmax = c(1, -Inf, NA),
+      ymax = c(2, -Inf, NA)
+    )
+  )
+})
+
 test_that("geos_unary_union_prec() works", {
   if ((geos_version(runtime = TRUE) >= "3.9.1") && (geos_version(runtime = FALSE) >= "3.9.1")) {
     expect_identical(
