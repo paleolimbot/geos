@@ -172,6 +172,24 @@ test_that("geos_line_merge/_directed() works ", {
   )
 })
 
+test_that("geos_concave_hull() works", {
+  skip_if_not(geos_version() >= "3.11.0")
+
+  expect_identical(
+    geos_write_wkt(
+      geos_concave_hull(
+        c(rep("MULTIPOINT (0 0, 1 0, 0 2, 0.5 0.5)", 2), NA),
+        c(1, 0, 1)
+      )
+    ),
+    c(
+      "POLYGON ((0 0, 0 2, 1 0, 0 0))",
+      "POLYGON ((0 0, 0 2, 0.5 0.5, 1 0, 0 0))",
+      NA
+    )
+  )
+})
+
 test_that("geos_transform_xy() works", {
   skip_if_not(geos_version() >= "3.11.0")
 

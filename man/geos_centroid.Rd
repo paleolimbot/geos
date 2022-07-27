@@ -21,6 +21,7 @@
 \alias{geos_envelope_rct}
 \alias{geos_extent}
 \alias{geos_convex_hull}
+\alias{geos_concave_hull}
 \alias{geos_point_start}
 \alias{geos_point_end}
 \alias{geos_line_merge}
@@ -81,6 +82,8 @@ geos_extent(geom)
 
 geos_convex_hull(geom)
 
+geos_concave_hull(geom, ratio, allow_holes = FALSE)
+
 geos_point_start(geom)
 
 geos_point_end(geom)
@@ -135,6 +138,12 @@ and then extracts valid polygons from that linework.
 then merges shells and subtracts holes from shells to generate valid
 result. Assumes that holes and shells are correctly categorized.
 }}
+
+\item{ratio}{The ratio between the area of the concave hull and the area
+of the return value. Use 1 for the concave hull; use 0 for maximum
+concave-ness.}
+
+\item{allow_holes}{Use \code{TRUE} to allow the concave hull to contain holes}
 
 \item{trans}{A \link[wk:wk_trans_inverse]{wk transform} object.}
 

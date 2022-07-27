@@ -12,6 +12,10 @@
 #' @param srid An integer spatial reference identifier.
 #' @param grid_size The size of the grid to which coordinates should be
 #'   rounded.
+#' @param ratio The ratio between the area of the concave hull and the area
+#'   of the return value. Use 1 for the concave hull; use 0 for maximum
+#'   concave-ness.
+#' @param allow_holes Use `TRUE` to allow the concave hull to contain holes
 #' @param preserve_topology Should topology internal to each feature
 #'   be preserved?
 #' @param keep_collapsed Should items that become EMPTY due to rounding
@@ -279,6 +283,16 @@ geos_extent <- function(geom) {
 geos_convex_hull <- function(geom) {
   geom <- sanitize_geos_geometry(geom)
   new_geos_geometry(.Call(geos_c_convex_hull, geom), crs = attr(geom, "crs", exact = TRUE))
+}
+
+#' @rdname geos_centroid
+#' @export
+geos_concave_hull <- function(geom, ratio, allow_holes = FALSE) {
+  recycled <- recycle_common(list(sanitize_geos_geometry(geom), ratio))
+  new_geos_geometry(
+    .Call(geos_c_concave_hull, recycled[[1]], recycled[[2]], as.integer(allow_holes)[1]),
+    crs = attr(geom, "crs", exact = TRUE)
+  )
 }
 
 #' @rdname geos_centroid
