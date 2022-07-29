@@ -15,6 +15,7 @@
 #' @param ratio The ratio between the area of the concave hull and the area
 #'   of the return value. Use 1 for the concave hull; use 0 for maximum
 #'   concave-ness.
+#' @param hull_type One of "outer" or "inner".
 #' @param allow_holes Use `TRUE` to allow the concave hull to contain holes
 #' @param is_tight Use `FALSE` to allow concave hull to expand beyond the
 #'   convex hull.
@@ -309,6 +310,19 @@ geos_concave_hull_of_polygons <- function(geom, ratio, is_tight = TRUE, allow_ho
       as.integer(is_tight)[1],
       as.integer(allow_holes)[1]
     ),
+    crs = attr(geom, "crs", exact = TRUE)
+  )
+}
+
+#' @rdname geos_centroid
+#' @export
+geos_polygon_hull_simplify <- function(geom, ratio, hull_type = c("outer", "inner")) {
+  hull_type <- match.arg(hull_type)
+  is_outer <- identical(hull_type, "outer")
+
+  recycled <- recycle_common(list(sanitize_geos_geometry(geom), ratio))
+  new_geos_geometry(
+    .Call(geos_c_polygon_hull_simplify, recycled[[1]], recycled[[2]], is_outer),
     crs = attr(geom, "crs", exact = TRUE)
   )
 }

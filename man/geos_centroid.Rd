@@ -23,6 +23,7 @@
 \alias{geos_convex_hull}
 \alias{geos_concave_hull}
 \alias{geos_concave_hull_of_polygons}
+\alias{geos_polygon_hull_simplify}
 \alias{geos_point_start}
 \alias{geos_point_end}
 \alias{geos_line_merge}
@@ -92,6 +93,8 @@ geos_concave_hull_of_polygons(
   allow_holes = FALSE
 )
 
+geos_polygon_hull_simplify(geom, ratio, hull_type = c("outer", "inner"))
+
 geos_point_start(geom)
 
 geos_point_end(geom)
@@ -155,6 +158,8 @@ concave-ness.}
 
 \item{is_tight}{Use \code{FALSE} to allow concave hull to expand beyond the
 convex hull.}
+
+\item{hull_type}{One of "outer" or "inner".}
 
 \item{trans}{A \link[wk:wk_trans_inverse]{wk transform} object.}
 

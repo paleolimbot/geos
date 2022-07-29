@@ -212,6 +212,28 @@ test_that("geos_concave_hull_of_polygons() works", {
   )
 })
 
+test_that("geos_polygon_hull_simplify() works", {
+  skip_if_not(geos_version() >= "3.11.0")
+
+  geom_text <- "MULTIPOLYGON (((40 40, 20 45, 45 30, 40 40)),
+    ((20 35, 10 30, 10 10, 30 5, 45 20, 20 35))
+  )"
+
+  expect_true(
+    geos_equals(
+      geom_text,
+      geos_polygon_hull_simplify(geom_text, 1, hull_type = "outer")
+    )
+  )
+
+  expect_true(
+    geos_contains(
+      geom_text,
+      geos_polygon_hull_simplify(geom_text, 0, hull_type = "inner")
+    )
+  )
+})
+
 test_that("geos_transform_xy() works", {
   skip_if_not(geos_version() >= "3.11.0")
 

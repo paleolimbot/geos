@@ -159,6 +159,7 @@ extern SEXP geos_c_remove_repeated_points(SEXP geom, SEXP param);
 extern SEXP geos_c_set_precision(SEXP geom, SEXP param, SEXP preserveTopology, SEXP keepCollapsed);
 extern SEXP geos_c_concave_hull(SEXP geom, SEXP param, SEXP allowHoles_sexp);
 extern SEXP geos_c_concave_hull_of_polygons(SEXP geom, SEXP param, SEXP isTight_sexp, SEXP allowHoles_sexp);
+extern SEXP geos_c_polygon_hull_simplify(SEXP geom, SEXP param, SEXP isOuter_sexp);
 extern SEXP geos_c_set_srid(SEXP geom, SEXP srid);
 extern SEXP geos_c_normalize(SEXP geom);
 extern SEXP geos_c_minimum_bounding_circle(SEXP geom);
@@ -330,6 +331,7 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_set_precision", (DL_FUNC) &geos_c_set_precision, 4},
   {"geos_c_concave_hull", (DL_FUNC) &geos_c_concave_hull, 3},
   {"geos_c_concave_hull_of_polygons", (DL_FUNC) &geos_c_concave_hull_of_polygons, 4},
+  {"geos_c_polygon_hull_simplify", (DL_FUNC) &geos_c_polygon_hull_simplify, 3},
   {"geos_c_set_srid", (DL_FUNC) &geos_c_set_srid, 2},
   {"geos_c_normalize", (DL_FUNC) &geos_c_normalize, 1},
   {"geos_c_minimum_bounding_circle", (DL_FUNC) &geos_c_minimum_bounding_circle, 1},

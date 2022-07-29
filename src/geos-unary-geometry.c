@@ -423,14 +423,27 @@ SEXP geos_c_concave_hull(SEXP geom, SEXP param, SEXP allowHoles_sexp) {
 SEXP geos_c_concave_hull_of_polygons(SEXP geom, SEXP param, SEXP isTight_sexp, SEXP allowHoles_sexp) {
 #if LIBGEOS_VERSION_COMPILE_INT >= LIBGEOS_VERSION_INT(3, 11, 0)
   if (libgeos_version_int() < LIBGEOS_VERSION_INT(3, 11, 0)) {
-    ERROR_OLD_LIBGEOS("GEOSConcaveHull_r()", "3.11.0");
+    ERROR_OLD_LIBGEOS("GEOSConcaveHullOfPolygons_r()", "3.11.0");
   }
 
   int isTight = INTEGER(isTight_sexp)[0];
   int allowHoles = INTEGER(allowHoles_sexp)[0];
   GEOS_UNARY_GEOMETRY_PARAM(GEOSConcaveHullOfPolygons_r(handle, geometry, paramPtr[i], isTight, allowHoles), double, REAL, ISNA(paramPtr[i]));
 #else
-  ERROR_OLD_LIBGEOS_BUILD("GEOSConcaveHull_r()", "3.11.0");
+  ERROR_OLD_LIBGEOS_BUILD("GEOSConcaveHullOfPolygons_r()", "3.11.0");
+#endif
+}
+
+SEXP geos_c_polygon_hull_simplify(SEXP geom, SEXP param, SEXP isOuter_sexp) {
+#if LIBGEOS_VERSION_COMPILE_INT >= LIBGEOS_VERSION_INT(3, 11, 0)
+  if (libgeos_version_int() < LIBGEOS_VERSION_INT(3, 11, 0)) {
+    ERROR_OLD_LIBGEOS("GEOSPolygonHullSimplify_r()", "3.11.0");
+  }
+
+  int isOuter = LOGICAL(isOuter_sexp)[0];
+  GEOS_UNARY_GEOMETRY_PARAM(GEOSPolygonHullSimplify_r(handle, geometry, isOuter, paramPtr[i]), double, REAL, ISNA(paramPtr[i]));
+#else
+  ERROR_OLD_LIBGEOS_BUILD("GEOSPolygonHullSimplify_r()", "3.11.0");
 #endif
 }
 
