@@ -50,7 +50,7 @@ geos_geometry(crs = wk::wk_crs_inherit())
 
 \item{...}{Unused}
 
-\item{crs}{An object that can be interpreted as a CRS}
+\item{crs}{An object that can be interpreted as a CRS. See \code{\link[wk:wk_crs]{wk::wk_crs()}}.}
 }
 \value{
 A geos geometry vector

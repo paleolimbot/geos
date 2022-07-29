@@ -77,6 +77,129 @@ SEXP geos_c_minimum_clearance(SEXP geom) {
   GEOS_UNARY_REAL(GEOSMinimumClearance_r, 2);
 }
 
+SEXP geos_c_extent(SEXP geom) {
+#if LIBGEOS_VERSION_COMPILE_INT >= LIBGEOS_VERSION_INT(3, 11, 0)
+  if (libgeos_version_int() < LIBGEOS_VERSION_INT(3, 11, 0)) {
+    ERROR_OLD_LIBGEOS("GEOSGeom_getExtent_r()", "3.11.0");
+  }
+
+  R_xlen_t size = Rf_xlength(geom);
+
+  SEXP xmin_sexp = PROTECT(Rf_allocVector(REALSXP, size));
+  SEXP ymin_sexp = PROTECT(Rf_allocVector(REALSXP, size));
+  SEXP xmax_sexp = PROTECT(Rf_allocVector(REALSXP, size));
+  SEXP ymax_sexp = PROTECT(Rf_allocVector(REALSXP, size));
+  double* xmin = REAL(xmin_sexp);
+  double* ymin = REAL(ymin_sexp);
+  double* xmax = REAL(xmax_sexp);
+  double* ymax = REAL(ymax_sexp);
+
+  GEOS_INIT();
+
+  SEXP item;
+  GEOSGeometry* geometry;
+  for (R_xlen_t i = 0; i < size; i++) {
+    item = VECTOR_ELT(geom, i);
+
+    if (item == R_NilValue) {
+      xmin[i] = NA_REAL;
+      ymin[i] = NA_REAL;
+      xmax[i] = NA_REAL;
+      ymax[i] = NA_REAL;
+      continue;
+    }
+
+    geometry = (GEOSGeometry*) R_ExternalPtrAddr(item);
+    GEOS_CHECK_GEOMETRY(geometry, i);
+
+    if (GEOSisEmpty_r(handle, geometry)) {
+      xmin[i] = R_PosInf;
+      ymin[i] = R_PosInf;
+      xmax[i] = R_NegInf;
+      ymax[i] = R_NegInf;
+      continue;
+    }
+
+    int resultCode = GEOSGeom_getExtent_r(
+      handle,
+      geometry,
+      xmin + i,
+      ymin + i,
+      xmax + i,
+      ymax + i
+    );
+
+    // This gets fired on EMPTY, but we catch this case above
+    if (resultCode == 0) {
+      Rf_error("[%d] %s", i + 1, globalErrorMessage);
+    }
+  }
+
+  const char* names[] = {"xmin", "ymin", "xmax", "ymax", ""};
+  SEXP result = PROTECT(Rf_mkNamed(VECSXP, names));
+  SET_VECTOR_ELT(result, 0, xmin_sexp);
+  SET_VECTOR_ELT(result, 1, ymin_sexp);
+  SET_VECTOR_ELT(result, 2, xmax_sexp);
+  SET_VECTOR_ELT(result, 3, ymax_sexp);
+
+  UNPROTECT(5);
+  return result;
+#else
+  ERROR_OLD_LIBGEOS_BUILD("GEOSGeom_getExtent_r()", "3.11.0");
+#endif
+}
+
+SEXP geos_c_hilbert_code(SEXP geom, SEXP geomExtent, SEXP level_sexp) {
+#if LIBGEOS_VERSION_COMPILE_INT >= LIBGEOS_VERSION_INT(3, 11, 0)
+  if (libgeos_version_int() < LIBGEOS_VERSION_INT(3, 11, 0)) {
+    ERROR_OLD_LIBGEOS("GEOSHilbertCode_r()", "3.11.0");
+  }
+
+  GEOSGeometry* extent = (GEOSGeometry*) R_ExternalPtrAddr(VECTOR_ELT(geomExtent, 0));
+  GEOS_CHECK_GEOMETRY(extent, 0);
+
+  int level = INTEGER(level_sexp)[0];
+  R_xlen_t size = Rf_xlength(geom);
+  SEXP code_sexp = PROTECT(Rf_allocVector(INTSXP, size));
+  int* code = INTEGER(code_sexp);
+
+  GEOS_INIT();
+
+  SEXP item;
+  GEOSGeometry* geometry;
+  unsigned int item_code;
+  for (R_xlen_t i = 0; i < size; i++) {
+    item = VECTOR_ELT(geom, i);
+
+    if (item == R_NilValue) {
+      code[i] = NA_INTEGER;
+      continue;
+    }
+
+    geometry = (GEOSGeometry*) R_ExternalPtrAddr(item);
+    GEOS_CHECK_GEOMETRY(geometry, i);
+
+    int resultCode = GEOSHilbertCode_r(
+      handle,
+      geometry,
+      extent,
+      level,
+      &item_code
+    );
+
+    if (resultCode != 1) {
+      Rf_error("[%d] %s", i + 1, globalErrorMessage);
+    }
+
+    code[i] = item_code;
+  }
+
+  UNPROTECT(1);
+  return code_sexp;
+#else
+  ERROR_OLD_LIBGEOS_BUILD("GEOSHilbertCode_r()", "3.11.0");
+#endif
+}
 
 // These functions are in the form _scalar_type _func(handle, geometry)
 // and return a variety of values on exception
@@ -278,7 +401,7 @@ SEXP geos_c_is_valid_detail(SEXP geom, SEXP allowSelfTouchingRingFormingHole) {
     }
   }
 
-  
+
   SEXP result = PROTECT(Rf_allocVector(VECSXP, 3));
   SET_VECTOR_ELT(result, 0, resultIsValid);
   SET_VECTOR_ELT(result, 1, resultReason);

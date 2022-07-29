@@ -67,10 +67,7 @@ geos_prepared_covers(geom1, geom2)
 geos_prepared_covered_by(geom1, geom2)
 }
 \arguments{
-\item{geom1}{\link[=as_geos_geometry]{GEOS geometry vectors},
-recycled to a common length.}
-
-\item{geom2}{\link[=as_geos_geometry]{GEOS geometry vectors},
+\item{geom1, geom2}{\link[=as_geos_geometry]{GEOS geometry vectors},
 recycled to a common length.}
 
 \item{tolerance}{The maximum separation of vertices that should

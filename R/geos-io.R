@@ -5,6 +5,7 @@
 #' @param wkb A `list()` of `raw()` vectors (or `NULL` representing
 #'   an `NA` value).
 #' @param wkt a `character()` vector of well-known text
+#' @param geojson A `character()` vector fo GeoJSON features
 #' @param include_z,include_srid Include the values of the Z and M coordinates and/or
 #'   SRID in the output?
 #'   Use `FALSE` to omit, `TRUE` to include, or `NA` to
@@ -19,7 +20,9 @@
 #'   version of the output. Use -1 to indicate no formatting.
 #' @inheritParams geos_segment_intersection
 #' @param hex A hexidecimal representation of well-known binary
-#' @inheritParams wk::wk_crs
+#' @param fix_structure Set the reader to automatically repair structural errors
+#'   in the input (currently just unclosed rings) while reading.
+#' @inheritParams as_geos_geometry
 #'
 #' @export
 #'
@@ -27,8 +30,8 @@
 #' geos_read_wkt("POINT (30 10)")
 #' geos_write_wkt(geos_read_wkt("POINT (30 10)"))
 #'
-geos_read_wkt <- function(wkt, crs = NULL) {
-  new_geos_geometry(.Call(geos_c_read_wkt, as.character(wkt)), crs = crs)
+geos_read_wkt <- function(wkt, fix_structure = FALSE, crs = NULL) {
+  new_geos_geometry(.Call(geos_c_read_wkt, as.character(wkt), as.logical(fix_structure)[1]), crs = crs)
 }
 
 #' @rdname geos_read_wkt
@@ -45,8 +48,8 @@ geos_write_wkt <- function(geom, include_z = TRUE, precision = 16, trim = TRUE) 
 
 #' @rdname geos_read_wkt
 #' @export
-geos_read_geojson <- function(wkt, crs = NULL) {
-  new_geos_geometry(.Call(geos_c_read_geojson, as.character(wkt)), crs = crs)
+geos_read_geojson <- function(geojson, crs = NULL) {
+  new_geos_geometry(.Call(geos_c_read_geojson, as.character(geojson)), crs = crs)
 }
 
 #' @rdname geos_read_wkt
@@ -61,8 +64,8 @@ geos_write_geojson <- function(geom, indent = -1) {
 
 #' @rdname geos_read_wkt
 #' @export
-geos_read_wkb <- function(wkb, crs = NULL) {
-  new_geos_geometry(.Call(geos_c_read_wkb, as.list(wkb)), crs = crs)
+geos_read_wkb <- function(wkb, fix_structure = FALSE, crs = NULL) {
+  new_geos_geometry(.Call(geos_c_read_wkb, as.list(wkb), as.logical(fix_structure)[1]), crs = crs)
 }
 
 #' @rdname geos_read_wkt
@@ -86,8 +89,8 @@ geos_write_wkb <- function(geom, include_z = TRUE, include_srid = FALSE, endian 
 
 #' @rdname geos_read_wkt
 #' @export
-geos_read_hex <- function(hex, crs = NULL) {
-  new_geos_geometry(.Call(geos_c_read_hex, as.character(hex)), crs = crs)
+geos_read_hex <- function(hex, fix_structure = FALSE, crs = NULL) {
+  new_geos_geometry(.Call(geos_c_read_hex, as.character(hex), as.logical(fix_structure)[1]), crs = crs)
 }
 
 #' @rdname geos_read_wkt

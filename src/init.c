@@ -53,19 +53,20 @@ extern SEXP geos_c_largest_empty_circle(SEXP geom1, SEXP geom2, SEXP param);
 extern SEXP geos_c_clearance_line_between(SEXP geom1, SEXP geom2, SEXP prepare);
 extern SEXP geos_c_geos_geometry_is_null(SEXP geom);
 extern SEXP geos_c_geos_geometry_is_null_or_xptr(SEXP geom);
-extern SEXP geos_c_read_wkt(SEXP input);
+extern SEXP geos_c_read_wkt(SEXP input, SEXP fix_structure_sexp);
 extern SEXP geos_c_write_wkt(SEXP input, SEXP includeZ, SEXP precision, SEXP trim);
 extern SEXP geos_c_read_geojson(SEXP input);
 extern SEXP geos_c_write_geojson(SEXP input, SEXP indent);
-extern SEXP geos_c_read_wkb(SEXP input);
+extern SEXP geos_c_read_wkb(SEXP input, SEXP fix_structure_sexp);
 extern SEXP geos_c_write_wkb(SEXP input, SEXP includeZ, SEXP includeSRID, SEXP endian, SEXP flavor);
-extern SEXP geos_c_read_hex(SEXP input);
+extern SEXP geos_c_read_hex(SEXP input, SEXP fix_structure_sexp);
 extern SEXP geos_c_write_hex(SEXP input, SEXP includeZ, SEXP includeSRID, SEXP endian, SEXP flavor);
 extern SEXP geos_c_write_xy(SEXP input);
 extern SEXP geos_c_make_point(SEXP x, SEXP y, SEXP z);
 extern SEXP geos_c_make_linestring(SEXP x, SEXP y, SEXP z, SEXP featureLengths);
 extern SEXP geos_c_make_polygon(SEXP x, SEXP y, SEXP z, SEXP ringLengthsByFeature);
 extern SEXP geos_c_make_collection(SEXP geom, SEXP typeId, SEXP featureLengths);
+extern SEXP geos_c_create_rectangle(SEXP xmin_sexp, SEXP ymin_sexp, SEXP xmax_sexp, SEXP ymax_sexp);
 extern SEXP geos_c_empty(SEXP typeId);
 extern SEXP geos_c_polygonize(SEXP collection);
 extern SEXP geos_c_polygonize_valid(SEXP collection);
@@ -105,6 +106,8 @@ extern SEXP geos_c_ymin(SEXP geom);
 extern SEXP geos_c_xmax(SEXP geom);
 extern SEXP geos_c_ymax(SEXP geom);
 extern SEXP geos_c_minimum_clearance(SEXP geom);
+extern SEXP geos_c_extent(SEXP geom);
+extern SEXP geos_c_hilbert_code(SEXP geom, SEXP geomExtent, SEXP level_sexp);
 extern SEXP geos_c_is_empty(SEXP geom);
 extern SEXP geos_c_is_simple(SEXP geom);
 extern SEXP geos_c_is_ring(SEXP geom);
@@ -139,8 +142,11 @@ extern SEXP geos_c_envelope(SEXP geom);
 extern SEXP geos_c_convex_hull(SEXP geom);
 extern SEXP geos_c_point_start(SEXP geom);
 extern SEXP geos_c_point_end(SEXP geom);
+extern SEXP geos_c_line_merge(SEXP geom);
 extern SEXP geos_c_clone(SEXP geom);
 extern SEXP geos_c_constrained_delaunay_triangulation(SEXP geom);
+extern SEXP geos_c_line_merge_directed(SEXP geom);
+extern SEXP geos_c_transform_xy(SEXP geom, SEXP trans_xptr);
 extern SEXP geos_c_make_valid_with_params(SEXP geom, SEXP params_sexp);
 extern SEXP geos_c_interpolate(SEXP geom, SEXP param);
 extern SEXP geos_c_interpolate_normalized(SEXP geom, SEXP param);
@@ -150,7 +156,11 @@ extern SEXP geos_c_simplify_preserve_topology(SEXP geom, SEXP param);
 extern SEXP geos_c_unary_union_prec(SEXP geom, SEXP param);
 extern SEXP geos_c_maximum_inscribed_circle(SEXP geom, SEXP param);
 extern SEXP geos_c_densify(SEXP geom, SEXP param);
+extern SEXP geos_c_remove_repeated_points(SEXP geom, SEXP param);
 extern SEXP geos_c_set_precision(SEXP geom, SEXP param, SEXP preserveTopology, SEXP keepCollapsed);
+extern SEXP geos_c_concave_hull(SEXP geom, SEXP param, SEXP allowHoles_sexp);
+extern SEXP geos_c_concave_hull_of_polygons(SEXP geom, SEXP param, SEXP isTight_sexp, SEXP allowHoles_sexp);
+extern SEXP geos_c_polygon_hull_simplify(SEXP geom, SEXP param, SEXP isOuter_sexp, SEXP mode_sexp);
 extern SEXP geos_c_set_srid(SEXP geom, SEXP srid);
 extern SEXP geos_c_normalize(SEXP geom);
 extern SEXP geos_c_minimum_bounding_circle(SEXP geom);
@@ -216,19 +226,20 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_clearance_line_between", (DL_FUNC) &geos_c_clearance_line_between, 3},
   {"geos_c_geos_geometry_is_null", (DL_FUNC) &geos_c_geos_geometry_is_null, 1},
   {"geos_c_geos_geometry_is_null_or_xptr", (DL_FUNC) &geos_c_geos_geometry_is_null_or_xptr, 1},
-  {"geos_c_read_wkt", (DL_FUNC) &geos_c_read_wkt, 1},
+  {"geos_c_read_wkt", (DL_FUNC) &geos_c_read_wkt, 2},
   {"geos_c_write_wkt", (DL_FUNC) &geos_c_write_wkt, 4},
   {"geos_c_read_geojson", (DL_FUNC) &geos_c_read_geojson, 1},
   {"geos_c_write_geojson", (DL_FUNC) &geos_c_write_geojson, 2},
-  {"geos_c_read_wkb", (DL_FUNC) &geos_c_read_wkb, 1},
+  {"geos_c_read_wkb", (DL_FUNC) &geos_c_read_wkb, 2},
   {"geos_c_write_wkb", (DL_FUNC) &geos_c_write_wkb, 5},
-  {"geos_c_read_hex", (DL_FUNC) &geos_c_read_hex, 1},
+  {"geos_c_read_hex", (DL_FUNC) &geos_c_read_hex, 2},
   {"geos_c_write_hex", (DL_FUNC) &geos_c_write_hex, 5},
   {"geos_c_write_xy", (DL_FUNC) &geos_c_write_xy, 1},
   {"geos_c_make_point", (DL_FUNC) &geos_c_make_point, 3},
   {"geos_c_make_linestring", (DL_FUNC) &geos_c_make_linestring, 4},
   {"geos_c_make_polygon", (DL_FUNC) &geos_c_make_polygon, 4},
   {"geos_c_make_collection", (DL_FUNC) &geos_c_make_collection, 3},
+  {"geos_c_create_rectangle", (DL_FUNC) &geos_c_create_rectangle, 4},
   {"geos_c_empty", (DL_FUNC) &geos_c_empty, 1},
   {"geos_c_polygonize", (DL_FUNC) &geos_c_polygonize, 1},
   {"geos_c_polygonize_valid", (DL_FUNC) &geos_c_polygonize_valid, 1},
@@ -268,6 +279,8 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_xmax", (DL_FUNC) &geos_c_xmax, 1},
   {"geos_c_ymax", (DL_FUNC) &geos_c_ymax, 1},
   {"geos_c_minimum_clearance", (DL_FUNC) &geos_c_minimum_clearance, 1},
+  {"geos_c_extent", (DL_FUNC) &geos_c_extent, 1},
+  {"geos_c_hilbert_code", (DL_FUNC) &geos_c_hilbert_code, 3},
   {"geos_c_is_empty", (DL_FUNC) &geos_c_is_empty, 1},
   {"geos_c_is_simple", (DL_FUNC) &geos_c_is_simple, 1},
   {"geos_c_is_ring", (DL_FUNC) &geos_c_is_ring, 1},
@@ -302,8 +315,11 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_convex_hull", (DL_FUNC) &geos_c_convex_hull, 1},
   {"geos_c_point_start", (DL_FUNC) &geos_c_point_start, 1},
   {"geos_c_point_end", (DL_FUNC) &geos_c_point_end, 1},
+  {"geos_c_line_merge", (DL_FUNC) &geos_c_line_merge, 1},
   {"geos_c_clone", (DL_FUNC) &geos_c_clone, 1},
   {"geos_c_constrained_delaunay_triangulation", (DL_FUNC) &geos_c_constrained_delaunay_triangulation, 1},
+  {"geos_c_line_merge_directed", (DL_FUNC) &geos_c_line_merge_directed, 1},
+  {"geos_c_transform_xy", (DL_FUNC) &geos_c_transform_xy, 2},
   {"geos_c_make_valid_with_params", (DL_FUNC) &geos_c_make_valid_with_params, 2},
   {"geos_c_interpolate", (DL_FUNC) &geos_c_interpolate, 2},
   {"geos_c_interpolate_normalized", (DL_FUNC) &geos_c_interpolate_normalized, 2},
@@ -313,7 +329,11 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_unary_union_prec", (DL_FUNC) &geos_c_unary_union_prec, 2},
   {"geos_c_maximum_inscribed_circle", (DL_FUNC) &geos_c_maximum_inscribed_circle, 2},
   {"geos_c_densify", (DL_FUNC) &geos_c_densify, 2},
+  {"geos_c_remove_repeated_points", (DL_FUNC) &geos_c_remove_repeated_points, 2},
   {"geos_c_set_precision", (DL_FUNC) &geos_c_set_precision, 4},
+  {"geos_c_concave_hull", (DL_FUNC) &geos_c_concave_hull, 3},
+  {"geos_c_concave_hull_of_polygons", (DL_FUNC) &geos_c_concave_hull_of_polygons, 4},
+  {"geos_c_polygon_hull_simplify", (DL_FUNC) &geos_c_polygon_hull_simplify, 4},
   {"geos_c_set_srid", (DL_FUNC) &geos_c_set_srid, 2},
   {"geos_c_normalize", (DL_FUNC) &geos_c_normalize, 1},
   {"geos_c_minimum_bounding_circle", (DL_FUNC) &geos_c_minimum_bounding_circle, 1},

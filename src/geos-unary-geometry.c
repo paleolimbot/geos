@@ -1,6 +1,7 @@
 
 #include "libgeos.h"
 #include "geos-common.h"
+#include "wk-v1.h"
 #include "Rinternals.h"
 
 #define GEOS_UNARY_GEOMETRY(_func)                             \
@@ -108,6 +109,10 @@ SEXP geos_c_point_end(SEXP geom) {
   GEOS_UNARY_GEOMETRY(GEOSGeomGetEndPoint_r);
 }
 
+SEXP geos_c_line_merge(SEXP geom) {
+  GEOS_UNARY_GEOMETRY(GEOSLineMerge_r);
+}
+
 SEXP geos_c_clone(SEXP geom) {
   GEOS_UNARY_GEOMETRY(GEOSGeom_clone_r);
 }
@@ -121,6 +126,91 @@ SEXP geos_c_constrained_delaunay_triangulation(SEXP geom) {
   GEOS_UNARY_GEOMETRY(GEOSConstrainedDelaunayTriangulation_r);
 #else
   ERROR_OLD_LIBGEOS_BUILD("GEOSConstrainedDelaunayTriangulation_r()", "3.10.0");
+#endif
+}
+
+SEXP geos_c_line_merge_directed(SEXP geom) {
+#if LIBGEOS_VERSION_COMPILE_INT >= LIBGEOS_VERSION_INT(3, 11, 0)
+  if (libgeos_version_int() < LIBGEOS_VERSION_INT(3, 11, 0)) {
+    ERROR_OLD_LIBGEOS("GEOSLineMergeDirected_r()", "3.11.0");
+  }
+
+  GEOS_UNARY_GEOMETRY(GEOSLineMergeDirected_r);
+#else
+  ERROR_OLD_LIBGEOS_BUILD("GEOSLineMergeDirected_r()", "3.11.0");
+#endif
+}
+
+struct transform_callback_data {
+  wk_trans_t* trans;
+  double xyzm_in[4];
+  double xyzm_out[4];
+  R_xlen_t i;
+};
+
+static int transform_callback(double* x, double* y, void* userdata) {
+  struct transform_callback_data* data = (struct transform_callback_data*)userdata;
+
+  data->xyzm_in[0] = *x;
+  data->xyzm_in[1] = *y;
+
+  int result = data->trans->trans(
+    data->i,
+    data->xyzm_in,
+    data->xyzm_out,
+    data->trans->trans_data
+  );
+
+  *x = data->xyzm_out[0];
+  *y = data->xyzm_out[1];
+
+  return result == WK_CONTINUE;
+}
+
+SEXP geos_c_transform_xy(SEXP geom, SEXP trans_xptr) {
+#if LIBGEOS_VERSION_COMPILE_INT >= LIBGEOS_VERSION_INT(3, 11, 0)
+  if (libgeos_version_int() < LIBGEOS_VERSION_INT(3, 11, 0)) {
+    ERROR_OLD_LIBGEOS("GEOSGeom_transformXY_r()", "3.11.0");
+  }
+
+  R_xlen_t size = Rf_xlength(geom);
+  SEXP result = PROTECT(Rf_allocVector(VECSXP, size));
+
+  GEOS_INIT();
+
+  struct transform_callback_data data;
+  data.trans = (wk_trans_t*)R_ExternalPtrAddr(trans_xptr);
+  data.xyzm_in[2] = NA_REAL;
+  data.xyzm_out[3] = NA_REAL;
+
+  SEXP item;
+  GEOSGeometry* geometry;
+  GEOSGeometry* geometryResult;
+  for (R_xlen_t i = 0; i < size; i++) {
+    item = VECTOR_ELT(geom, i);
+
+    if (item == R_NilValue) {
+      SET_VECTOR_ELT(result, i, R_NilValue);
+      continue;
+    }
+
+    geometry = (GEOSGeometry*) R_ExternalPtrAddr(item);
+    GEOS_CHECK_GEOMETRY(geometry, i);
+
+    data.i = i;
+    geometryResult = GEOSGeom_transformXY_r(handle, geometry, &transform_callback, &data);
+
+    if (geometryResult == NULL) {
+      Rf_error("[%d] %s", i + 1, globalErrorMessage);
+    }
+
+    SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometryResult));
+  }
+
+  UNPROTECT(1);
+  return result;
+#else
+  ERROR_OLD_LIBGEOS_BUILD("GEOSGeom_transformXY_r()", "3.11.0");
 #endif
 }
 
@@ -286,6 +376,18 @@ SEXP geos_c_densify(SEXP geom, SEXP param) {
 #endif
 }
 
+SEXP geos_c_remove_repeated_points(SEXP geom, SEXP param) {
+#if LIBGEOS_VERSION_COMPILE_INT >= LIBGEOS_VERSION_INT(3, 11, 0)
+  if (libgeos_version_int() < LIBGEOS_VERSION_INT(3, 11, 0)) {
+    ERROR_OLD_LIBGEOS("GEOSRemoveRepeatedPoints_r()", "3.11.0");
+  }
+
+  GEOS_UNARY_GEOMETRY_PARAM(GEOSRemoveRepeatedPoints_r(handle, geometry, paramPtr[i]), double, REAL, ISNA(paramPtr[i]));
+#else
+  ERROR_OLD_LIBGEOS_BUILD("GEOSRemoveRepeatedPoints_r()", "3.11.0");
+#endif
+}
+
 // this should really be defined in libgeos.h and probably will be in future versions
 #ifndef GEOS_PREC_NO_TOPO
 #define GEOS_PREC_NO_TOPO         (1<<0)
@@ -303,6 +405,47 @@ SEXP geos_c_set_precision(SEXP geom, SEXP param, SEXP preserveTopology, SEXP kee
   }
 
   GEOS_UNARY_GEOMETRY_PARAM(GEOSGeom_setPrecision_r(handle, geometry, paramPtr[i], flags), double, REAL, ISNA(paramPtr[i]));
+}
+
+SEXP geos_c_concave_hull(SEXP geom, SEXP param, SEXP allowHoles_sexp) {
+#if LIBGEOS_VERSION_COMPILE_INT >= LIBGEOS_VERSION_INT(3, 11, 0)
+  if (libgeos_version_int() < LIBGEOS_VERSION_INT(3, 11, 0)) {
+    ERROR_OLD_LIBGEOS("GEOSConcaveHull_r()", "3.11.0");
+  }
+
+  int allowHoles = INTEGER(allowHoles_sexp)[0];
+  GEOS_UNARY_GEOMETRY_PARAM(GEOSConcaveHull_r(handle, geometry, paramPtr[i], allowHoles), double, REAL, ISNA(paramPtr[i]));
+#else
+  ERROR_OLD_LIBGEOS_BUILD("GEOSConcaveHull_r()", "3.11.0");
+#endif
+}
+
+SEXP geos_c_concave_hull_of_polygons(SEXP geom, SEXP param, SEXP isTight_sexp, SEXP allowHoles_sexp) {
+#if LIBGEOS_VERSION_COMPILE_INT >= LIBGEOS_VERSION_INT(3, 11, 0)
+  if (libgeos_version_int() < LIBGEOS_VERSION_INT(3, 11, 0)) {
+    ERROR_OLD_LIBGEOS("GEOSConcaveHullOfPolygons_r()", "3.11.0");
+  }
+
+  int isTight = INTEGER(isTight_sexp)[0];
+  int allowHoles = INTEGER(allowHoles_sexp)[0];
+  GEOS_UNARY_GEOMETRY_PARAM(GEOSConcaveHullOfPolygons_r(handle, geometry, paramPtr[i], isTight, allowHoles), double, REAL, ISNA(paramPtr[i]));
+#else
+  ERROR_OLD_LIBGEOS_BUILD("GEOSConcaveHullOfPolygons_r()", "3.11.0");
+#endif
+}
+
+SEXP geos_c_polygon_hull_simplify(SEXP geom, SEXP param, SEXP isOuter_sexp, SEXP mode_sexp) {
+#if LIBGEOS_VERSION_COMPILE_INT >= LIBGEOS_VERSION_INT(3, 11, 0)
+  if (libgeos_version_int() < LIBGEOS_VERSION_INT(3, 11, 0)) {
+    ERROR_OLD_LIBGEOS("GEOSPolygonHullSimplifyMode_r()", "3.11.0");
+  }
+
+  int isOuter = LOGICAL(isOuter_sexp)[0];
+  int mode = INTEGER(mode_sexp)[0];
+  GEOS_UNARY_GEOMETRY_PARAM(GEOSPolygonHullSimplifyMode_r(handle, geometry, isOuter, mode, paramPtr[i]), double, REAL, ISNA(paramPtr[i]));
+#else
+  ERROR_OLD_LIBGEOS_BUILD("GEOSPolygonHullSimplifyMode_r()", "3.11.0");
+#endif
 }
 
 // set SRID modifies the input, so we need to clone first

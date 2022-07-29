@@ -16,10 +16,7 @@ geos_interpolate(geom, distance)
 geos_interpolate_normalized(geom, distance_normalized)
 }
 \arguments{
-\item{geom1}{\link[=as_geos_geometry]{GEOS geometry vectors},
-recycled to a common length.}
-
-\item{geom2}{\link[=as_geos_geometry]{GEOS geometry vectors},
+\item{geom1, geom2}{\link[=as_geos_geometry]{GEOS geometry vectors},
 recycled to a common length.}
 
 \item{geom}{A \link[=as_geos_geometry]{GEOS geometry vector}}

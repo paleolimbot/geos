@@ -12,6 +12,15 @@
 #' @param srid An integer spatial reference identifier.
 #' @param grid_size The size of the grid to which coordinates should be
 #'   rounded.
+#' @param ratio The ratio between the area of the concave hull and the area
+#'   of the return value. Use 1 for the concave hull; use 0 for maximum
+#'   concave-ness.
+#' @param ratio_mode One of "vertex" or "area", describing the normalized
+#'   proportion type for which `ratio` represents.
+#' @param hull_type One of "outer" or "inner".
+#' @param allow_holes Use `TRUE` to allow the concave hull to contain holes
+#' @param is_tight Use `FALSE` to allow concave hull to expand beyond the
+#'   convex hull.
 #' @param preserve_topology Should topology internal to each feature
 #'   be preserved?
 #' @param keep_collapsed Should items that become EMPTY due to rounding
@@ -25,6 +34,7 @@
 #'     result. Assumes that holes and shells are correctly categorized.
 #' @param grid_size For `_prec()` variants, the grid size such that all vertices of
 #'   the resulting geometry will lie on the grid.
+#' @param trans A [wk transform][wk::as_wk_trans] object.
 #'
 #' @return A [GEOS geometry vector][as_geos_geometry] of length `geom`
 #' @export
@@ -264,9 +274,70 @@ geos_envelope_rct <- function(geom) {
 
 #' @rdname geos_centroid
 #' @export
+geos_extent <- function(geom) {
+  if (geos_version() >= "3.11.0") {
+    geom <- sanitize_geos_geometry(geom)
+    new_data_frame(.Call(geos_c_extent, geom))
+  } else {
+    as.data.frame(geos_envelope_rct(geom))
+  }
+}
+
+#' @rdname geos_centroid
+#' @export
 geos_convex_hull <- function(geom) {
   geom <- sanitize_geos_geometry(geom)
   new_geos_geometry(.Call(geos_c_convex_hull, geom), crs = attr(geom, "crs", exact = TRUE))
+}
+
+#' @rdname geos_centroid
+#' @export
+geos_concave_hull <- function(geom, ratio, allow_holes = FALSE) {
+  recycled <- recycle_common(list(sanitize_geos_geometry(geom), ratio))
+  new_geos_geometry(
+    .Call(geos_c_concave_hull, recycled[[1]], recycled[[2]], as.integer(allow_holes)[1]),
+    crs = attr(geom, "crs", exact = TRUE)
+  )
+}
+
+#' @rdname geos_centroid
+#' @export
+geos_concave_hull_of_polygons <- function(geom, ratio, is_tight = TRUE, allow_holes = FALSE) {
+  recycled <- recycle_common(list(sanitize_geos_geometry(geom), ratio))
+  new_geos_geometry(
+    .Call(
+      geos_c_concave_hull_of_polygons,
+      recycled[[1]],
+      recycled[[2]],
+      as.integer(is_tight)[1],
+      as.integer(allow_holes)[1]
+    ),
+    crs = attr(geom, "crs", exact = TRUE)
+  )
+}
+
+#' @rdname geos_centroid
+#' @export
+geos_polygon_hull_simplify <- function(geom, ratio,
+                                       hull_type = c("outer", "inner"),
+                                       ratio_mode = c("vertex", "area")) {
+  hull_type <- match.arg(hull_type)
+  is_outer <- identical(hull_type, "outer")
+
+  ratio_mode <- match.arg(ratio_mode)
+  ratio_mode_int <- match(ratio_mode, c("vertex", "area"))
+
+  recycled <- recycle_common(list(sanitize_geos_geometry(geom), ratio))
+  new_geos_geometry(
+    .Call(
+      geos_c_polygon_hull_simplify,
+      recycled[[1]],
+      recycled[[2]],
+      is_outer,
+      ratio_mode_int
+    ),
+    crs = attr(geom, "crs", exact = TRUE)
+  )
 }
 
 #' @rdname geos_centroid
@@ -281,6 +352,28 @@ geos_point_start <- function(geom) {
 geos_point_end <- function(geom) {
   geom <- sanitize_geos_geometry(geom)
   new_geos_geometry(.Call(geos_c_point_end, geom), crs = attr(geom, "crs", exact = TRUE))
+}
+
+#' @rdname geos_centroid
+#' @export
+geos_line_merge <- function(geom) {
+  geom <- sanitize_geos_geometry(geom)
+  new_geos_geometry(.Call(geos_c_line_merge, geom), crs = attr(geom, "crs", exact = TRUE))
+}
+
+#' @rdname geos_centroid
+#' @export
+geos_line_merge_directed <- function(geom) {
+  geom <- sanitize_geos_geometry(geom)
+  new_geos_geometry(.Call(geos_c_line_merge_directed, geom), crs = attr(geom, "crs", exact = TRUE))
+}
+
+#' @rdname geos_centroid
+#' @export
+geos_transform_xy <- function(geom, trans) {
+  geom <- sanitize_geos_geometry(geom)
+  trans <- wk::as_wk_trans(trans)
+  new_geos_geometry(.Call(geos_c_transform_xy, geom, trans), crs = NULL)
 }
 
 #' @rdname geos_centroid
@@ -319,6 +412,17 @@ geos_simplify <- function(geom, tolerance) {
   recycled <- recycle_common(list(geom, sanitize_double(tolerance)))
   new_geos_geometry(
     .Call(geos_c_simplify, recycled[[1]], recycled[[2]]),
+    crs = attr(geom, "crs", exact = TRUE)
+  )
+}
+
+#' @rdname geos_centroid
+#' @export
+geos_remove_repeated_points <- function(geom, tolerance) {
+  geom <- sanitize_geos_geometry(geom)
+  recycled <- recycle_common(list(geom, sanitize_double(tolerance)))
+  new_geos_geometry(
+    .Call(geos_c_remove_repeated_points, recycled[[1]], recycled[[2]]),
     crs = attr(geom, "crs", exact = TRUE)
   )
 }

@@ -13,15 +13,15 @@
 \alias{geos_write_xy}
 \title{Read and write well-known text}
 \usage{
-geos_read_wkt(wkt, crs = NULL)
+geos_read_wkt(wkt, fix_structure = FALSE, crs = NULL)
 
 geos_write_wkt(geom, include_z = TRUE, precision = 16, trim = TRUE)
 
-geos_read_geojson(wkt, crs = NULL)
+geos_read_geojson(geojson, crs = NULL)
 
 geos_write_geojson(geom, indent = -1)
 
-geos_read_wkb(wkb, crs = NULL)
+geos_read_wkb(wkb, fix_structure = FALSE, crs = NULL)
 
 geos_write_wkb(
   geom,
@@ -31,7 +31,7 @@ geos_write_wkb(
   flavor = c("extended", "iso")
 )
 
-geos_read_hex(hex, crs = NULL)
+geos_read_hex(hex, fix_structure = FALSE, crs = NULL)
 
 geos_write_hex(
   geom,
@@ -48,7 +48,10 @@ geos_write_xy(geom)
 \arguments{
 \item{wkt}{a \code{character()} vector of well-known text}
 
-\item{crs}{An object that can be interpreted as a CRS}
+\item{fix_structure}{Set the reader to automatically repair structural errors
+in the input (currently just unclosed rings) while reading.}
+
+\item{crs}{An object that can be interpreted as a CRS. See \code{\link[wk:wk_crs]{wk::wk_crs()}}.}
 
 \item{geom}{A \link[=as_geos_geometry]{GEOS geometry vector}}
 
@@ -62,6 +65,8 @@ in an error if there is no value present in the original.}
 output.}
 
 \item{trim}{Trim unnecessary zeroes in the output?}
+
+\item{geojson}{A \code{character()} vector fo GeoJSON features}
 
 \item{indent}{The number of spaces to use when indenting a formatted
 version of the output. Use -1 to indicate no formatting.}

@@ -37,10 +37,7 @@ geos_snap(geom1, geom2, tolerance = .Machine$double.eps^2)
 geos_clearance_line_between(geom1, geom2, prepare = FALSE)
 }
 \arguments{
-\item{geom1}{\link[=as_geos_geometry]{GEOS geometry vectors},
-recycled to a common length.}
-
-\item{geom2}{\link[=as_geos_geometry]{GEOS geometry vectors},
+\item{geom1, geom2}{\link[=as_geos_geometry]{GEOS geometry vectors},
 recycled to a common length.}
 
 \item{grid_size}{For \verb{_prec()} variants, the grid size such that all vertices of

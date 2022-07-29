@@ -6,6 +6,9 @@
 #' Similarly, the min/max functions will error on empty geometries.
 #'
 #' @inheritParams geos_read_wkt
+#' @param level The Hilbert level of precision (between 0 and 15).
+#' @param extent A geometry describing the extent of `geom` within which
+#'   Hilbert codes should be computed. Defaults to [wk::wk_bbox()] of `geom`.
 #'
 #' @return A vector of length `geom`
 #' @export
@@ -204,6 +207,21 @@ geos_coordinate_dimension <- function(geom) {
 #' @export
 geos_is_clockwise <- function(geom) {
   .Call(geos_c_is_clockwise, sanitize_geos_geometry(geom))
+}
+
+#' @rdname geos_area
+#' @export
+geos_hilbert_code <- function(geom, extent = wk::wk_bbox(geom), level = 15) {
+  geom <- sanitize_geos_geometry(geom)
+  extent <- sanitize_geos_geometry(extent)[1]
+  level <- sanitize_integer_scalar(level)
+  wk::wk_crs_output(geom, extent)
+
+  if (is.na(level) || is.na(extent)) {
+    rep(NA_integer_, length(geom))
+  } else {
+    .Call(geos_c_hilbert_code, geom, extent, level)
+  }
 }
 
 #' Geometry validity

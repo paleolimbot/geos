@@ -138,6 +138,40 @@ test_that("atomic returners work", {
   expect_error(geos_is_clockwise("POLYGON ((0 0, 0 1, 1 0, 0 0))"), "must be a")
 })
 
+test_that("geos_hilbert_code() works", {
+  skip_if_not(geos_version() >= "3.11.0")
+
+  coords_grid <- expand.grid(x = 0:4, y = 0:4)
+  geom_grid <- as_geos_geometry(wk::xy(coords_grid$x, coords_grid$y))
+
+  expect_identical(
+    geos_hilbert_code(c(geom_grid, geom_grid[NA_integer_]), level = 15),
+    c(
+      0L, 67108863L, 89478485L, 1006632959L, 1073741823L, 22369621L,
+      44739242L, 111848106L, 939524096L, 1051372202L, 268435455L, 201326592L,
+      178956970L, 872415232L, 805306368L, 335544319L, 313174698L, 469762048L,
+      581610154L, 738197504L, 357913941L, 380283562L, 447392426L, 648719018L,
+      715827882L,
+      NA_integer_
+    )
+  )
+
+  expect_identical(
+    geos_hilbert_code("POINT (0 1)", NA_character_),
+    NA_integer_
+  )
+
+  expect_identical(
+    geos_hilbert_code("POINT (0 1)", level = NA_integer_),
+    NA_integer_
+  )
+
+  expect_error(
+    geos_hilbert_code("POINT (0 1)", level = 17),
+    "IllegalArgumentException"
+  )
+})
+
 test_that("validity checking works", {
   expect_identical(
     geos_is_valid(c("LINESTRING (0 0, 1 1)", "POLYGON ((0 0, 1 1, 1 0, 0 1, 0 0))", NA)),

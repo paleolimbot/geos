@@ -153,6 +153,125 @@ test_that("transformers work", {
   )
 })
 
+test_that("geos_line_merge/_directed() works ", {
+  expect_identical(
+    geos_write_wkt(geos_line_merge("MULTILINESTRING ((0 1, 2 3), (4 5, 2 3))")),
+    "LINESTRING (0 1, 2 3, 4 5)"
+  )
+
+  skip_if_not(geos_version() >= "3.11.0")
+
+  expect_identical(
+    geos_write_wkt(geos_line_merge_directed("MULTILINESTRING ((0 1, 2 3), (4 5, 2 3))")),
+    "MULTILINESTRING ((0 1, 2 3), (4 5, 2 3))"
+  )
+
+  expect_identical(
+    geos_write_wkt(geos_line_merge("MULTILINESTRING ((0 1, 2 3), (2 3, 4 5))")),
+    "LINESTRING (0 1, 2 3, 4 5)"
+  )
+})
+
+test_that("geos_concave_hull() works", {
+  skip_if_not(geos_version() >= "3.11.0")
+
+  expect_identical(
+    geos_write_wkt(
+      geos_concave_hull(
+        c(rep("MULTIPOINT (0 0, 1 0, 0 2, 0.5 0.5)", 2), NA),
+        c(1, 0, 1)
+      )
+    ),
+    c(
+      "POLYGON ((0 0, 0 2, 1 0, 0 0))",
+      "POLYGON ((0 0, 0 2, 0.5 0.5, 1 0, 0 0))",
+      NA
+    )
+  )
+})
+
+test_that("geos_concave_hull_of_polygons() works", {
+  skip_if_not(geos_version() >= "3.11.0")
+
+  geom_text <- "MULTIPOLYGON (((40 40, 20 45, 45 30, 40 40)),
+    ((20 35, 10 30, 10 10, 30 5, 45 20, 20 35))
+  )"
+
+  expect_identical(
+    geos_area(
+      geos_concave_hull_of_polygons(
+        c(rep(geom_text, 2), NA),
+        c(1, 0, 1)
+      )
+    ),
+    c(
+      geos_area(geos_convex_hull(geom_text)),
+      geos_area(geom_text),
+      NA
+    )
+  )
+})
+
+test_that("geos_polygon_hull_simplify() works", {
+  skip_if_not(geos_version() >= "3.11.0")
+
+  geom_text <- "MULTIPOLYGON (((40 40, 20 45, 45 30, 40 40)),
+    ((20 35, 10 30, 10 10, 30 5, 45 20, 20 35))
+  )"
+
+  expect_true(
+    geos_equals(
+      geom_text,
+      geos_polygon_hull_simplify(geom_text, 1, hull_type = "outer")
+    )
+  )
+
+  expect_true(
+    geos_contains(
+      geom_text,
+      geos_polygon_hull_simplify(geom_text, 0, hull_type = "inner")
+    )
+  )
+
+  expect_true(
+    geos_equals(
+      geom_text,
+      geos_polygon_hull_simplify(
+        geom_text,
+        1,
+        hull_type = "outer",
+        ratio_mode = "area"
+      )
+    )
+  )
+
+  expect_true(
+    geos_contains(
+      geom_text,
+      geos_polygon_hull_simplify(
+        geom_text,
+        1,
+        hull_type = "inner",
+        ratio_mode = "area"
+      )
+    )
+  )
+})
+
+test_that("geos_transform_xy() works", {
+  skip_if_not(geos_version() >= "3.11.0")
+
+  expect_identical(
+    geos_write_wkt(
+      geos_transform_xy(
+        c(NA, "POINT (0 1)"),
+        wk::wk_affine_translate(12, 34)
+      )
+    ),
+    c(NA, "POINT (12 35)")
+  )
+})
+
 test_that("geos_make_valid() works with params", {
   skip_if_not(geos_version() >= "3.10.0")
 
@@ -192,6 +311,18 @@ test_that("geos_envelope_rct() works", {
       c(0, Inf, NA),
       c(1, -Inf, NA),
       c(2, -Inf, NA)
+    )
+  )
+})
+
+test_that("geos_extent() works", {
+  expect_identical(
+    geos_extent(c("LINESTRING (0 0, 1 2)", "LINESTRING EMPTY", NA)),
+    data.frame(
+      xmin = c(0, Inf, NA),
+      ymin = c(0, Inf, NA),
+      xmax = c(1, -Inf, NA),
+      ymax = c(2, -Inf, NA)
     )
   )
 })
@@ -330,6 +461,20 @@ test_that("densification works", {
   expect_error(
     geos_densify(c("POLYGON ((0 0, 10 0, 10 10, 0 Inf, 0 0))", NA), 5),
     "too small"
+  )
+})
+
+test_that("geos_remove_repeated_points() works", {
+  skip_if_not(geos_version() >= "3.11.0")
+
+  expect_identical(
+    geos_write_wkt(
+      geos_remove_repeated_points(
+        "LINESTRING (0 1, 2 3, 2.1 3)",
+        0.2
+      )
+    ),
+    "LINESTRING (0 1, 2.1 3)"
   )
 })
 

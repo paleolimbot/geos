@@ -27,6 +27,7 @@
 \alias{geos_dimension}
 \alias{geos_coordinate_dimension}
 \alias{geos_is_clockwise}
+\alias{geos_hilbert_code}
 \title{Extract information from a GEOS geometry}
 \usage{
 geos_area(geom)
@@ -80,9 +81,16 @@ geos_dimension(geom)
 geos_coordinate_dimension(geom)
 
 geos_is_clockwise(geom)
+
+geos_hilbert_code(geom, extent = wk::wk_bbox(geom), level = 15)
 }
 \arguments{
 \item{geom}{A \link[=as_geos_geometry]{GEOS geometry vector}}
+
+\item{extent}{A geometry describing the extent of \code{geom} within which
+Hilbert codes should be computed. Defaults to \code{\link[wk:wk_bbox]{wk::wk_bbox()}} of \code{geom}.}
+
+\item{level}{The Hilbert level of precision (between 0 and 15).}
 }
 \value{
 A vector of length \code{geom}

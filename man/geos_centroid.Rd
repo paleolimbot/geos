@@ -19,13 +19,21 @@
 \alias{geos_build_area}
 \alias{geos_envelope}
 \alias{geos_envelope_rct}
+\alias{geos_extent}
 \alias{geos_convex_hull}
+\alias{geos_concave_hull}
+\alias{geos_concave_hull_of_polygons}
+\alias{geos_polygon_hull_simplify}
 \alias{geos_point_start}
 \alias{geos_point_end}
+\alias{geos_line_merge}
+\alias{geos_line_merge_directed}
+\alias{geos_transform_xy}
 \alias{geos_clone}
 \alias{geos_set_srid}
 \alias{geos_point_n}
 \alias{geos_simplify}
+\alias{geos_remove_repeated_points}
 \alias{geos_simplify_preserve_topology}
 \alias{geos_set_precision}
 \alias{geos_normalize}
@@ -72,11 +80,35 @@ geos_envelope(geom)
 
 geos_envelope_rct(geom)
 
+geos_extent(geom)
+
 geos_convex_hull(geom)
+
+geos_concave_hull(geom, ratio, allow_holes = FALSE)
+
+geos_concave_hull_of_polygons(
+  geom,
+  ratio,
+  is_tight = TRUE,
+  allow_holes = FALSE
+)
+
+geos_polygon_hull_simplify(
+  geom,
+  ratio,
+  hull_type = c("outer", "inner"),
+  ratio_mode = c("vertex", "area")
+)
 
 geos_point_start(geom)
 
 geos_point_end(geom)
+
+geos_line_merge(geom)
+
+geos_line_merge_directed(geom)
+
+geos_transform_xy(geom, trans)
 
 geos_clone(geom)
 
@@ -85,6 +117,8 @@ geos_set_srid(geom, srid)
 geos_point_n(geom, index)
 
 geos_simplify(geom, tolerance)
+
+geos_remove_repeated_points(geom, tolerance)
 
 geos_simplify_preserve_topology(geom, tolerance)
 
@@ -120,6 +154,22 @@ and then extracts valid polygons from that linework.
 then merges shells and subtracts holes from shells to generate valid
 result. Assumes that holes and shells are correctly categorized.
 }}
+
+\item{ratio}{The ratio between the area of the concave hull and the area
+of the return value. Use 1 for the concave hull; use 0 for maximum
+concave-ness.}
+
+\item{allow_holes}{Use \code{TRUE} to allow the concave hull to contain holes}
+
+\item{is_tight}{Use \code{FALSE} to allow concave hull to expand beyond the
+convex hull.}
+
+\item{hull_type}{One of "outer" or "inner".}
+
+\item{ratio_mode}{One of "vertex" or "area", describing the normalized
+proportion type for which \code{ratio} represents.}
+
+\item{trans}{A \link[wk:wk_trans_inverse]{wk transform} object.}
 
 \item{srid}{An integer spatial reference identifier.}
 

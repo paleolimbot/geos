@@ -43,6 +43,17 @@ test_that("WKT reader works", {
   expect_error(geos_read_wkt(really_long_bad_wkt), "ParseException")
 })
 
+test_that("WKT reader works with fix_structure = TRUE", {
+  skip_if_not(geos_version() >= "3.11.0")
+
+  expect_identical(
+    geos_write_wkt(
+      geos_read_wkt("POLYGON ((0 0, 0 1, 1 0))", fix_structure = TRUE)
+    ),
+    "POLYGON ((0 0, 0 1, 1 0, 0 0))"
+  )
+})
+
 test_that("wkt reader can specify crs", {
   expect_identical(wk::wk_crs(geos_read_wkt("POINT (1 1)", crs = 123)), 123)
 })
@@ -154,6 +165,17 @@ test_that("WKB reader works", {
   expect_error(geos_read_wkb(wkb), "Unknown WKB type")
 })
 
+test_that("WKB reader works with fix_structure = TRUE", {
+  skip_if_not(geos_version() >= "3.11.0")
+
+  expect_identical(
+    geos_write_wkt(
+      geos_read_wkb(wk::as_wkb("POLYGON ((0 0, 0 1, 1 0))"), fix_structure = TRUE)
+    ),
+    "POLYGON ((0 0, 0 1, 1 0, 0 0))"
+  )
+})
+
 test_that("wkb/hex writers can write ISO WKB", {
   skip_if_not(geos_version() >= "3.10.0")
 
@@ -231,6 +253,18 @@ test_that("hex reader/writer works", {
   } else {
     expect_error(geos_write_hex("POINT EMPTY"), "IllegalArgumentException")
   }
+})
+
+test_that("hex reader works with fix_structure = TRUE", {
+  skip_if_not(geos_version() >= "3.11.0")
+
+  poly_wkb <- wk::as_wkb("POLYGON ((0 0, 0 1, 1 0))")
+  poly_hex <- paste0(as.character(unclass(poly_wkb)[[1]]), collapse = "")
+
+  expect_identical(
+    geos_write_wkt(geos_read_hex(poly_hex, fix_structure = TRUE)),
+    "POLYGON ((0 0, 0 1, 1 0, 0 0))"
+  )
 })
 
 test_that("xy reader/writer works", {
