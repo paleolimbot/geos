@@ -78,6 +78,11 @@ SEXP geos_c_minimum_clearance(SEXP geom) {
 }
 
 SEXP geos_c_extent(SEXP geom) {
+#if LIBGEOS_VERSION_COMPILE_INT >= LIBGEOS_VERSION_INT(3, 11, 0)
+  if (libgeos_version_int() < LIBGEOS_VERSION_INT(3, 11, 0)) {
+    ERROR_OLD_LIBGEOS("GEOSGeom_getExtent_r()", "3.11.0");
+  }
+
   R_xlen_t size = Rf_xlength(geom);
 
   SEXP xmin_sexp = PROTECT(Rf_allocVector(REALSXP, size));
@@ -139,6 +144,9 @@ SEXP geos_c_extent(SEXP geom) {
 
   UNPROTECT(5);
   return result;
+#else
+  ERROR_OLD_LIBGEOS_BUILD("GEOSGeom_getExtent_r()", "3.11.0");
+#endif
 }
 
 // These functions are in the form _scalar_type _func(handle, geometry)
