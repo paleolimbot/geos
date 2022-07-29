@@ -22,6 +22,7 @@
 \alias{geos_extent}
 \alias{geos_convex_hull}
 \alias{geos_concave_hull}
+\alias{geos_concave_hull_of_polygons}
 \alias{geos_point_start}
 \alias{geos_point_end}
 \alias{geos_line_merge}
@@ -84,6 +85,13 @@ geos_convex_hull(geom)
 
 geos_concave_hull(geom, ratio, allow_holes = FALSE)
 
+geos_concave_hull_of_polygons(
+  geom,
+  ratio,
+  is_tight = TRUE,
+  allow_holes = FALSE
+)
+
 geos_point_start(geom)
 
 geos_point_end(geom)
@@ -144,6 +152,9 @@ of the return value. Use 1 for the concave hull; use 0 for maximum
 concave-ness.}
 
 \item{allow_holes}{Use \code{TRUE} to allow the concave hull to contain holes}
+
+\item{is_tight}{Use \code{FALSE} to allow concave hull to expand beyond the
+convex hull.}
 
 \item{trans}{A \link[wk:wk_trans_inverse]{wk transform} object.}
 

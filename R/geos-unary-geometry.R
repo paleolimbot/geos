@@ -16,6 +16,8 @@
 #'   of the return value. Use 1 for the concave hull; use 0 for maximum
 #'   concave-ness.
 #' @param allow_holes Use `TRUE` to allow the concave hull to contain holes
+#' @param is_tight Use `FALSE` to allow concave hull to expand beyond the
+#'   convex hull.
 #' @param preserve_topology Should topology internal to each feature
 #'   be preserved?
 #' @param keep_collapsed Should items that become EMPTY due to rounding
@@ -291,6 +293,22 @@ geos_concave_hull <- function(geom, ratio, allow_holes = FALSE) {
   recycled <- recycle_common(list(sanitize_geos_geometry(geom), ratio))
   new_geos_geometry(
     .Call(geos_c_concave_hull, recycled[[1]], recycled[[2]], as.integer(allow_holes)[1]),
+    crs = attr(geom, "crs", exact = TRUE)
+  )
+}
+
+#' @rdname geos_centroid
+#' @export
+geos_concave_hull_of_polygons <- function(geom, ratio, is_tight = TRUE, allow_holes = FALSE) {
+  recycled <- recycle_common(list(sanitize_geos_geometry(geom), ratio))
+  new_geos_geometry(
+    .Call(
+      geos_c_concave_hull_of_polygons,
+      recycled[[1]],
+      recycled[[2]],
+      as.integer(is_tight)[1],
+      as.integer(allow_holes)[1]
+    ),
     crs = attr(geom, "crs", exact = TRUE)
   )
 }

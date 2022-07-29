@@ -190,6 +190,28 @@ test_that("geos_concave_hull() works", {
   )
 })
 
+test_that("geos_concave_hull_of_polygons() works", {
+  skip_if_not(geos_version() >= "3.11.0")
+
+  geom_text <- "MULTIPOLYGON (((40 40, 20 45, 45 30, 40 40)),
+    ((20 35, 10 30, 10 10, 30 5, 45 20, 20 35))
+  )"
+
+  expect_identical(
+    geos_area(
+      geos_concave_hull_of_polygons(
+        c(rep(geom_text, 2), NA),
+        c(1, 0, 1)
+      )
+    ),
+    c(
+      geos_area(geos_convex_hull(geom_text)),
+      geos_area(geom_text),
+      NA
+    )
+  )
+})
+
 test_that("geos_transform_xy() works", {
   skip_if_not(geos_version() >= "3.11.0")
 
