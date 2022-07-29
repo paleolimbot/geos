@@ -149,6 +149,58 @@ SEXP geos_c_extent(SEXP geom) {
 #endif
 }
 
+SEXP geos_c_hilbert_code(SEXP geom, SEXP geomExtent, SEXP level_sexp) {
+#if LIBGEOS_VERSION_COMPILE_INT >= LIBGEOS_VERSION_INT(3, 11, 0)
+  if (libgeos_version_int() < LIBGEOS_VERSION_INT(3, 11, 0)) {
+    ERROR_OLD_LIBGEOS("GEOSHilbertCode_r()", "3.11.0");
+  }
+
+  GEOSGeometry* extent = (GEOSGeometry*) R_ExternalPtrAddr(VECTOR_ELT(geomExtent, 0));
+  GEOS_CHECK_GEOMETRY(extent, 0);
+
+  int level = INTEGER(level_sexp)[0];
+  R_xlen_t size = Rf_xlength(geom);
+  SEXP code_sexp = PROTECT(Rf_allocVector(INTSXP, size));
+  int* code = INTEGER(code_sexp);
+
+  GEOS_INIT();
+
+  SEXP item;
+  GEOSGeometry* geometry;
+  unsigned int item_code;
+  for (R_xlen_t i = 0; i < size; i++) {
+    item = VECTOR_ELT(geom, i);
+
+    if (item == R_NilValue) {
+      code[i] = NA_INTEGER;
+      continue;
+    }
+
+    geometry = (GEOSGeometry*) R_ExternalPtrAddr(item);
+    GEOS_CHECK_GEOMETRY(geometry, i);
+
+    int resultCode = GEOSHilbertCode_r(
+      handle,
+      geometry,
+      extent,
+      level,
+      &item_code
+    );
+
+    if (resultCode != 1) {
+      Rf_error("[%d] %s", i + 1, globalErrorMessage);
+    }
+
+    code[i] = item_code;
+  }
+
+  UNPROTECT(1);
+  return code_sexp;
+#else
+  ERROR_OLD_LIBGEOS_BUILD("GEOSHilbertCode_r()", "3.11.0");
+#endif
+}
+
 // These functions are in the form _scalar_type _func(handle, geometry)
 // and return a variety of values on exception
 #define GEOS_UNARY_RETURN(_func, _scalar_type, _vec_type, _vec_ptr, _na_value, _errorValue)  \

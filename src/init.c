@@ -107,6 +107,7 @@ extern SEXP geos_c_xmax(SEXP geom);
 extern SEXP geos_c_ymax(SEXP geom);
 extern SEXP geos_c_minimum_clearance(SEXP geom);
 extern SEXP geos_c_extent(SEXP geom);
+extern SEXP geos_c_hilbert_code(SEXP geom, SEXP geomExtent, SEXP level_sexp);
 extern SEXP geos_c_is_empty(SEXP geom);
 extern SEXP geos_c_is_simple(SEXP geom);
 extern SEXP geos_c_is_ring(SEXP geom);
@@ -279,6 +280,7 @@ static const R_CallMethodDef CallEntries[] = {
   {"geos_c_ymax", (DL_FUNC) &geos_c_ymax, 1},
   {"geos_c_minimum_clearance", (DL_FUNC) &geos_c_minimum_clearance, 1},
   {"geos_c_extent", (DL_FUNC) &geos_c_extent, 1},
+  {"geos_c_hilbert_code", (DL_FUNC) &geos_c_hilbert_code, 3},
   {"geos_c_is_empty", (DL_FUNC) &geos_c_is_empty, 1},
   {"geos_c_is_simple", (DL_FUNC) &geos_c_is_simple, 1},
   {"geos_c_is_ring", (DL_FUNC) &geos_c_is_ring, 1},
