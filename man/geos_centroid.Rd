@@ -93,7 +93,12 @@ geos_concave_hull_of_polygons(
   allow_holes = FALSE
 )
 
-geos_polygon_hull_simplify(geom, ratio, hull_type = c("outer", "inner"))
+geos_polygon_hull_simplify(
+  geom,
+  ratio,
+  hull_type = c("outer", "inner"),
+  ratio_mode = c("vertex", "area")
+)
 
 geos_point_start(geom)
 
@@ -160,6 +165,9 @@ concave-ness.}
 convex hull.}
 
 \item{hull_type}{One of "outer" or "inner".}
+
+\item{ratio_mode}{One of "vertex" or "area", describing the normalized
+proportion type for which \code{ratio} represents.}
 
 \item{trans}{A \link[wk:wk_trans_inverse]{wk transform} object.}
 

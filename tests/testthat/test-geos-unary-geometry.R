@@ -232,6 +232,30 @@ test_that("geos_polygon_hull_simplify() works", {
       geos_polygon_hull_simplify(geom_text, 0, hull_type = "inner")
     )
   )
+
+  expect_true(
+    geos_equals(
+      geom_text,
+      geos_polygon_hull_simplify(
+        geom_text,
+        1,
+        hull_type = "outer",
+        ratio_mode = "area"
+      )
+    )
+  )
+
+  expect_true(
+    geos_contains(
+      geom_text,
+      geos_polygon_hull_simplify(
+        geom_text,
+        1,
+        hull_type = "inner",
+        ratio_mode = "area"
+      )
+    )
+  )
 })
 
 test_that("geos_transform_xy() works", {

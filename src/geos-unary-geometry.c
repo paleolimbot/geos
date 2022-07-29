@@ -434,16 +434,17 @@ SEXP geos_c_concave_hull_of_polygons(SEXP geom, SEXP param, SEXP isTight_sexp, S
 #endif
 }
 
-SEXP geos_c_polygon_hull_simplify(SEXP geom, SEXP param, SEXP isOuter_sexp) {
+SEXP geos_c_polygon_hull_simplify(SEXP geom, SEXP param, SEXP isOuter_sexp, SEXP mode_sexp) {
 #if LIBGEOS_VERSION_COMPILE_INT >= LIBGEOS_VERSION_INT(3, 11, 0)
   if (libgeos_version_int() < LIBGEOS_VERSION_INT(3, 11, 0)) {
-    ERROR_OLD_LIBGEOS("GEOSPolygonHullSimplify_r()", "3.11.0");
+    ERROR_OLD_LIBGEOS("GEOSPolygonHullSimplifyMode_r()", "3.11.0");
   }
 
   int isOuter = LOGICAL(isOuter_sexp)[0];
-  GEOS_UNARY_GEOMETRY_PARAM(GEOSPolygonHullSimplify_r(handle, geometry, isOuter, paramPtr[i]), double, REAL, ISNA(paramPtr[i]));
+  int mode = INTEGER(mode_sexp)[0];
+  GEOS_UNARY_GEOMETRY_PARAM(GEOSPolygonHullSimplifyMode_r(handle, geometry, isOuter, mode, paramPtr[i]), double, REAL, ISNA(paramPtr[i]));
 #else
-  ERROR_OLD_LIBGEOS_BUILD("GEOSPolygonHullSimplify_r()", "3.11.0");
+  ERROR_OLD_LIBGEOS_BUILD("GEOSPolygonHullSimplifyMode_r()", "3.11.0");
 #endif
 }
 
