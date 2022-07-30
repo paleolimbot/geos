@@ -44,7 +44,12 @@ usefully a character vector with the geometry type
 A \link[=as_geos_geometry]{GEOS geometry vector}
 }
 \description{
-Create geometries from vectors of coordinates
+These functions transform raw coordinates into point, line, polygon,
+features, or nest a vector of geometries into a MULTI* type or
+GEOMETRYCOLLECTION. See \code{\link[wk:wk_vertices]{wk::wk_coords()}}, \code{\link[=geos_unnest]{geos_unnest()}}, or
+\code{\link[wk:wk_flatten]{wk::wk_flatten()}} to perform inverse operations; see \code{\link[wk:xy]{wk::xy()}},
+\code{\link[wk:wk_linestring]{wk::wk_linestring()}}, \code{\link[wk:wk_linestring]{wk::wk_polygon()}}, or \code{\link[wk:wk_linestring]{wk::wk_collection()}} for
+generic versions that work with non-GEOS types.
 }
 \examples{
 geos_make_point(1:3, 1:3)

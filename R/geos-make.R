@@ -1,6 +1,13 @@
 
 #' Create geometries from vectors of coordinates
 #'
+#' These functions transform raw coordinates into point, line, polygon,
+#' features, or nest a vector of geometries into a MULTI* type or
+#' GEOMETRYCOLLECTION. See [wk::wk_coords()], [geos_unnest()], or
+#' [wk::wk_flatten()] to perform inverse operations; see [wk::xy()],
+#' [wk::wk_linestring()], [wk::wk_polygon()], or [wk::wk_collection()] for
+#' generic versions that work with non-GEOS types.
+#'
 #' @param x,y,z Vectors of coordinate values
 #' @param feature_id,ring_id Vectors for which a change in sequential values
 #'   indicates a new feature or ring. Use [factor()] to convert from a character

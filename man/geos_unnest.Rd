@@ -9,21 +9,27 @@ geos_unnest(geom, keep_empty = FALSE, keep_multi = TRUE, max_depth = 1)
 \arguments{
 \item{geom}{A \link[=as_geos_geometry]{GEOS geometry vector}}
 
-\item{keep_empty}{If \code{TRUE}, a GEOMETRYCOLLECTION EMPTY is left as-is
-rather than collapsing to length 0.}
+\item{keep_empty}{If \code{TRUE}, EMPTY geomtries iare left as-is rather than
+collapsing to length 0.}
 
-\item{keep_multi}{If \code{TRUE}, MULTI* geometries are not expanded to sub-features.}
+\item{keep_multi}{If \code{TRUE}, MULTI* geometries are not expanded to
+sub-features (i.e., only GEOMETRYCOLLECTIONs are).}
 
 \item{max_depth}{The maximum recursive GEOMETRYCOLLECTION depth to unnest.}
 }
 \value{
-A \link[=as_geos_geometry]{GEOS geometry vector} with a length
+A \link[=as_geos_geometry]{GEOS geometry vector}, with a length
 greater than or equal to \code{geom} with an attribute "lengths"
 that can be used to map elements of the result to the
 original item.
 }
 \description{
-Unnest nested geometries
+Ths function flattens nested geometries (i.e., multi or
+geometrycollection types) into a vector with the same or fewer levels of
+nesting. See \code{\link[=geos_geometry_n]{geos_geometry_n()}} to access individual geometries within a
+collection; see \code{\link[wk:wk_flatten]{wk::wk_flatten()}} for a version of this function that
+works with non-GEOS geometries; see \code{\link[=geos_make_collection]{geos_make_collection()}} and
+\code{\link[wk:wk_linestring]{wk::wk_collection()}} for functions that perform the inverse operation.
 }
 \examples{
 geos_unnest("GEOMETRYCOLLECTION (POINT (1 2), POINT (3 4))")
