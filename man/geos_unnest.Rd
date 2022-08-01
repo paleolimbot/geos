@@ -9,7 +9,7 @@ geos_unnest(geom, keep_empty = FALSE, keep_multi = TRUE, max_depth = 1)
 \arguments{
 \item{geom}{A \link[=as_geos_geometry]{GEOS geometry vector}}
 
-\item{keep_empty}{If \code{TRUE}, EMPTY geomtries iare left as-is rather than
+\item{keep_empty}{If \code{TRUE}, EMPTY geomtries are left as-is rather than
 collapsing to length 0.}
 
 \item{keep_multi}{If \code{TRUE}, MULTI* geometries are not expanded to

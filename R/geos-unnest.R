@@ -9,7 +9,7 @@
 #' [wk::wk_collection()] for functions that perform the inverse operation.
 #'
 #' @inheritParams geos_read_wkt
-#' @param keep_empty If `TRUE`, EMPTY geomtries iare left as-is rather than
+#' @param keep_empty If `TRUE`, EMPTY geomtries are left as-is rather than
 #'   collapsing to length 0.
 #' @param keep_multi If `TRUE`, MULTI* geometries are not expanded to
 #'   sub-features (i.e., only GEOMETRYCOLLECTIONs are).
