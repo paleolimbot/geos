@@ -4,6 +4,7 @@
 \alias{geos_basic_strtree}
 \alias{geos_basic_strtree_size}
 \alias{geos_basic_strtree_finalized}
+\alias{geos_basic_strtree_insert}
 \title{Create a basic GEOS STRTree}
 \usage{
 geos_basic_strtree(node_capacity = 10L)
@@ -11,6 +12,8 @@ geos_basic_strtree(node_capacity = 10L)
 geos_basic_strtree_size(tree)
 
 geos_basic_strtree_finalized(tree)
+
+geos_basic_strtree_insert(tree, items)
 }
 \arguments{
 \item{node_capacity}{The maximum number of child nodes that a node may have.
