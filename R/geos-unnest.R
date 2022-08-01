@@ -1,10 +1,21 @@
 
 #' Unnest nested geometries
 #'
-#' @inheritParams geos_read_wkt
-#' @inheritParams wkutils::wkt_unnest
+#' Ths function flattens nested geometries (i.e., multi or
+#' geometrycollection types) into a vector with the same or fewer levels of
+#' nesting. See [geos_geometry_n()] to access individual geometries within a
+#' collection; see [wk::wk_flatten()] for a version of this function that
+#' works with non-GEOS geometries; see [geos_make_collection()] and
+#' [wk::wk_collection()] for functions that perform the inverse operation.
 #'
-#' @return A [GEOS geometry vector][as_geos_geometry] with a length
+#' @inheritParams geos_read_wkt
+#' @param keep_empty If `TRUE`, EMPTY geomtries are left as-is rather than
+#'   collapsing to length 0.
+#' @param keep_multi If `TRUE`, MULTI* geometries are not expanded to
+#'   sub-features (i.e., only GEOMETRYCOLLECTIONs are).
+#' @param max_depth The maximum recursive GEOMETRYCOLLECTION depth to unnest.
+#'
+#' @return A [GEOS geometry vector][as_geos_geometry], with a length
 #'   greater than or equal to `geom` with an attribute "lengths"
 #'   that can be used to map elements of the result to the
 #'   original item.
