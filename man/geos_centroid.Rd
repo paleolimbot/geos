@@ -155,9 +155,9 @@ then merges shells and subtracts holes from shells to generate valid
 result. Assumes that holes and shells are correctly categorized.
 }}
 
-\item{ratio}{The ratio between the area of the concave hull and the area
-of the return value. Use 1 for the concave hull; use 0 for maximum
-concave-ness.}
+\item{ratio}{The normalized ratio between the shape of the concave hull
+and the area of the return value. Use 1 for the convex hull; use 0
+for maximum concave-ness.}
 
 \item{allow_holes}{Use \code{TRUE} to allow the concave hull to contain holes}
 
