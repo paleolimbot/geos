@@ -12,9 +12,9 @@
 #' @param srid An integer spatial reference identifier.
 #' @param grid_size The size of the grid to which coordinates should be
 #'   rounded.
-#' @param ratio The ratio between the area of the concave hull and the area
-#'   of the return value. Use 1 for the concave hull; use 0 for maximum
-#'   concave-ness.
+#' @param ratio The normalized ratio between the shape of the concave hull
+#'   and the area of the return value. Use 1 for the convex hull; use 0
+#'   for maximum concave-ness.
 #' @param ratio_mode One of "vertex" or "area", describing the normalized
 #'   proportion type for which `ratio` represents.
 #' @param hull_type One of "outer" or "inner".
