@@ -14,7 +14,7 @@ SEXP geos_c_basic_strtree_create(SEXP node_capacity_sexp) {
   }
 
   SEXP tree_size_sexp = PROTECT(Rf_ScalarInteger(0));
-  SEXP tree_is_finalized = PROTECT(Rf_ScalarLogical(0));
+  SEXP tree_is_finalized = PROTECT(Rf_ScalarInteger(0));
   SEXP tree_xptr = PROTECT(geos_common_tree_xptr(tree, tree_size_sexp, tree_is_finalized));
   UNPROTECT(3);
   return tree_xptr;
@@ -26,7 +26,7 @@ SEXP geos_c_basic_strtree_size(SEXP tree_xptr) {
 }
 
 SEXP geos_c_basic_strtree_finalized(SEXP tree_xptr) {
-  int is_finalized = LOGICAL(R_ExternalPtrProtected(tree_xptr))[0];
+  int is_finalized = INTEGER(R_ExternalPtrProtected(tree_xptr))[0];
   return Rf_ScalarLogical(is_finalized);
 }
 
@@ -59,7 +59,7 @@ GEOSGeometry* dummy_geometry_from_extent(GEOSContextHandle_t handle,
   }
 
 SEXP geos_c_basic_strtree_insert_geom(SEXP tree_xptr, SEXP geom) {
-  int is_finalized = LOGICAL(R_ExternalPtrProtected(tree_xptr))[0];
+  int is_finalized = INTEGER(R_ExternalPtrProtected(tree_xptr))[0];
   if (is_finalized) {
     Rf_error("Can't insert into a geos_basic_strtree() that has been queried");
   }
@@ -106,7 +106,7 @@ SEXP geos_c_basic_strtree_insert_geom(SEXP tree_xptr, SEXP geom) {
 
 SEXP geos_c_basic_strtree_insert_rect(SEXP tree_xptr, SEXP xmin_sexp, SEXP ymin_sexp,
                                       SEXP xmax_sexp, SEXP ymax_sexp) {
-  int is_finalized = LOGICAL(R_ExternalPtrProtected(tree_xptr))[0];
+  int is_finalized = INTEGER(R_ExternalPtrProtected(tree_xptr))[0];
   if (is_finalized) {
     Rf_error("Can't insert into a geos_basic_strtree() that has been queried");
   }
@@ -155,5 +155,118 @@ SEXP geos_c_basic_strtree_insert_rect(SEXP tree_xptr, SEXP xmin_sexp, SEXP ymin_
   INTEGER(result)[0] = tree_size_start + 1;
   INTEGER(result)[1] = n;
   UNPROTECT(1);
+  return result;
+}
+
+struct BasicQuery {
+  int ix_;
+  int* ix;
+  int* itree;
+  R_xlen_t size;
+  R_xlen_t capacity;
+  char has_error;
+  char item_found;
+};
+
+void basic_query_append(struct BasicQuery* query, int itree) {
+  if (query->size >= query->capacity) {
+    R_xlen_t new_capacity = query->size * 2;
+    if (new_capacity < 1024) {
+      new_capacity = 1024;
+    }
+    query->ix = (int*)realloc(query->ix, new_capacity);
+    query->itree = (int*)realloc(query->itree, new_capacity);
+
+    if (query->ix == NULL || query->itree == NULL) {
+      query->has_error = 1;
+      return;
+    }
+
+    query->capacity = new_capacity;
+  }
+
+  query->ix[query->size] = query->ix_;
+  query->itree[query->size] = itree;
+  query->size++;
+  query->item_found = 1;
+}
+
+void basic_query_finalize(SEXP query_xptr) {
+  struct BasicQuery* query = (struct BasicQuery*)R_ExternalPtrAddr(query_xptr);
+  if (query != NULL) {
+    if (query->ix != NULL) free(query->ix);
+    if (query->itree != NULL) free(query->itree);
+    free(query);
+    R_SetExternalPtrAddr(query_xptr, NULL);
+  }
+}
+
+void query_callback(void *item, void *userdata) {
+  uintptr_t item_value = (uintptr_t)item;
+  struct BasicQuery* query = (struct BasicQuery*)userdata;
+  if (query->has_error || query->size > 0) {
+    return;
+  }
+
+  basic_query_append(query, item_value + 1);
+}
+
+SEXP geos_c_basic_strtree_query_geom(SEXP tree_xptr, SEXP geom) {
+  SEXP is_finalized = PROTECT(R_ExternalPtrProtected(tree_xptr));
+  INTEGER(is_finalized)[0] = 1;
+  UNPROTECT(1);
+
+  GEOS_INIT();
+
+  GEOSSTRtree* tree = (GEOSSTRtree*) R_ExternalPtrAddr(tree_xptr);
+  if (tree == NULL) {
+    Rf_error("External pointer (GEOSSTRtree) is not valid");
+  }
+
+  struct BasicQuery* query = (struct BasicQuery*)malloc(sizeof(struct BasicQuery));
+  query->capacity = 0;
+  query->size = 0;
+  query->has_error = 0;
+  query->item_found = 0;
+  query->ix = NULL;
+  query->itree = NULL;
+  query->ix_ = -1;
+
+  SEXP query_shelter = PROTECT(R_MakeExternalPtr(query, R_NilValue, R_NilValue));
+  R_RegisterCFinalizer(query_shelter, &basic_query_finalize);
+
+  int n = Rf_length(geom);
+
+  SEXP item;
+  GEOSGeometry* geom_item;
+  for (int i = 0; i < n; i++) {
+    if ((i % 1000) == 0) {
+      R_CheckUserInterrupt();
+    }
+
+    item = VECTOR_ELT(geom, i);
+    if (item == R_NilValue) {
+      continue;
+    }
+
+    geom_item = (GEOSGeometry*) R_ExternalPtrAddr(item);
+    GEOS_CHECK_GEOMETRY(geom_item, i);
+
+    query->ix_ = i + 1;
+    GEOSSTRtree_query_r(handle, tree, geom_item, &query_callback, query);
+  }
+
+  SEXP result_x = PROTECT(Rf_allocVector(INTSXP, query->size));
+  memcpy(INTEGER(result_x), query->ix, query->size * sizeof(int));
+  SEXP result_tree = PROTECT(Rf_allocVector(INTSXP, query->size));
+  memcpy(INTEGER(result_tree), query->itree, query->size * sizeof(int));
+
+  basic_query_finalize(query_shelter);
+
+  const char* names[] = {"x", "tree", ""};
+  SEXP result = PROTECT(Rf_mkNamed(VECSXP, names));
+  SET_VECTOR_ELT(result, 0, result_x);
+  SET_VECTOR_ELT(result, 1, result_tree);
+  UNPROTECT(4);
   return result;
 }

@@ -5,6 +5,8 @@
 #' @param node_capacity The maximum number of child nodes that a node may have.
 #'   The minimum recommended capacity value is 4. If unsure, use a
 #'   default node capacity of 10.
+#' @param items Items to add to the tree index
+#' @param query Items with which to query the tree
 #'
 #' @return A geos_basic_strtree object
 #' @export
@@ -52,8 +54,19 @@ geos_basic_strtree_insert <- function(tree, items) {
   }
 
   if (result[2] == 0) {
-    integer()
+    invisible(integer())
   } else {
-    seq(result[1], result[1] + result[2] - 1L)
+    invisible(seq(result[1], result[1] + result[2] - 1L))
   }
+}
+
+#' @rdname geos_basic_strtree
+#' @export
+geos_basic_strtree_query <- function(tree, query) {
+  stopifnot(inherits(tree, "geos_basic_strtree"))
+  if (!inherits(query, "geos_geometry")) {
+    query <- as_geos_geometry(wk::wk_envelope(query))
+  }
+
+  new_data_frame(.Call(geos_c_basic_strtree_query_geom, tree, query))
 }
