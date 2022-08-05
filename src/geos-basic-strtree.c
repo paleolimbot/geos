@@ -5,6 +5,8 @@
 #include "libgeos.h"
 #include "geos-common.h"
 
+#include <stdint.h>
+
 SEXP geos_c_basic_strtree_create(SEXP node_capacity_sexp) {
   int node_capacity = INTEGER(node_capacity_sexp)[0];
   GEOS_INIT();
