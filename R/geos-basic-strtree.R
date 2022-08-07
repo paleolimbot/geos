@@ -7,6 +7,12 @@
 #'   default node capacity of 10.
 #' @param items Items to add to the tree index
 #' @param query Items with which to query the tree
+#' @param tree_geom A vctr coercible to [geos_geometry()] whose indices
+#'   align with `tree`.
+#' @param fun A vectorized binary predicate (e.g. [geos_intersects()]) that
+#'   will be called with the tree geometry, the query geometry and any `...`
+#'   args passed.
+#' @param ... Passed to `fun`.
 #'
 #' @return A geos_basic_strtree object
 #' @export
@@ -69,4 +75,27 @@ geos_basic_strtree_query <- function(tree, query) {
   }
 
   new_data_frame(.Call(geos_c_basic_strtree_query_geom, tree, query))
+}
+
+#' @rdname geos_basic_strtree
+#' @export
+geos_basic_strtree_query_filtered <- function(tree, query, tree_geom, fun, ...) {
+  keys <- geos_basic_strtree_query(tree, query)
+  if (nrow(keys) == 0) {
+    return(keys)
+  }
+
+  keys_filter <- logical(nrow(keys))
+  chunk_strategy <- wk::wk_chunk_strategy_feature(chunk_size = 2048)
+  chunks <- chunk_strategy(keys$tree, nrow(keys))
+  for (i in seq_len(nrow(chunks))) {
+    range <- (chunks$from[i]):(chunks$to[i])
+    keys_filter[range] <- fun(
+      tree_geom[keys$tree[range]],
+      query[keys$x[range]],
+      ...
+    )
+  }
+
+  keys[keys_filter, , drop = FALSE]
 }

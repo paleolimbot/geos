@@ -6,6 +6,7 @@
 \alias{geos_basic_strtree_finalized}
 \alias{geos_basic_strtree_insert}
 \alias{geos_basic_strtree_query}
+\alias{geos_basic_strtree_query_filtered}
 \title{Create a basic GEOS STRTree}
 \usage{
 geos_basic_strtree(node_capacity = 10L)
@@ -17,6 +18,8 @@ geos_basic_strtree_finalized(tree)
 geos_basic_strtree_insert(tree, items)
 
 geos_basic_strtree_query(tree, query)
+
+geos_basic_strtree_query_filtered(tree, query, tree_geom, fun, ...)
 }
 \arguments{
 \item{node_capacity}{The maximum number of child nodes that a node may have.
@@ -28,6 +31,15 @@ default node capacity of 10.}
 \item{items}{Items to add to the tree index}
 
 \item{query}{Items with which to query the tree}
+
+\item{tree_geom}{A vctr coercible to \code{\link[=geos_geometry]{geos_geometry()}} whose indices
+align with \code{tree}.}
+
+\item{fun}{A vectorized binary predicate (e.g. \code{\link[=geos_intersects]{geos_intersects()}}) that
+will be called with the tree geometry, the query geometry and any \code{...}
+args passed.}
+
+\item{...}{Passed to \code{fun}.}
 }
 \value{
 A geos_basic_strtree object

@@ -206,7 +206,7 @@ void basic_query_finalize(SEXP query_xptr) {
 void query_callback(void *item, void *userdata) {
   uintptr_t item_value = (uintptr_t)item;
   struct BasicQuery* query = (struct BasicQuery*)userdata;
-  if (query->has_error || query->size > 0) {
+  if (query->has_error) {
     return;
   }
 
