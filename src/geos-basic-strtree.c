@@ -176,8 +176,9 @@ void basic_query_append(struct BasicQuery* query, int itree) {
     if (new_capacity < 1024) {
       new_capacity = 1024;
     }
-    query->ix = (int*)realloc(query->ix, new_capacity);
-    query->itree = (int*)realloc(query->itree, new_capacity);
+
+    query->ix = (int*)realloc(query->ix, new_capacity * sizeof(int));
+    query->itree = (int*)realloc(query->itree, new_capacity * sizeof(int));
 
     if (query->ix == NULL || query->itree == NULL) {
       query->has_error = 1;
@@ -203,7 +204,7 @@ void basic_query_finalize(SEXP query_xptr) {
   }
 }
 
-void query_callback(void *item, void *userdata) {
+static void basic_query_callback(void *item, void *userdata) {
   uintptr_t item_value = (uintptr_t)item;
   struct BasicQuery* query = (struct BasicQuery*)userdata;
   if (query->has_error) {
@@ -255,7 +256,11 @@ SEXP geos_c_basic_strtree_query_geom(SEXP tree_xptr, SEXP geom) {
     GEOS_CHECK_GEOMETRY(geom_item, i);
 
     query->ix_ = i + 1;
-    GEOSSTRtree_query_r(handle, tree, geom_item, &query_callback, query);
+    query->has_error = 0;
+    GEOSSTRtree_query_r(handle, tree, geom_item, &basic_query_callback, query);
+    if (query->has_error) {
+      Rf_error("Failed to allocate container for result indices [i = %d]", i + 1);
+    }
   }
 
   SEXP result_x = PROTECT(Rf_allocVector(INTSXP, query->size));

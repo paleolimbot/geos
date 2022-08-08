@@ -79,14 +79,15 @@ geos_basic_strtree_query <- function(tree, query) {
 
 #' @rdname geos_basic_strtree
 #' @export
-geos_basic_strtree_query_filtered <- function(tree, query, tree_geom, fun, ...) {
+geos_basic_strtree_query_filtered <- function(tree, query, tree_geom, fun, ...,
+                                              .chunk_size = 65536) {
   keys <- geos_basic_strtree_query(tree, query)
   if (nrow(keys) == 0) {
     return(keys)
   }
 
   keys_filter <- logical(nrow(keys))
-  chunk_strategy <- wk::wk_chunk_strategy_feature(chunk_size = 2048)
+  chunk_strategy <- wk::wk_chunk_strategy_feature(chunk_size = .chunk_size)
   chunks <- chunk_strategy(keys$tree, nrow(keys))
   for (i in seq_len(nrow(chunks))) {
     range <- (chunks$from[i]):(chunks$to[i])
