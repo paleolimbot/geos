@@ -19,7 +19,14 @@ geos_basic_strtree_insert(tree, items)
 
 geos_basic_strtree_query(tree, query)
 
-geos_basic_strtree_query_filtered(tree, query, tree_geom, fun, ...)
+geos_basic_strtree_query_filtered(
+  tree,
+  query,
+  tree_geom,
+  fun,
+  ...,
+  .chunk_size = 65536
+)
 }
 \arguments{
 \item{node_capacity}{The maximum number of child nodes that a node may have.
@@ -40,6 +47,8 @@ will be called with the tree geometry, the query geometry and any \code{...}
 args passed.}
 
 \item{...}{Passed to \code{fun}.}
+
+\item{.chunk_size}{The approximate number of comparisons to pass to \code{fun}.}
 }
 \value{
 A geos_basic_strtree object

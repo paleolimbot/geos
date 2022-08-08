@@ -13,6 +13,7 @@
 #'   will be called with the tree geometry, the query geometry and any `...`
 #'   args passed.
 #' @param ... Passed to `fun`.
+#' @param .chunk_size The approximate number of comparisons to pass to `fun`.
 #'
 #' @return A geos_basic_strtree object
 #' @export
