@@ -1,6 +1,9 @@
 
 #' Create a basic GEOS STRTree
 #'
+#' An experimental alternative to the [geos_strtree()] that provides a more
+#' flexible interface and potentially faster spatial joins.
+#'
 #' @param tree A [geos_basic_strtree()]
 #' @param node_capacity The maximum number of child nodes that a node may have.
 #'   The minimum recommended capacity value is 4. If unsure, use a

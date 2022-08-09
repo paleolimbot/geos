@@ -54,5 +54,6 @@ args passed.}
 A geos_basic_strtree object
 }
 \description{
-Create a basic GEOS STRTree
+An experimental alternative to the \code{\link[=geos_strtree]{geos_strtree()}} that provides a more
+flexible interface and potentially faster spatial joins.
 }
