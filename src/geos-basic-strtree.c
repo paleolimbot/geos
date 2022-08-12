@@ -6,6 +6,7 @@
 #include "geos-common.h"
 
 #include <stdint.h>
+#include <limits.h>
 
 SEXP geos_c_basic_strtree_create(SEXP node_capacity_sexp) {
   int node_capacity = INTEGER(node_capacity_sexp)[0];
@@ -167,7 +168,7 @@ struct BasicQuery {
   R_xlen_t size;
   R_xlen_t capacity;
   char has_error;
-  char item_found;
+  int limit;
 };
 
 void basic_query_append(struct BasicQuery* query, int itree) {
@@ -191,7 +192,7 @@ void basic_query_append(struct BasicQuery* query, int itree) {
   query->ix[query->size] = query->ix_;
   query->itree[query->size] = itree;
   query->size++;
-  query->item_found = 1;
+  query->limit--;
 }
 
 void basic_query_finalize(SEXP query_xptr) {
@@ -207,14 +208,21 @@ void basic_query_finalize(SEXP query_xptr) {
 static void basic_query_callback(void *item, void *userdata) {
   uintptr_t item_value = (uintptr_t)item;
   struct BasicQuery* query = (struct BasicQuery*)userdata;
-  if (query->has_error) {
+  if (query->has_error || query->limit <= 0) {
     return;
   }
 
   basic_query_append(query, item_value + 1);
 }
 
-SEXP geos_c_basic_strtree_query_geom(SEXP tree_xptr, SEXP geom) {
+SEXP geos_c_basic_strtree_query_geom(SEXP tree_xptr, SEXP geom, SEXP limit_sexp, SEXP fill_sexp) {
+  int limit = INTEGER(limit_sexp)[0];
+  if (limit < 0) {
+    limit = INT_MAX;
+  }
+
+  int fill = LOGICAL(fill_sexp)[0];
+
   SEXP is_finalized = PROTECT(R_ExternalPtrProtected(tree_xptr));
   INTEGER(is_finalized)[0] = 1;
   UNPROTECT(1);
@@ -230,7 +238,7 @@ SEXP geos_c_basic_strtree_query_geom(SEXP tree_xptr, SEXP geom) {
   query->capacity = 0;
   query->size = 0;
   query->has_error = 0;
-  query->item_found = 0;
+  query->limit = 0;
   query->ix = NULL;
   query->itree = NULL;
   query->ix_ = -1;
@@ -257,9 +265,16 @@ SEXP geos_c_basic_strtree_query_geom(SEXP tree_xptr, SEXP geom) {
 
     query->ix_ = i + 1;
     query->has_error = 0;
+    query->limit = limit;
     GEOSSTRtree_query_r(handle, tree, geom_item, &basic_query_callback, query);
     if (query->has_error) {
       Rf_error("Failed to allocate container for result indices [i = %d]", i + 1);
+    }
+
+    if (fill && query->limit > 0) {
+      for (int j = 0; j < query->limit; j++) {
+        basic_query_append(query, NA_INTEGER);
+      }
     }
   }
 

@@ -75,6 +75,21 @@ test_that("geos_basic_strtree can be queried", {
   )
 })
 
+test_that("geos_basic_strtree can be queried with limit and fill", {
+  tree <- geos_basic_strtree()
+  geos_basic_strtree_insert(tree, wk::wkt(c("POINT (1 1)", "POINT (3 3)")))
+
+  expect_identical(
+    geos_basic_strtree_query(
+      tree,
+      wk::wkt(c("POINT (3 3)", "POINT (4 4)")),
+      limit = 1,
+      fill = TRUE
+    ),
+    data.frame(x = 1:2, tree = c(2L, NA_integer_))
+  )
+})
+
 test_that("geos_basic_strtree can be queried with a filter", {
   triangle <- wk::wkt("POLYGON ((0 0, 0 1, 1 0, 0 0))")
   point <- wk::wkt(c("POINT (0.1 0.1)", "POINT (0.6 0.6)"))

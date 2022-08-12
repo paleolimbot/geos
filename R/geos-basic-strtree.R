@@ -10,6 +10,9 @@
 #'   default node capacity of 10.
 #' @param items Items to add to the tree index
 #' @param query Items with which to query the tree
+#' @param limit The maximum number of matches in the tree to return
+#' @param fill If `TRUE`, always returns `limit` matches per item in `query`
+#'   padded with `NA` if fewer than `limit` matches are found.
 #' @param tree_geom A vctr coercible to [geos_geometry()] whose indices
 #'   align with `tree`.
 #' @param fun A vectorized binary predicate (e.g. [geos_intersects()]) that
@@ -72,13 +75,21 @@ geos_basic_strtree_insert <- function(tree, items) {
 
 #' @rdname geos_basic_strtree
 #' @export
-geos_basic_strtree_query <- function(tree, query) {
+geos_basic_strtree_query <- function(tree, query, limit = NA, fill = FALSE) {
   stopifnot(inherits(tree, "geos_basic_strtree"))
   if (!inherits(query, "geos_geometry")) {
     query <- as_geos_geometry(wk::wk_envelope(query))
   }
 
-  new_data_frame(.Call(geos_c_basic_strtree_query_geom, tree, query))
+  new_data_frame(
+    .Call(
+      geos_c_basic_strtree_query_geom,
+      tree,
+      query,
+      as.integer(limit)[1],
+      as.logical(fill)[1]
+    )
+  )
 }
 
 #' @rdname geos_basic_strtree

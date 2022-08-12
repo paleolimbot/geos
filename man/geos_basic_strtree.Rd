@@ -17,7 +17,7 @@ geos_basic_strtree_finalized(tree)
 
 geos_basic_strtree_insert(tree, items)
 
-geos_basic_strtree_query(tree, query)
+geos_basic_strtree_query(tree, query, limit = NA, fill = FALSE)
 
 geos_basic_strtree_query_filtered(
   tree,
@@ -38,6 +38,11 @@ default node capacity of 10.}
 \item{items}{Items to add to the tree index}
 
 \item{query}{Items with which to query the tree}
+
+\item{limit}{The maximum number of matches in the tree to return}
+
+\item{fill}{If \code{TRUE}, always returns \code{limit} matches per item in \code{query}
+padded with \code{NA} if fewer than \code{limit} matches are found.}
 
 \item{tree_geom}{A vctr coercible to \code{\link[=geos_geometry]{geos_geometry()}} whose indices
 align with \code{tree}.}
