@@ -2,7 +2,11 @@
 #' Create a basic GEOS STRTree
 #'
 #' An experimental alternative to the [geos_strtree()] that provides a more
-#' flexible interface and potentially faster spatial joins.
+#' flexible interface and potentially faster spatial joins. Notably,
+#' [geos_basic_strtree_insert()] uses [wk::wk_envelope()] instead of
+#' [as_geos_geometry()] and does not keep the underlying geometry in memory.
+#' For object types like [wk::xy()] with an optimized [wk::wk_envelope()]
+#' method, this is very efficient.
 #'
 #' @param tree A [geos_basic_strtree()]
 #' @param node_capacity The maximum number of child nodes that a node may have.

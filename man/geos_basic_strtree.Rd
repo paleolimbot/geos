@@ -60,5 +60,9 @@ A geos_basic_strtree object
 }
 \description{
 An experimental alternative to the \code{\link[=geos_strtree]{geos_strtree()}} that provides a more
-flexible interface and potentially faster spatial joins.
+flexible interface and potentially faster spatial joins. Notably,
+\code{\link[=geos_basic_strtree_insert]{geos_basic_strtree_insert()}} uses \code{\link[wk:wk_bbox]{wk::wk_envelope()}} instead of
+\code{\link[=as_geos_geometry]{as_geos_geometry()}} and does not keep the underlying geometry in memory.
+For object types like \code{\link[wk:xy]{wk::xy()}} with an optimized \code{\link[wk:wk_bbox]{wk::wk_envelope()}}
+method, this is very efficient.
 }
