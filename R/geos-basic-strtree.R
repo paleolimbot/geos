@@ -55,16 +55,12 @@ geos_basic_strtree_finalized <- function(tree) {
 #' @export
 geos_basic_strtree_insert <- function(tree, items) {
   stopifnot(inherits(tree, "geos_basic_strtree"))
-  if (inherits(items, "geos_geometry")) {
-    result <- .Call(geos_c_basic_strtree_insert_geom, tree, items)
-  } else {
-    items <- unclass(wk::wk_envelope(items))
-    result <- .Call(
-      geos_c_basic_strtree_insert_rect,
-      tree,
-      items[[1]], items[[2]], items[[3]], items[[4]]
-    )
-  }
+  items <- unclass(wk::wk_envelope(items))
+  result <- .Call(
+    geos_c_basic_strtree_insert_rect,
+    tree,
+    items[[1]], items[[2]], items[[3]], items[[4]]
+  )
 
   if (result[2] == 0) {
     invisible(integer())
@@ -77,15 +73,16 @@ geos_basic_strtree_insert <- function(tree, items) {
 #' @export
 geos_basic_strtree_query <- function(tree, query, limit = NA, fill = FALSE) {
   stopifnot(inherits(tree, "geos_basic_strtree"))
-  if (!inherits(query, "geos_geometry")) {
-    query <- as_geos_geometry(wk::wk_envelope(query))
-  }
+  query <- unclass(wk::wk_envelope(query))
 
   new_data_frame(
     .Call(
       geos_c_basic_strtree_query_geom,
       tree,
-      query,
+      query[[1]],
+      query[[2]],
+      query[[3]],
+      query[[4]],
       as.integer(limit)[1],
       as.logical(fill)[1]
     )

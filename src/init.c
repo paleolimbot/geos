@@ -8,9 +8,8 @@
 extern SEXP geos_c_basic_strtree_create(SEXP node_capacity_sexp);
 extern SEXP geos_c_basic_strtree_size(SEXP tree_xptr);
 extern SEXP geos_c_basic_strtree_finalized(SEXP tree_xptr);
-extern SEXP geos_c_basic_strtree_insert_geom(SEXP tree_xptr, SEXP geom);
 extern SEXP geos_c_basic_strtree_insert_rect(SEXP tree_xptr, SEXP xmin_sexp, SEXP ymin_sexp, SEXP xmax_sexp, SEXP ymax_sexp);
-extern SEXP geos_c_basic_strtree_query_geom(SEXP tree_xptr, SEXP geom, SEXP limit_sexp, SEXP fill_sexp);
+extern SEXP geos_c_basic_strtree_query_geom(SEXP tree_xptr, SEXP xmin_sexp, SEXP ymin_sexp, SEXP xmax_sexp, SEXP ymax_sexp, SEXP limit_sexp, SEXP fill_sexp);
 extern SEXP geos_c_distance(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_distance_indexed(SEXP geom1, SEXP geom2);
 extern SEXP geos_c_distance_hausdorff(SEXP geom1, SEXP geom2);
@@ -187,9 +186,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"geos_c_basic_strtree_create", (DL_FUNC) &geos_c_basic_strtree_create, 1},
   {"geos_c_basic_strtree_size", (DL_FUNC) &geos_c_basic_strtree_size, 1},
   {"geos_c_basic_strtree_finalized", (DL_FUNC) &geos_c_basic_strtree_finalized, 1},
-  {"geos_c_basic_strtree_insert_geom", (DL_FUNC) &geos_c_basic_strtree_insert_geom, 2},
   {"geos_c_basic_strtree_insert_rect", (DL_FUNC) &geos_c_basic_strtree_insert_rect, 5},
-  {"geos_c_basic_strtree_query_geom", (DL_FUNC) &geos_c_basic_strtree_query_geom, 4},
+  {"geos_c_basic_strtree_query_geom", (DL_FUNC) &geos_c_basic_strtree_query_geom, 7},
   {"geos_c_distance", (DL_FUNC) &geos_c_distance, 2},
   {"geos_c_distance_indexed", (DL_FUNC) &geos_c_distance_indexed, 2},
   {"geos_c_distance_hausdorff", (DL_FUNC) &geos_c_distance_hausdorff, 2},

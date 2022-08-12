@@ -36,74 +36,28 @@ SEXP geos_c_basic_strtree_finalized(SEXP tree_xptr) {
 GEOSGeometry* dummy_geometry_from_extent(GEOSContextHandle_t handle,
                                          double xmin, double ymin,
                                          double xmax, double ymax) {
-    double xs[] = {xmin, xmax};
-    double ys[] = {ymin, ymax};
+  double xs[] = {xmin, xmax};
+  double ys[] = {ymin, ymax};
 
-    GEOSCoordSequence* seq = GEOSCoordSeq_copyFromArrays_r(
-      handle,
-      xs,
-      ys,
-      NULL,
-      NULL,
-      2
-    );
+  GEOSCoordSequence* seq = GEOSCoordSeq_copyFromArrays_r(
+    handle,
+    xs,
+    ys,
+    NULL,
+    NULL,
+    2
+  );
 
-    if (seq == NULL) {
-      Rf_error("error creating GEOSCoordSequence");
-    }
-
-    GEOSGeometry* result = GEOSGeom_createLineString_r(handle, seq);
-    if (result == NULL) {
-      GEOSCoordSeq_destroy_r(handle, seq);
-      Rf_error("error creating GEOSGeometry");
-    }
-
-    return result;
+  if (seq == NULL) {
+    Rf_error("error creating GEOSCoordSequence");
   }
 
-SEXP geos_c_basic_strtree_insert_geom(SEXP tree_xptr, SEXP geom) {
-  int is_finalized = INTEGER(R_ExternalPtrProtected(tree_xptr))[0];
-  if (is_finalized) {
-    Rf_error("Can't insert into a geos_basic_strtree() that has been queried");
+  GEOSGeometry* result = GEOSGeom_createLineString_r(handle, seq);
+  if (result == NULL) {
+    GEOSCoordSeq_destroy_r(handle, seq);
+    Rf_error("error creating GEOSGeometry");
   }
 
-  GEOS_INIT();
-
-  GEOSSTRtree* tree = (GEOSSTRtree*) R_ExternalPtrAddr(tree_xptr);
-  if (tree == NULL) {
-    Rf_error("External pointer (GEOSSTRtree) is not valid");
-  }
-
-  int n = Rf_length(geom);
-
-  int* tree_size = INTEGER(R_ExternalPtrTag(tree_xptr));
-  int tree_size_start = tree_size[0];
-  uintptr_t payload;
-  SEXP item;
-  GEOSGeometry* geom_item;
-
-  for (R_xlen_t i = 0; i < n; i++) {
-    if ((i % 1000) == 0) {
-      R_CheckUserInterrupt();
-    }
-
-    item = VECTOR_ELT(geom, i);
-    if (item == R_NilValue) {
-      tree_size[0]++;
-      continue;
-    }
-
-    geom_item = (GEOSGeometry*) R_ExternalPtrAddr(item);
-    GEOS_CHECK_GEOMETRY(geom_item, i);
-    payload = tree_size[0];
-    GEOSSTRtree_insert_r(handle, tree, geom_item, (void*)payload);
-    tree_size[0]++;
-  }
-
-  SEXP result = PROTECT(Rf_allocVector(INTSXP, 2));
-  INTEGER(result)[0] = tree_size_start + 1;
-  INTEGER(result)[1] = n;
-  UNPROTECT(1);
   return result;
 }
 
@@ -215,7 +169,9 @@ static void basic_query_callback(void *item, void *userdata) {
   basic_query_append(query, item_value + 1);
 }
 
-SEXP geos_c_basic_strtree_query_geom(SEXP tree_xptr, SEXP geom, SEXP limit_sexp, SEXP fill_sexp) {
+SEXP geos_c_basic_strtree_query_geom(SEXP tree_xptr, SEXP xmin_sexp, SEXP ymin_sexp,
+                                    SEXP xmax_sexp, SEXP ymax_sexp,
+                                    SEXP limit_sexp, SEXP fill_sexp) {
   int limit = INTEGER(limit_sexp)[0];
   if (limit < 0) {
     limit = INT_MAX;
@@ -226,6 +182,12 @@ SEXP geos_c_basic_strtree_query_geom(SEXP tree_xptr, SEXP geom, SEXP limit_sexp,
   SEXP is_finalized = PROTECT(R_ExternalPtrProtected(tree_xptr));
   INTEGER(is_finalized)[0] = 1;
   UNPROTECT(1);
+
+  double* xmin = REAL(xmin_sexp);
+  double* ymin = REAL(ymin_sexp);
+  double* xmax = REAL(xmax_sexp);
+  double* ymax = REAL(ymax_sexp);
+  int n = Rf_length(xmin_sexp);
 
   GEOS_INIT();
 
@@ -246,27 +208,23 @@ SEXP geos_c_basic_strtree_query_geom(SEXP tree_xptr, SEXP geom, SEXP limit_sexp,
   SEXP query_shelter = PROTECT(R_MakeExternalPtr(query, R_NilValue, R_NilValue));
   R_RegisterCFinalizer(query_shelter, &basic_query_finalize);
 
-  int n = Rf_length(geom);
-
-  SEXP item;
-  GEOSGeometry* geom_item;
+  GEOSGeometry* geom;
   for (int i = 0; i < n; i++) {
     if ((i % 1000) == 0) {
       R_CheckUserInterrupt();
     }
 
-    item = VECTOR_ELT(geom, i);
-    if (item == R_NilValue) {
-      continue;
-    }
-
-    geom_item = (GEOSGeometry*) R_ExternalPtrAddr(item);
-    GEOS_CHECK_GEOMETRY(geom_item, i);
+    geom = dummy_geometry_from_extent(
+      handle,
+      xmin[i], ymin[i],
+      xmax[i], ymax[i]
+    );
 
     query->ix_ = i + 1;
     query->has_error = 0;
     query->limit = limit;
-    GEOSSTRtree_query_r(handle, tree, geom_item, &basic_query_callback, query);
+    GEOSSTRtree_query_r(handle, tree, geom, &basic_query_callback, query);
+    GEOSGeom_destroy_r(handle, geom);
     if (query->has_error) {
       Rf_error("Failed to allocate container for result indices [i = %d]", i + 1);
     }
