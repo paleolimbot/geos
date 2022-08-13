@@ -66,3 +66,10 @@ flexible interface and potentially faster spatial joins. Notably,
 For object types like \code{\link[wk:xy]{wk::xy()}} with an optimized \code{\link[wk:wk_bbox]{wk::wk_envelope()}}
 method, this is very efficient.
 }
+\examples{
+tree <- geos_basic_strtree(wk::xy(1:5, 1:5))
+geos_basic_strtree_size(tree)
+(geos_basic_strtree_insert(tree, wk::xy(6:10, 6:10)))
+geos_basic_strtree_query(tree, as_geos_geometry("LINESTRING (3 0, 0 3)"))
+
+}

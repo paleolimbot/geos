@@ -28,6 +28,12 @@
 #' @return A geos_basic_strtree object
 #' @export
 #'
+#' @examples
+#' tree <- geos_basic_strtree(wk::xy(1:5, 1:5))
+#' geos_basic_strtree_size(tree)
+#' (geos_basic_strtree_insert(tree, wk::xy(6:10, 6:10)))
+#' geos_basic_strtree_query(tree, as_geos_geometry("LINESTRING (3 0, 0 3)"))
+#'
 geos_basic_strtree <- function(items = NULL, node_capacity = 10L) {
   node_capacity <- sanitize_integer_scalar(node_capacity)
   stopifnot(
