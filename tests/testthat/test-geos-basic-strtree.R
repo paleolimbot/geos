@@ -6,6 +6,11 @@ test_that("geos_basic_strtree objects can be created", {
   expect_identical(geos_basic_strtree_size(tree), 0L)
 })
 
+test_that("geos_basic_strtree objects can be created with initial items", {
+  tree <- geos_basic_strtree(wk::xy(1:3, 1:3))
+  expect_identical(geos_basic_strtree_size(tree), 3L)
+})
+
 test_that("can insert geos_geometry to geos_basic_strtree", {
   tree <- geos_basic_strtree()
 

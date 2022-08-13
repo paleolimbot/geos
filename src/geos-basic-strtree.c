@@ -36,19 +36,20 @@ SEXP geos_c_basic_strtree_finalized(SEXP tree_xptr) {
 GEOSGeometry* dummy_geometry_from_extent(GEOSContextHandle_t handle,
                                          double xmin, double ymin,
                                          double xmax, double ymax) {
-  double xs[] = {xmin, xmax};
-  double ys[] = {ymin, ymax};
-
-  GEOSCoordSequence* seq = GEOSCoordSeq_copyFromArrays_r(
-    handle,
-    xs,
-    ys,
-    NULL,
-    NULL,
-    2
-  );
-
+  GEOSCoordSequence* seq = GEOSCoordSeq_create_r(handle, 2, 2);
   if (seq == NULL) {
+    Rf_error("error creating GEOSCoordSequence");
+  }
+
+  int return_code = GEOSCoordSeq_setXY_r(handle, seq, 0, xmin, ymin);
+  if (return_code == 0) {
+    GEOSCoordSeq_destroy_r(handle, seq);
+    Rf_error("error creating GEOSCoordSequence");
+  }
+
+  return_code = GEOSCoordSeq_setXY_r(handle, seq, 1, xmax, ymax);
+  if (return_code == 0) {
+    GEOSCoordSeq_destroy_r(handle, seq);
     Rf_error("error creating GEOSCoordSequence");
   }
 

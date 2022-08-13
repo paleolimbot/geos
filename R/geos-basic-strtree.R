@@ -28,17 +28,23 @@
 #' @return A geos_basic_strtree object
 #' @export
 #'
-geos_basic_strtree <- function(node_capacity = 10L) {
+geos_basic_strtree <- function(items = NULL, node_capacity = 10L) {
   node_capacity <- sanitize_integer_scalar(node_capacity)
   stopifnot(
     length(node_capacity) == 1,
     node_capacity >= 4, node_capacity < 1e6
   )
 
-  structure(
+  tree <- structure(
     .Call(geos_c_basic_strtree_create, node_capacity),
     class = "geos_basic_strtree"
   )
+
+  if (!is.null(items)) {
+    geos_basic_strtree_insert(tree, items)
+  }
+
+  tree
 }
 
 #' @rdname geos_basic_strtree
