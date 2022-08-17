@@ -247,21 +247,6 @@ test_that("geos_geometry_writer() destroys dangling geometries when it aborts vi
   )
 })
 
-test_that("geos_geometry_writer() errors for collections that are nested too deeply", {
-  make_really_recursive_geom <- function(n) {
-    wk::wkt(paste0(
-      c(rep("GEOMETRYCOLLECTION (", n), "POINT (0 1)", rep(")", n)),
-      collapse = ""
-    ))
-  }
-
-  # errors in geometry_start
-  expect_error(
-    wk::wk_handle(make_really_recursive_geom(32), geos_geometry_writer()),
-    "Invalid recursion depth"
-  )
-})
-
 test_that("geos_geometry_writer() can handle input of undefined size", {
   many_points <- paste0("POINT (", 1:1025, " ", 1:1025, ")")
   expect_identical(
