@@ -91,7 +91,14 @@ public:
 
 class Constructor : public util::Handler {
  public:
-  Constructor(): coord_size_(2), last_feature_(nullptr), srid_(WK_SRID_NONE) {}
+  Constructor(): coord_size_(2), coords_(nullptr), coords_size_(0), coords_capacity_(0),
+   last_feature_(nullptr), srid_(WK_SRID_NONE) {}
+
+  ~Constructor() {
+    if (coords_ != nullptr) {
+      free(coords_);
+    }
+  }
 
   void set_srid(uint32_t srid) {
     srid_ = srid;
@@ -132,13 +139,13 @@ class Constructor : public util::Handler {
 
   Result geom_start(util::GeometryType geometry_type, int64_t size) {
     geometry_type_.push_back(geometry_type);
-    coords_.clear();
+    coords_size_ = 0;
 
     switch (geometry_type) {
     case util::GeometryType::POINT:
     case util::GeometryType::LINESTRING:
       if (size > 0) {
-        coords_.reserve(coord_size_ * size);
+        coords_reserve(coord_size_ * size);
       }
       break;
     case util::GeometryType::POLYGON:
@@ -159,24 +166,19 @@ class Constructor : public util::Handler {
   }
 
   Result ring_start(int64_t size) {
-    coords_.clear();
+    coords_size_ = 0;
     if (size > 0) {
-      coords_.reserve(size * coord_size_);
+      coords_reserve(size * coord_size_);
     }
 
     return Result::CONTINUE;
   }
 
   Result coords(const double* coord, int64_t n, int32_t coord_size) {
-    size_t size_after = coords_.size() + (n * coord_size);
-    coords_.reserve(size_after);
-
-    for (int64_t i = 0; i < n; i++) {
-      for (int32_t j = 0; j < coord_size; j++) {
-        coords_.push_back(coord[coord_size * i + j]);
-      }
-    }
-
+    size_t size_after = coords_size_ + (n * coord_size);
+    coords_reserve(size_after);
+    memcpy(coords_ + coords_size_, coord, n * coord_size * sizeof(double));
+    coords_size_ += n * coord_size;
     return Result::CONTINUE;
   }
 
@@ -203,12 +205,24 @@ class Constructor : public util::Handler {
     return std::move(last_feature_);
   }
 
+  void coords_reserve(size_t capacity) {
+    if (capacity > coords_capacity_) {
+      coords_ = reinterpret_cast<double*>(realloc(coords_, capacity * sizeof(double)));
+      if (coords_ == nullptr) {
+        throw std::runtime_error("Failed to reallocate coordinates");
+      }
+      coords_capacity_ = capacity;
+    }
+  }
+
  private:
   std::vector<util::GeometryType> geometry_type_;
   int coord_size_;
   bool has_z_;
   bool has_m_;
-  std::vector<double> coords_;
+  double* coords_;
+  size_t coords_size_;
+  size_t coords_capacity_;
   GEOSCoordSeqWrapper seq_;
   std::vector<std::vector<std::unique_ptr<GEOSGeometryWrapper>>> parts_;
   std::vector<GEOSGeometry*> parts_back_cache_;
@@ -270,12 +284,12 @@ class Constructor : public util::Handler {
   void finish_points() {
     seq_.reset();
     seq_.ptr = GEOSCoordSeq_copyFromBuffer_r(
-        handle, coords_.data(), coords_.size() / coord_size_, has_z_, has_m_);
+        handle, coords_, coords_size_ / coord_size_, has_z_, has_m_);
     if (seq_.ptr == nullptr) {
       throw std::runtime_error(globalErrorMessage);
     }
 
-    coords_.clear();
+    coords_size_ = 0;
   }
 
   std::pair<GEOSGeometry**, size_t> pop_and_release_parts_back() {
