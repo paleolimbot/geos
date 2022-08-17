@@ -26,5 +26,7 @@ jobs:
           extra-packages: covr
 
       - name: Test coverage
+        env:
+          R_GEOS_TEST_WITH_KNOWN_LEAKS: "true"
         run: covr::codecov()
         shell: Rscript {0}
