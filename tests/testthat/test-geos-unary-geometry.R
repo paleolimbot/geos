@@ -608,6 +608,9 @@ test_that("geos_offset_curve works", {
 })
 
 test_that("geos_buffer errors with bad params", {
+  # geos leaks memory here
+  skip_if_not(identical(Sys.getenv("R_GEOS_TEST_WITH_KNOWN_LEAKS"), "true"))
+
   expect_error(geos_buffer("POINT (0 0)", 1, params = NULL), "must be created using")
 
   good_params <- geos_buffer_params()
