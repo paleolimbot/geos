@@ -527,7 +527,7 @@ extern "C" SEXP geos_c_geos_writer_new() {
   CPP_START
 
   auto builder = new Constructor();
-  SEXP builder_xptr = PROTECT(R_MakeExternalPtr(new Constructor(), R_NilValue, R_NilValue));
+  SEXP builder_xptr = PROTECT(R_MakeExternalPtr(builder, R_NilValue, R_NilValue));
   R_RegisterCFinalizer(builder_xptr, &delete_vector_constructor);
 
   wk_handler_t* handler = wk_handler_create();
