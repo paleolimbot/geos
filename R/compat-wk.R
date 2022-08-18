@@ -51,24 +51,6 @@ wk_set_crs.geos_geometry <- function(x, crs) {
 
 #' @rdname as_geos_geometry
 #' @export
-as_geos_geometry.wk_wkb <- function(x, ...) {
-  geom <- wk_handle(x, geos_geometry_writer())
-  attr(geom, "crs") <- attr(x, "crs", exact = TRUE)
-  geom
-}
-
-#' @rdname as_geos_geometry
-#' @export
-as_geos_geometry.wk_wkt <- function(x, ...) {
-  # geos_read_wkt() is faster, but doesn't do EWKT which might be
-  # expected for users of wkt() since this is interpreted elsewhere
-  geom <- wk_handle(x, geos_geometry_writer())
-  attr(geom, "crs") <- attr(x, "crs", exact = TRUE)
-  geom
-}
-
-#' @rdname as_geos_geometry
-#' @export
 as_geos_geometry.wk_xy <- function(x, ...) {
   x <- unclass(x)
   new_geos_geometry(
@@ -85,22 +67,6 @@ as_geos_geometry.wk_xyz <- function(x, ...) {
     .Call(geos_c_make_point, x[[1]], x[[2]], x[[3]]),
     crs = attr(x, "crs", exact = TRUE)
   )
-}
-
-#' @rdname as_geos_geometry
-#' @export
-as_geos_geometry.wk_rct <- function(x, ...) {
-  geom <- wk_handle(x, geos_geometry_writer())
-  attr(geom, "crs") <- attr(x, "crs", exact = TRUE)
-  geom
-}
-
-#' @rdname as_geos_geometry
-#' @export
-as_geos_geometry.wk_crc <- function(x, ...) {
-  geom <- wk_handle(x, geos_geometry_writer())
-  attr(geom, "crs") <- attr(x, "crs", exact = TRUE)
-  geom
 }
 
 #' @importFrom wk as_wkt

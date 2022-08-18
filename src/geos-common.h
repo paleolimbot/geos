@@ -6,6 +6,10 @@
 #include "Rinternals.h"
 #include "libgeos.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 // this leaves 200 characters of space for the prepending
 // text for the error (which is always hard-coded)
 #define GEOS_ERROR_MESSAGE_BUFFER_SIZE 1024
@@ -79,5 +83,9 @@ SEXP geos_common_tree_xptr(GEOSSTRtree* geometry, SEXP geom, SEXP indices);
     "%s requires 'libgeos' >= %s (current version of libgeos is %s)\nTo fix, run `install.packages(\"libgeos\")`", \
     capability, version, GEOSversion() \
   )
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

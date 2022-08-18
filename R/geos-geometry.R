@@ -23,6 +23,16 @@ as_geos_geometry.geos_geometry <- function(x, ...) {
 
 #' @rdname as_geos_geometry
 #' @export
+as_geos_geometry.default <- function(x, ...) {
+  if (wk::wk_is_geodesic(x)) {
+    stop("Can't convert geometry with geodesic edges to geos_geometry()")
+  }
+
+  wk::wk_translate(x, geos_geometry())
+}
+
+#' @rdname as_geos_geometry
+#' @export
 as_geos_geometry.character <- function(x, ..., crs = NULL) {
   geos_read_wkt(x, crs = crs)
 }
