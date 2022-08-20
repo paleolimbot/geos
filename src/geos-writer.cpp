@@ -282,11 +282,45 @@ class Constructor : public util::Handler {
   }
 
   void finish_points() {
+#if LIBGEOS_VERSION_COMPILE_INT >= LIBGEOS_VERSION_INT(3, 10, 0)
+    if (libgeos_version_int() < LIBGEOS_VERSION_INT(3, 10, 0)) {
+      finish_points_compat();
+      return;
+    }
+
     seq_.reset();
     seq_.ptr = GEOSCoordSeq_copyFromBuffer_r(
         handle, coords_, coords_size_ / coord_size_, has_z_, has_m_);
     if (seq_.ptr == nullptr) {
       throw std::runtime_error(globalErrorMessage);
+    }
+
+    coords_size_ = 0;
+#else
+    finish_points_compat();
+#endif
+  }
+
+  void finish_points_compat() {
+    seq_.reset();
+    size_t n_coords = coords_size_ / coord_size_;
+
+    seq_.ptr = GEOSCoordSeq_create_r(handle, n_coords, 2 + has_z_);
+    if (seq_.ptr == nullptr) {
+      throw std::runtime_error(globalErrorMessage);
+    }
+
+    double* coord = coords_;
+    if (has_z_) {
+      for (size_t i = 0; i < n_coords; i++) {
+        GEOSCoordSeq_setXYZ_r(handle, seq_.ptr, i, coord[0], coord[1], coord[2]);
+        coord += coord_size_;
+      }
+    } else {
+      for (size_t i = 0; i < n_coords; i++) {
+        GEOSCoordSeq_setXY_r(handle, seq_.ptr, i, coord[0], coord[1]);
+        coord += coord_size_;
+      }
     }
 
     coords_size_ = 0;
