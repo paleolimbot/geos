@@ -120,8 +120,8 @@ geos_basic_strtree_query_filtered <- function(tree, query, tree_geom, fun, ...,
   for (i in seq_len(nrow(chunks))) {
     range <- (chunks$from[i]):(chunks$to[i])
     keys_filter[range] <- fun(
-      tree_geom[keys$tree[range]],
       query[keys$x[range]],
+      tree_geom[keys$tree[range]],
       ...
     )
   }
