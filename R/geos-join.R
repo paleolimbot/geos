@@ -36,23 +36,26 @@
 geos_inner_join_keys <- function(x, y, predicate = "intersects", distance = NA) {
   stopifnot(is.character(predicate), length(predicate) == 1)
 
-  if (is.character(x)) {
-    x <- as_geos_geometry(x)
-  }
-
-  if (is.character(y)) {
-    y <- as_geos_geometry(y)
-  }
-
-  wk::wk_crs_output(x, y)
-
   # within is usually faster building the index x
   if (identical(predicate, "within")) {
     keys <- geos_inner_join_keys(y, x, "contains")
     return(new_data_frame(list(x = keys$y, y = keys$x)))
   }
 
-  # build tree
+  # hedge a bet that the non-indexed geometry will be faster to convert
+  # to geos_geometry up front rather than chunk-wise later on
+  x <- sanitize_geos_geometry(x)
+
+  # the y geometry is converted lazily but a straight character isn't supported
+  # by wk_handle()
+  if (is.character(y)) {
+    y <- as_geos_geometry(y)
+  }
+
+  wk::wk_crs_output(x, y)
+
+  # build the index on y (which requires a slight modification for some
+  # predicates)
   if (predicate %in% c("within_distance", "equals_exact")) {
     stopifnot(!identical(distance, NA))
     envelope <- unclass(wk::wk_envelope(y))
