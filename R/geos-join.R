@@ -21,18 +21,54 @@
 #' @param distance Passed to [geos_is_within_distance()] when `predicate`
 #'   is "within_distance"; passed to [geos_equals_exact()] when `predicate`
 #'   is "equals_exact.
+#' @param suffix A character vector of length 2 with suffixes for the left
+#'   and right sides for output columns with duplicated names.
 #'
 #' @return A data.frame with columns x and y corresponding to the 1-based
 #'   indices on pairs of `x` and `y` for which `predicate` is TRUE.
 #' @export
 #'
 #' @examples
+#' x <- data.frame(
+#'   col_x = "a",
+#'   geometry = as_geos_geometry("POINT (10 10)")
+#' )
+#'
+#' y <- data.frame(
+#'   col_y = "a",
+#'   geometry = as_geos_geometry("POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))")
+#' )
+#'
+#' geos_inner_join(x, y, "intersects")
+#'
 #' geos_inner_join_keys(
 #'   "POINT (5 5)",
 #'   "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))",
 #'   "intersects"
 #' )
 #'
+geos_inner_join <- function(x, y, predicate = "intersects", distance = NA,
+                            suffix = c(".x", ".y")) {
+  stopifnot(is.data.frame(x), is.data.frame(y))
+  x_geom <- handleable_vector(x, "x")
+  y_geom <- handleable_vector(y, "y")
+  keys <- geos_inner_join_keys(x_geom, y_geom, predicate, distance)
+
+  left <- x[keys$x, , drop = FALSE]
+  right <- y[keys$y, , drop = FALSE]
+  left_name_needs_suffix <- names(left) %in% names(right)
+  right_name_needs_suffix <- names(right) %in% names(left)
+
+  names(left)[left_name_needs_suffix] <-
+    paste0(names(left)[left_name_needs_suffix], suffix[1])
+  names(right)[right_name_needs_suffix] <-
+    paste0(names(right)[right_name_needs_suffix], suffix[2])
+
+  new_data_frame(c(unclass(left), unclass(right)))
+}
+
+#' @rdname geos_inner_join
+#' @export
 geos_inner_join_keys <- function(x, y, predicate = "intersects", distance = NA) {
   stopifnot(is.character(predicate), length(predicate) == 1)
 
@@ -87,4 +123,24 @@ geos_inner_join_keys <- function(x, y, predicate = "intersects", distance = NA) 
   result <- geos_basic_strtree_query_filtered(tree, x, y, fun)
   names(result) <- c("x", "y")
   result
+}
+
+handleable_vector <- function(x, arg = "x") {
+  if (is.data.frame(x)) {
+    is_handleable <- vapply(x, is_handleable_column, logical(1))
+    if (!any(is_handleable)) {
+      stop(sprintf("No geometry column was found in `%s`", arg))
+    }
+
+    handleable_vector(x[[which(is_handleable)[1]]])
+  } else {
+    x
+  }
+}
+
+is_handleable_column <- function(x) {
+  tryCatch({
+    wk::wk_vector_meta(x)
+    TRUE
+  }, error = function(e) FALSE)
 }
