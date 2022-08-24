@@ -1,5 +1,17 @@
 # geos (development version)
 
+* Added an experimental `geos_inner_join()` and `geos_inner_join_keys()` for
+  potentially faster and/or more memory-efficient joins (#76, #66).
+* Added the `geos_basic_strtree()` class and query methods to create tree
+  indices from non-GEOS geometries while making fewer copies (#73, #66).
+* Rewrote the GEOS-geometry construction code because of a bug that
+  prevented it from being used for default conversion (#74, #56).
+* Added support for new features in GEOS 3.11, including
+  `geos_line_merge()`, `geos_line_merge_directed()`, `geos_concave_hull()`,
+  `geos_remove_repeated_points()`, `geos_hilbert_code()`, and
+  `geos_transform_xy()` (#69).
+* Clarified documentation on make and unnest functions (#70, #68).
+
 # geos 0.1.3
 
 * Add support for new features in GEOS 3.10, including

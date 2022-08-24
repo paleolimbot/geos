@@ -23,7 +23,7 @@ Description: Provides an R API to the Open Source Geometry Engine
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1
 Suggests: 
     testthat (>= 3.0.0),
     vctrs,
