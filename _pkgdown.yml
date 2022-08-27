@@ -12,6 +12,7 @@ reference:
   - as_geos_geometry
   - geos_empty
   - geos_make_point
+  - geos_create_rectangle
   - plot.geos_geometry
 
 - title: Geometry operators
@@ -24,7 +25,6 @@ reference:
   - geos_disjoint_matrix
   - geos_distance
   - geos_project
-  - geos_strtree
   - geos_buffer
   - geos_delaunay_triangles
   - geos_intersection
@@ -35,6 +35,13 @@ reference:
   - geos_geometry_n
   - geos_unnest
   - geos_largest_empty_circle_spec
+
+- title: Indexing and Joins
+  contents:
+  - geos_strtree
+  - geos_basic_strtree
+  - geos_inner_join
+
 
 - title: GEOS Information
   contents:
