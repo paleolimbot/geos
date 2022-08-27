@@ -13,7 +13,7 @@
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="Open Source Geometry Engine (GEOS) R API">
 <meta property="og:description" content="Provides an R API to the Open Source Geometry Engine
-  (GEOS) library (&lt;https://trac.osgeo.org/geos/&gt;) and a vector format 
+  (GEOS) library (&lt;https://libgeos.org/&gt;) and a vector format 
   with which to efficiently store GEOS geometries. High-performance functions 
   to extract information from, calculate relationships between, and
   transform geometries are provided. Finally, facilities to import 
@@ -25,6 +25,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -44,12 +46,6 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="reference/index.html">Reference</a>
 </li>
 <li>
@@ -58,7 +54,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/paleolimbot/geos/">
+  <a href="https://github.com/paleolimbot/geos/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -75,151 +71,160 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="geos" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#geos" class="anchor"></a>geos</h1></div>
+<div class="section level1">
+<div class="page-header"><h1 id="geos">geos<a class="anchor" aria-label="anchor" href="#geos"></a>
+</h1></div>
 <!-- badges: start -->
-
 <p>The goal of geos is to provide access to the GEOS C API by vectorizing the C functions for use in R. See the <a href="https://paleolimbot.github.io/geos/reference/index.html">package function reference</a> for which functions are implemented in the R API.</p>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<p>You can install the released version of geos from <a href="https://CRAN.R-project.org">CRAN</a> with:</p>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p>You can install the released version of geos from <a href="https://CRAN.R-project.org" class="external-link">CRAN</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"geos"</span><span class="op">)</span></code></pre></div>
-<p>And the development version from <a href="https://github.com/">GitHub</a> with:</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"geos"</span><span class="op">)</span></span></code></pre></div>
+<p>And the development version from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># install.packages("remotes")</span>
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"paleolimbot/geos"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"paleolimbot/geos"</span><span class="op">)</span></span></code></pre></div>
 <p>If you can load the package, you’re good to go!</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://paleolimbot.github.io/geos/">geos</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://paleolimbot.github.io/geos/">geos</a></span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="example" class="section level2">
-<h2 class="hasAnchor">
-<a href="#example" class="anchor"></a>Example</h2>
+<div class="section level2">
+<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+</h2>
 <p>Buffer a line and plot it!</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">line</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/as_geos_geometry.sfc.html">as_geos_geometry</a></span><span class="op">(</span><span class="st">"LINESTRING (30 10, 10 30, 40 40)"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu"><a href="reference/geos_buffer.html">geos_buffer</a></span><span class="op">(</span><span class="va">line</span>, distance <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"grey90"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">line</span>, add <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">line</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/as_geos_geometry.html">as_geos_geometry</a></span><span class="op">(</span><span class="st">"LINESTRING (30 10, 10 30, 40 40)"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="reference/geos_buffer.html">geos_buffer</a></span><span class="op">(</span><span class="va">line</span>, distance <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"grey90"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">line</span>, add <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-ex-plot-1.png" width="100%"></p>
-<p>The geos package is designed to work with <a href="https://dplyr.tidyverse.org/">dplyr</a> package, so you can work with geometry vectors as a data frame column:</p>
+<p>The geos package is designed to work with <a href="https://dplyr.tidyverse.org/" class="external-link">dplyr</a> package, so you can work with geometry vectors as a data frame column:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Attaching package: 'dplyr'</span>
-<span class="co">#&gt; The following objects are masked from 'package:stats':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     filter, lag</span>
-<span class="co">#&gt; The following objects are masked from 'package:base':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     intersect, setdiff, setequal, union</span>
-
-<span class="co"># map data from the maps package via ggplot2</span>
-<span class="va">states_df</span> <span class="op">&lt;-</span> <span class="fu">as_tibble</span><span class="op">(</span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu">map_data</span><span class="op">(</span><span class="st">"state"</span><span class="op">)</span><span class="op">)</span>
-<span class="va">states_df</span>
-<span class="co">#&gt; # A tibble: 15,537 × 6</span>
-<span class="co">#&gt;     long   lat group order region  subregion</span>
-<span class="co">#&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;    </span>
-<span class="co">#&gt;  1 -87.5  30.4     1     1 alabama &lt;NA&gt;     </span>
-<span class="co">#&gt;  2 -87.5  30.4     1     2 alabama &lt;NA&gt;     </span>
-<span class="co">#&gt;  3 -87.5  30.4     1     3 alabama &lt;NA&gt;     </span>
-<span class="co">#&gt;  4 -87.5  30.3     1     4 alabama &lt;NA&gt;     </span>
-<span class="co">#&gt;  5 -87.6  30.3     1     5 alabama &lt;NA&gt;     </span>
-<span class="co">#&gt;  6 -87.6  30.3     1     6 alabama &lt;NA&gt;     </span>
-<span class="co">#&gt;  7 -87.6  30.3     1     7 alabama &lt;NA&gt;     </span>
-<span class="co">#&gt;  8 -87.6  30.3     1     8 alabama &lt;NA&gt;     </span>
-<span class="co">#&gt;  9 -87.7  30.3     1     9 alabama &lt;NA&gt;     </span>
-<span class="co">#&gt; 10 -87.8  30.3     1    10 alabama &lt;NA&gt;     </span>
-<span class="co">#&gt; # … with 15,527 more rows</span>
-
-<span class="va">states_df</span> <span class="op">%&gt;%</span> 
-  <span class="fu">group_by</span><span class="op">(</span><span class="va">region</span>, <span class="va">group</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu">summarise</span><span class="op">(</span>geometry <span class="op">=</span> <span class="fu"><a href="reference/geos_make_point.html">geos_make_polygon</a></span><span class="op">(</span><span class="va">long</span>, <span class="va">lat</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu">summarise</span><span class="op">(</span>geometry <span class="op">=</span> <span class="fu"><a href="reference/geos_make_point.html">geos_make_collection</a></span><span class="op">(</span><span class="va">geometry</span>, <span class="st">"multipolygon"</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; `summarise()` has grouped output by 'region'. You can override using the `.groups` argument.</span>
-<span class="co">#&gt; # A tibble: 49 × 2</span>
-<span class="co">#&gt;    region               geometry                                          </span>
-<span class="co">#&gt;    &lt;chr&gt;                &lt;geos_geom&gt;                                       </span>
-<span class="co">#&gt;  1 alabama              &lt;MULTIPOLYGON [-88.476 30.241...-84.901 35.013]&gt;  </span>
-<span class="co">#&gt;  2 arizona              &lt;MULTIPOLYGON [-114.809 31.347...-109.040 37.002]&gt;</span>
-<span class="co">#&gt;  3 arkansas             &lt;MULTIPOLYGON [-94.624 32.997...-89.651 36.509]&gt;  </span>
-<span class="co">#&gt;  4 california           &lt;MULTIPOLYGON [-124.383 32.538...-114.133 42.021]&gt;</span>
-<span class="co">#&gt;  5 colorado             &lt;MULTIPOLYGON [-109.063 36.984...-102.044 41.018]&gt;</span>
-<span class="co">#&gt;  6 connecticut          &lt;MULTIPOLYGON [-73.722 41.012...-71.780 42.049]&gt;  </span>
-<span class="co">#&gt;  7 delaware             &lt;MULTIPOLYGON [-75.802 38.457...-75.052 39.849]&gt;  </span>
-<span class="co">#&gt;  8 district of columbia &lt;MULTIPOLYGON [-77.137 38.806...-76.931 38.996]&gt;  </span>
-<span class="co">#&gt;  9 florida              &lt;MULTIPOLYGON [-87.640 25.130...-80.042 31.008]&gt;  </span>
-<span class="co">#&gt; 10 georgia              &lt;MULTIPOLYGON [-85.611 30.355...-80.844 34.996]&gt;  </span>
-<span class="co">#&gt; # … with 39 more rows</span></code></pre></div>
-<p>The easiest way to get data into and out of the package is using the <a href="https://r-spatial.github.io/sf/">sf package</a>.</p>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'dplyr'</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:stats':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     filter, lag</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span>
+<span></span>
+<span><span class="co"># map data from the maps package via ggplot2</span></span>
+<span><span class="va">states_df</span> <span class="op">&lt;-</span> <span class="fu">as_tibble</span><span class="op">(</span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu">map_data</span><span class="op">(</span><span class="st">"state"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">states_df</span></span>
+<span><span class="co">#&gt; # A tibble: 15,537 × 6</span></span>
+<span><span class="co">#&gt;     long   lat group order region  subregion</span></span>
+<span><span class="co">#&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;    </span></span>
+<span><span class="co">#&gt;  1 -87.5  30.4     1     1 alabama &lt;NA&gt;     </span></span>
+<span><span class="co">#&gt;  2 -87.5  30.4     1     2 alabama &lt;NA&gt;     </span></span>
+<span><span class="co">#&gt;  3 -87.5  30.4     1     3 alabama &lt;NA&gt;     </span></span>
+<span><span class="co">#&gt;  4 -87.5  30.3     1     4 alabama &lt;NA&gt;     </span></span>
+<span><span class="co">#&gt;  5 -87.6  30.3     1     5 alabama &lt;NA&gt;     </span></span>
+<span><span class="co">#&gt;  6 -87.6  30.3     1     6 alabama &lt;NA&gt;     </span></span>
+<span><span class="co">#&gt;  7 -87.6  30.3     1     7 alabama &lt;NA&gt;     </span></span>
+<span><span class="co">#&gt;  8 -87.6  30.3     1     8 alabama &lt;NA&gt;     </span></span>
+<span><span class="co">#&gt;  9 -87.7  30.3     1     9 alabama &lt;NA&gt;     </span></span>
+<span><span class="co">#&gt; 10 -87.8  30.3     1    10 alabama &lt;NA&gt;     </span></span>
+<span><span class="co">#&gt; # … with 15,527 more rows</span></span>
+<span></span>
+<span><span class="va">states_df</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">region</span>, <span class="va">group</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">summarise</span><span class="op">(</span>geometry <span class="op">=</span> <span class="fu"><a href="reference/geos_make_point.html">geos_make_polygon</a></span><span class="op">(</span><span class="va">long</span>, <span class="va">lat</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">summarise</span><span class="op">(</span>geometry <span class="op">=</span> <span class="fu"><a href="reference/geos_make_point.html">geos_make_collection</a></span><span class="op">(</span><span class="va">geometry</span>, <span class="st">"multipolygon"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; `summarise()` has grouped output by 'region'. You can override using the `.groups` argument.</span></span>
+<span><span class="co">#&gt; # A tibble: 49 × 2</span></span>
+<span><span class="co">#&gt;    region               geometry                                          </span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;                &lt;geos_geom&gt;                                       </span></span>
+<span><span class="co">#&gt;  1 alabama              &lt;MULTIPOLYGON [-88.476 30.241...-84.901 35.013]&gt;  </span></span>
+<span><span class="co">#&gt;  2 arizona              &lt;MULTIPOLYGON [-114.809 31.347...-109.040 37.002]&gt;</span></span>
+<span><span class="co">#&gt;  3 arkansas             &lt;MULTIPOLYGON [-94.624 32.997...-89.651 36.509]&gt;  </span></span>
+<span><span class="co">#&gt;  4 california           &lt;MULTIPOLYGON [-124.383 32.538...-114.133 42.021]&gt;</span></span>
+<span><span class="co">#&gt;  5 colorado             &lt;MULTIPOLYGON [-109.063 36.984...-102.044 41.018]&gt;</span></span>
+<span><span class="co">#&gt;  6 connecticut          &lt;MULTIPOLYGON [-73.722 41.012...-71.780 42.049]&gt;  </span></span>
+<span><span class="co">#&gt;  7 delaware             &lt;MULTIPOLYGON [-75.802 38.457...-75.052 39.849]&gt;  </span></span>
+<span><span class="co">#&gt;  8 district of columbia &lt;MULTIPOLYGON [-77.137 38.806...-76.931 38.996]&gt;  </span></span>
+<span><span class="co">#&gt;  9 florida              &lt;MULTIPOLYGON [-87.640 25.130...-80.042 31.008]&gt;  </span></span>
+<span><span class="co">#&gt; 10 georgia              &lt;MULTIPOLYGON [-85.611 30.355...-80.844 34.996]&gt;  </span></span>
+<span><span class="co">#&gt; # … with 39 more rows</span></span></code></pre></div>
+<p>The easiest way to get data into and out of the package is using the <a href="https://r-spatial.github.io/sf/" class="external-link">sf package</a>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/">sf</a></span><span class="op">)</span>
-<span class="co">#&gt; Linking to GEOS 3.9.1, GDAL 3.3.2, PROJ 8.1.0</span>
-<span class="va">nc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html">read_sf</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"shape/nc.shp"</span>, package <span class="op">=</span> <span class="st">"sf"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html">st_transform</a></span><span class="op">(</span><span class="fl">32119</span><span class="op">)</span> <span class="co"># North Carolina state plane, m.</span>
-
-<span class="va">nc_geos</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/as_geos_geometry.sfc.html">as_geos_geometry</a></span><span class="op">(</span><span class="va">nc</span><span class="op">)</span>
-
-<span class="va">nc_geos</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="reference/geos_make_point.html">geos_make_collection</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="reference/geos_centroid.html">geos_unary_union</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sfc.html">st_as_sfc</a></span><span class="op">(</span><span class="va">nc_state</span><span class="op">)</span>
-<span class="co">#&gt; Geometry set for 1 feature </span>
-<span class="co">#&gt; Geometry type: MULTIPOLYGON</span>
-<span class="co">#&gt; Dimension:     XY</span>
-<span class="co">#&gt; Bounding box:  xmin: 123829.8 ymin: 14740.06 xmax: 930518.6 ymax: 318255.5</span>
-<span class="co">#&gt; Projected CRS: NAD83 / North Carolina</span>
-<span class="co">#&gt; MULTIPOLYGON (((138426.9 177702.5, 145549.4 177...</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Linking to GEOS 3.9.1, GDAL 3.3.2, PROJ 8.1.0</span></span>
+<span><span class="va">nc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">read_sf</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"shape/nc.shp"</span>, package <span class="op">=</span> <span class="st">"sf"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html" class="external-link">st_transform</a></span><span class="op">(</span><span class="fl">32119</span><span class="op">)</span> <span class="co"># North Carolina state plane, m.</span></span>
+<span></span>
+<span><span class="va">nc_geos</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/as_geos_geometry.html">as_geos_geometry</a></span><span class="op">(</span><span class="va">nc</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">nc_geos</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="reference/geos_make_point.html">geos_make_collection</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="reference/geos_centroid.html">geos_unary_union</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sfc.html" class="external-link">st_as_sfc</a></span><span class="op">(</span><span class="va">nc_state</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Geometry set for 1 feature </span></span>
+<span><span class="co">#&gt; Geometry type: MULTIPOLYGON</span></span>
+<span><span class="co">#&gt; Dimension:     XY</span></span>
+<span><span class="co">#&gt; Bounding box:  xmin: 123829.8 ymin: 14740.06 xmax: 930518.6 ymax: 318255.5</span></span>
+<span><span class="co">#&gt; Projected CRS: NAD83 / North Carolina</span></span>
+<span><span class="co">#&gt; MULTIPOLYGON (((138426.9 177702.5, 145549.4 177...</span></span></code></pre></div>
 </div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=geos">https://​cloud.r-project.org/​package=geos</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/paleolimbot/geos/">https://​github.com/​paleolimbot/​geos/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/paleolimbot/geos/issues">https://​github.com/​paleolimbot/​geos/​issues</a>
-</li>
-</ul>
-</div>
-<div class="license">
-<h2>License</h2>
-<ul class="list-unstyled">
-<li><a href="LICENSE.html">Full license</a></li>
-<li><small><a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
-</ul>
-</div>
-<div class="developers">
-<h2>Developers</h2>
-<ul class="list-unstyled">
-<li>Dewey Dunnington <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-9415-4582" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li>Edzer Pebesma <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-8049-7069" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li><a href="https://cloud.r-project.org/package=geos" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/paleolimbot/geos/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/paleolimbot/geos/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="license">
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li><a href="https://app.codecov.io/gh/paleolimbot/geos?branch=master"><img src="https://codecov.io/gh/paleolimbot/geos/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
-<li><a href="https://github.com/paleolimbot/geos/actions"><img src="https://github.com/paleolimbot/geos/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="LICENSE.html">Full license</a></li>
+<li><small><a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing geos</a></li>
+</ul>
 </div>
+
+<div class="developers">
+<h2 data-toc-skip>Developers</h2>
+<ul class="list-unstyled">
+<li>Dewey Dunnington <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-9415-4582" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Edzer Pebesma <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-8049-7069" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+</ul>
+</div>
+
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://app.codecov.io/gh/paleolimbot/geos?branch=master" class="external-link"><img src="https://codecov.io/gh/paleolimbot/geos/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://github.com/paleolimbot/geos/actions" class="external-link"><img src="https://github.com/paleolimbot/geos/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
+</ul>
+</div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Dewey Dunnington, Edzer Pebesma.</p>
+  <p></p>
+<p>Developed by Dewey Dunnington, Edzer Pebesma.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>
@@ -227,6 +232,8 @@
 
   
 
+
+  
 
   </body>
 </html>
