@@ -86,7 +86,8 @@ states_df %>%
   group_by(region, group) %>% 
   summarise(geometry = geos_make_polygon(long, lat)) %>% 
   summarise(geometry = geos_make_collection(geometry, "multipolygon"))
-#> `summarise()` has grouped output by 'region'. You can override using the `.groups` argument.
+#> `summarise()` has grouped output by 'region'. You can override using the
+#> `.groups` argument.
 #> # A tibble: 49 × 2
 #>    region               geometry                                          
 #>    <chr>                <geos_geom>                                       
@@ -108,7 +109,7 @@ package](https://r-spatial.github.io/sf/).
 
 ``` r
 library(sf)
-#> Linking to GEOS 3.9.1, GDAL 3.3.2, PROJ 8.1.0
+#> Linking to GEOS 3.11.0, GDAL 3.5.1, PROJ 9.0.1; sf_use_s2() is TRUE
 nc <- read_sf(system.file("shape/nc.shp", package = "sf")) %>%
   st_transform(32119) # North Carolina state plane, m.
 
@@ -121,7 +122,7 @@ nc_geos %>%
 #> Geometry set for 1 feature 
 #> Geometry type: MULTIPOLYGON
 #> Dimension:     XY
-#> Bounding box:  xmin: 123829.8 ymin: 14740.06 xmax: 930518.6 ymax: 318255.5
+#> Bounding box:  xmin: 123829 ymin: 14744.69 xmax: 930521.8 ymax: 318259.9
 #> Projected CRS: NAD83 / North Carolina
-#> MULTIPOLYGON (((138426.9 177702.5, 145549.4 177...
+#> MULTIPOLYGON (((138426 177699.3, 145548.6 17783...
 ```
