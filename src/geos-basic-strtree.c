@@ -238,9 +238,11 @@ SEXP geos_c_basic_strtree_query_geom(SEXP tree_xptr, SEXP xmin_sexp, SEXP ymin_s
   }
 
   SEXP result_x = PROTECT(Rf_allocVector(INTSXP, query->size));
-  memcpy(INTEGER(result_x), query->ix, query->size * sizeof(int));
   SEXP result_tree = PROTECT(Rf_allocVector(INTSXP, query->size));
-  memcpy(INTEGER(result_tree), query->itree, query->size * sizeof(int));
+  if (query->size > 0) {
+    memcpy(INTEGER(result_x), query->ix, query->size * sizeof(int));
+    memcpy(INTEGER(result_tree), query->itree, query->size * sizeof(int));
+  }
 
   basic_query_finalize(query_shelter);
 
