@@ -1,3 +1,5 @@
+# geos (development version)
+
 # geos 0.2.0
 
 * Added an experimental `geos_inner_join()` and `geos_inner_join_keys()` for
