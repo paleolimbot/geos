@@ -332,7 +332,7 @@ class Constructor : public util::Handler {
     std::vector<std::unique_ptr<GEOSGeometryWrapper>> parts_back = std::move(parts_.back());
     parts_.pop_back();
 
-    parts_back_cache_.reserve(parts_back.size());
+    parts_back_cache_.resize(parts_back.size());
     for (size_t i = 0; i < parts_back.size(); i++) {
         parts_back_cache_[i] = parts_back[i]->release();
     }
