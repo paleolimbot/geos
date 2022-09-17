@@ -1,6 +1,6 @@
 
-This release fixes bugs that were identified in the previous release
-and adds features that became available in GEOS 3.11.0.
+This release fixes the address sanitizer issue identified by the
+clang sanitizer check.
 
 ## R CMD check results
 
