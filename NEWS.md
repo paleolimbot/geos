@@ -1,3 +1,5 @@
+# geos (development version)
+
 # geos 0.2.1
 
 * Fix address sanitizer error identified by the clang sanitizer.
