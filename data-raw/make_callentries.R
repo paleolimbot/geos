@@ -1,7 +1,7 @@
 
 library(tidyverse)
 
-src_files <- list.files("src", "\\.c$", full.names = TRUE)
+src_files <- list.files("src", "\\.(c|cpp)$", full.names = TRUE)
 src_sources <- src_files %>% set_names() %>% map_chr(readr::read_file)
 
 defs <- tibble(
@@ -16,12 +16,12 @@ defs <- tibble(
     str_remove("SEXP geos_c_[^\\(]+\\(") %>%
     str_remove("\\)$") %>%
     str_split("\\s*,\\s*") %>%
-    map(~{if(identical(.x, "")) character(0) else .x}),
+    map(~{if(identical(.x, "") || identical(.x, "void")) character(0) else .x}),
   n_args = map(args, length)
 )
 
 call_headers <- paste0(
-  "extern ", defs$def, ";",
+  defs$def, ";",
   collapse = "\n"
 )
 call_entries <- paste0(
