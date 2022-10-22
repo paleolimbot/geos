@@ -557,7 +557,7 @@ void delete_vector_constructor(SEXP xptr) {
     }
 }
 
-extern "C" SEXP geos_c_geos_writer_new() {
+extern "C" SEXP geos_c_geos_writer_new(void) {
   CPP_START
 
   auto builder = new Constructor();

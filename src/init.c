@@ -176,7 +176,7 @@ SEXP geos_c_buffer(SEXP geom, SEXP distance, SEXP params);
 SEXP geos_c_offset_curve(SEXP geom, SEXP distance, SEXP params);
 SEXP geos_c_geometry_n(SEXP geom, SEXP n);
 SEXP geos_c_ring_n(SEXP geom, SEXP n);
-SEXP geos_c_geos_writer_new();
+SEXP geos_c_geos_writer_new(void);
 SEXP geos_c_wk_read_geos_geometry(SEXP geom, SEXP handler_xptr);
 SEXP geos_c_init(void);
 SEXP geos_c_version_runtime(void);
