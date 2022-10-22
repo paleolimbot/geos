@@ -1,4 +1,4 @@
-# geos (development version)
+# geos 0.2.2
 
 * Fix new warnings from `-Wstrict-prototypes`.
 
