@@ -1,5 +1,7 @@
 # geos (development version)
 
+* Fix new warnings from `-Wstrict-prototypes`.
+
 # geos 0.2.1
 
 * Fix address sanitizer error identified by the clang sanitizer.

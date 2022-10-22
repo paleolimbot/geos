@@ -1,6 +1,5 @@
 
-This release fixes the address sanitizer issue identified by the
-clang sanitizer check.
+This release fixes new warnings from `-Wstrict-prototypes`.
 
 ## R CMD check results
 
