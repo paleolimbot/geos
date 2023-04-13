@@ -277,7 +277,7 @@ test_that("coercion to wk::wkt, wk::wkb, wk::xy, and wk::xyz", {
   expect_identical(wk::as_xy(as_geos_geometry("POINT (0 1)")), wk::xy(0, 1))
   expect_equal(
     wk::as_xy(as_geos_geometry("POINT (0 1)"), dims = c("x", "y", "z")),
-    wk::xyz(0, 1, NA_real_)
+    wk::xyz(0, 1, NaN)
   )
   expect_equal(
     wk::as_xy(as_geos_geometry("POINT Z (0 1 2)"), dims = c("x", "y", "z")),
