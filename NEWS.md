@@ -1,5 +1,7 @@
 # geos (development version)
 
+* Fix NA/NaN issues for forthcoming waldo package update (@hadley, #83).
+
 # geos 0.2.2
 
 * Fix new warnings from `-Wstrict-prototypes`.
