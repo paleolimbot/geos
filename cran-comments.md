@@ -1,5 +1,5 @@
 
-This release fixes new warnings from `-Wstrict-prototypes`.
+This release fixes new warnings from the M1Mac check.
 
 ## R CMD check results
 
