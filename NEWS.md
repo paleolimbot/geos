@@ -1,6 +1,7 @@
 # geos (development version)
 
 * Fix NA/NaN issues for forthcoming waldo package update (@hadley, #83).
+* Fix test on M1Mac (#85, #86).
 
 # geos 0.2.2
 
