@@ -31,7 +31,7 @@
     int resultCode = _func(handle, geometry1, geometry2, &pResult[i]);        \
                                                                   \
     if (resultCode == 0) {                                        \
-      Rf_error("[%d] %s", i + 1, globalErrorMessage);             \
+      Rf_error("[%ld] %s", (long)i + 1, globalErrorMessage);             \
     }                                                             \
   }                                                               \
                                                                   \
@@ -87,13 +87,13 @@ SEXP geos_c_prepared_distance(SEXP geom1, SEXP geom2) {
 
     const GEOSPreparedGeometry* prepared1 = geos_common_geometry_prepared(item1);
     if (prepared1 == NULL) {
-      Rf_error("[%d] %s", i + 1, globalErrorMessage); // # nocov
+      Rf_error("[%ld] %s", (long)i + 1, globalErrorMessage); // # nocov
     }
 
     int resultCode = GEOSPreparedDistance_r(handle, prepared1, geometry2, &pResult[i]);
 
     if (resultCode == 0) {
-      Rf_error("[%d] %s", i + 1, globalErrorMessage);
+      Rf_error("[%ld] %s", (long)i + 1, globalErrorMessage);
     }
   }
 
@@ -133,7 +133,7 @@ SEXP geos_c_prepared_distance(SEXP geom1, SEXP geom2) {
     int resultCode = _func(handle, geometry1, geometry2, densifyFracDouble, &pResult[i]);  \
                                                                               \
     if (resultCode == 0) {                                          \
-      Rf_error("[%d] %s", i + 1, globalErrorMessage);                                           \
+      Rf_error("[%ld] %s", (long)i + 1, globalErrorMessage);                                           \
     }                                                                         \
   }                                                                           \
                                                                               \
@@ -184,7 +184,7 @@ SEXP geos_c_distance_frechet_densify(SEXP geom1, SEXP geom2, SEXP densifyFrac) {
                                                                               \
     itemResult = _func(handle, geometry1, geometry2);                         \
     if (itemResult == -1) {                                                   \
-      Rf_error("[%d] %s", i + 1, globalErrorMessage);                         \
+      Rf_error("[%ld] %s", (long)i + 1, globalErrorMessage);                         \
     }                                                                         \
                                                                               \
     pResult[i] = itemResult;                                                  \
@@ -230,7 +230,7 @@ SEXP geos_c_project_normalized(SEXP geom1, SEXP geom2) {
     int resultCode = _func(handle, geometry1, geometry2);                     \
                                                                               \
     if (resultCode == 2) {                                                    \
-      Rf_error("[%d] %s", i + 1, globalErrorMessage);                                           \
+      Rf_error("[%ld] %s", (long)i + 1, globalErrorMessage);                                           \
     }                                                                         \
     pResult[i] = resultCode;                                                  \
   }                                                                           \
@@ -311,7 +311,7 @@ SEXP geos_c_equals_exact(SEXP geom1, SEXP geom2, SEXP tolerance) {
 
     // don't know how to make this fire
     if (resultCode == 2) {
-      Rf_error("[%d] %s", i + 1, globalErrorMessage); // # nocov
+      Rf_error("[%ld] %s", (long)i + 1, globalErrorMessage); // # nocov
     }
 
     pResult[i] = resultCode;
@@ -356,7 +356,7 @@ SEXP geos_c_is_within_distance(SEXP geom1, SEXP geom2, SEXP tolerance) {
 
     // don't know how to make this fire
     if (resultCode == 2) {
-      Rf_error("[%d] %s", i + 1, globalErrorMessage); // # nocov
+      Rf_error("[%ld] %s", (long)i + 1, globalErrorMessage); // # nocov
     }
 
     pResult[i] = resultCode;
@@ -398,11 +398,11 @@ for (R_xlen_t i = 0; i < size; i++) {                                       \
                                                                             \
   const GEOSPreparedGeometry* prepared = geos_common_geometry_prepared(item1);  \
   if (prepared == NULL) {                                                   \
-    Rf_error("[%d] %s", i + 1, globalErrorMessage);                         \
+    Rf_error("[%ld] %s", (long)i + 1, globalErrorMessage);                         \
   }                                                                         \
   int resultCode = _func(handle, prepared, geometry2);                      \
   if (resultCode == 2) {                                                    \
-    Rf_error("[%d] %s", i + 1, globalErrorMessage);                         \
+    Rf_error("[%ld] %s", (long)i + 1, globalErrorMessage);                         \
   }                                                                         \
   pResult[i] = resultCode;                                                  \
 }                                                                           \
@@ -484,11 +484,11 @@ SEXP geos_c_prepared_is_within_distance(SEXP geom1, SEXP geom2, SEXP tolerance) 
 
     const GEOSPreparedGeometry* prepared = geos_common_geometry_prepared(item1);
     if (prepared == NULL) {
-      Rf_error("[%d] %s", i + 1, globalErrorMessage);
+      Rf_error("[%ld] %s", (long)i + 1, globalErrorMessage);
     }
     int resultCode = GEOSPreparedDistanceWithin_r(handle, prepared, geometry2, pTolerance[i]);
     if (resultCode == 2) {
-      Rf_error("[%d] %s", i + 1, globalErrorMessage);
+      Rf_error("[%ld] %s", (long)i + 1, globalErrorMessage);
     }
     pResult[i] = resultCode;
   }
@@ -533,7 +533,7 @@ SEXP geos_c_relate(SEXP geom1, SEXP geom2, SEXP boundaryNodeRule) {
 
     // don't know how to make this fire
     if (itemResult == NULL) {
-      Rf_error("[%d] %s", i + 1, globalErrorMessage); // # nocov
+      Rf_error("[%ld] %s", (long)i + 1, globalErrorMessage); // # nocov
     }
 
     SET_STRING_ELT(result, i, Rf_mkChar(itemResult));
@@ -565,7 +565,7 @@ SEXP geos_c_relate_pattern_match(SEXP match, SEXP pattern) {
     itemResult = GEOSRelatePatternMatch_r(handle, CHAR(itemMatch), CHAR(itemPattern));
     if (itemResult == 2) {
       UNPROTECT(1);
-      GEOS_ERROR("[i=%d] ", i);
+      GEOS_ERROR("[i=%ld] ", (long)i);
     }
 
     pResult[i] = itemResult;
