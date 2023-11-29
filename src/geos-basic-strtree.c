@@ -227,7 +227,7 @@ SEXP geos_c_basic_strtree_query_geom(SEXP tree_xptr, SEXP xmin_sexp, SEXP ymin_s
     GEOSSTRtree_query_r(handle, tree, geom, &basic_query_callback, query);
     GEOSGeom_destroy_r(handle, geom);
     if (query->has_error) {
-      Rf_error("Failed to allocate container for result indices [i = %d]", i + 1);
+      Rf_error("Failed to allocate container for result indices [i = %ld]", (long)i + 1);
     }
 
     if (fill && query->limit > 0) {

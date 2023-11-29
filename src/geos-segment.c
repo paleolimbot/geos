@@ -48,7 +48,7 @@ SEXP geos_c_segment_intersection(SEXP Sax0, SEXP Say0, SEXP Sax1, SEXP Say1,
       } else {
         // this would fire if any value were NaN, which we have checked above
         UNPROTECT(2); // # nocov
-        GEOS_ERROR("Can't compute segment intersection [i=%d]", i + 1); // # nocov
+        GEOS_ERROR("Can't compute segment intersection [i=%ld]", (long)i + 1); // # nocov
       }
 
     } else {
@@ -57,7 +57,7 @@ SEXP geos_c_segment_intersection(SEXP Sax0, SEXP Say0, SEXP Sax1, SEXP Say1,
     }
   }
 
-  
+
   const char* names[] = {"x", "y", ""};
   SEXP result = PROTECT(Rf_mkNamed(VECSXP, names));
   SET_VECTOR_ELT(result, 0, resultX);
@@ -93,7 +93,7 @@ SEXP geos_c_orientation_index(SEXP SAx, SEXP SAy, SEXP SBx, SEXP SBy, SEXP SPx, 
       if (resultCode == 2) {
         // this would fire if any value were NaN, which we have checked above
         UNPROTECT(1); // # nocov
-        GEOS_ERROR("Can't compute orientation index [i=%d]", i + 1); // # nocov
+        GEOS_ERROR("Can't compute orientation index [i=%ld]", (long)i + 1); // # nocov
       }
 
       INTEGER(result)[i] = resultCode;

@@ -70,7 +70,7 @@ SEXP geos_c_make_linestring(SEXP x, SEXP y, SEXP z, SEXP featureLengths) {
       seq = GEOSCoordSeq_create_r(handle, featureLength, 3);
       if (seq == NULL) {
         UNPROTECT(1); // # nocov
-        GEOS_ERROR("[i=%d] ", iCoord); // # nocov
+        GEOS_ERROR("[i=%ld] ", (long)iCoord); // # nocov
       }
 
       for (int j = 0; j < featureLength; j++) {
@@ -81,7 +81,7 @@ SEXP geos_c_make_linestring(SEXP x, SEXP y, SEXP z, SEXP featureLengths) {
       seq = GEOSCoordSeq_create_r(handle, featureLength, 2);
       if (seq == NULL) {
         UNPROTECT(1); // # nocov
-        GEOS_ERROR("[i=%d] ", iCoord); // # nocov
+        GEOS_ERROR("[i=%ld] ", (long)iCoord); // # nocov
       }
 
       for (int j = 0; j < featureLength; j++) {
@@ -96,7 +96,7 @@ SEXP geos_c_make_linestring(SEXP x, SEXP y, SEXP z, SEXP featureLengths) {
     // attempting to destroy seq here results in crashing the session
     if (itemGeometry == NULL) {
       UNPROTECT(1);
-      GEOS_ERROR("[i=%d] ", iCoord);
+      GEOS_ERROR("[i=%ld] ", (long)iCoord);
     }
 
     SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(itemGeometry));
@@ -161,7 +161,7 @@ SEXP geos_c_make_polygon(SEXP x, SEXP y, SEXP z, SEXP ringLengthsByFeature) {
         if (seq == NULL) {
           cleanup_geoms(handle, rings, j); // # nocov
           UNPROTECT(1); // # nocov
-          GEOS_ERROR("[i=%d] ", iCoord); // # nocov
+          GEOS_ERROR("[i=%ld] ", (long)iCoord); // # nocov
         }
 
         for (int k = 0; k < ringLength; k++) {
@@ -181,7 +181,7 @@ SEXP geos_c_make_polygon(SEXP x, SEXP y, SEXP z, SEXP ringLengthsByFeature) {
         if (seq == NULL) {
           cleanup_geoms(handle, rings, j); // # nocov
           UNPROTECT(1); // # nocov
-          GEOS_ERROR("[i=%d] ", iCoord); // # nocov
+          GEOS_ERROR("[i=%ld] ", (long)iCoord); // # nocov
         }
 
         for (int k = 0; k < ringLength; k++) {
@@ -201,7 +201,7 @@ SEXP geos_c_make_polygon(SEXP x, SEXP y, SEXP z, SEXP ringLengthsByFeature) {
       if (rings[j] == NULL) {
         cleanup_geoms(handle, rings, j);
         UNPROTECT(1);
-        GEOS_ERROR("[i=%d] ", iCoord);
+        GEOS_ERROR("[i=%ld] ", (long)iCoord);
       }
     }
 
@@ -216,7 +216,7 @@ SEXP geos_c_make_polygon(SEXP x, SEXP y, SEXP z, SEXP ringLengthsByFeature) {
       // pointers that are managed by a successful call to to
       // GEOSGeom_create* functions also destroy the pointed to objects on error
       UNPROTECT(1); // # nocov
-      GEOS_ERROR("[i=%d] ", iCoord); // # nocov
+      GEOS_ERROR("[i=%ld] ", (long)iCoord); // # nocov
     }
 
     SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(itemGeometry));
@@ -253,14 +253,14 @@ SEXP geos_c_make_collection(SEXP geom, SEXP typeId, SEXP featureLengths) {
       if (item == R_NilValue) {
         cleanup_geoms(handle, geoms, j);
                 UNPROTECT(1);
-        Rf_error("[i=%d] Can't nest a missing geometry", iGeom);
+        Rf_error("[i=%ld] Can't nest a missing geometry", (long)iGeom);
       }
 
       itemGeometry = (GEOSGeometry*) R_ExternalPtrAddr(item);
       if (itemGeometry == NULL) {
         cleanup_geoms(handle, geoms, j);
                 UNPROTECT(1);
-        Rf_error("[i=%d] External pointer is not valid", iGeom);
+        Rf_error("[i=%ld] External pointer is not valid", (long)iGeom);
       }
 
       geoms[j] = GEOSGeom_clone_r(handle, itemGeometry);
@@ -268,7 +268,7 @@ SEXP geos_c_make_collection(SEXP geom, SEXP typeId, SEXP featureLengths) {
       if (geoms[j] == NULL) {
         cleanup_geoms(handle, geoms, j);  // # nocov;
         UNPROTECT(1); // # nocov
-        GEOS_ERROR("[i=%d] ", iGeom); // # nocov
+        GEOS_ERROR("[i=%ld] ", (long)iGeom); // # nocov
       }
 
       iGeom++;
@@ -285,7 +285,7 @@ SEXP geos_c_make_collection(SEXP geom, SEXP typeId, SEXP featureLengths) {
       }
 
       UNPROTECT(1);
-      GEOS_ERROR("[i=%d] ", iGeom);
+      GEOS_ERROR("[i=%ld] ", (long)iGeom);
     }
 
     SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(collection));
@@ -373,7 +373,7 @@ SEXP geos_c_empty(SEXP typeId) {
 
     if (geometry == NULL) {
       UNPROTECT(1);
-      GEOS_ERROR("[i=%d] ", i);
+      GEOS_ERROR("[i=%ld] ", (long)i);
     }
 
     SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometry));
