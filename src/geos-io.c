@@ -38,7 +38,7 @@ SEXP geos_c_read_wkt(SEXP input, SEXP fix_structure_sexp) {
     // returns NULL on error
     if (geometry == NULL) {
       GEOSWKTReader_destroy_r(handle, reader);
-      Rf_error("[%d] %s", i + 1, globalErrorMessage);
+      Rf_error("[%ld] %s", (long)i + 1, globalErrorMessage);
     } else {
       SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometry));
     }
@@ -84,7 +84,7 @@ SEXP geos_c_write_wkt(SEXP input, SEXP includeZ, SEXP precision, SEXP trim) {
     if (output == NULL) {
       // don't know how to make this occur
       GEOSWKTWriter_destroy_r(handle, writer); // # nocov
-      Rf_error("[%d] %s", i + 1, globalErrorMessage); // # nocov
+      Rf_error("[%ld] %s", (long)i + 1, globalErrorMessage); // # nocov
     }
 
     SET_STRING_ELT(result, i, Rf_mkChar(output));
@@ -120,7 +120,7 @@ SEXP geos_c_read_geojson(SEXP input) {
     // returns NULL on error
     if (geometry == NULL) {
       GEOSGeoJSONReader_destroy_r(handle, reader);
-      Rf_error("[%d] %s", i + 1, globalErrorMessage);
+      Rf_error("[%ld] %s", (long)i + 1, globalErrorMessage);
     } else {
       SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometry));
     }
@@ -170,7 +170,7 @@ SEXP geos_c_write_geojson(SEXP input, SEXP indent) {
     if (output == NULL) {
       // don't know how to make this occur
       GEOSGeoJSONWriter_destroy_r(handle, writer); // # nocov
-      Rf_error("[%d] %s", i + 1, globalErrorMessage); // # nocov
+      Rf_error("[%ld] %s", (long)i + 1, globalErrorMessage); // # nocov
     }
 
     SET_STRING_ELT(result, i, Rf_mkChar(output));
@@ -226,7 +226,7 @@ SEXP geos_c_read_wkb(SEXP input, SEXP fix_structure_sexp) {
     // returns NULL on error
     if (geometry == NULL) {
       GEOSWKBReader_destroy_r(handle, reader);
-      Rf_error("[%d] %s", i + 1, globalErrorMessage);
+      Rf_error("[%ld] %s", (long)i + 1, globalErrorMessage);
     } else {
       SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometry));
     }
@@ -305,7 +305,7 @@ SEXP geos_c_write_wkb(SEXP input, SEXP includeZ, SEXP includeSRID, SEXP endian, 
     // returns NULL on error (e.g., when trying to write an empty point)
     if (wkbPtr == NULL) {
       GEOSWKBWriter_destroy_r(handle, writer);
-      Rf_error("[%d] %s", i + 1, globalErrorMessage);
+      Rf_error("[%ld] %s", (long)i + 1, globalErrorMessage);
     }
 
     SEXP itemWKB = PROTECT(Rf_allocVector(RAWSXP, itemSize));
@@ -361,7 +361,7 @@ SEXP geos_c_read_hex(SEXP input, SEXP fix_structure_sexp) {
     // returns NULL on error
     if (geometry == NULL) {
       GEOSWKBReader_destroy_r(handle, reader);
-      Rf_error("[%d] %s", i + 1, globalErrorMessage);
+      Rf_error("[%ld] %s", (long)i + 1, globalErrorMessage);
     } else {
       SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometry));
     }
@@ -441,7 +441,7 @@ SEXP geos_c_write_hex(SEXP input, SEXP includeZ, SEXP includeSRID, SEXP endian, 
     // returns NULL on error (e.g., when trying to write an empty point)
     if (itemChars == NULL) {
       GEOSWKBWriter_destroy_r(handle, writer);
-      Rf_error("[%d] %s", i + 1, globalErrorMessage);
+      Rf_error("[%ld] %s", (long)i + 1, globalErrorMessage);
     }
 
     SET_STRING_ELT(result, i, Rf_mkCharLen((const char*) itemChars, itemSize));
@@ -485,7 +485,7 @@ SEXP geos_c_write_xy(SEXP input) {
       codeY = GEOSGeomGetY_r(handle, geometry, &py[i]);
       if (codeX == 0 || codeY == 0) {
         // e.g., geometry is not a point
-        Rf_error("[%d] %s", i + 1, globalErrorMessage);
+        Rf_error("[%ld] %s", (long)i + 1, globalErrorMessage);
       }
     }
   }

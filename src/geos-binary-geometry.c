@@ -31,7 +31,7 @@
     geometryResult = _func(handle, geometry1, geometry2);                     \
                                                                               \
     if (geometryResult == NULL) {                                             \
-      Rf_error("[%d] %s", i + 1, globalErrorMessage);                                           \
+      Rf_error("[%ld] %s", (long)i + 1, globalErrorMessage);                                           \
     }                                                                         \
     SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometryResult));     \
   }                                                                           \
@@ -89,7 +89,7 @@ R_xlen_t size = Rf_xlength(geom1);                        \
     geometryResult = _func(handle, geometry1, geometry2, pParam[i]); \
                                                           \
     if (geometryResult == NULL) {                         \
-      Rf_error("[%d] %s", i + 1, globalErrorMessage);                       \
+      Rf_error("[%ld] %s", (long)i + 1, globalErrorMessage);                       \
     }                                                     \
                                                           \
     SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometryResult)); \
@@ -213,7 +213,7 @@ SEXP geos_c_clearance_line_between(SEXP geom1, SEXP geom2, SEXP prepare) {
 #if LIBGEOS_VERSION_COMPILE_INT >= LIBGEOS_VERSION_INT(3, 9, 1)
       const GEOSPreparedGeometry* prepared1 = geos_common_geometry_prepared(item1);
       if (prepared1 == NULL) {
-        Rf_error("[%d] %s", i + 1, globalErrorMessage); // # nocov
+        Rf_error("[%ld] %s", (long)i + 1, globalErrorMessage); // # nocov
       }
       sequenceResult = GEOSPreparedNearestPoints_r(handle, prepared1, geometry2);
 #else
@@ -223,7 +223,7 @@ SEXP geos_c_clearance_line_between(SEXP geom1, SEXP geom2, SEXP prepare) {
       sequenceResult = GEOSNearestPoints_r(handle, geometry1, geometry2);
     }
     if (sequenceResult == NULL) {
-      Rf_error("[%d] %s", i + 1, globalErrorMessage);
+      Rf_error("[%ld] %s", (long)i + 1, globalErrorMessage);
     }
 
     geometryResult = GEOSGeom_createLineString_r(handle, sequenceResult);
@@ -231,7 +231,7 @@ SEXP geos_c_clearance_line_between(SEXP geom1, SEXP geom2, SEXP prepare) {
     // don't know how to make this fire
     if (geometryResult == NULL) {
       GEOSCoordSeq_destroy_r(handle, sequenceResult); // # nocov
-      Rf_error("[%d] %s", i + 1, globalErrorMessage); // # nocov
+      Rf_error("[%ld] %s", (long)i + 1, globalErrorMessage); // # nocov
     }
 
     SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometryResult));

@@ -140,7 +140,7 @@ SEXP strtree_query_base(SEXP treeExternalPtr, SEXP geom, GEOSQueryCallback callb
     if (prepare) {
       prepared = geos_common_geometry_prepared(item);
       if (prepared == NULL) {
-        Rf_error("[%d] %s", i + 1, globalErrorMessage);
+        Rf_error("[%ld] %s", (long)i + 1, globalErrorMessage);
       }
     } else {
       prepared = NULL;
@@ -413,7 +413,7 @@ SEXP geos_strtree_nearest_base(SEXP treeExternalPtr, SEXP geom,
       );
 
       if (itemResult == NULL) {
-        Rf_error("[%d] %s", i + 1, globalErrorMessage);
+        Rf_error("[%ld] %s", (long)i + 1, globalErrorMessage);
       }
 
       pResult[i] = *itemResult;

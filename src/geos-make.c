@@ -32,7 +32,7 @@ SEXP geos_c_make_point(SEXP x, SEXP y, SEXP z) {
       // don't know how to make this fire
       // if similar to linestring, destroying seq here
       // will crash the session
-      Rf_error("[%d] %s", i + 1, globalErrorMessage); // # nocov
+      Rf_error("[%ld] %s", (long)i + 1, globalErrorMessage); // # nocov
     }
 
     SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometry));
@@ -328,7 +328,7 @@ SEXP geos_c_create_rectangle(SEXP xmin_sexp, SEXP ymin_sexp,
     );
 
     if (geometryResult == NULL) {                                             \
-      Rf_error("[%d] %s", i + 1, globalErrorMessage);                                           \
+      Rf_error("[%ld] %s", (long)i + 1, globalErrorMessage);                                           \
     }
 
     SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometryResult));
