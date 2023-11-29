@@ -1,7 +1,7 @@
 
-#include "libgeos.h"
-#include "geos-common.h"
 #include "Rinternals.h"
+#include "geos-common.h"
+#include "libgeos.h"
 
 SEXP geos_c_make_point(SEXP x, SEXP y, SEXP z) {
   R_xlen_t size = Rf_xlength(x);
@@ -32,13 +32,13 @@ SEXP geos_c_make_point(SEXP x, SEXP y, SEXP z) {
       // don't know how to make this fire
       // if similar to linestring, destroying seq here
       // will crash the session
-      Rf_error("[%ld] %s", (long)i + 1, globalErrorMessage); // # nocov
+      Rf_error("[%ld] %s", (long)i + 1, globalErrorMessage);  // # nocov
     }
 
     SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometry));
   }
 
-    UNPROTECT(1); // result
+  UNPROTECT(1);  // result
   return result;
 }
 
@@ -69,8 +69,8 @@ SEXP geos_c_make_linestring(SEXP x, SEXP y, SEXP z, SEXP featureLengths) {
     if (featureIs3D) {
       seq = GEOSCoordSeq_create_r(handle, featureLength, 3);
       if (seq == NULL) {
-        UNPROTECT(1); // # nocov
-        GEOS_ERROR("[i=%ld] ", (long)iCoord); // # nocov
+        UNPROTECT(1);                          // # nocov
+        GEOS_ERROR("[i=%ld] ", (long)iCoord);  // # nocov
       }
 
       for (int j = 0; j < featureLength; j++) {
@@ -80,8 +80,8 @@ SEXP geos_c_make_linestring(SEXP x, SEXP y, SEXP z, SEXP featureLengths) {
     } else {
       seq = GEOSCoordSeq_create_r(handle, featureLength, 2);
       if (seq == NULL) {
-        UNPROTECT(1); // # nocov
-        GEOS_ERROR("[i=%ld] ", (long)iCoord); // # nocov
+        UNPROTECT(1);                          // # nocov
+        GEOS_ERROR("[i=%ld] ", (long)iCoord);  // # nocov
       }
 
       for (int j = 0; j < featureLength; j++) {
@@ -102,7 +102,7 @@ SEXP geos_c_make_linestring(SEXP x, SEXP y, SEXP z, SEXP featureLengths) {
     SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(itemGeometry));
   }
 
-    UNPROTECT(1);
+  UNPROTECT(1);
   return result;
 }
 
@@ -154,14 +154,14 @@ SEXP geos_c_make_polygon(SEXP x, SEXP y, SEXP z, SEXP ringLengthsByFeature) {
 
       if (featureIs3D) {
         ringIsOpen = (px[iCoordStartRing] != px[iCoordEndRing]) ||
-          (py[iCoordStartRing] != py[iCoordEndRing]) ||
-          (pz[iCoordStartRing] != pz[iCoordEndRing]);
+                     (py[iCoordStartRing] != py[iCoordEndRing]) ||
+                     (pz[iCoordStartRing] != pz[iCoordEndRing]);
 
         seq = GEOSCoordSeq_create_r(handle, ringLength + ringIsOpen, 3);
         if (seq == NULL) {
-          cleanup_geoms(handle, rings, j); // # nocov
-          UNPROTECT(1); // # nocov
-          GEOS_ERROR("[i=%ld] ", (long)iCoord); // # nocov
+          cleanup_geoms(handle, rings, j);       // # nocov
+          UNPROTECT(1);                          // # nocov
+          GEOS_ERROR("[i=%ld] ", (long)iCoord);  // # nocov
         }
 
         for (int k = 0; k < ringLength; k++) {
@@ -170,18 +170,19 @@ SEXP geos_c_make_polygon(SEXP x, SEXP y, SEXP z, SEXP ringLengthsByFeature) {
         }
 
         if (ringIsOpen) {
-          GEOSCoordSeq_setXYZ_r(handle, seq, ringLength, px[iCoordStartRing], py[iCoordStartRing], pz[iCoordStartRing]);
+          GEOSCoordSeq_setXYZ_r(handle, seq, ringLength, px[iCoordStartRing],
+                                py[iCoordStartRing], pz[iCoordStartRing]);
         }
 
       } else {
         ringIsOpen = (px[iCoordStartRing] != px[iCoordEndRing]) ||
-          (py[iCoordStartRing] != py[iCoordEndRing]);
+                     (py[iCoordStartRing] != py[iCoordEndRing]);
 
         seq = GEOSCoordSeq_create_r(handle, ringLength + ringIsOpen, 2);
         if (seq == NULL) {
-          cleanup_geoms(handle, rings, j); // # nocov
-          UNPROTECT(1); // # nocov
-          GEOS_ERROR("[i=%ld] ", (long)iCoord); // # nocov
+          cleanup_geoms(handle, rings, j);       // # nocov
+          UNPROTECT(1);                          // # nocov
+          GEOS_ERROR("[i=%ld] ", (long)iCoord);  // # nocov
         }
 
         for (int k = 0; k < ringLength; k++) {
@@ -190,7 +191,8 @@ SEXP geos_c_make_polygon(SEXP x, SEXP y, SEXP z, SEXP ringLengthsByFeature) {
         }
 
         if (ringIsOpen) {
-          GEOSCoordSeq_setXY_r(handle, seq, ringLength, px[iCoordStartRing], py[iCoordStartRing]);
+          GEOSCoordSeq_setXY_r(handle, seq, ringLength, px[iCoordStartRing],
+                               py[iCoordStartRing]);
         }
       }
 
@@ -206,7 +208,8 @@ SEXP geos_c_make_polygon(SEXP x, SEXP y, SEXP z, SEXP ringLengthsByFeature) {
     }
 
     if (featureLength > 1) {
-      itemGeometry = GEOSGeom_createPolygon_r(handle, rings[0], &(rings[1]), featureLength - 1);
+      itemGeometry =
+          GEOSGeom_createPolygon_r(handle, rings[0], &(rings[1]), featureLength - 1);
     } else {
       itemGeometry = GEOSGeom_createPolygon_r(handle, rings[0], NULL, 0);
     }
@@ -215,14 +218,14 @@ SEXP geos_c_make_polygon(SEXP x, SEXP y, SEXP z, SEXP ringLengthsByFeature) {
     if (itemGeometry == NULL) {
       // pointers that are managed by a successful call to to
       // GEOSGeom_create* functions also destroy the pointed to objects on error
-      UNPROTECT(1); // # nocov
-      GEOS_ERROR("[i=%ld] ", (long)iCoord); // # nocov
+      UNPROTECT(1);                          // # nocov
+      GEOS_ERROR("[i=%ld] ", (long)iCoord);  // # nocov
     }
 
     SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(itemGeometry));
   }
 
-    UNPROTECT(1);
+  UNPROTECT(1);
   return result;
 }
 
@@ -252,23 +255,23 @@ SEXP geos_c_make_collection(SEXP geom, SEXP typeId, SEXP featureLengths) {
       item = VECTOR_ELT(geom, iGeom);
       if (item == R_NilValue) {
         cleanup_geoms(handle, geoms, j);
-                UNPROTECT(1);
+        UNPROTECT(1);
         Rf_error("[i=%ld] Can't nest a missing geometry", (long)iGeom);
       }
 
-      itemGeometry = (GEOSGeometry*) R_ExternalPtrAddr(item);
+      itemGeometry = (GEOSGeometry*)R_ExternalPtrAddr(item);
       if (itemGeometry == NULL) {
         cleanup_geoms(handle, geoms, j);
-                UNPROTECT(1);
+        UNPROTECT(1);
         Rf_error("[i=%ld] External pointer is not valid", (long)iGeom);
       }
 
       geoms[j] = GEOSGeom_clone_r(handle, itemGeometry);
       // Don't know how to make this fire
       if (geoms[j] == NULL) {
-        cleanup_geoms(handle, geoms, j);  // # nocov;
-        UNPROTECT(1); // # nocov
-        GEOS_ERROR("[i=%ld] ", (long)iGeom); // # nocov
+        cleanup_geoms(handle, geoms, j);      // # nocov;
+        UNPROTECT(1);                         // # nocov
+        GEOS_ERROR("[i=%ld] ", (long)iGeom);  // # nocov
       }
 
       iGeom++;
@@ -291,12 +294,12 @@ SEXP geos_c_make_collection(SEXP geom, SEXP typeId, SEXP featureLengths) {
     SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(collection));
   }
 
-    UNPROTECT(1);
+  UNPROTECT(1);
   return result;
 }
 
-SEXP geos_c_create_rectangle(SEXP xmin_sexp, SEXP ymin_sexp,
-                             SEXP xmax_sexp, SEXP ymax_sexp) {
+SEXP geos_c_create_rectangle(SEXP xmin_sexp, SEXP ymin_sexp, SEXP xmax_sexp,
+                             SEXP ymax_sexp) {
 #if LIBGEOS_VERSION_COMPILE_INT >= LIBGEOS_VERSION_INT(3, 11, 0)
   if (libgeos_version_int() < LIBGEOS_VERSION_INT(3, 11, 0)) {
     ERROR_OLD_LIBGEOS("GEOSGeom_createRectangle_r()", "3.11.0");
@@ -313,22 +316,17 @@ SEXP geos_c_create_rectangle(SEXP xmin_sexp, SEXP ymin_sexp,
   GEOS_INIT();
   GEOSGeometry* geometryResult;
   for (R_xlen_t i = 0; i < n; i++) {
-    if (R_IsNA(xmin[i]) || R_IsNaN(xmin[i]) ||
-        R_IsNA(ymin[i]) || R_IsNaN(ymin[i]) ||
-        R_IsNA(xmax[i]) || R_IsNaN(xmax[i]) ||
-        R_IsNA(ymax[i]) || R_IsNaN(ymax[i])) {
+    if (R_IsNA(xmin[i]) || R_IsNaN(xmin[i]) || R_IsNA(ymin[i]) || R_IsNaN(ymin[i]) ||
+        R_IsNA(xmax[i]) || R_IsNaN(xmax[i]) || R_IsNA(ymax[i]) || R_IsNaN(ymax[i])) {
       SET_VECTOR_ELT(result, i, R_NilValue);
       continue;
     }
 
-    geometryResult = GEOSGeom_createRectangle_r(
-      handle,
-      xmin[i], ymin[i],
-      xmax[i], ymax[i]
-    );
+    geometryResult =
+        GEOSGeom_createRectangle_r(handle, xmin[i], ymin[i], xmax[i], ymax[i]);
 
-    if (geometryResult == NULL) {                                             \
-      Rf_error("[%ld] %s", (long)i + 1, globalErrorMessage);                                           \
+    if (geometryResult == NULL) {
+      Rf_error("[%ld] %s", (long)i + 1, globalErrorMessage);
     }
 
     SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometryResult));
@@ -357,18 +355,18 @@ SEXP geos_c_empty(SEXP typeId) {
     }
 
     switch (pTypeId[i]) {
-    case 1:
-      geometry = GEOSGeom_createEmptyPoint_r(handle);
-      break;
-    case 2:
-      geometry = GEOSGeom_createEmptyLineString_r(handle);
-      break;
-    case 3:
-      geometry = GEOSGeom_createEmptyPolygon_r(handle);
-      break;
-    default:
-      geometry = GEOSGeom_createEmptyCollection_r(handle, pTypeId[i]);
-    break;
+      case 1:
+        geometry = GEOSGeom_createEmptyPoint_r(handle);
+        break;
+      case 2:
+        geometry = GEOSGeom_createEmptyLineString_r(handle);
+        break;
+      case 3:
+        geometry = GEOSGeom_createEmptyPolygon_r(handle);
+        break;
+      default:
+        geometry = GEOSGeom_createEmptyCollection_r(handle, pTypeId[i]);
+        break;
     }
 
     if (geometry == NULL) {
@@ -379,6 +377,6 @@ SEXP geos_c_empty(SEXP typeId) {
     SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometry));
   }
 
-    UNPROTECT(1);
+  UNPROTECT(1);
   return result;
 }

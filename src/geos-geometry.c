@@ -28,4 +28,3 @@ SEXP geos_c_geos_geometry_is_null_or_xptr(SEXP geom) {
   UNPROTECT(1);
   return result;
 }
-

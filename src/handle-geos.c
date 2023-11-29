@@ -9,13 +9,16 @@
 
 #define handle globalHandle
 
-#define HANDLE_OR_RETURN(expr)                                 \
-    result = expr;                                             \
-    if (result != WK_CONTINUE) return result
+#define HANDLE_OR_RETURN(expr) \
+  result = expr;               \
+  if (result != WK_CONTINUE) return result
 
-#define HANDLE_CONTINUE_OR_BREAK(expr)                         \
-    result = expr;                                             \
-    if (result == WK_ABORT_FEATURE) continue; else if (result == WK_ABORT) break
+#define HANDLE_CONTINUE_OR_BREAK(expr) \
+  result = expr;                       \
+  if (result == WK_ABORT_FEATURE)      \
+    continue;                          \
+  else if (result == WK_ABORT)         \
+  break
 
 int geos_wk_read_point(const GEOSGeometry* g, uint32_t part_id, wk_handler_t* handler) {
   int result;
@@ -42,17 +45,18 @@ int geos_wk_read_point(const GEOSGeometry* g, uint32_t part_id, wk_handler_t* ha
   HANDLE_OR_RETURN(handler->geometry_start(&meta, part_id, handler->handler_data));
   if (meta.size) {
     double coord[4];
-    GEOSGeomGetX_r(handle, g, coord +  0);
-    GEOSGeomGetY_r(handle, g, coord +  1);
+    GEOSGeomGetX_r(handle, g, coord + 0);
+    GEOSGeomGetY_r(handle, g, coord + 1);
     if (meta.flags & WK_FLAG_HAS_Z) {
-      GEOSGeomGetZ_r(handle, g, coord +  2);
+      GEOSGeomGetZ_r(handle, g, coord + 2);
     }
     HANDLE_OR_RETURN(handler->coord(&meta, coord, 0, handler->handler_data));
   }
   return handler->geometry_end(&meta, part_id, handler->handler_data);
 }
 
-int geos_wk_read_linestring(const GEOSGeometry* g, uint32_t part_id, wk_handler_t* handler) {
+int geos_wk_read_linestring(const GEOSGeometry* g, uint32_t part_id,
+                            wk_handler_t* handler) {
   int result;
   wk_meta_t meta;
   WK_META_RESET(meta, WK_LINESTRING);
@@ -73,7 +77,7 @@ int geos_wk_read_linestring(const GEOSGeometry* g, uint32_t part_id, wk_handler_
   } else {
     meta.size = GEOSGetNumCoordinates_r(handle, g);
   }
-  
+
   HANDLE_OR_RETURN(handler->geometry_start(&meta, part_id, handler->handler_data));
   if (meta.size && (meta.flags & WK_FLAG_HAS_Z)) {
     double coord[4];
@@ -174,7 +178,8 @@ int geos_wk_read_polygon(const GEOSGeometry* g, uint32_t part_id, wk_handler_t* 
 // definition needed by read_collection()
 int geos_wk_read_geometry(const GEOSGeometry* g, uint32_t part_id, wk_handler_t* handler);
 
-int geos_wk_read_collection(const GEOSGeometry* g, int geos_type, uint32_t part_id, wk_handler_t* handler) {
+int geos_wk_read_collection(const GEOSGeometry* g, int geos_type, uint32_t part_id,
+                            wk_handler_t* handler) {
   int result;
 
   // type integers are identical for GEOS and WK for collection types
@@ -200,20 +205,26 @@ int geos_wk_read_collection(const GEOSGeometry* g, int geos_type, uint32_t part_
   return handler->geometry_end(&meta, part_id, handler->handler_data);
 }
 
-int geos_wk_read_geometry(const GEOSGeometry* g, uint32_t part_id, wk_handler_t* handler) {
+int geos_wk_read_geometry(const GEOSGeometry* g, uint32_t part_id,
+                          wk_handler_t* handler) {
   int geos_type = GEOSGeomTypeId_r(handle, g);
   switch (geos_type) {
-    case GEOS_POINT: return geos_wk_read_point(g, part_id, handler);
+    case GEOS_POINT:
+      return geos_wk_read_point(g, part_id, handler);
     case GEOS_LINESTRING:
-    case GEOS_LINEARRING: return geos_wk_read_linestring(g, part_id, handler);
-    case GEOS_POLYGON: return geos_wk_read_polygon(g, part_id, handler);
+    case GEOS_LINEARRING:
+      return geos_wk_read_linestring(g, part_id, handler);
+    case GEOS_POLYGON:
+      return geos_wk_read_polygon(g, part_id, handler);
     case GEOS_MULTIPOINT:
     case GEOS_MULTILINESTRING:
     case GEOS_MULTIPOLYGON:
-    case GEOS_GEOMETRYCOLLECTION: return geos_wk_read_collection(g, geos_type, part_id, handler);
-    default: 
-      return handler->error("Unrecognized geometry type", handler->handler_data); // # nocov
-    }
+    case GEOS_GEOMETRYCOLLECTION:
+      return geos_wk_read_collection(g, geos_type, part_id, handler);
+    default:
+      return handler->error("Unrecognized geometry type",
+                            handler->handler_data);  // # nocov
+  }
 }
 
 SEXP geos_wk_read_geos_geometry(SEXP geom, wk_handler_t* handler) {
@@ -230,19 +241,22 @@ SEXP geos_wk_read_geos_geometry(SEXP geom, wk_handler_t* handler) {
     int result;
     for (R_xlen_t i = 0; i < size; i++) {
       if (((i + 1) % 1000) == 0) R_CheckUserInterrupt();
-      
-      HANDLE_CONTINUE_OR_BREAK(handler->feature_start(&vector_meta, i, handler->handler_data));
+
+      HANDLE_CONTINUE_OR_BREAK(
+          handler->feature_start(&vector_meta, i, handler->handler_data));
       item = VECTOR_ELT(geom, i);
       if (item == R_NilValue) {
         HANDLE_CONTINUE_OR_BREAK(handler->null_feature(handler->handler_data));
       } else {
-        itemGeometry = (GEOSGeometry*) R_ExternalPtrAddr(item);
-        if ((itemGeometry == NULL) && 
-            (handler->error("GEOSGeometry* is NULL", handler->handler_data) != WK_ABORT)) {
-            continue;
+        itemGeometry = (GEOSGeometry*)R_ExternalPtrAddr(item);
+        if ((itemGeometry == NULL) &&
+            (handler->error("GEOSGeometry* is NULL", handler->handler_data) !=
+             WK_ABORT)) {
+          continue;
         }
 
-        HANDLE_CONTINUE_OR_BREAK(geos_wk_read_geometry(itemGeometry, WK_PART_ID_NONE, handler));
+        HANDLE_CONTINUE_OR_BREAK(
+            geos_wk_read_geometry(itemGeometry, WK_PART_ID_NONE, handler));
       }
 
       if (handler->feature_end(&vector_meta, i, handler->handler_data) != WK_CONTINUE) {
