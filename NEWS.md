@@ -1,4 +1,4 @@
-# geos (development version)
+# geos 0.2.4
 
 * Fix format string checks as shown on the package check page (#93).
 

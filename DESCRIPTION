@@ -1,6 +1,6 @@
 Package: geos
 Title: Open Source Geometry Engine ('GEOS') R API
-Version: 0.2.3.9000
+Version: 0.2.4
 Authors@R: 
     c(
       person(given = "Dewey",
