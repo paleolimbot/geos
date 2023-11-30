@@ -55,4 +55,4 @@ class Handler {
   virtual ~Handler() {}
 };
 
-}
+}  // namespace util

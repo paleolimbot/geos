@@ -1,5 +1,5 @@
 
-This release fixes new warnings from the M1Mac check.
+This release fixes new warnings as shown on the package check page.
 
 ## R CMD check results
 

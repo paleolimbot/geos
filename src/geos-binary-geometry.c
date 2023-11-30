@@ -1,106 +1,93 @@
 
-#include "libgeos.h"
-#include "geos-common.h"
 #include "Rinternals.h"
+#include "geos-common.h"
+#include "libgeos.h"
 
-#define GEOS_BINARY(_func)                                                  \
-  R_xlen_t size = Rf_xlength(geom1);                                          \
-  SEXP result = PROTECT(Rf_allocVector(VECSXP, size));                        \
-                                                                              \
-  GEOS_INIT();                                                                \
-                                                                              \
-  SEXP item1;                                                                 \
-  SEXP item2;                                                                 \
-  GEOSGeometry* geometry1;                                                    \
-  GEOSGeometry* geometry2;                                                    \
-  GEOSGeometry* geometryResult;                                               \
-  for (R_xlen_t i = 0; i < size; i++) {                                       \
-    item1 = VECTOR_ELT(geom1, i);                                             \
-    item2 = VECTOR_ELT(geom2, i);                                             \
-                                                                              \
-    if (item1 == R_NilValue || item2 == R_NilValue) {                         \
-      SET_VECTOR_ELT(result, i, R_NilValue);                                  \
-      continue;                                                               \
-    }                                                                         \
-                                                                              \
-    geometry1 = (GEOSGeometry*) R_ExternalPtrAddr(item1);                     \
-    GEOS_CHECK_GEOMETRY(geometry1, i);                                        \
-    geometry2 = (GEOSGeometry*) R_ExternalPtrAddr(item2);                     \
-    GEOS_CHECK_GEOMETRY(geometry2, i);                                        \
-                                                                              \
-    geometryResult = _func(handle, geometry1, geometry2);                     \
-                                                                              \
-    if (geometryResult == NULL) {                                             \
-      Rf_error("[%d] %s", i + 1, globalErrorMessage);                                           \
-    }                                                                         \
-    SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometryResult));     \
-  }                                                                           \
-                                                                              \
-    UNPROTECT(1);                                                               \
-  return result;
-
-
-SEXP geos_c_intersection(SEXP geom1, SEXP geom2) {
-  GEOS_BINARY(GEOSIntersection_r);
-}
-
-SEXP geos_c_difference(SEXP geom1, SEXP geom2) {
-  GEOS_BINARY(GEOSDifference_r);
-}
-
-SEXP geos_c_sym_difference(SEXP geom1, SEXP geom2) {
-  GEOS_BINARY(GEOSSymDifference_r);
-}
-
-SEXP geos_c_union(SEXP geom1, SEXP geom2) {
-  GEOS_BINARY(GEOSUnion_r);
-}
-
-SEXP geos_c_shared_paths(SEXP geom1, SEXP geom2) {
-  GEOS_BINARY(GEOSSharedPaths_r);
-}
-
-#define GEOS_BINARY_REAL(_func)                           \
-R_xlen_t size = Rf_xlength(geom1);                        \
-  SEXP result = PROTECT(Rf_allocVector(VECSXP, size));    \
-  double* pParam = REAL(param);                   \
-                                                          \
-  GEOS_INIT();                                            \
-                                                          \
-  SEXP item1;                                             \
-  SEXP item2;                                             \
-  GEOSGeometry* geometry1;                                \
-  GEOSGeometry* geometry2;                                \
-  GEOSGeometry* geometryResult;                           \
-  for (R_xlen_t i = 0; i < size; i++) {                   \
-    item1 = VECTOR_ELT(geom1, i);                         \
-    item2 = VECTOR_ELT(geom2, i);                         \
-                                                          \
-    if (item1 == R_NilValue || item2 == R_NilValue || ISNA(pParam[i])) {  \
-      SET_VECTOR_ELT(result, i, R_NilValue);              \
-      continue;                                           \
-    }                                                     \
-                                                          \
-    geometry1 = (GEOSGeometry*) R_ExternalPtrAddr(item1); \
-    GEOS_CHECK_GEOMETRY(geometry1, i);                    \
-    geometry2 = (GEOSGeometry*) R_ExternalPtrAddr(item2); \
-    GEOS_CHECK_GEOMETRY(geometry2, i);                    \
-                                                          \
-    geometryResult = _func(handle, geometry1, geometry2, pParam[i]); \
-                                                          \
-    if (geometryResult == NULL) {                         \
-      Rf_error("[%d] %s", i + 1, globalErrorMessage);                       \
-    }                                                     \
-                                                          \
+#define GEOS_BINARY(_func)                                                \
+  R_xlen_t size = Rf_xlength(geom1);                                      \
+  SEXP result = PROTECT(Rf_allocVector(VECSXP, size));                    \
+                                                                          \
+  GEOS_INIT();                                                            \
+                                                                          \
+  SEXP item1;                                                             \
+  SEXP item2;                                                             \
+  GEOSGeometry* geometry1;                                                \
+  GEOSGeometry* geometry2;                                                \
+  GEOSGeometry* geometryResult;                                           \
+  for (R_xlen_t i = 0; i < size; i++) {                                   \
+    item1 = VECTOR_ELT(geom1, i);                                         \
+    item2 = VECTOR_ELT(geom2, i);                                         \
+                                                                          \
+    if (item1 == R_NilValue || item2 == R_NilValue) {                     \
+      SET_VECTOR_ELT(result, i, R_NilValue);                              \
+      continue;                                                           \
+    }                                                                     \
+                                                                          \
+    geometry1 = (GEOSGeometry*)R_ExternalPtrAddr(item1);                  \
+    GEOS_CHECK_GEOMETRY(geometry1, i);                                    \
+    geometry2 = (GEOSGeometry*)R_ExternalPtrAddr(item2);                  \
+    GEOS_CHECK_GEOMETRY(geometry2, i);                                    \
+                                                                          \
+    geometryResult = _func(handle, geometry1, geometry2);                 \
+                                                                          \
+    if (geometryResult == NULL) {                                         \
+      Rf_error("[%ld] %s", (long)i + 1, globalErrorMessage);              \
+    }                                                                     \
     SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometryResult)); \
-  }                                                       \
-                                                          \
-    UNPROTECT(1);                                           \
+  }                                                                       \
+                                                                          \
+  UNPROTECT(1);                                                           \
   return result;
 
-SEXP geos_c_snap(SEXP geom1, SEXP geom2, SEXP param) {
-  GEOS_BINARY_REAL(GEOSSnap_r);
-}
+SEXP geos_c_intersection(SEXP geom1, SEXP geom2) { GEOS_BINARY(GEOSIntersection_r); }
+
+SEXP geos_c_difference(SEXP geom1, SEXP geom2) { GEOS_BINARY(GEOSDifference_r); }
+
+SEXP geos_c_sym_difference(SEXP geom1, SEXP geom2) { GEOS_BINARY(GEOSSymDifference_r); }
+
+SEXP geos_c_union(SEXP geom1, SEXP geom2) { GEOS_BINARY(GEOSUnion_r); }
+
+SEXP geos_c_shared_paths(SEXP geom1, SEXP geom2) { GEOS_BINARY(GEOSSharedPaths_r); }
+
+#define GEOS_BINARY_REAL(_func)                                           \
+  R_xlen_t size = Rf_xlength(geom1);                                      \
+  SEXP result = PROTECT(Rf_allocVector(VECSXP, size));                    \
+  double* pParam = REAL(param);                                           \
+                                                                          \
+  GEOS_INIT();                                                            \
+                                                                          \
+  SEXP item1;                                                             \
+  SEXP item2;                                                             \
+  GEOSGeometry* geometry1;                                                \
+  GEOSGeometry* geometry2;                                                \
+  GEOSGeometry* geometryResult;                                           \
+  for (R_xlen_t i = 0; i < size; i++) {                                   \
+    item1 = VECTOR_ELT(geom1, i);                                         \
+    item2 = VECTOR_ELT(geom2, i);                                         \
+                                                                          \
+    if (item1 == R_NilValue || item2 == R_NilValue || ISNA(pParam[i])) {  \
+      SET_VECTOR_ELT(result, i, R_NilValue);                              \
+      continue;                                                           \
+    }                                                                     \
+                                                                          \
+    geometry1 = (GEOSGeometry*)R_ExternalPtrAddr(item1);                  \
+    GEOS_CHECK_GEOMETRY(geometry1, i);                                    \
+    geometry2 = (GEOSGeometry*)R_ExternalPtrAddr(item2);                  \
+    GEOS_CHECK_GEOMETRY(geometry2, i);                                    \
+                                                                          \
+    geometryResult = _func(handle, geometry1, geometry2, pParam[i]);      \
+                                                                          \
+    if (geometryResult == NULL) {                                         \
+      Rf_error("[%ld] %s", (long)i + 1, globalErrorMessage);              \
+    }                                                                     \
+                                                                          \
+    SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometryResult)); \
+  }                                                                       \
+                                                                          \
+  UNPROTECT(1);                                                           \
+  return result;
+
+SEXP geos_c_snap(SEXP geom1, SEXP geom2, SEXP param) { GEOS_BINARY_REAL(GEOSSnap_r); }
 
 // *Prec_r() binary operators were added in libgeos 3.9.1-1
 SEXP geos_c_intersection_prec(SEXP geom1, SEXP geom2, SEXP param) {
@@ -163,7 +150,6 @@ SEXP geos_c_largest_empty_circle(SEXP geom1, SEXP geom2, SEXP param) {
 #endif
 }
 
-
 SEXP geos_c_clearance_line_between(SEXP geom1, SEXP geom2, SEXP prepare) {
   int lglPrepare = LOGICAL(prepare)[0];
   if (lglPrepare) {
@@ -197,15 +183,16 @@ SEXP geos_c_clearance_line_between(SEXP geom1, SEXP geom2, SEXP prepare) {
       continue;
     }
 
-    geometry1 = (GEOSGeometry*) R_ExternalPtrAddr(item1);
+    geometry1 = (GEOSGeometry*)R_ExternalPtrAddr(item1);
     GEOS_CHECK_GEOMETRY(geometry1, i);
-    geometry2 = (GEOSGeometry*) R_ExternalPtrAddr(item2);
+    geometry2 = (GEOSGeometry*)R_ExternalPtrAddr(item2);
     GEOS_CHECK_GEOMETRY(geometry2, i);
 
     // if either is EMPTY we return EMPTY here, because an unknown
     // error occurs otherwise
     if (GEOSisEmpty_r(handle, geometry1) || GEOSisEmpty_r(handle, geometry2)) {
-      SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(GEOSGeom_createEmptyLineString_r(handle)));
+      SET_VECTOR_ELT(result, i,
+                     geos_common_geometry_xptr(GEOSGeom_createEmptyLineString_r(handle)));
       continue;
     }
 
@@ -213,7 +200,7 @@ SEXP geos_c_clearance_line_between(SEXP geom1, SEXP geom2, SEXP prepare) {
 #if LIBGEOS_VERSION_COMPILE_INT >= LIBGEOS_VERSION_INT(3, 9, 1)
       const GEOSPreparedGeometry* prepared1 = geos_common_geometry_prepared(item1);
       if (prepared1 == NULL) {
-        Rf_error("[%d] %s", i + 1, globalErrorMessage); // # nocov
+        Rf_error("[%ld] %s", (long)i + 1, globalErrorMessage);  // # nocov
       }
       sequenceResult = GEOSPreparedNearestPoints_r(handle, prepared1, geometry2);
 #else
@@ -223,15 +210,15 @@ SEXP geos_c_clearance_line_between(SEXP geom1, SEXP geom2, SEXP prepare) {
       sequenceResult = GEOSNearestPoints_r(handle, geometry1, geometry2);
     }
     if (sequenceResult == NULL) {
-      Rf_error("[%d] %s", i + 1, globalErrorMessage);
+      Rf_error("[%ld] %s", (long)i + 1, globalErrorMessage);
     }
 
     geometryResult = GEOSGeom_createLineString_r(handle, sequenceResult);
 
     // don't know how to make this fire
     if (geometryResult == NULL) {
-      GEOSCoordSeq_destroy_r(handle, sequenceResult); // # nocov
-      Rf_error("[%d] %s", i + 1, globalErrorMessage); // # nocov
+      GEOSCoordSeq_destroy_r(handle, sequenceResult);         // # nocov
+      Rf_error("[%ld] %s", (long)i + 1, globalErrorMessage);  // # nocov
     }
 
     SET_VECTOR_ELT(result, i, geos_common_geometry_xptr(geometryResult));
