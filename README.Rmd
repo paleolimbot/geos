@@ -17,6 +17,7 @@ knitr::opts_chunk$set(
 # geos
 
 <!-- badges: start -->
+[![CRAN](http://www.r-pkg.org/badges/version/geos)](https://cran.r-project.org/package=geos)
 [![Codecov test coverage](https://codecov.io/gh/paleolimbot/geos/branch/master/graph/badge.svg)](https://app.codecov.io/gh/paleolimbot/geos?branch=master)
 [![R-CMD-check](https://github.com/paleolimbot/geos/workflows/R-CMD-check/badge.svg)](https://github.com/paleolimbot/geos/actions)
 <!-- badges: end -->
