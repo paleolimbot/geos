@@ -1,111 +1,39 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://paleolimbot.github.io/geos/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://paleolimbot.github.io/geos/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://paleolimbot.github.io/geos/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://paleolimbot.github.io/geos/index.html</loc>
-  </url>
-  <url>
-    <loc>https://paleolimbot.github.io/geos/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://paleolimbot.github.io/geos/reference/as_geos_geometry.html</loc>
-  </url>
-  <url>
-    <loc>https://paleolimbot.github.io/geos/reference/geos-package.html</loc>
-  </url>
-  <url>
-    <loc>https://paleolimbot.github.io/geos/reference/geos_area.html</loc>
-  </url>
-  <url>
-    <loc>https://paleolimbot.github.io/geos/reference/geos_basic_strtree.html</loc>
-  </url>
-  <url>
-    <loc>https://paleolimbot.github.io/geos/reference/geos_buffer.html</loc>
-  </url>
-  <url>
-    <loc>https://paleolimbot.github.io/geos/reference/geos_centroid.html</loc>
-  </url>
-  <url>
-    <loc>https://paleolimbot.github.io/geos/reference/geos_create_rectangle.html</loc>
-  </url>
-  <url>
-    <loc>https://paleolimbot.github.io/geos/reference/geos_delaunay_triangles.html</loc>
-  </url>
-  <url>
-    <loc>https://paleolimbot.github.io/geos/reference/geos_disjoint.html</loc>
-  </url>
-  <url>
-    <loc>https://paleolimbot.github.io/geos/reference/geos_disjoint_matrix.html</loc>
-  </url>
-  <url>
-    <loc>https://paleolimbot.github.io/geos/reference/geos_distance.html</loc>
-  </url>
-  <url>
-    <loc>https://paleolimbot.github.io/geos/reference/geos_empty.html</loc>
-  </url>
-  <url>
-    <loc>https://paleolimbot.github.io/geos/reference/geos_geometry_n.html</loc>
-  </url>
-  <url>
-    <loc>https://paleolimbot.github.io/geos/reference/geos_inner_join.html</loc>
-  </url>
-  <url>
-    <loc>https://paleolimbot.github.io/geos/reference/geos_intersection.html</loc>
-  </url>
-  <url>
-    <loc>https://paleolimbot.github.io/geos/reference/geos_is_valid.html</loc>
-  </url>
-  <url>
-    <loc>https://paleolimbot.github.io/geos/reference/geos_make_point.html</loc>
-  </url>
-  <url>
-    <loc>https://paleolimbot.github.io/geos/reference/geos_minimum_bounding_circle.html</loc>
-  </url>
-  <url>
-    <loc>https://paleolimbot.github.io/geos/reference/geos_nearest.html</loc>
-  </url>
-  <url>
-    <loc>https://paleolimbot.github.io/geos/reference/geos_polygonize.html</loc>
-  </url>
-  <url>
-    <loc>https://paleolimbot.github.io/geos/reference/geos_project.html</loc>
-  </url>
-  <url>
-    <loc>https://paleolimbot.github.io/geos/reference/geos_read_wkt.html</loc>
-  </url>
-  <url>
-    <loc>https://paleolimbot.github.io/geos/reference/geos_relate.html</loc>
-  </url>
-  <url>
-    <loc>https://paleolimbot.github.io/geos/reference/geos_segment_intersection.html</loc>
-  </url>
-  <url>
-    <loc>https://paleolimbot.github.io/geos/reference/geos_strtree.html</loc>
-  </url>
-  <url>
-    <loc>https://paleolimbot.github.io/geos/reference/geos_unnest.html</loc>
-  </url>
-  <url>
-    <loc>https://paleolimbot.github.io/geos/reference/geos_version.html</loc>
-  </url>
-  <url>
-    <loc>https://paleolimbot.github.io/geos/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://paleolimbot.github.io/geos/reference/plot.geos_geometry.html</loc>
-  </url>
-  <url>
-    <loc>https://paleolimbot.github.io/geos/reference/vctrs-methods.html</loc>
-  </url>
-  <url>
-    <loc>https://paleolimbot.github.io/geos/reference/wk-methods.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://paleolimbot.github.io/geos/LICENSE-text.html</loc></url>
+<url><loc>https://paleolimbot.github.io/geos/LICENSE.html</loc></url>
+<url><loc>https://paleolimbot.github.io/geos/authors.html</loc></url>
+<url><loc>https://paleolimbot.github.io/geos/index.html</loc></url>
+<url><loc>https://paleolimbot.github.io/geos/news/index.html</loc></url>
+<url><loc>https://paleolimbot.github.io/geos/reference/as_geos_geometry.html</loc></url>
+<url><loc>https://paleolimbot.github.io/geos/reference/geos-package.html</loc></url>
+<url><loc>https://paleolimbot.github.io/geos/reference/geos_area.html</loc></url>
+<url><loc>https://paleolimbot.github.io/geos/reference/geos_basic_strtree.html</loc></url>
+<url><loc>https://paleolimbot.github.io/geos/reference/geos_buffer.html</loc></url>
+<url><loc>https://paleolimbot.github.io/geos/reference/geos_centroid.html</loc></url>
+<url><loc>https://paleolimbot.github.io/geos/reference/geos_create_rectangle.html</loc></url>
+<url><loc>https://paleolimbot.github.io/geos/reference/geos_delaunay_triangles.html</loc></url>
+<url><loc>https://paleolimbot.github.io/geos/reference/geos_disjoint.html</loc></url>
+<url><loc>https://paleolimbot.github.io/geos/reference/geos_disjoint_matrix.html</loc></url>
+<url><loc>https://paleolimbot.github.io/geos/reference/geos_distance.html</loc></url>
+<url><loc>https://paleolimbot.github.io/geos/reference/geos_empty.html</loc></url>
+<url><loc>https://paleolimbot.github.io/geos/reference/geos_geometry_n.html</loc></url>
+<url><loc>https://paleolimbot.github.io/geos/reference/geos_inner_join.html</loc></url>
+<url><loc>https://paleolimbot.github.io/geos/reference/geos_intersection.html</loc></url>
+<url><loc>https://paleolimbot.github.io/geos/reference/geos_is_valid.html</loc></url>
+<url><loc>https://paleolimbot.github.io/geos/reference/geos_make_point.html</loc></url>
+<url><loc>https://paleolimbot.github.io/geos/reference/geos_minimum_bounding_circle.html</loc></url>
+<url><loc>https://paleolimbot.github.io/geos/reference/geos_nearest.html</loc></url>
+<url><loc>https://paleolimbot.github.io/geos/reference/geos_polygonize.html</loc></url>
+<url><loc>https://paleolimbot.github.io/geos/reference/geos_project.html</loc></url>
+<url><loc>https://paleolimbot.github.io/geos/reference/geos_read_wkt.html</loc></url>
+<url><loc>https://paleolimbot.github.io/geos/reference/geos_relate.html</loc></url>
+<url><loc>https://paleolimbot.github.io/geos/reference/geos_segment_intersection.html</loc></url>
+<url><loc>https://paleolimbot.github.io/geos/reference/geos_strtree.html</loc></url>
+<url><loc>https://paleolimbot.github.io/geos/reference/geos_unnest.html</loc></url>
+<url><loc>https://paleolimbot.github.io/geos/reference/geos_version.html</loc></url>
+<url><loc>https://paleolimbot.github.io/geos/reference/index.html</loc></url>
+<url><loc>https://paleolimbot.github.io/geos/reference/plot.geos_geometry.html</loc></url>
+<url><loc>https://paleolimbot.github.io/geos/reference/vctrs-methods.html</loc></url>
+<url><loc>https://paleolimbot.github.io/geos/reference/wk-methods.html</loc></url>
 </urlset>
+
