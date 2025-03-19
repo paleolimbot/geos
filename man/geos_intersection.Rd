@@ -67,6 +67,8 @@ MULTILINESTRINGS: the first containing paths in the same direction,
 the second containing common paths in the opposite direction.
 \item \code{\link[=geos_snap]{geos_snap()}} snaps the vertices of \code{x} within \code{tolerance} of \code{y}
 to \code{y}.
+\item \code{\link[=geos_clearance_line_between]{geos_clearance_line_between()}} calculate the clearance (shortest distance) between
+\code{x} and \code{y}, result is a LINESTRING that touches each geometry.
 }
 }
 \examples{
@@ -83,4 +85,9 @@ geos_snap(poly1, line, tolerance = 2)
 
 geos_shared_paths("LINESTRING (0 0, 1 1, 2 2)", "LINESTRING (3 3, 2 2, 1 1)")
 
+## generate a line that connects two geometries at their nearest place (not necessarily a vertex of either)
+a <- as_geos_geometry("LINESTRING (0.5 2, 0.5 3)")
+b <- as_geos_geometry("POLYGON ((0 1, 0.5 0, 1 1, 0 1))")
+plot(c(a, b), col = c("grey", "firebrick"), lwd = 10)
+plot(geos_clearance_line_between(a, b), add = TRUE)
 }
