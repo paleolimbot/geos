@@ -65,9 +65,16 @@ plot.geos_geometry <- function(x, ..., asp = 1, bbox = NULL, xlab = "", ylab = "
     x_plot <- x_plot[x_touching]
     dots_vector <- lapply(dots_vector, vctrs::vec_slice, x_touching)
   }
-
+  
+  x_valid <- geos_is_valid(x_plot)
   if (simplify > 0) {
-    x_plot <- geos_simplify(x_plot, resolution_usr * simplify)
+    # Use topology-preserving simplification for invalid geometries
+    if (!all(x_valid)) {
+      x_plot <- geos_simplify_preserve_topology(x_plot, resolution_usr * simplify)
+    } else {
+      # Use faster regular simplification for valid geometries
+      x_plot <- geos_simplify(x_plot, resolution_usr * simplify)
+    }
   }
 
   if (!ignore_bbox && crop) {
