@@ -1,4 +1,3 @@
-
 # nocov start
 .onLoad <- function(...) {
   # Load libgeos namespace for access to C callables
@@ -15,6 +14,17 @@
   s3_register("vctrs::vec_ptype_abbr", "geos_geometry")
   s3_register("vctrs::vec_cast", "geos_geometry")
   s3_register("vctrs::vec_ptype2", "geos_geometry")
+
+  # Register S4 methods for terra
+  if (requireNamespace("terra", quietly = TRUE)) {
+    register_terra_methods()
+  }
+  setHook(
+    packageEvent("terra", "onLoad"),
+    function(...) {
+      try(register_terra_methods(), silent = TRUE)
+    }
+  )
 }
 
 s3_register <- function(generic, class, method = NULL) {
@@ -74,4 +84,33 @@ s3_register <- function(generic, class, method = NULL) {
 
   invisible()
 }
+
+register_terra_methods <- function() {
+  # Only proceed if terra is available and loaded
+  if (!requireNamespace("terra", quietly = TRUE)) {
+    return(invisible(FALSE))
+  }
+
+  # Use tryCatch to safely register the method
+  tryCatch(
+    {
+      # Get the vect generic from terra namespace
+      terra_ns <- asNamespace("terra")
+      if (exists("vect", envir = terra_ns, inherits = FALSE)) {
+        methods::setMethod(
+          f = terra::vect,
+          signature = methods::signature(x = "geos_geometry"),
+          definition = vect_geos_geometry
+        )
+      }
+    },
+    error = function(e) {
+      # Silently fail if method registration doesn't work
+      invisible(FALSE)
+    }
+  )
+
+  invisible(TRUE)
+}
+
 # nocov end

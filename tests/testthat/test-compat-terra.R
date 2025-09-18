@@ -54,3 +54,17 @@ test_that("as_geos_geometry from terra behaves identical to st_as_sf from sf", {
   polygon_geos <- as_geos_geometry(polygon)
   expect_identical(sf::st_as_sf(polygon_geos), polygon_sf)
 })
+
+test_that("conversion to terra works", {
+  skip_if_not_installed("terra")
+
+  pv <- terra::vect(
+    "POLYGON ((0 -5, 10 0, 10 -10, 0 -5))",
+    crs = "epsg:4326"
+  )
+  pvg <- as_geos_geometry(pv)
+  pvgv <- terra::vect(pvg)
+
+  expect_identical(geos_write_wkt(pvg), terra::geom(pv, wkt = TRUE))
+  expect_identical(terra::crs(pv), wk::wk_crs(pvg)$wkt)
+})
