@@ -19,7 +19,7 @@ jobs:
       matrix:
         config:
           - {os: macOS-latest,   r: 'release'}
-          - {os: windows-latest, r: '3.6.3'}
+          - {os: windows-latest, r: '3.6.3', rtools-version: '4.3'}
           - {os: windows-latest, r: 'release'}
           - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
           - {os: ubuntu-latest,   r: 'release'}
@@ -28,6 +28,7 @@ jobs:
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
+      PKG_CXXFLAGS: ${{ matrix.config.os == 'windows-latest' && matrix.config.r == '3.6.3' && '-std=gnu++17' || '' }}
 
     steps:
       - uses: actions/checkout@v2
@@ -39,6 +40,21 @@ jobs:
           r-version: ${{ matrix.config.r }}
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
+          rtools-version: ${{ matrix.config.rtools-version }}
+
+      - name: Configure C++17 for Windows R 3.6
+        if: matrix.config.os == 'windows-latest' && matrix.config.r == '3.6.3'
+        run: |
+          mkdir -p ~/.R
+          echo "CXX17 = g++ -std=gnu++17 -fPIC" > ~/.R/Makevars
+          echo "CXX17 = g++ -std=gnu++17 -fPIC" > ~/.R/Makevars.win
+        shell: bash
+
+      - name: Install terra separately for Windows R 3.6
+        if: matrix.config.os == 'windows-latest' && matrix.config.r == '3.6.3'
+        run: |
+          Rscript -e "if (!require('terra', quietly = TRUE)) install.packages('terra', repos = 'https://cloud.r-project.org/')"
+        shell: bash
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
