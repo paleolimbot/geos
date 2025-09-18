@@ -6,6 +6,11 @@
   # Initialize geos C globals
   .Call(geos_c_init)
 
+  # Register geos_geometry as old class for S4 dispatch
+  if (!methods::isClass("geos_geometry")) {
+    methods::setOldClass("geos_geometry")
+  }
+
   # Register S3 methods for suggests
   s3_register("sf::st_as_sfc", "geos_geometry")
   s3_register("sf::st_as_sf", "geos_geometry")
@@ -91,18 +96,13 @@ register_terra_methods <- function() {
     return(invisible(FALSE))
   }
 
-  # Use tryCatch to safely register the method
   tryCatch(
     {
-      # Get the vect generic from terra namespace
-      terra_ns <- asNamespace("terra")
-      if (exists("vect", envir = terra_ns, inherits = FALSE)) {
-        methods::setMethod(
-          f = terra::vect,
-          signature = methods::signature(x = "geos_geometry"),
-          definition = vect_geos_geometry
-        )
-      }
+      methods::setMethod(
+        f = terra::vect,
+        signature = methods::signature(x = "geos_geometry"),
+        definition = vect_geos_geometry
+      )
     },
     error = function(e) {
       # Silently fail if method registration doesn't work

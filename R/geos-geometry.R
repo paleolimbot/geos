@@ -57,8 +57,10 @@ as_geos_geometry.WKB <- function(x, ..., crs = NULL) {
 #' @rdname as_geos_geometry
 #' @export
 as_geos_geometry.SpatVector <- function(x, ...) {
-  terra::geom(x, wkt = TRUE) |>
-    geos::as_geos_geometry(crs = get_terra_crs(x))
+  geos::as_geos_geometry(
+    terra::geom(x, wkt = TRUE),
+    crs = get_terra_crs(x)
+  )
 }
 
 #' @rdname as_geos_geometry
@@ -219,11 +221,10 @@ print.geos_geometry <- function(x, ...) {
 # lifted from vctrs::obj_leaf()
 #' @export
 str.geos_geometry <- function(
-  object,
-  ...,
-  indent.str = "",
-  width = getOption("width")
-) {
+    object,
+    ...,
+    indent.str = "",
+    width = getOption("width")) {
   if (length(object) == 0) {
     cat(paste0(" ", class(object)[1], "[0]\n"))
     return(invisible(object))
