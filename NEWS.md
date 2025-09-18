@@ -1,5 +1,7 @@
 # geos (development version)
 
+* Added support of `SpatVector` objects from `terra` package (#92).
+
 # geos 0.2.4
 
 * Fix format string checks as shown on the package check page (#93).
