@@ -1,4 +1,3 @@
-
 #' Create GEOS Geometry Vectors
 #'
 #' @param x An object to be coerced to a geometry vector
@@ -53,6 +52,13 @@ as_geos_geometry.WKB <- function(x, ..., crs = NULL) {
   geom <- wk_handle(wk::new_wk_wkb(x, crs = NULL), geos_geometry_writer())
   attr(geom, "crs") <- crs
   geom
+}
+
+#' @rdname as_geos_geometry
+#' @export
+as_geos_geometry.SpatVector <- function(x, ...) {
+  terra::geom(x, wkt = TRUE) |>
+    geos::as_geos_geometry(crs = get_terra_crs(x))
 }
 
 #' @rdname as_geos_geometry
@@ -114,16 +120,27 @@ is.na.geos_geometry <- function(x) {
 `c.geos_geometry` <- function(...) {
   # make sure all items inherit the same top-level class
   dots <- list(...)
-  inherits_first <- vapply(dots, inherits, "geos_geometry", FUN.VALUE = logical(1))
+  inherits_first <- vapply(
+    dots,
+    inherits,
+    "geos_geometry",
+    FUN.VALUE = logical(1)
+  )
   if (!all(inherits_first)) {
-    stop(sprintf("All items in c(...) must inherit from 'geos_geometry'"), call. = FALSE)
+    stop(
+      sprintf("All items in c(...) must inherit from 'geos_geometry'"),
+      call. = FALSE
+    )
   }
 
   # check CRS compatibility
   crs_reduce <- function(x, y) new_geos_geometry(crs = wk_crs_output(x, y))
   crs <- Reduce(crs_reduce, dots)
 
-  geometry <- new_geos_geometry(NextMethod(), crs = attr(dots[[1]], "crs", exact = TRUE))
+  geometry <- new_geos_geometry(
+    NextMethod(),
+    crs = attr(dots[[1]], "crs", exact = TRUE)
+  )
   validate_geos_geometry(geometry)
   geometry
 }
@@ -201,7 +218,12 @@ print.geos_geometry <- function(x, ...) {
 
 # lifted from vctrs::obj_leaf()
 #' @export
-str.geos_geometry <- function(object, ..., indent.str = "", width = getOption("width")) {
+str.geos_geometry <- function(
+  object,
+  ...,
+  indent.str = "",
+  width = getOption("width")
+) {
   if (length(object) == 0) {
     cat(paste0(" ", class(object)[1], "[0]\n"))
     return(invisible(object))
@@ -223,4 +245,16 @@ str.geos_geometry <- function(object, ..., indent.str = "", width = getOption("w
     )
   )
   invisible(object)
+}
+
+#' Helper function for CRS extraction from SpatVector objects
+#' @noRd
+#' @keywords internal
+get_terra_crs <- function(x) {
+  crs <- list(
+    input = terra::crs(x, describe = TRUE)$name,
+    wkt = terra::crs(x)
+  )
+  attr(crs, "class") <- "crs"
+  crs
 }
