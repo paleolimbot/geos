@@ -46,13 +46,15 @@ test_that("conversion from terra propagates CRS", {
 test_that("as_geos_geometry from terra behaves identical to st_as_sf from sf", {
   skip_if_not_installed("sf")
   skip_if_not_installed("terra")
+
   polygon <- terra::vect(
     "POLYGON ((0 -5, 10 0, 10 -10, 0 -5))",
     crs = "epsg:4326"
   )
   polygon_sf <- sf::st_as_sf(polygon)
-  polygon_geos <- as_geos_geometry(polygon)
-  expect_identical(sf::st_as_sf(polygon_geos), polygon_sf)
+  polygon_geos <- sf::st_as_sf(as_geos_geometry(polygon))
+
+  expect_identical(polygon_geos, polygon_sf)
 })
 
 test_that("conversion to terra works", {
@@ -62,9 +64,23 @@ test_that("conversion to terra works", {
     "POLYGON ((0 -5, 10 0, 10 -10, 0 -5))",
     crs = "epsg:4326"
   )
-  pvg <- as_geos_geometry(pv)
-  pvgv <- terra::vect(pvg)
+  pvgv <- terra::vect(as_geos_geometry(pv))
 
-  expect_identical(geos_write_wkt(pvg), terra::geom(pv, wkt = TRUE))
-  expect_identical(terra::crs(pv), wk::wk_crs(pvg)$wkt)
+  expect_s4_class(pvgv, "SpatVector")
+  expect_identical(terra::geom(pvgv), terra::geom(pv))
+  expect_identical(terra::geom(pvgv, wkt = TRUE), terra::geom(pv, wkt = TRUE))
+  expect_identical(terra::crs(pv), terra::crs(pvgv))
+})
+
+test_that("conversion to terra works with numeric crs", {
+  skip_if_not_installed("terra")
+  skip_if_not_installed("sf")
+
+  expect_warning(
+    terra::vect(geos_read_wkt("POINT (0 1)", crs = 4326))
+  )
+  testthat::expect_s4_class(
+    terra::vect(geos_read_wkt("POINT (0 1)", crs = sf::st_crs(4326))),
+    "SpatVector"
+  )
 })
