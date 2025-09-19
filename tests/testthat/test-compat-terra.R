@@ -106,16 +106,3 @@ test_that("conversion to terra works with numeric crs", {
     "SpatVector"
   )
 })
-
-
-# FIXME:
-# Should be fixed upstream:
-# {terra} erroreneously converts to WKB empty POINT
-test_that("bug in terra", {
-  empty <- terra::vect("POINT EMPTY")
-
-  expect_identical(
-    geos_write_wkt(as_geos_geometry(empty)),
-    "MULTIPOINT EMPTY" # SHOULD BE "POINT EMPTY"
-  )
-})
