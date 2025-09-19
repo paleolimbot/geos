@@ -57,8 +57,8 @@ as_geos_geometry.WKB <- function(x, ..., crs = NULL) {
 #' @rdname as_geos_geometry
 #' @export
 as_geos_geometry.SpatVector <- function(x, ...) {
-  geos::as_geos_geometry(
-    terra::geom(x, wkt = TRUE),
+  geos::geos_read_wkb(
+    terra::geom(x, wkb = TRUE),
     crs = get_terra_crs(x)
   )
 }
@@ -252,9 +252,15 @@ str.geos_geometry <- function(
 #' @noRd
 #' @keywords internal
 get_terra_crs <- function(x) {
+  terra_crs <- terra::crs(x)
+
+  if (!nzchar(terra_crs)) {
+    return(NULL)
+  }
+
   crs <- list(
     input = terra::crs(x, describe = TRUE)$name,
-    wkt = terra::crs(x)
+    wkt = terra_crs
   )
   attr(crs, "class") <- "crs"
   crs
