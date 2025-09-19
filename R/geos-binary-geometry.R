@@ -14,13 +14,13 @@
 #'   the second containing common paths in the opposite direction.
 #' - [geos_snap()] snaps the vertices of `x` within `tolerance` of `y`
 #'   to `y`.
-#' - [geos_clearance_line_between()] calculate the clearance (shortest distance) between
-#'   `x` and `y`, result is a LINESTRING that touches each geometry.
+#' - [geos_clearance_line_between()] calculate the clearance (shortest distance)
+#'   between `x` and `y`, result is a LINESTRING that touches each geometry.
 #'
 #' @inheritParams geos_disjoint
 #' @param prepare Use prepared geometries to calculate clearance line
-#' @param grid_size For `_prec()` variants, the grid size such that all vertices of
-#'   the resulting geometry will lie on the grid.
+#' @param grid_size For `_prec()` variants, the grid size such that all 
+#' vertices of the resulting geometry will lie on the grid.
 #'
 #' @return A [GEOS geometry vector][as_geos_geometry] along the recycled
 #'   length of `geom1` and `geom2`.
@@ -40,7 +40,8 @@
 #'
 #' geos_shared_paths("LINESTRING (0 0, 1 1, 2 2)", "LINESTRING (3 3, 2 2, 1 1)")
 #'
-#' ## generate a line that connects two geometries at their nearest place (not necessarily a vertex of either)
+#' ## generate a line that connects two geometries at their nearest place
+#' ## (not necessarily a vertex of either)
 #' a <- as_geos_geometry("LINESTRING (0.5 2, 0.5 3)")
 #' b <- as_geos_geometry("POLYGON ((0 1, 0.5 0, 1 1, 0 1))")
 #' plot(c(a, b), col = c("grey", "firebrick"), lwd = 10)

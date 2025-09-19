@@ -9,6 +9,7 @@
 \alias{as_geos_geometry.character}
 \alias{as_geos_geometry.blob}
 \alias{as_geos_geometry.WKB}
+\alias{as_geos_geometry.SpatVector}
 \alias{geos_geometry}
 \title{Create GEOS Geometry Vectors}
 \usage{
@@ -27,6 +28,8 @@ as_geos_geometry(x, ...)
 \method{as_geos_geometry}{blob}(x, ..., crs = NULL)
 
 \method{as_geos_geometry}{WKB}(x, ..., crs = NULL)
+
+\method{as_geos_geometry}{SpatVector}(x, ...)
 
 geos_geometry(crs = wk::wk_crs_inherit())
 }
