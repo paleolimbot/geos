@@ -157,8 +157,10 @@ SEXP strtree_query_base(SEXP treeExternalPtr, SEXP geom, GEOSQueryCallback callb
     // `geometry` allocate a new vector with the appropriate length and copy the temporary
     // result there
     itemResult = PROTECT(Rf_allocVector(REALSXP, queryResult.currentIndex));
-    memcpy(REAL(itemResult), queryResult.indexList,
-           queryResult.currentIndex * sizeof(double));
+    if (queryResult.currentIndex > 0) {
+      memcpy(REAL(itemResult), queryResult.indexList,
+             queryResult.currentIndex * sizeof(double));
+    }
 
     // set result to this vector
     SET_VECTOR_ELT(result, i, itemResult);
