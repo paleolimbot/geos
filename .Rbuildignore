@@ -15,3 +15,5 @@
 ^\.vscode$
 ^CRAN-SUBMISSION$
 ^\.clang-format$
+^\.cache$
+^compile_commands\.json$
