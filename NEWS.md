@@ -1,4 +1,4 @@
-# geos (development version)
+# geos 0.2.5
 
 * Added support of `SpatVector` objects from `terra` package (@atsyplenkov,
   #92, #100).
