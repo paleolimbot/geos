@@ -33,7 +33,7 @@ Imports:
     libgeos (>= 3.8.1-4),
     methods,
     wk (>= 0.4.1)
-URL: https://paleolimbot.github.io/geos/, https://github.com/paleolimbot/geos/
+URL: https://paleolimbot.github.io/geos/, https://github.com/paleolimbot/geos/, https://github.com/paleolimbot/geos
 BugReports: https://github.com/paleolimbot/geos/issues
 LinkingTo: 
     libgeos, wk
