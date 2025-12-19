@@ -1,6 +1,10 @@
 # geos (development version)
 
-* Added support of `SpatVector` objects from `terra` package (#92, #100).
+* Added support of `SpatVector` objects from `terra` package (@atsyplenkov,
+  #92, #100).
+* Fix zero-length memcpy (#102).
+* Fix plotting of invalid geometries (@atsyplenkov, #96, #97).
+* Improve documentation for `geos_clearance_line_between()` (@mdsumner, #99).
 
 # geos 0.2.4
 
