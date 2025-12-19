@@ -12,7 +12,7 @@ Provides an R API to the Open Source Geometry Engine ('GEOS') library (\url{http
 Useful links:
 \itemize{
   \item \url{https://paleolimbot.github.io/geos/}
-  \item \url{https://github.com/paleolimbot/geos/}
+  \item \url{https://github.com/paleolimbot/geos}
   \item Report bugs at \url{https://github.com/paleolimbot/geos/issues}
 }
 
