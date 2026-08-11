@@ -2,14 +2,17 @@
 vect_geos_geometry <- function(x) {
   geos_crs <- wk::wk_crs(x)
 
-  if (is.list(geos_crs)) {
+  if (is.null(geos_crs)) {
+    crs <- ""
+  } else if (is.list(geos_crs)) {
     crs <- geos_crs$wkt
   } else {
     crs <- as.character(geos_crs)
   }
 
   terra::vect(
-    geos::geos_write_wkt(x),
+    ## needs 'raw' in a list, not 'blob'
+    unclass(geos::geos_write_wkb(x)),
     crs = crs
   )
 }

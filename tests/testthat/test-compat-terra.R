@@ -64,6 +64,22 @@ test_that("conversion from terra propagates CRS", {
   )
 })
 
+test_that("conversion to terra works without a crs", {
+  skip_if_not_installed("terra")
+
+  pv <- terra::vect("POLYGON ((0 -5, 10 0, 10 -10, 0 -5))")
+  pvgv <- terra::vect(as_geos_geometry(pv))
+
+  expect_s4_class(pvgv, "SpatVector")
+  expect_identical(terra::crs(pvgv), "")
+  expect_identical(terra::geom(pvgv), terra::geom(pv))
+
+  # geos-native geometry with NULL crs, not via terra round-trip
+  gv <- terra::vect(geos_read_wkt("POINT (0 1)"))
+  expect_s4_class(gv, "SpatVector")
+  expect_identical(terra::crs(gv), "")
+})
+
 test_that("as_geos_geometry from terra behaves identical to st_as_sf from sf", {
   skip_if_not_installed("sf")
   skip_if_not_installed("terra")
